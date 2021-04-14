@@ -17,7 +17,7 @@ class HomeViewController: UIViewController {
     
     private func setupView() {
         title = "Home"
-        view.backgroundColor = .yellow
+        view.backgroundColor = .systemBackground
     }
     
     private func handleNotAuthenticated() {
@@ -25,9 +25,12 @@ class HomeViewController: UIViewController {
         let token = appDelegate.objUsuarioSesion?.token
         
         if token == nil {
+            print("IF home")
             let vc = LoginViewController()
             vc.modalPresentationStyle = .fullScreen
             self.present(vc, animated: false)
+        } else {
+            print("ElSE Home")
         }
     }
 }

@@ -37,9 +37,11 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
         case 0:
             print("Home")
         case 1:
-            print("Second")
+            print("explorer")
         case 2:
-            print("More")
+            print("notification")
+        case 3:
+            print("profile")
         default:
             break
         }
