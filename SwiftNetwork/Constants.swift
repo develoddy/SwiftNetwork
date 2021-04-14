@@ -5,6 +5,7 @@
 //  Created by Eddy Donald Chinchay Lujan on 11/11/2020.
 //
 
+import  UIKit
 struct Constants {
     
     struct SignUpAlertMessage {
@@ -27,6 +28,12 @@ struct Constants {
         static let mensajeError = "The email or password you entered is incorrect."
     }
     
+    struct SignUp {
+        static let titleAlert = "Sign Up"
+        static let subTitleAlert = "User successfully registered"
+        static let buttonOkAlert = "User successfully registered"
+    }
+    
     struct  ApiRoutes {
         static let login = "http://127.0.0.1:8000"
     }
@@ -35,5 +42,9 @@ struct Constants {
         static let httpPost = "POST"
         static let httpGet = "GET"
         static let httpPut = "PUT"
+    }
+    
+    struct Constants {
+        static let cornerRadius: CGFloat = 9
     }
 }

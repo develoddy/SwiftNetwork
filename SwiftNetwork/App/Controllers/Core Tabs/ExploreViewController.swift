@@ -8,7 +8,16 @@
 import UIKit
 
 class ExplorerViewController: UIViewController {
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupView()
+    }
+    
+    private func setupView() {
+        title = "Explore"
+        view.backgroundColor = .yellow
     }
 }

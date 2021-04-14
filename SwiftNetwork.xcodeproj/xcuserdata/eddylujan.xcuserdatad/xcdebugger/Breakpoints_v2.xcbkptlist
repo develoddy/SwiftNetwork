@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "F6670617-456C-449B-A677-B20E94869311"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6BB26773-DFA4-454D-832A-AB497A9CF91D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SwiftNetwork/App/Controllers/Others/Omboarding/RegistrationViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "didTapRegisterButton()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6BB26773-DFA4-454D-832A-AB497A9CF91D - cc81c3cf078cdfe5"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SwiftNetwork.RegistrationViewController.(didTapRegisterButton in _03D6293ED355664FEDC5173BEB7CCDA0)() -&gt; ()"
+                  moduleName = "SwiftNetwork"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eddylujan/Documentos/Proyect/SwiftNetwork/SwiftNetwork/App/Controllers/Others/Omboarding/RegistrationViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "179"
+                  endingLineNumber = "179"
+                  offsetFromSymbolStart = "2277">
+               </Location>
+               <Location
+                  uuid = "6BB26773-DFA4-454D-832A-AB497A9CF91D - 2b295a07eae7d314"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (SwiftNetwork.ResponseTokenBE) -&gt; () in SwiftNetwork.RegistrationViewController.(didTapRegisterButton in _03D6293ED355664FEDC5173BEB7CCDA0)() -&gt; ()"
+                  moduleName = "SwiftNetwork"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eddylujan/Documentos/Proyect/SwiftNetwork/SwiftNetwork/App/Controllers/Others/Omboarding/RegistrationViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "180"
+                  endingLineNumber = "180"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8AD955EE-A22E-4958-9CB2-CEFD1D8BA526"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SwiftNetwork/App/Controllers/Others/Omboarding/RegistrationViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
+            landmarkName = "didTapRegisterButton()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "8AD955EE-A22E-4958-9CB2-CEFD1D8BA526 - 2b295a07eae7d375"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (SwiftNetwork.ResponseTokenBE) -&gt; () in SwiftNetwork.RegistrationViewController.(didTapRegisterButton in _03D6293ED355664FEDC5173BEB7CCDA0)() -&gt; ()"
+                  moduleName = "SwiftNetwork"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eddylujan/Documentos/Proyect/SwiftNetwork/SwiftNetwork/App/Controllers/Others/Omboarding/RegistrationViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "181"
+                  endingLineNumber = "181"
+                  offsetFromSymbolStart = "151">
+               </Location>
+               <Location
+                  uuid = "8AD955EE-A22E-4958-9CB2-CEFD1D8BA526 - 182ef2847bd87c78"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.String) -&gt; () in SwiftNetwork.RegistrationViewController.(didTapRegisterButton in _03D6293ED355664FEDC5173BEB7CCDA0)() -&gt; ()"
+                  moduleName = "SwiftNetwork"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eddylujan/Documentos/Proyect/SwiftNetwork/SwiftNetwork/App/Controllers/Others/Omboarding/RegistrationViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "182"
+                  endingLineNumber = "182"
+                  offsetFromSymbolStart = "23">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6D0CB8E3-0CE5-49D6-81E9-59F97757FA3F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SwiftNetwork/BC/UserLoginBC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "signIn(_:conCompletionCorrecto:conCompletionIncorrecto:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

@@ -16,10 +16,11 @@ class WebModel: NSObject {
                                                 conCompletionCorrecto completionCorrecto : @escaping Closures.Login,
                                                 error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
         
-        let dic : [String : Any] = ["email"         : objUser.email!,
-                                    "password"      : objUser.password!,
-                                    "typedevice"    : 1,
-                                    "tokendevice"   : "Se debe enviar el token push del dispositivo"]
+        let dic : [String : Any] = [
+            "email"         : objUser.email!    ,
+            "password"      : objUser.password! ,
+            "typedevice"    : 1                 ,
+            "tokendevice"   : "Se debe enviar el token push del dispositivo"]
         
         return WebSender.doPOSTToURL(conURL: self.CDMWebModelURLBase, conPath: "api/auth/login" as NSString, conParametros: dic) { (objRespuesta) in
             
@@ -29,7 +30,41 @@ class WebModel: NSObject {
             
             if arrayRespuesta == nil {
                 if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
-                    let objUsuario = WebTranslator.translateResponseTokenBE(diccionarioRespuesta! )
+                    let objUsuario = WebTranslator.translateResponseTokenBE(diccionarioRespuesta!)
+                    completionCorrecto(objUsuario)
+                }
+            } else {
+                if  arrayRespuesta as! String == Constants.Error.unauthorized {
+                    let mensajeErrorFinal = (diccionarioRespuesta != nil && diccionarioRespuesta?.count == 0) ? Constants.LogInError.logInInvalidte : mensajeError
+                   procesoIncorrecto(mensajeErrorFinal)
+               }
+            }
+        }
+    }
+    
+    
+    @discardableResult class func sesionSignIn(_ objUser : UserBE,
+                                                conCompletionCorrecto completionCorrecto : @escaping Closures.Login,
+                                                error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        
+        let dic : [String : Any] = [
+            "name"          : objUser.name!     ,
+            "username"      : objUser.username! ,
+            "email"         : objUser.email!    ,
+            "password"      : objUser.password! ,
+            "typedevice"    : 1                 ,
+            "tokendevice"   : "Se debe enviar el token push del dispositivo"
+        ]
+        
+        return WebSender.doPOSTToURL(conURL: self.CDMWebModelURLBase, conPath: "api/auth/signup" as NSString, conParametros: dic) { (objRespuesta) in
+            
+            let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
+            let arrayRespuesta = diccionarioRespuesta!["error"]
+            let mensajeError = WebModel.obtenerMensajeDeError(paraData: diccionarioRespuesta)
+            
+            if arrayRespuesta == nil {
+                if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
+                    let objUsuario = WebTranslator.translateResponseTokenBE(diccionarioRespuesta!)
                     completionCorrecto(objUsuario)
                 }
             } else {

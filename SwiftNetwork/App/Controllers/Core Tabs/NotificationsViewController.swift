@@ -8,7 +8,14 @@
 import UIKit
 
 class NotificationsViewController: UIViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+    }
+    
+    private func setupView() {
+        title = "Notifications"
+        view.backgroundColor = .yellow
     }
 }

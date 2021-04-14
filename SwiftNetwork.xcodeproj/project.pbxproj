@@ -41,6 +41,7 @@
 		B39A49FC2626385400BE80DF /* Closures.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49FB2626385400BE80DF /* Closures.swift */; };
 		B39A4A012626387700BE80DF /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A4A002626387700BE80DF /* KeyChain.swift */; };
 		B39A4A0626263A3A00BE80DF /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A4A0526263A3A00BE80DF /* Alerts.swift */; };
+		B39A4A1A2627459F00BE80DF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A4A192627459F00BE80DF /* TabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +102,7 @@
 		B39A49FB2626385400BE80DF /* Closures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Closures.swift; sourceTree = "<group>"; };
 		B39A4A002626387700BE80DF /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		B39A4A0526263A3A00BE80DF /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
+		B39A4A192627459F00BE80DF /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +231,7 @@
 				B39A49B22626236D00BE80DF /* HomeViewController.swift */,
 				B39A49B52626236E00BE80DF /* NotificationsViewController.swift */,
 				B39A49B42626236E00BE80DF /* ProfileViewController.swift */,
+				B39A4A192627459F00BE80DF /* TabBarController.swift */,
 			);
 			path = "Core Tabs";
 			sourceTree = "<group>";
@@ -454,6 +457,7 @@
 				B39A49B62626236E00BE80DF /* HomeViewController.swift in Sources */,
 				B39A49D4262623A400BE80DF /* LoginViewController.swift in Sources */,
 				B39A49FC2626385400BE80DF /* Closures.swift in Sources */,
+				B39A4A1A2627459F00BE80DF /* TabBarController.swift in Sources */,
 				B39A49CD2626239900BE80DF /* EditProfileViewController.swift in Sources */,
 				B39A49CB2626239900BE80DF /* SettingsViewController.swift in Sources */,
 				B39A49CA2626239900BE80DF /* SearchResultViewController.swift in Sources */,

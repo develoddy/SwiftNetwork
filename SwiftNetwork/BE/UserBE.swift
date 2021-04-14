@@ -7,35 +7,32 @@
 
 import UIKit
 
-
-
 class ResponseTokenBE: NSObject, NSCoding {
-    
     var token       : String?
     var tokenType   : String?
     var expiresIn   : Int?
+    var user:       UserBE?
     
     override init() {
         super.init()
     }
 
     required init(coder aDecoder: NSCoder) {
-        
         self.token      = aDecoder.decodeObject(forKey: "token")      as? String
         self.tokenType  = aDecoder.decodeObject(forKey: "tokenType")  as? String
         self.expiresIn  = aDecoder.decodeObject(forKey: "expiresIn")  as? Int
+        self.user  = aDecoder.decodeObject(forKey: "user")  as? UserBE
     }
 
     func encode(with aCoder: NSCoder) {
-        
-        aCoder.encode(self.token,       forKey: "usuario_id")
-        aCoder.encode(self.tokenType,   forKey: "usuario_name")
-        aCoder.encode(self.expiresIn,   forKey: "usuario_lastname")
+        aCoder.encode(self.token,       forKey: "token")
+        aCoder.encode(self.tokenType,   forKey: "tokenType")
+        aCoder.encode(self.expiresIn,   forKey: "expiresIn")
+        aCoder.encode(self.user,   forKey: "user")
     }
 }
 
 class UserBE: NSObject, NSCoding {
-    
     var name                : String?
     var username            : String?
     var email               : String?
@@ -46,18 +43,16 @@ class UserBE: NSObject, NSCoding {
     }
 
     required init(coder aDecoder: NSCoder) {
-        
-        self.name                 = aDecoder.decodeObject(forKey: "name")               as? String
-        self.username               = aDecoder.decodeObject(forKey: "username")             as? String
-        self.email           = aDecoder.decodeObject(forKey: "email")         as? String
-        self.password              = aDecoder.decodeObject(forKey: "password")                    as? String
+        self.name      = aDecoder.decodeObject(forKey: "name")     as? String
+        self.username  = aDecoder.decodeObject(forKey: "username") as? String
+        self.email     = aDecoder.decodeObject(forKey: "email")    as? String
+        self.password  = aDecoder.decodeObject(forKey: "password") as? String
     }
 
     func encode(with aCoder: NSCoder) {
-        
-        aCoder.encode(self.name,                  forKey: "usuario_id")
-        aCoder.encode(self.username,                forKey: "usuario_name")
-        aCoder.encode(self.email,            forKey: "usuario_lastname")
-        aCoder.encode(self.password,               forKey: "email")
+        aCoder.encode(self.name,     forKey: "name")
+        aCoder.encode(self.username, forKey: "username")
+        aCoder.encode(self.email,    forKey: "email")
+        aCoder.encode(self.password, forKey: "password")
     }
 }

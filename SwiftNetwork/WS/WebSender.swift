@@ -60,18 +60,16 @@ class WebSender: NSObject {
         }
     }
     
-    
-    
+
     class func obtenerRespuestaServicio(paraData data           : Data?         ,
                                         conResponse response    : URLResponse?  ,
                                         conError error          : NSError?      ) -> WebResponse {
-        
         var respuesta : Any? = nil
         if error == nil && data != nil {
             respuesta = self.obtenerRespuestaEnJSONConData(data!)
         }
         
-        print("respuesta servicio \(respuesta!)")
+        //print("WebSender - respuesta servicio:  \(respuesta!)")
         let urlResponse = response as? HTTPURLResponse
         let headerFields : NSDictionary? = urlResponse?.allHeaderFields as NSDictionary?
         let objRespuesta = WebResponse()
@@ -344,7 +342,7 @@ class WebSender: NSObject {
             } catch {}
         }
         
-        request.httpMethod = Constants.Method.httpPost//"POST"
+        request.httpMethod = Constants.Method.httpPost
         
         let postDataTask = sesion.dataTask(with: request as URLRequest) { (data, response, error) in
             DispatchQueue.main.async(execute: {

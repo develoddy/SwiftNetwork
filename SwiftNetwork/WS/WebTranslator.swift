@@ -26,9 +26,9 @@ class WebTranslator: NSObject {
         
         let objTokenBE = ResponseTokenBE()
         
-        objTokenBE.token = objDic["name"] as? String
-        objTokenBE.tokenType = objDic["username"] as? String
-        objTokenBE.expiresIn  = objDic["email"] as? Int
+        objTokenBE.token = objDic["token"] as? String
+        objTokenBE.tokenType = objDic["token_type"] as? String
+        objTokenBE.expiresIn  = objDic["expires_in"] as? Int
         
         return objTokenBE
     }
