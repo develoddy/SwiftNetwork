@@ -28,7 +28,6 @@ class NotificationsViewController: UIViewController {
     
     private func setupView() {
         title = "Notifications"
-        
         view.backgroundColor = .systemBackground
         view.addSubview(tableView)
     }

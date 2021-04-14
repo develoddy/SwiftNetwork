@@ -42,6 +42,10 @@
 		B39A4A012626387700BE80DF /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A4A002626387700BE80DF /* KeyChain.swift */; };
 		B39A4A0626263A3A00BE80DF /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A4A0526263A3A00BE80DF /* Alerts.swift */; };
 		B39A4A1A2627459F00BE80DF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A4A192627459F00BE80DF /* TabBarController.swift */; };
+		B39A4A262627629900BE80DF /* IGFeedPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A4A252627629900BE80DF /* IGFeedPostTableViewCell.swift */; };
+		B39A4A2F262763F600BE80DF /* IGFeedPostHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A4A2E262763F600BE80DF /* IGFeedPostHeaderTableViewCell.swift */; };
+		B39A4A372627642B00BE80DF /* IGFeedPostActionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A4A362627642B00BE80DF /* IGFeedPostActionsTableViewCell.swift */; };
+		B39A4A3C2627645B00BE80DF /* IGFeedPostGeneralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A4A3B2627645B00BE80DF /* IGFeedPostGeneralTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +107,10 @@
 		B39A4A002626387700BE80DF /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		B39A4A0526263A3A00BE80DF /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		B39A4A192627459F00BE80DF /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		B39A4A252627629900BE80DF /* IGFeedPostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGFeedPostTableViewCell.swift; sourceTree = "<group>"; };
+		B39A4A2E262763F600BE80DF /* IGFeedPostHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGFeedPostHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		B39A4A362627642B00BE80DF /* IGFeedPostActionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGFeedPostActionsTableViewCell.swift; sourceTree = "<group>"; };
+		B39A4A3B2627645B00BE80DF /* IGFeedPostGeneralTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGFeedPostGeneralTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -299,6 +307,7 @@
 		B39A49F62626244F00BE80DF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B39A4A242627626300BE80DF /* Cells */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -311,6 +320,25 @@
 				B39A4A0526263A3A00BE80DF /* Alerts.swift */,
 			);
 			path = ClasesGeneral;
+			sourceTree = "<group>";
+		};
+		B39A4A242627626300BE80DF /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B39A4A2D262763C500BE80DF /* Home Feed */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		B39A4A2D262763C500BE80DF /* Home Feed */ = {
+			isa = PBXGroup;
+			children = (
+				B39A4A252627629900BE80DF /* IGFeedPostTableViewCell.swift */,
+				B39A4A2E262763F600BE80DF /* IGFeedPostHeaderTableViewCell.swift */,
+				B39A4A362627642B00BE80DF /* IGFeedPostActionsTableViewCell.swift */,
+				B39A4A3B2627645B00BE80DF /* IGFeedPostGeneralTableViewCell.swift */,
+			);
+			path = "Home Feed";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -447,7 +475,9 @@
 				B39A49DD262623FD00BE80DF /* Constants.swift in Sources */,
 				B3110EEB262600F900354C25 /* AppDelegate.swift in Sources */,
 				B39A49CC2626239900BE80DF /* PublishPostViewController.swift in Sources */,
+				B39A4A262627629900BE80DF /* IGFeedPostTableViewCell.swift in Sources */,
 				B39A49C72626239900BE80DF /* ListViewController.swift in Sources */,
+				B39A4A372627642B00BE80DF /* IGFeedPostActionsTableViewCell.swift in Sources */,
 				B39A4A012626387700BE80DF /* KeyChain.swift in Sources */,
 				B39A49C82626239900BE80DF /* PostViewController.swift in Sources */,
 				B39A49B82626236E00BE80DF /* ProfileViewController.swift in Sources */,
@@ -463,8 +493,10 @@
 				B39A49CA2626239900BE80DF /* SearchResultViewController.swift in Sources */,
 				B39A49CE2626239900BE80DF /* PostEditorViewController.swift in Sources */,
 				B3110EED262600F900354C25 /* SceneDelegate.swift in Sources */,
+				B39A4A2F262763F600BE80DF /* IGFeedPostHeaderTableViewCell.swift in Sources */,
 				B39A49C92626239900BE80DF /* SearchViewController.swift in Sources */,
 				B39A49B72626236E00BE80DF /* ExploreViewController.swift in Sources */,
+				B39A4A3C2627645B00BE80DF /* IGFeedPostGeneralTableViewCell.swift in Sources */,
 				B39A49F12626242600BE80DF /* WebResponse.swift in Sources */,
 				B39A49A52626232500BE80DF /* Extensions.swift in Sources */,
 				B39A49B92626236E00BE80DF /* NotificationsViewController.swift in Sources */,
