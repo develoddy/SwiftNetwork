@@ -11,6 +11,32 @@ import UIKit
 class WebModel: NSObject {
 
     static let CDMWebModelURLBase : NSString = Constants.ApiRoutes.login as NSString
+    
+    
+    @discardableResult class func sesionSignOut(_ token : String,
+                                               conCompletionCorrecto completionCorrecto : @escaping Closures.LogOut,
+                                                error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        //print("WebModel Token: \(token!)")
+        
+        return WebSender.doPOSTTLogOutURL(conURL: self.CDMWebModelURLBase, conPath: "api/auth/logout" as NSString, conParametros: token) { (objRespuesta) in
+            
+            let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
+            let arrayRespuesta = diccionarioRespuesta!["error"]
+            let mensajeError = WebModel.obtenerMensajeDeError(paraData: diccionarioRespuesta)
+            
+            if arrayRespuesta == nil {
+                if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
+                    let objUsuario = WebTranslator.translateResponseLogOutBE(diccionarioRespuesta!)
+                    completionCorrecto(objUsuario)
+                }
+            } else {
+                if  arrayRespuesta as! String == Constants.Error.unauthorized {
+                    let mensajeErrorFinal = (diccionarioRespuesta != nil && diccionarioRespuesta?.count == 0) ? Constants.LogInError.logInInvalidte : mensajeError
+                   procesoIncorrecto(mensajeErrorFinal)
+               }
+            }
+        }
+    }
 
     @discardableResult class func iniciarSesion(_ objUser : UserBE,
                                                 conCompletionCorrecto completionCorrecto : @escaping Closures.Login,
@@ -46,7 +72,6 @@ class WebModel: NSObject {
     @discardableResult class func sesionSignIn(_ objUser : UserBE,
                                                 conCompletionCorrecto completionCorrecto : @escaping Closures.Login,
                                                 error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
-        
         let dic : [String : Any] = [
             "name"          : objUser.name!     ,
             "username"      : objUser.username! ,

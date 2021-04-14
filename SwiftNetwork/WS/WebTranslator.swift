@@ -33,4 +33,13 @@ class WebTranslator: NSObject {
         return objTokenBE
     }
     
+    class func translateResponseLogOutBE(_ objDic : NSDictionary) -> ResponseLogOutBE {
+        
+        let objLogOutBE = ResponseLogOutBE()
+        
+        objLogOutBE.message = objDic["message"] as? String
+        
+        return objLogOutBE
+    }
+    
 }

@@ -53,7 +53,7 @@ class WebSender: NSObject {
     
     class func obtenerRespuestaEnJSONConData(_ data : Data) -> Any? {
         
-        do{
+        do {
             return try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as Any
         } catch {
             return nil
@@ -69,7 +69,7 @@ class WebSender: NSObject {
             respuesta = self.obtenerRespuestaEnJSONConData(data!)
         }
         
-        //print("WebSender - respuesta servicio:  \(respuesta!)")
+        print("WebSender - respuesta servicio:  \(respuesta!)")
         let urlResponse = response as? HTTPURLResponse
         let headerFields : NSDictionary? = urlResponse?.allHeaderFields as NSDictionary?
         let objRespuesta = WebResponse()
@@ -353,6 +353,36 @@ class WebSender: NSObject {
         postDataTask.resume()
         return postDataTask
     }
+    
+    
+    @discardableResult class func doPOSTTLogOutURL(conURL url           : NSString                               ,
+                                              conPath path              : NSString                               ,
+                                              conParametros token       : String?                                ,
+                                              conCompletion completion  : @escaping (_ objRespuesta : WebResponse) -> Void) -> URLSessionDataTask {
+        
+        let configuracionSesion = URLSessionConfiguration.default
+        configuracionSesion.httpAdditionalHeaders = self.crearCabeceraPeticion() as? [AnyHashable: Any]
+        
+        let sesion = URLSession.init(configuration: configuracionSesion)
+        
+        let urlServicio = URL(string: "\(url)/\(path)")
+        let request = NSMutableURLRequest(url: urlServicio!)
+        request.addValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("bearer" + token!, forHTTPHeaderField: "Authorization")
+        
+        request.httpMethod = Constants.Method.httpPost
+        
+        let postDataTask = sesion.dataTask(with: request as URLRequest) { (data, response, error) in
+            DispatchQueue.main.async(execute: {
+                let objRespuesta = self.obtenerRespuestaServicio(paraData: data, conResponse: response, conError: error as NSError?)
+                completion(objRespuesta)
+            })
+        }
+        postDataTask.resume()
+        return postDataTask
+    }
+    
     
     
     

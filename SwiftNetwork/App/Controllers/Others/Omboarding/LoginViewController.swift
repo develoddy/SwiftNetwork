@@ -199,7 +199,6 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func didTapLoginButton() {
-        print("configureLoginButton")
         passwordField.resignFirstResponder()
         usernameEmailField.resignFirstResponder()
         

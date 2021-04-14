@@ -7,6 +7,22 @@
 
 import UIKit
 
+class ResponseLogOutBE: NSObject, NSCoding {
+    var message : String?
+    
+    override init() {
+        super.init()
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        self.message = aDecoder.decodeObject(forKey: "message") as? String
+    }
+
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.message, forKey: "message")
+    }
+}
+
 class ResponseTokenBE: NSObject, NSCoding {
     var token       : String?
     var tokenType   : String?
