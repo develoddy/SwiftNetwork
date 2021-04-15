@@ -51,13 +51,6 @@ class SettingsViewController: UIViewController {
     }
     
     private func configureModels() {
-        /*let section = [
-            SettingCellModel(tile: "Log Out") { [weak self] in
-                self?.didTapLogOut()
-            }
-        ]
-        data.append(section)*/
-        
         data.append([
             SettingCellModel(tile: "Edit Profile") { [weak self] in
                 self?.didTapEditProfile()
@@ -117,6 +110,7 @@ class SettingsViewController: UIViewController {
         let vc = EditProfileViewController()
         vc.title = "Edit Profile"
         let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
         present(navVC, animated: true)
         
     }

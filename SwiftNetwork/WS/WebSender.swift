@@ -69,7 +69,7 @@ class WebSender: NSObject {
             respuesta = self.obtenerRespuestaEnJSONConData(data!)
         }
         
-        print("WebSender - respuesta servicio:  \(respuesta!)")
+        //print("WebSender - respuesta servicio:  \(respuesta!)")
         let urlResponse = response as? HTTPURLResponse
         let headerFields : NSDictionary? = urlResponse?.allHeaderFields as NSDictionary?
         let objRespuesta = WebResponse()

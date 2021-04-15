@@ -19,7 +19,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        handleNotAuthenticated()
+        //handleNotAuthenticated()
         configureTableView()
         delegateTableView()
     }
@@ -49,7 +49,6 @@ class HomeViewController: UIViewController {
         let token = appDelegate.objUsuarioSesion?.token
         
         if token == nil {
-            print("IF home")
             let vc = LoginViewController()
             vc.modalPresentationStyle = .fullScreen
             self.present(vc, animated: false)
