@@ -23,7 +23,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
     }
     
     fileprivate func generateNavController(vc: UIViewController, title: String) -> UINavigationController {
-        vc.navigationItem.title = title
+        //vc.navigationItem.title = title
         let navController = UINavigationController(rootViewController: vc)
         navController.title = title
         
