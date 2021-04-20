@@ -15,7 +15,8 @@ struct User {
     let name: (first:String, last:String)
     let username: String
     let bio: String
-    let birthDate: Int
+    let profilePicture: URL
+    let birthDate: Date
     let gender: Gender
     let email: String
     let counts: UserCount
@@ -28,8 +29,9 @@ struct UserCount {
     let posts: Int
 }
 
-public enum UserPostType {
-    case photo, video
+public enum UserPostType: String {
+    case photo = "Photo"
+    case video = "Video"
 }
 
 /// Represents a user post
@@ -43,6 +45,7 @@ public struct UserPost {
     let comments: [PostComments]
     let createDate: Date
     let taggedUsers: [User]
+    let owner: User
 }
 
 struct PostLike {
@@ -59,6 +62,6 @@ struct PostComments {
     let identifier: String
     let username: String
     let text: String
-    let createDate: String
+    let createDate: Date
     let likes: [CommenttLike]
 }

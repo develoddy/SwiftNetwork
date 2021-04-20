@@ -12,22 +12,26 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
         super.viewDidLoad()
         self.delegate = self
         
+        //tabBar.barTintColor = .red
+        
         let home = generateNavController(vc: HomeViewController(), title: "Home")
         let explorer = generateNavController(vc: ExplorerViewController(), title: "Explore")
         let notification = generateNavController(vc: NotificationsViewController(), title: "Notif")
         let profile = generateNavController(vc: ProfileViewController(), title: "Profile")
         
         
-        UINavigationBar.appearance().prefersLargeTitles = true
+        //UINavigationBar.appearance().prefersLargeTitles = true
         viewControllers = [ home, explorer, notification, profile  ]
+        //self.setViewControllers([home, explorer, notification, profile ], animated: false)
     }
     
-    fileprivate func generateNavController(vc: UIViewController, title: String) -> UINavigationController {
+    fileprivate func generateNavController(vc: UIViewController, title: String) -> UINavigationController/*UIViewController*/ {
         //vc.navigationItem.title = title
         let navController = UINavigationController(rootViewController: vc)
         navController.title = title
         
-        return navController
+        
+        return  navController //vc
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
