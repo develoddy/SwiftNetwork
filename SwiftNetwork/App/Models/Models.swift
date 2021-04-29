@@ -40,17 +40,49 @@ public struct UserPost {
     let postType: UserPostType
     let thumbnailImage: URL
     let postURL: URL // either video url resolution photo
-    let caption: String?
+    let caption: String? //Subtitle
     let likeCount: [PostLike]
+    //let comments: [PostComments]
     let comments: [PostComments]
     let createDate: Date
     let taggedUsers: [User]
     let owner: User
 }
 
+struct Descriptions {
+    let text: String
+    let likes: Int
+}
+
 struct PostLike {
     let username: String
     let postIdentifier: String
+    let text: String
+    let likes: Int
+}
+
+
+/*struct PostComments {
+    let identifier: String
+    let username: String
+    let text: String
+    let createDate: Date
+    let likes: [CommenttLike]
+}*/
+class PostComments {
+    var identifier: String
+    var username: String
+    var text: String
+    var createDate: Date
+    var likes: [CommenttLike]
+    
+    init(identifier: String, username:String, text:String, createDate:Date, likes:[CommenttLike]) {
+        self.identifier = identifier
+        self.username = username
+        self.text = text
+        self.createDate = createDate
+        self.likes = likes
+    }
 }
 
 struct CommenttLike {
@@ -58,10 +90,8 @@ struct CommenttLike {
     let commentIdentifier: String
 }
 
-struct PostComments {
-    let identifier: String
-    let username: String
-    let text: String
-    let createDate: Date
-    let likes: [CommenttLike]
+struct CollectionTableCellModel {
+    let title: String
+    let imageName: String
 }
+

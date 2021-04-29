@@ -15,6 +15,12 @@
 		B3110EF7262600FC00354C25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3110EF5262600FC00354C25 /* LaunchScreen.storyboard */; };
 		B3110F02262600FC00354C25 /* SwiftNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3110F01262600FC00354C25 /* SwiftNetworkTests.swift */; };
 		B3110F0D262600FD00354C25 /* SwiftNetworkUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3110F0C262600FD00354C25 /* SwiftNetworkUITests.swift */; };
+		B362D15D263561840086F777 /* TimeLineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D15C263561840086F777 /* TimeLineViewController.swift */; };
+		B362D165263605630086F777 /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D164263605630086F777 /* CollectionTableViewCell.swift */; };
+		B362D16D263607940086F777 /* TableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D16C263607940086F777 /* TableCollectionViewCell.swift */; };
+		B362D17F2638AB760086F777 /* IGFeedPostDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D17E2638AB760086F777 /* IGFeedPostDescriptionTableViewCell.swift */; };
+		B362D18726399E2A0086F777 /* IGFeedPostFooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D18626399E2A0086F777 /* IGFeedPostFooterTableViewCell.swift */; };
+		B362D18F2639B5EA0086F777 /* ListCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D18E2639B5EA0086F777 /* ListCommentsViewController.swift */; };
 		B39A49A52626232500BE80DF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49A12626232400BE80DF /* Extensions.swift */; };
 		B39A49A62626232500BE80DF /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49A22626232500BE80DF /* AuthManager.swift */; };
 		B39A49A72626232500BE80DF /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49A32626232500BE80DF /* DatabaseManager.swift */; };
@@ -98,6 +104,13 @@
 		B3110F08262600FC00354C25 /* SwiftNetworkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftNetworkUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3110F0C262600FD00354C25 /* SwiftNetworkUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftNetworkUITests.swift; sourceTree = "<group>"; };
 		B3110F0E262600FD00354C25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B362D15C263561840086F777 /* TimeLineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineViewController.swift; sourceTree = "<group>"; };
+		B362D164263605630086F777 /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
+		B362D16C263607940086F777 /* TableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCollectionViewCell.swift; sourceTree = "<group>"; };
+		B362D177263695070086F777 /* video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video.mp4; sourceTree = "<group>"; };
+		B362D17E2638AB760086F777 /* IGFeedPostDescriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGFeedPostDescriptionTableViewCell.swift; sourceTree = "<group>"; };
+		B362D18626399E2A0086F777 /* IGFeedPostFooterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGFeedPostFooterTableViewCell.swift; sourceTree = "<group>"; };
+		B362D18E2639B5EA0086F777 /* ListCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCommentsViewController.swift; sourceTree = "<group>"; };
 		B39A49A12626232400BE80DF /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B39A49A22626232500BE80DF /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		B39A49A32626232500BE80DF /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
@@ -217,6 +230,7 @@
 				B3110EF3262600FC00354C25 /* Assets.xcassets */,
 				B3110EF5262600FC00354C25 /* LaunchScreen.storyboard */,
 				B3110EF8262600FC00354C25 /* Info.plist */,
+				B362D177263695070086F777 /* video.mp4 */,
 			);
 			path = SwiftNetwork;
 			sourceTree = "<group>";
@@ -285,6 +299,7 @@
 				B39A49B22626236D00BE80DF /* HomeViewController.swift */,
 				B39A49B52626236E00BE80DF /* NotificationsViewController.swift */,
 				B39A49B42626236E00BE80DF /* ProfileViewController.swift */,
+				B362D15C263561840086F777 /* TimeLineViewController.swift */,
 				B39A4A192627459F00BE80DF /* TabBarController.swift */,
 			);
 			path = "Core Tabs";
@@ -310,6 +325,7 @@
 				B39A49C22626239900BE80DF /* SearchResultViewController.swift */,
 				B39A49C12626239900BE80DF /* SearchViewController.swift */,
 				B39A49C32626239900BE80DF /* SettingsViewController.swift */,
+				B362D18E2639B5EA0086F777 /* ListCommentsViewController.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -385,10 +401,12 @@
 		B39A4A2D262763C500BE80DF /* Home Feed & Post */ = {
 			isa = PBXGroup;
 			children = (
-				B39A4A252627629900BE80DF /* IGFeedPostTableViewCell.swift */,
 				B39A4A2E262763F600BE80DF /* IGFeedPostHeaderTableViewCell.swift */,
+				B39A4A252627629900BE80DF /* IGFeedPostTableViewCell.swift */,
 				B39A4A362627642B00BE80DF /* IGFeedPostActionsTableViewCell.swift */,
+				B362D17E2638AB760086F777 /* IGFeedPostDescriptionTableViewCell.swift */,
 				B39A4A3B2627645B00BE80DF /* IGFeedPostGeneralTableViewCell.swift */,
+				B362D18626399E2A0086F777 /* IGFeedPostFooterTableViewCell.swift */,
 			);
 			path = "Home Feed & Post";
 			sourceTree = "<group>";
@@ -396,6 +414,8 @@
 		B39A4A45262836E400BE80DF /* CollectionsView Headers */ = {
 			isa = PBXGroup;
 			children = (
+				B362D164263605630086F777 /* CollectionTableViewCell.swift */,
+				B362D16C263607940086F777 /* TableCollectionViewCell.swift */,
 				B39A4A4E262837DF00BE80DF /* ProfileInfoHeaderCollectionReusableView.swift */,
 				B39A4A532628383B00BE80DF /* ProfileTabsCollectionReusableView.swift */,
 			);
@@ -666,6 +686,7 @@
 				B39A4A412628162000BE80DF /* FormTableViewCell.swift in Sources */,
 				B39A49E72626241C00BE80DF /* UserLoginBC.swift in Sources */,
 				B39A49DD262623FD00BE80DF /* Constants.swift in Sources */,
+				B362D15D263561840086F777 /* TimeLineViewController.swift in Sources */,
 				B3110EEB262600F900354C25 /* AppDelegate.swift in Sources */,
 				B39A49CC2626239900BE80DF /* PublishPostViewController.swift in Sources */,
 				B39A4A262627629900BE80DF /* IGFeedPostTableViewCell.swift in Sources */,
@@ -677,6 +698,7 @@
 				B39A49A72626232500BE80DF /* DatabaseManager.swift in Sources */,
 				B39A4A542628383B00BE80DF /* ProfileTabsCollectionReusableView.swift in Sources */,
 				B39A4A0626263A3A00BE80DF /* Alerts.swift in Sources */,
+				B362D16D263607940086F777 /* TableCollectionViewCell.swift in Sources */,
 				B39A49E22626241300BE80DF /* UserBE.swift in Sources */,
 				B39A49B62626236E00BE80DF /* HomeViewController.swift in Sources */,
 				B39A49D4262623A400BE80DF /* LoginViewController.swift in Sources */,
@@ -685,6 +707,7 @@
 				B39A4A1A2627459F00BE80DF /* TabBarController.swift in Sources */,
 				B3ABE3EE262CCFFA00F10ADE /* NotificationFollowEventTableViewCell.swift in Sources */,
 				B39A49CD2626239900BE80DF /* EditProfileViewController.swift in Sources */,
+				B362D165263605630086F777 /* CollectionTableViewCell.swift in Sources */,
 				B39A4A4F262837DF00BE80DF /* ProfileInfoHeaderCollectionReusableView.swift in Sources */,
 				B39A49CB2626239900BE80DF /* SettingsViewController.swift in Sources */,
 				B39A49CA2626239900BE80DF /* SearchResultViewController.swift in Sources */,
@@ -692,8 +715,11 @@
 				B3110EED262600F900354C25 /* SceneDelegate.swift in Sources */,
 				B39A4A6F262989ED00BE80DF /* UserFollowTableViewCell.swift in Sources */,
 				B39A4A2F262763F600BE80DF /* IGFeedPostHeaderTableViewCell.swift in Sources */,
+				B362D18F2639B5EA0086F777 /* ListCommentsViewController.swift in Sources */,
 				B39A49C92626239900BE80DF /* SearchViewController.swift in Sources */,
 				B39A49B72626236E00BE80DF /* ExploreViewController.swift in Sources */,
+				B362D18726399E2A0086F777 /* IGFeedPostFooterTableViewCell.swift in Sources */,
+				B362D17F2638AB760086F777 /* IGFeedPostDescriptionTableViewCell.swift in Sources */,
 				B39A4A3C2627645B00BE80DF /* IGFeedPostGeneralTableViewCell.swift in Sources */,
 				B39A4A472628372A00BE80DF /* PhotoCollectionViewCell.swift in Sources */,
 				B39A49F12626242600BE80DF /* WebResponse.swift in Sources */,

@@ -21,26 +21,28 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     
     private let likeButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .thin) //semibold, regular, thin
+        let config = UIImage.SymbolConfiguration(pointSize: 28, weight: .semibold) //semibold, regular, thin
         let image = UIImage(systemName: "heart", withConfiguration: config)
         button.setImage(image, for: .normal)
-        button.tintColor = .label
+        button.tintColor = .black
         return button
     }()
     
     private let commentButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .thin) //semibold, regular, thin
+        let config = UIImage.SymbolConfiguration(pointSize: 26, weight: .semibold) //semibold, regular, thin
         let image = UIImage(systemName: "message", withConfiguration: config)
         button.setImage(image, for: .normal)
+        button.tintColor = .black
         return button
     }()
     
     private let sendButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .thin) //semibold, regular, thin
+        let config = UIImage.SymbolConfiguration(pointSize: 26, weight: .semibold) //semibold, regular, thin
         let image = UIImage(systemName: "paperplane", withConfiguration: config)
         button.setImage(image, for: .normal)
+        button.tintColor = .black
         return button
     }()
     
@@ -72,7 +74,7 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
         for x in 0..<buttons.count {
             let button = buttons[x]
             button.frame = CGRect(
-                x: (CGFloat(x)*buttonSize)+(10*CGFloat(x+1)), 
+                x: (CGFloat(x)*buttonSize)+(10*CGFloat(x+1)),
                 y: 5,
                 width: buttonSize,
                 height: buttonSize)

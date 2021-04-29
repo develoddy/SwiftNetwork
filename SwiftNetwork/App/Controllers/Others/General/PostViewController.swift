@@ -22,10 +22,14 @@ import UIKit
 
 /// States of render cell
 enum PostRenderType {
+    case collections(collections: [CollectionTableCellModel])
     case header(provider: User)
     case primaryContent(provider: UserPost) //Post
     case actions(provider: String) // Like, comment, share
+    case descriptions(post: UserPost)
     case comments(comments: [PostComments])
+    //case comments(post: UserPost)
+    case footer(footer: String)
 }
 
 /// Model of  renderd Post
@@ -46,6 +50,7 @@ class PostViewController: UIViewController {
         table.register(IGFeedPostHeaderTableViewCell.self, forCellReuseIdentifier: IGFeedPostHeaderTableViewCell.identifier)
         table.register(IGFeedPostActionsTableViewCell.self, forCellReuseIdentifier: IGFeedPostActionsTableViewCell.identifier)
         table.register(IGFeedPostGeneralTableViewCell.self, forCellReuseIdentifier: IGFeedPostGeneralTableViewCell.identifier)
+        table.register(IGFeedPostFooterTableViewCell.self, forCellReuseIdentifier: IGFeedPostFooterTableViewCell.identifier)
         return table
     }()
     
@@ -73,7 +78,7 @@ class PostViewController: UIViewController {
         }
         
         // Header
-        renderModels.append(PostRenderViewModel(renderType: .header(provider: userPostModel.owner )))
+        //renderModels.append(PostRenderViewModel(renderType: .header(provider: userPostModel.owner )))
         
         // Post
         renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: userPostModel)))
@@ -94,6 +99,31 @@ class PostViewController: UIViewController {
                 )
             )
         }
+        
+        let user = User(
+            name: (first: "", last: ""),
+            username: "@kanye_west",
+            bio: "",
+            profilePicture: URL(string: "https://wwww.google.com")!,
+            birthDate: Date(),
+            gender: .male,
+            email: "",
+            counts: UserCount(followers: 1, following: 1, posts: 1),
+            joinDate: Date())
+        
+        ///User post
+        let post = UserPost(
+            identifier: "",
+            postType: .photo,
+            thumbnailImage: URL(string: "https://wwww.google.com")!,
+            postURL: URL(string: "https://wwww.google.com")!,
+            caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
+            likeCount: [],
+            comments: comments,
+            createDate: Date(),
+            taggedUsers: [],
+            owner:  user)
+        
         renderModels.append(PostRenderViewModel(renderType: .comments(comments: comments)))
     }
     
@@ -116,6 +146,7 @@ class PostViewController: UIViewController {
 
 extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return renderModels.count
     }
@@ -126,7 +157,12 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         case .comments(let comments): return comments.count > 4 ? 4 : comments.count
         case .primaryContent(_):  return 1
         case .header(_):  return 1
-        }    }
+        case .descriptions(_):  return 1
+        case .footer(_): return 1
+        case .collections(_): return 1
+        }
+        
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -145,6 +181,14 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         case .header(let user):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier, for: indexPath) as! IGFeedPostHeaderTableViewCell
             return cell
+        case .descriptions(let descriptions):
+            let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
+            return cell
+        case .footer(let footer):
+            let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostFooterTableViewCell.identifier, for: indexPath) as! IGFeedPostFooterTableViewCell
+            return cell
+        case .collections(collections: let collections):
+            return UITableViewCell()
         }
     }
     
@@ -159,6 +203,9 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         case .comments(_): return 50
         case .primaryContent(_): return tableView.width
         case .header(_): return 70
+        case .descriptions(_): return 60
+        case .collections(_): return 50
+        case .footer(_): return 50
         }
     }
 }

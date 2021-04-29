@@ -14,6 +14,15 @@ final class IGFeedPostTableViewCell: UITableViewCell {
     
     static let identifier = "IGFeedPostTableViewCell"
     
+    /*let label: UILabel = {
+        let label = UILabel.init()
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.textColor = UIColor.black
+        label.numberOfLines = 0
+        return label
+    }()*/
+    
     private let postImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -27,9 +36,9 @@ final class IGFeedPostTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        //contentView.backgroundColor = .secondarySystemBackground
         contentView.layer.addSublayer(playerLayer)
         contentView.addSubview(postImageView)
+        //contentView.addSubview(label)
     }
     
     required init?(coder: NSCoder) {
@@ -37,14 +46,12 @@ final class IGFeedPostTableViewCell: UITableViewCell {
     }
     
     public func configure(with post: UserPost) {
-        postImageView.image = UIImage(named: "test")
-        
-        return 
-        
+        //postImageView.image = UIImage(named: "test")
+        //return
         switch post.postType {
         case .photo:
-            //Show image
-            postImageView.sd_setImage(with: post.postURL, completed: nil)
+            postImageView.image = UIImage(named: "test")
+            //label.text = post.caption
         case .video:
             //Load and play video
             player = AVPlayer(url: post.postURL)
@@ -56,16 +63,25 @@ final class IGFeedPostTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         postImageView.image = nil
+        //label.text = nil
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         playerLayer.frame = contentView.bounds
         postImageView.frame = contentView.bounds
+        //label.frame = contentView.bounds
+    
+        /*label.frame = CGRect(
+            x: 5,
+            y: 5,
+            width: contentView.width-10,
+            height: 50)
         
-        /*postImageView.frame = CGRect(x: ,
-                                     y: ,
-                                     width: ,
-                                     height: )*/
+        postImageView.frame = CGRect(
+            x: 0,
+            y: label.frame.origin.y + label.frame.size.height+5,
+            width: contentView.width,
+            height: contentView.height-50)*/
     }
 }

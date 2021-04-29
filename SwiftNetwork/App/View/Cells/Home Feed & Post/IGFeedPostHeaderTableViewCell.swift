@@ -21,6 +21,7 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     private let profilePhotoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
+        imageView.tintColor = .label
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView
@@ -58,27 +59,26 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     }
     
     public func configure(with model: User) {
-        // Configure the cell
         usernameLabel.text = model.username
         profilePhotoImageView.image = UIImage(systemName: "person.circle")
         //profilePhotoImageView.sd_setImage(with: model.profilePicture, completed: nil)
+        
+        
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         let size = contentView.height-4
         profilePhotoImageView.frame = CGRect(x: 2,y: 2,width: size,height: size)
         profilePhotoImageView.layer.cornerRadius = size/2
-        
-        moreButton.frame = CGRect(x: contentView.width-size, y: 2, width: size, height: size)
         
         usernameLabel.frame = CGRect(
             x: profilePhotoImageView.right+10,
             y: 2,
             width: contentView.width-(size*2)-15,
-            height: contentView.height-4
-        )
+            height: contentView.height-4)
+        
+        moreButton.frame = CGRect(x: contentView.width-size, y: 2, width: size, height: size)
     }
     
     override func prepareForReuse() {

@@ -61,7 +61,7 @@ final class NotificationsViewController: UIViewController {
         for x in 0...100 {
             
             let user = User(name: (first: "", last: ""),
-                            username: "",
+                            username: "@username",
                             bio: "",
                             profilePicture: URL(string: "https://wwww.google.com")!,
                             birthDate: Date(),
@@ -82,9 +82,10 @@ final class NotificationsViewController: UIViewController {
                                 taggedUsers: [],
                                 owner: user)
             
-            let model = UserNotification(type: x % 2 == 0 ? .like(post: post): .follow(state: .not_following),
-                                         text: "Hello World",
-                                         user: user)
+            let model = UserNotification(
+                type: x % 2 == 0 ?
+                    .like(post: post):
+                    .follow(state: .not_following), text: "Hello World",user: user)
             self.models.append(model)
             
         }
@@ -125,6 +126,7 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let model = models[indexPath.row]
+        
         switch model.type {
         case .like(_):
             //like cell

@@ -33,7 +33,7 @@ class NotificationLikeEventTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .label
         label.numberOfLines = 0
-        label.text = "@joe liked your  photo"
+        //label.text = "@joe liked your  photo"
         return label
     }()
     
@@ -82,8 +82,10 @@ class NotificationLikeEventTableViewCell: UITableViewCell {
     }
     
     public func configure(with model: UserNotification) {
+        
+        label.text = model.user.username
+        
         self.model = model
-      
         switch model.type {
         case .like(let post):
             let thumbnail = post.thumbnailImage
@@ -91,6 +93,8 @@ class NotificationLikeEventTableViewCell: UITableViewCell {
                 return
             }
             postButton.sd_setBackgroundImage(with: thumbnail, for: .normal, completed: nil)
+            
+            
             break
         case .follow:
             break
