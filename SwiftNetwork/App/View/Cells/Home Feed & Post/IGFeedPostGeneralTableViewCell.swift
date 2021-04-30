@@ -41,12 +41,12 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
         super.layoutSubviews()
         let size = contentView.height-4
         
-        //labelTextComment.backgroundColor = .yellow
+        
         labelTextComment.frame = CGRect(
             x: 10,
             y: 0,
-            width: contentView.width-(size*2)-15, //contentView.width-20,
-            height: contentView.height-5) //contentView.height-10)
+            width: contentView.width-(size*2)-15,
+            height: contentView.height-5) 
         
         likeButton.frame = CGRect(
             x: contentView.width-size,

@@ -21,7 +21,12 @@ class CollectionTableViewCell: UITableViewCell {
     
     private let collectionView: UICollectionView
     
+    //private var collectionView:  UICollectionView?
+    
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        
+        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 170, height: 170)
@@ -29,19 +34,27 @@ class CollectionTableViewCell: UITableViewCell {
                                            left: 3,
                                            bottom: 3,
                                            right: 3)
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        collectionView.backgroundColor = .systemGray
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
+    
+        collectionView.register(TableCollectionViewCell.self, forCellWithReuseIdentifier: TableCollectionViewCell.identifier)
         
-        collectionView.register(TableCollectionViewCell.self, forCellWithReuseIdentifier: TableCollectionViewCell.identifier )
+         
+         
+         collectionView.delegate = self
+         collectionView.dataSource = self
+         
+         contentView.addSubview(collectionView)
         
-        collectionView.delegate = self
-        collectionView.dataSource = self
         
-        contentView.addSubview(collectionView)
+        //setup()
     }
+
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -59,20 +72,13 @@ class CollectionTableViewCell: UITableViewCell {
 }
 
 extension CollectionTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width/2.9, height: collectionView.frame.width/1.7)
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
+   
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return models.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let model = models[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TableCollectionViewCell.identifier,
                                                       for: indexPath) as! TableCollectionViewCell
@@ -80,6 +86,10 @@ extension CollectionTableViewCell: UICollectionViewDelegate, UICollectionViewDat
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width/2.9, height: collectionView.frame.width/1.7) //1.7
+    }
+        
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let model = models[indexPath.row]
         collectionView.deselectItem(at: indexPath, animated: true)

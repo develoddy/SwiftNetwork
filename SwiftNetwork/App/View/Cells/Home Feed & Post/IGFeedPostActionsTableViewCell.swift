@@ -9,7 +9,7 @@ import UIKit
 
 protocol IGFeedPostActionsTableViewCellDelegate: AnyObject {
     func didTapLikeButton()
-    func didTapCommentButton()
+    func didTapCommentButton(model: UserPost)
     func didTapSendButton()
 }
 
@@ -18,6 +18,8 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     static let identifier = "IGFeedPostActionsTableViewCell"
     
     public var delegate: IGFeedPostActionsTableViewCellDelegate?
+    
+    private var model: UserPost?
     
     private let likeButton: UIButton = {
         let button = UIButton()
@@ -62,7 +64,7 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     }
     
     public func configure(with post: UserPost) {
-        // Configure the cell
+        model = post
     }
     
     override func layoutSubviews() {
@@ -89,8 +91,14 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     @objc private func didTapLikeButton() {
         delegate?.didTapLikeButton()
     }
+    
     @objc private func didTapCommetnButton() {
-        delegate?.didTapCommentButton()
+        
+        guard let model = model else {
+            return
+        }
+        
+        delegate?.didTapCommentButton(model: model)
     }
     @objc private func didTapSendButton() {
         delegate?.didTapSendButton()

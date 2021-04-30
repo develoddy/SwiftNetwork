@@ -19,26 +19,21 @@ struct HomeFeedRenderViewModel {
 
 class TimeLineViewController: UIViewController {
 
-    private var models = [HomeFeedRenderViewModel]()
-
-    var commentarios: [PostComments] = []
-    
     private let tableView: UITableView = {
         //let tableView = UITableView(frame: .zero, style: .grouped)
         let tableView = UITableView()
-        //tableView.backgroundColor = .systemBackground
-        tableView.register(IGFeedPostTableViewCell.self, forCellReuseIdentifier: IGFeedPostTableViewCell.identifier)
-        tableView.register(IGFeedPostHeaderTableViewCell.self, forCellReuseIdentifier: IGFeedPostHeaderTableViewCell.identifier)
-        tableView.register(IGFeedPostActionsTableViewCell.self, forCellReuseIdentifier: IGFeedPostActionsTableViewCell.identifier)
-        tableView.register(IGFeedPostDescriptionTableViewCell.self, forCellReuseIdentifier: IGFeedPostDescriptionTableViewCell.identifier)
-        tableView.register(IGFeedPostGeneralTableViewCell.self, forCellReuseIdentifier: IGFeedPostGeneralTableViewCell.identifier)
-        tableView.register(IGFeedPostFooterTableViewCell.self, forCellReuseIdentifier: IGFeedPostFooterTableViewCell.identifier)
         return tableView
     }()
+    
+    private var models = [HomeFeedRenderViewModel]()
+    private var collections : [CollectionTableCellModel] = []
+    private var comments    : [PostComments] = []
+    private var likes       : [PostLike] = []
+    private var users       : User?
+    private var posts       : UserPost?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setup()
         setupModels()
         configureTableView()
@@ -56,8 +51,13 @@ class TimeLineViewController: UIViewController {
     }
     
     private func configureTableView() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.register(CollectionTableViewCell.self, forCellReuseIdentifier: CollectionTableViewCell.identifier)
+        tableView.register(IGFeedPostTableViewCell.self, forCellReuseIdentifier: IGFeedPostTableViewCell.identifier)
+        tableView.register(IGFeedPostHeaderTableViewCell.self, forCellReuseIdentifier: IGFeedPostHeaderTableViewCell.identifier)
+        tableView.register(IGFeedPostActionsTableViewCell.self, forCellReuseIdentifier: IGFeedPostActionsTableViewCell.identifier)
+        tableView.register(IGFeedPostDescriptionTableViewCell.self, forCellReuseIdentifier: IGFeedPostDescriptionTableViewCell.identifier)
+        tableView.register(IGFeedPostGeneralTableViewCell.self, forCellReuseIdentifier: IGFeedPostGeneralTableViewCell.identifier)
+        tableView.register(IGFeedPostFooterTableViewCell.self, forCellReuseIdentifier: IGFeedPostFooterTableViewCell.identifier)
         tableView.separatorStyle = .none
     }
     
@@ -65,7 +65,6 @@ class TimeLineViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
     }
-    
     
     private func createTableHeader() -> UIView? {
         let headerView = UIView(
@@ -92,7 +91,7 @@ class TimeLineViewController: UIViewController {
         textField.textColor = .black
         textField.font = .systemFont(ofSize: 22, weight: .thin)
         headerView.addSubview(textField)
-        
+       
         textField.frame = CGRect(
             x: 10+imageView.width,
             y: 10,
@@ -101,41 +100,28 @@ class TimeLineViewController: UIViewController {
         return headerView
     }
     
-    
-    func createArrayComments() -> [PostComments] {
-        
-        var tempComments: [PostComments] = []
-        for i in 0..<5 {
-            let comments = PostComments(identifier: "id-\(i)", username: "\(i) Username", text: "commentario \(i)", createDate: Date(), likes: [])
-            tempComments.append(comments)
-        }
-        /*let comments1 = PostComments(identifier: "", username: "Paola", text: "Primer commentario", createDate: Date(), likes: [])
-        let comments2 = PostComments(identifier: "", username: "Jordan", text: "Segundo comentario", createDate: Date(), likes: [])
-        let comments3 = PostComments(identifier: "", username: "Rebeca", text: "Tercer comentario", createDate: Date(), likes: [])
-        let comments4 = PostComments(identifier: "", username: "Tessy", text: "Cuarto comentario", createDate: Date(), likes: [])
-        let comments5 = PostComments(identifier: "", username: "Teresa", text: "Quinto comentario", createDate: Date(), likes: [])
-        let comments6 = PostComments(identifier: "", username: "Maria", text: "Sexto comentario", createDate: Date(), likes: [])*/
-        
-        /*tempComments.append(comments2)
-        tempComments.append(comments3)
-        tempComments.append(comments4)
-        tempComments.append(comments5)
-        tempComments.append(comments6)*/
-        return tempComments
-    }
-    
-    
-    
-    
-    private func setupModels() {
+    ///Collections
+    func createArrayCollections() -> [CollectionTableCellModel] {
         var collections = [CollectionTableCellModel]()
         for i in 0..<5 {
             let data = CollectionTableCellModel(title: "Text \(i)", imageName: "test")
             collections.append(data)
         }
-        
-        
-        ///Los likes se añade al objeto UserPost
+        return collections
+    }
+    
+    ///Comments
+    func createArrayComments() -> [PostComments] {
+        var tempComments: [PostComments] = []
+        for i in 0..<5 {
+            let comments = PostComments(identifier: "id-\(i)", username: "\(i) Username", text: "commentario \(i)", createDate: Date(), likes: [])
+            tempComments.append(comments)
+        }
+        return tempComments
+    }
+    
+    ///Likes
+    func createArrayLikes() -> [PostLike] {
         var likes = [PostLike]()
         for i in 0..<5 {
             let data = PostLike(
@@ -145,58 +131,55 @@ class TimeLineViewController: UIViewController {
                 likes: i)
             likes.append(data)
         }
-        
-        ///Los comentarios se añade al objeto UserPost
-        /*var comments = [PostComments]()
-        for i in 0..<3 {
-            comments.append(PostComments(
-                identifier: "\(i)",
-                username: "username \(i)",
-                text: "\(i) Esta es la mejor publicación que he visto",
-                createDate: Date(),
-                likes: []))
-        }*/
-        
-        commentarios = createArrayComments()
-        
-        ///Count Post
-        let countPost = 2
-        for i in 0..<countPost {
-            ///El usuario se añade al objeto UserPost
-            let user = User(
-                name: (first: "", last: ""),
-                username: "@kanye_west \(i)",
-                bio: "",
-                profilePicture: URL(string: "https://wwww.google.com")!,
-                birthDate: Date(),
-                gender: .male,
-                email: "",
-                counts: UserCount(followers: 1, following: 1, posts: 1),
-                joinDate: Date())
-            
-            ///User post
-            let post = UserPost(
-                identifier: "",
-                postType: .photo,
-                thumbnailImage: URL(string: "https://wwww.google.com")!,
-                postURL: URL(string: "https://wwww.google.com")!,
-                caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
-                likeCount: likes,
-                comments: commentarios,
-                createDate: Date(),
-                taggedUsers: [],
-                owner: user )
-            
-            
+        return likes
+    }
+    
+    ///User
+    func createArrayUser() -> User {
+        let user = User(
+            name: (first: "", last: ""),
+            username: "@jordan",
+            bio: "",
+            profilePicture: URL(string: "https://wwww.google.com")!,
+            birthDate: Date(),
+            gender: .male,
+            email: "",
+            counts: UserCount(followers: 1, following: 1, posts: 1),
+            joinDate: Date())
+        return user
+    }
+    
+    ///UserPost
+    func createArrayUserPost() -> UserPost {
+        likes = createArrayLikes() ///Se obtiene el array de likes
+        let post = UserPost(
+            identifier: "post 2",
+            postType: .photo,
+            thumbnailImage: URL(string: "https://wwww.google.com")!,
+            postURL: URL(string: "https://wwww.google.com")!,
+            caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
+            likeCount: likes,
+            comments: comments,
+            createDate: Date(),
+            taggedUsers: [],
+            owner: users!)
+        return post
+    }
+    
+    private func setupModels() {
+        collections = createArrayCollections()
+        comments    = createArrayComments()
+        users       = createArrayUser()
+        posts       = createArrayUserPost()
+        for _ in 0..<2 {
             let viewModel = HomeFeedRenderViewModel(
-                collections: PostRenderViewModel(renderType: .collections(collections: collections)) ,
-                header: PostRenderViewModel(renderType: .header(provider: user)),
-                post: PostRenderViewModel(renderType: .primaryContent(provider: post)),
-                actions: PostRenderViewModel(renderType: .actions(provider: "")),
-                descriptions: PostRenderViewModel(renderType: .descriptions(post: post)),
-                comments: PostRenderViewModel(renderType: .comments(comments: commentarios)),
-                //comments: PostRenderViewModel(renderType: .comments(post: post)),
-                footer: PostRenderViewModel(renderType: .footer(footer: ""))
+                collections : PostRenderViewModel(renderType: .collections(collections  : collections   )),
+                header      : PostRenderViewModel(renderType: .header(provider          : users!        )),
+                post        : PostRenderViewModel(renderType: .primaryContent(provider  : posts!        )),
+                actions     : PostRenderViewModel(renderType: .actions(provider         : posts!        )),
+                descriptions: PostRenderViewModel(renderType: .descriptions(post        : posts!        )),
+                comments    : PostRenderViewModel(renderType: .comments(comments        : comments      )),
+                footer      : PostRenderViewModel(renderType: .footer(footer            : "")           )
             )
             models.append(viewModel)
         }
@@ -256,7 +239,6 @@ extension TimeLineViewController: UITableViewDelegate, UITableViewDataSource {
         } else { /// Pinta el resto de contenido del post (hader, posts, actions, comments)
             let position = count % 7 == 7 ? count/7 : ((count - (count % 7)) / 7)
             model = models[position]
-           
             let subSection = count % 7
             if subSection == 1 { /// Header
                 switch model.header.renderType {
@@ -282,10 +264,11 @@ extension TimeLineViewController: UITableViewDelegate, UITableViewDataSource {
                 }
             } else if subSection == 3 { /// Actions
                 switch model.actions.renderType {
-                    case .actions(_/*let provider*/):
+                    case .actions(let provider):
                         let cell = tableView.dequeueReusableCell(
                             withIdentifier: IGFeedPostActionsTableViewCell.identifier,
                             for: indexPath) as! IGFeedPostActionsTableViewCell
+                        cell.configure(with: provider)
                         cell.delegate = self
                         return cell
                     case .comments, .header, .primaryContent, .collections, .descriptions, .footer :
@@ -336,7 +319,7 @@ extension TimeLineViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 { return 280 }
+        if indexPath.section == 0 { return 320 } //Collection
         else {
             let subSection = indexPath.section % 7
             if subSection        == 1 { return 70 } /// Header
@@ -367,13 +350,13 @@ extension TimeLineViewController: CollectionTableViewCellDelegate {
 }
 
 extension TimeLineViewController: IGFeedPostActionsTableViewCellDelegate {
+  
     func didTapLikeButton() {
         print("like")
     }
     
-    func didTapCommentButton() {
-        //let vc = PostViewController(model: post)
-        let vc = ListCommentsViewController()
+    func didTapCommentButton(model: UserPost) {
+        let vc = ListCommentsViewController(model: model)
         vc.title = "Coments"
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)

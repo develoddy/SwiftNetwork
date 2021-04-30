@@ -21,6 +21,8 @@
 		B362D17F2638AB760086F777 /* IGFeedPostDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D17E2638AB760086F777 /* IGFeedPostDescriptionTableViewCell.swift */; };
 		B362D18726399E2A0086F777 /* IGFeedPostFooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D18626399E2A0086F777 /* IGFeedPostFooterTableViewCell.swift */; };
 		B362D18F2639B5EA0086F777 /* ListCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D18E2639B5EA0086F777 /* ListCommentsViewController.swift */; };
+		B362D19B263AF6360086F777 /* PostCommentsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D19A263AF6350086F777 /* PostCommentsListTableViewCell.swift */; };
+		B362D1A3263C18130086F777 /* CustomHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D1A2263C18120086F777 /* CustomHeaderTableViewCell.swift */; };
 		B39A49A52626232500BE80DF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49A12626232400BE80DF /* Extensions.swift */; };
 		B39A49A62626232500BE80DF /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49A22626232500BE80DF /* AuthManager.swift */; };
 		B39A49A72626232500BE80DF /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49A32626232500BE80DF /* DatabaseManager.swift */; };
@@ -111,6 +113,8 @@
 		B362D17E2638AB760086F777 /* IGFeedPostDescriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGFeedPostDescriptionTableViewCell.swift; sourceTree = "<group>"; };
 		B362D18626399E2A0086F777 /* IGFeedPostFooterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGFeedPostFooterTableViewCell.swift; sourceTree = "<group>"; };
 		B362D18E2639B5EA0086F777 /* ListCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCommentsViewController.swift; sourceTree = "<group>"; };
+		B362D19A263AF6350086F777 /* PostCommentsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentsListTableViewCell.swift; sourceTree = "<group>"; };
+		B362D1A2263C18120086F777 /* CustomHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		B39A49A12626232400BE80DF /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B39A49A22626232500BE80DF /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		B39A49A32626232500BE80DF /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
@@ -272,6 +276,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		B362D199263AF5E40086F777 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				B362D19A263AF6350086F777 /* PostCommentsListTableViewCell.swift */,
+				B362D1A2263C18120086F777 /* CustomHeaderTableViewCell.swift */,
+			);
+			path = Comments;
+			sourceTree = "<group>";
+		};
 		B39A499A262622E000BE80DF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -401,6 +414,7 @@
 		B39A4A2D262763C500BE80DF /* Home Feed & Post */ = {
 			isa = PBXGroup;
 			children = (
+				B362D199263AF5E40086F777 /* Comments */,
 				B39A4A2E262763F600BE80DF /* IGFeedPostHeaderTableViewCell.swift */,
 				B39A4A252627629900BE80DF /* IGFeedPostTableViewCell.swift */,
 				B39A4A362627642B00BE80DF /* IGFeedPostActionsTableViewCell.swift */,
@@ -690,6 +704,8 @@
 				B3110EEB262600F900354C25 /* AppDelegate.swift in Sources */,
 				B39A49CC2626239900BE80DF /* PublishPostViewController.swift in Sources */,
 				B39A4A262627629900BE80DF /* IGFeedPostTableViewCell.swift in Sources */,
+				B362D1A3263C18130086F777 /* CustomHeaderTableViewCell.swift in Sources */,
+				B362D19B263AF6360086F777 /* PostCommentsListTableViewCell.swift in Sources */,
 				B39A49C72626239900BE80DF /* ListViewController.swift in Sources */,
 				B39A4A372627642B00BE80DF /* IGFeedPostActionsTableViewCell.swift in Sources */,
 				B39A4A012626387700BE80DF /* KeyChain.swift in Sources */,

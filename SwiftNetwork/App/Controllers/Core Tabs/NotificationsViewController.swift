@@ -101,9 +101,7 @@ final class NotificationsViewController: UIViewController {
         //title = "Notifications"
         navigationItem.title = "Notificationsss"
         view.backgroundColor = .systemBackground
-        
-        
-        
+
         view.addSubview(tableView)
         view.addSubview(noNotificationsView)
         view.addSubview(spinner)

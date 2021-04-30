@@ -25,7 +25,7 @@ enum PostRenderType {
     case collections(collections: [CollectionTableCellModel])
     case header(provider: User)
     case primaryContent(provider: UserPost) //Post
-    case actions(provider: String) // Like, comment, share
+    case actions(provider: UserPost) // Like, comment, share
     case descriptions(post: UserPost)
     case comments(comments: [PostComments])
     //case comments(post: UserPost)
@@ -73,19 +73,6 @@ class PostViewController: UIViewController {
     
     private func configureModels() {
         
-        guard let userPostModel = self.model else {
-            return
-        }
-        
-        // Header
-        //renderModels.append(PostRenderViewModel(renderType: .header(provider: userPostModel.owner )))
-        
-        // Post
-        renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: userPostModel)))
-        
-        // Actions
-        renderModels.append(PostRenderViewModel(renderType: .actions(provider: "")))
-        
         // 4 comments
         var comments = [PostComments]()
         for x in 0..<4 {
@@ -123,6 +110,22 @@ class PostViewController: UIViewController {
             createDate: Date(),
             taggedUsers: [],
             owner:  user)
+        
+        guard let userPostModel = self.model else {
+            return
+        }
+        
+        
+        // Header
+        //renderModels.append(PostRenderViewModel(renderType: .header(provider: userPostModel.owner )))
+        
+        // Post
+        renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: userPostModel)))
+        
+        // Actions
+        renderModels.append(PostRenderViewModel(renderType: .actions(provider: post)))
+        
+        
         
         renderModels.append(PostRenderViewModel(renderType: .comments(comments: comments)))
     }
