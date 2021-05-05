@@ -21,38 +21,29 @@ class CollectionTableViewCell: UITableViewCell {
     
     private let collectionView: UICollectionView
     
-    //private var collectionView:  UICollectionView?
-    
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        
-        
+    
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 170, height: 170)
-        layout.sectionInset = UIEdgeInsets(top: 3,
-                                           left: 3,
-                                           bottom: 3,
-                                           right: 3)
+        layout.sectionInset = UIEdgeInsets(
+            top     : 3,
+            left    : 3,
+            bottom  : 3,
+            right   : 3)
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        collectionView.backgroundColor = .systemGray
+        collectionView.backgroundColor = .systemBackground //.systemGray 
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
     
         collectionView.register(TableCollectionViewCell.self, forCellWithReuseIdentifier: TableCollectionViewCell.identifier)
         
-         
-         
-         collectionView.delegate = self
-         collectionView.dataSource = self
-         
-         contentView.addSubview(collectionView)
-        
-        
-        //setup()
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        contentView.addSubview(collectionView)
     }
 
     
@@ -87,7 +78,7 @@ extension CollectionTableViewCell: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width/2.9, height: collectionView.frame.width/1.7) //1.7
+        return CGSize(width: collectionView.frame.width/2.9, height: collectionView.frame.width/1.4) //1.7
     }
         
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

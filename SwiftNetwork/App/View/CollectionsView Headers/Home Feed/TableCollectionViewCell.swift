@@ -15,17 +15,13 @@ class TableSeeMoreButtomViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = .yellow
+        //contentView.backgroundColor = .yellow
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-
-
-
 
 class TableCollectionViewCell: UICollectionViewCell {
     
@@ -37,16 +33,18 @@ class TableCollectionViewCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.opacity = 1.0
         imageView.layer.cornerRadius = 12
-        imageView.backgroundColor = .systemRed
+        imageView.layer.borderWidth = 3
+        imageView.layer.borderColor = UIColor.systemPurple.cgColor
+        //imageView.backgroundColor = .systemRed
         return imageView
     }()
     
     private let myLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = .black
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 18, weight: .semibold)
-        label.backgroundColor = .systemBlue
+        label.font = .systemFont(ofSize: 16, weight: .regular)
+        //label.backgroundColor = .systemBlue
         return label
     }()
     
@@ -67,13 +65,14 @@ class TableCollectionViewCell: UICollectionViewCell {
             x: 5,
             y: 5,
             width: contentView.width-10,
-            height: contentView.height-5-50)
+            height: contentView.height-5-25)
+        
         
         myLabel.frame = CGRect(
             x: 5,
             y:   myImageView.bottom+5,//contentView.height-50,
             width: contentView.width-10,
-            height: 50)
+            height: contentView.top+20) //30
         
     }
     

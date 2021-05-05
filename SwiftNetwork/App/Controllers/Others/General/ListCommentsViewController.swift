@@ -20,30 +20,6 @@ struct UserPostRenderViewModel {
 
 class ListCommentsViewController: UIViewController {
     
-    private let userImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.masksToBounds = true
-        imageView.backgroundColor = .secondarySystemBackground
-        return imageView
-    }()
-    
-    private let Commentlabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .label
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    private let timeToPostCommentLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 1
-        label.font = .systemFont(ofSize: 16, weight: .regular)
-        label.text = "1h"
-        label.textColor = .secondaryLabel
-        return label
-    }()
-    
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.isHidden = false
@@ -84,7 +60,7 @@ class ListCommentsViewController: UIViewController {
     }
     
     private func configureTableView() {
-        tableView.backgroundColor = . systemBackground //.secondarySystemFill
+        tableView.backgroundColor = .systemBackground //.secondarySystemFill 
         tableView.register(PostCommentsListTableViewCell.self, forCellReuseIdentifier: PostCommentsListTableViewCell.identifier)
         tableView.register(CustomHeaderTableViewCell.self, forCellReuseIdentifier: CustomHeaderTableViewCell.identifier)
         tableView.separatorStyle = .none
@@ -107,47 +83,7 @@ class ListCommentsViewController: UIViewController {
         return attributedString
     }
     
-    private func createTableHeader() -> UIView? {
-        let headerView = UIView(
-        frame: CGRect(x: 0, y: 0,width: view.width,height: 55))
-        view.addSubview(headerView)
-        
-        headerView.addSubview(userImageView)
-        headerView.addSubview(Commentlabel)
-        headerView.addSubview(timeToPostCommentLabel)
-        
-        let username = self.model?.owner.username
-        let descriptionPost =  self.model?.caption
-        let attributedString = joinText(username: username!, description: descriptionPost!)
-        Commentlabel.attributedText = attributedString
-        
-        ///margin
-        let size = headerView.height-4
-        userImageView.frame = CGRect(
-            x: 5,
-            y: 5,
-            width: headerView.height-6,
-            height: headerView.height-6)
-        userImageView.layer.cornerRadius = userImageView.height/2.0
-        
-        let labelHeight = headerView.height/2
-        //Commentlabel.backgroundColor = .systemRed
-        Commentlabel.frame = CGRect(
-             x: userImageView.right+5,
-             y: 5,
-             width: headerView.width-(size*1)-15,
-             height: labelHeight)
-        
-        let  buttonSubLabelWidth = headerView.width > 100 ? 280.0 : headerView.width/3
-        //timeToPostCommentLabel.backgroundColor = .systemBlue
-        timeToPostCommentLabel.frame = CGRect(
-            x: userImageView.right+5,
-            y: Commentlabel.bottom,
-            width: headerView.width-8-userImageView.width-buttonSubLabelWidth,
-            height: labelHeight-10)
-        
-        return headerView
-    }
+   
     
     private func configureModels() {
         guard let userPostModel = self.model else {

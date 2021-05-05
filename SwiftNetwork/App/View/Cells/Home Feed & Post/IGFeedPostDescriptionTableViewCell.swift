@@ -35,7 +35,7 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
     
     private let seeMoreCommentsLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.font = .systemFont(ofSize: 14, weight: .regular)
         //label.backgroundColor = .systemGray
         label.textColor = .gray
         return label
@@ -46,18 +46,13 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         label.backgroundColor = .red
         return label
     }()
-    
-    /*private var labelArr: [UILabel] = {
-        let label = UILabel()
-        return [label]
-    }()*/
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(totalLikeLabel)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(seeMoreCommentsLabel)
         contentView.addSubview(labelTextComment)
+        ///contentView.backgroundColor = .blue
     }
     
     required init?(coder: NSCoder) {
@@ -82,7 +77,7 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
             x: 10,
             y: descriptionLabel.bottom+5,
             width: contentView.width-20,
-            height: 20)
+            height: 10)
 
     }
     

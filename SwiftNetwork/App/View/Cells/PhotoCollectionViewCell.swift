@@ -49,8 +49,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         })*/
     }
     
-    public func configure(debug imageName: String) {
-        photoImageView.image = UIImage(named: imageName)
-    }
+    //public func configure(debug imageName: /*String*/) {
+      //  photoImageView.image = UIImage(named: imageName)
+    //}
 }
 

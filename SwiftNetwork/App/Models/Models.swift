@@ -42,7 +42,6 @@ public struct UserPost {
     let postURL: URL // either video url resolution photo
     let caption: String? //Subtitle
     let likeCount: [PostLike]
-    //let comments: [PostComments]
     let comments: [PostComments]
     let createDate: Date
     let taggedUsers: [User]
@@ -61,14 +60,6 @@ struct PostLike {
     let likes: Int
 }
 
-
-/*struct PostComments {
-    let identifier: String
-    let username: String
-    let text: String
-    let createDate: Date
-    let likes: [CommenttLike]
-}*/
 class PostComments {
     var identifier: String
     var username: String

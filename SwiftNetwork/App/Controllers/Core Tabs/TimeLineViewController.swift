@@ -18,12 +18,90 @@ struct HomeFeedRenderViewModel {
 }
 
 class TimeLineViewController: UIViewController {
-
+    
+    private let likeButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
+        button.tintColor = .systemRed
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold) //semibold, regular, thin
+        let image = UIImage(systemName: "video.fill", withConfiguration: config)
+        button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
+        button.setImage(image, for: UIControl.State.normal)
+        button.setTitle("Directo", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
+        button.layer.cornerRadius = 10
+        //button.titleLabel?.font = UIFont(name: "Directo", size: 8)
+        return button
+    }()
+    
+    private let commentButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
+        button.tintColor = .systemGreen
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold) //semibold, regular, thin
+        let image = UIImage(systemName: "photo.on.rectangle", withConfiguration: config)
+        button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
+        button.setImage(image, for: UIControl.State.normal)
+        button.setTitle("Foto", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
+        button.layer.cornerRadius = 10
+        
+        return button
+    }()
+    
+    private let sendButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
+        button.tintColor = .systemPurple
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold) //semibold, regular, thin
+        let image = UIImage(systemName: "location.fill", withConfiguration: config)
+        button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
+        button.setImage(image, for: UIControl.State.normal)
+        button.setTitle("Ubicación", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
+        button.layer.cornerRadius = 10
+        return button
+    }()
+    
     private let tableView: UITableView = {
         //let tableView = UITableView(frame: .zero, style: .grouped)
         let tableView = UITableView()
         return tableView
     }()
+    
+    private let headerView: UIView = {
+        let headerView = UIView()
+        headerView.backgroundColor = .systemBackground
+        return headerView
+    }()
+    
+    private let imageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "person.circle"))
+        imageView.tintColor = .darkGray
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    private let textField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "¿Eddy, en que piensas?"
+        textField.textColor = .black
+        textField.font = .systemFont(ofSize: 18, weight: .regular)
+        return textField
+    }()
+    
+    private let separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .secondarySystemFill
+        view.translatesAutoresizingMaskIntoConstraints  = false
+        return view
+    }()
+
+    private let buttonVideo: UIButton = {
+        let button = UIButton()
+        return button
+    }()
+    
     
     private var models = [HomeFeedRenderViewModel]()
     private var collections : [CollectionTableCellModel] = []
@@ -38,16 +116,73 @@ class TimeLineViewController: UIViewController {
         setupModels()
         configureTableView()
         delegateTableView()
+        setupNavigationBarItems()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
+        
+        headerView.backgroundColor = .systemBackground
+        headerView.frame = CGRect(
+            x: 0,
+            y: 0,
+            width: view.width,
+            height: 120)
+        
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = CGRect(
+            x: 10,
+            y: 5,
+            width: headerView.height-50,
+            height: 50)
+        imageView.layer.cornerRadius = imageView.height/2
+        
+        textField.backgroundColor = .systemBackground
+        textField.frame = CGRect(
+            x: 15+imageView.width,
+            y: 5,
+            width: headerView.width-20-imageView.width,
+            height: 50)
+        
+        separatorView.frame = CGRect(
+            x: tableView.separatorInset.left,
+            y: 0  ,
+            width: 20,
+            height: 1)
+        
+        let buttonSize = headerView.height
+        let buttons = [likeButton, commentButton, sendButton]
+        for x in 0..<buttons.count {
+            let button = buttons[x]
+            button.frame = CGRect(
+                x: (CGFloat(x)*buttonSize)+(15*CGFloat(x+1)),
+                y: imageView.frame.origin.y + imageView.frame.size.height + 25,
+                width: buttonSize,
+                height: 30)
+        }
+        headerView.addSubview(separatorView)
+        
+        NSLayoutConstraint.activate([
+            separatorView.leadingAnchor.constraint(equalTo:headerView.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo:headerView.trailingAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant:5),
+            separatorView.bottomAnchor.constraint(equalTo:headerView.bottomAnchor)])
     }
     
     private func setup() {
         view.addSubview(tableView)
         tableView.tableHeaderView = createTableHeader()
+        
+        headerView.addSubview(likeButton)
+        headerView.addSubview(commentButton)
+        headerView.addSubview(sendButton)
+    }
+    
+    private func setupNavigationBarItems() {
+        setupLeftNavItems()
+        setupRightNavItems()
+        setupRemaningNavItems()
     }
     
     private func configureTableView() {
@@ -66,45 +201,21 @@ class TimeLineViewController: UIViewController {
         tableView.dataSource = self
     }
     
+    ///Header
     private func createTableHeader() -> UIView? {
-        let headerView = UIView(
-            frame: CGRect(
-                x: 0,
-                y: 0,
-                width: view.width,
-                height: 100))
-        headerView.backgroundColor = .systemBackground
         view.addSubview(headerView)
-        
-        let imageView = UIImageView(image: UIImage(systemName: "person.circle"))
-        imageView.tintColor = .systemBlue
-        imageView.contentMode = .scaleAspectFit
         headerView.addSubview(imageView)
-        imageView.frame = CGRect(x: 5, y: 5, width: headerView.height-10, height: headerView.height-10)
-        
-        let textField = UITextField()
-        textField.placeholder = "¿Eddy, en que piensas?"
-        textField.frame = view.bounds
-        textField.layer.borderWidth = 1
-        textField.layer.cornerRadius = 12
-        textField.layer.borderColor = UIColor.systemGray.cgColor
-        textField.textColor = .black
-        textField.font = .systemFont(ofSize: 22, weight: .thin)
         headerView.addSubview(textField)
-       
-        textField.frame = CGRect(
-            x: 10+imageView.width,
-            y: 10,
-            width: headerView.width-20-imageView.width,
-            height: headerView.height-20)
+        headerView.addSubview(buttonVideo)
         return headerView
     }
     
     ///Collections
     func createArrayCollections() -> [CollectionTableCellModel] {
         var collections = [CollectionTableCellModel]()
-        for i in 0..<5 {
-            let data = CollectionTableCellModel(title: "Text \(i)", imageName: "test")
+        let username = ["eddylujann", "jordann", "paola","rebeca", "jeremy", "lucas", "jean"]
+        for i in 0..<username.count {
+            let data = CollectionTableCellModel(title: username[i], imageName: "img\(i+1)")
             collections.append(data)
         }
         return collections
@@ -147,6 +258,7 @@ class TimeLineViewController: UIViewController {
             counts: UserCount(followers: 1, following: 1, posts: 1),
             joinDate: Date())
         return user
+      
     }
     
     ///UserPost
@@ -210,7 +322,7 @@ extension TimeLineViewController: UITableViewDelegate, UITableViewDataSource {
                 let commentsModel = model.comments
                 switch commentsModel.renderType {
                     case .comments(let comments):
-                        return comments.count > 0 ? comments.count : comments.count /// Retorna el total de comentarios
+                        return comments.count > 0 ? 2 : comments.count /// Retorna el total de comentarios
                     case .header, .actions, .primaryContent, .collections, .descriptions, .footer :
                         return 0
                 }
@@ -232,6 +344,20 @@ extension TimeLineViewController: UITableViewDelegate, UITableViewDataSource {
                         for: indexPath) as! CollectionTableViewCell
                     cell.configure(with: collections)
                     cell.delegate = self
+                    
+                    
+                    let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
+                    separatorView.backgroundColor = .secondarySystemFill
+                    
+                    separatorView.translatesAutoresizingMaskIntoConstraints  = false
+                    cell.contentView.addSubview(separatorView)
+                    NSLayoutConstraint.activate([
+                        separatorView.leadingAnchor.constraint(equalTo:cell.contentView.leadingAnchor),
+                        separatorView.trailingAnchor.constraint(equalTo:cell.contentView.trailingAnchor),
+                        separatorView.heightAnchor.constraint(equalToConstant:5),
+                        separatorView.bottomAnchor.constraint(equalTo:cell.contentView.bottomAnchor)])
+                    
+                    
                     return cell
             case .comments, .actions, .primaryContent, .header, .descriptions, .footer :
                     return UITableViewCell()
@@ -313,11 +439,13 @@ extension TimeLineViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         print("Did select normal list item")
     }
     
+    ///Height de Cell
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 { return 320 } //Collection
         else {
@@ -325,17 +453,16 @@ extension TimeLineViewController: UITableViewDelegate, UITableViewDataSource {
             if subSection        == 1 { return 70 } /// Header
             else if subSection   == 2 { return tableView.width } /// Post
             else if subSection   == 3 { return 60 }  /// Actions
-            else if subSection   == 4 { return 100 } /// Description
+            else if subSection   == 4 { return 90 } /// Description
             else if subSection   == 5 { return 30  } /// Comment
             else if subSection   == 6 { return 50  } /// Footer
             return 0
         }
     }
-    
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView()
     }
-    
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let subSection = section % 7
@@ -349,6 +476,7 @@ extension TimeLineViewController: CollectionTableViewCellDelegate {
     }
 }
 
+//MARK: Actions buttons
 extension TimeLineViewController: IGFeedPostActionsTableViewCellDelegate {
   
     func didTapLikeButton() {
@@ -364,5 +492,42 @@ extension TimeLineViewController: IGFeedPostActionsTableViewCellDelegate {
     
     func didTapSendButton() {
         print("Send")
+    }
+}
+
+// MARK: Navigation Buttons
+extension TimeLineViewController {
+    private func setupRemaningNavItems() {
+        let titleImageView = UIImageView(image: UIImage(systemName: "bag.fill"))
+        titleImageView.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        titleImageView.contentMode = .scaleAspectFit
+        navigationItem.titleView = titleImageView
+        
+        navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.navigationBar.isTranslucent = false
+    }
+    
+    private func setupLeftNavItems() {
+        let followButton = UIButton(type: .system)
+        followButton.setImage(UIImage(systemName: "person.crop.circle.fill.badge.plus"), for: .normal)
+        followButton.tintColor = .black
+        followButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: followButton)
+    }
+    
+    private func  setupRightNavItems() {
+        let searchButton = UIButton(type: .system)
+        searchButton.setImage(UIImage(systemName: "paperplane"), for: .normal)
+        searchButton.tintColor = .black
+        searchButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        
+        let composeButton = UIButton(type: .system)
+        composeButton.setImage(UIImage(systemName: "plus.rectangle.on.rectangle"), for: .normal)
+        composeButton.tintColor = .black
+        composeButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(customView: searchButton),
+            UIBarButtonItem(customView: composeButton)
+        ]
     }
 }

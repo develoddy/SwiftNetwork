@@ -29,6 +29,7 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        ///contentView.backgroundColor = .red
         contentView.addSubview(labelTextComment)
         contentView.addSubview(likeButton)
     }
@@ -40,11 +41,10 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         let size = contentView.height-4
-        
-        
+    
         labelTextComment.frame = CGRect(
             x: 10,
-            y: 0,
+            y: 5,
             width: contentView.width-(size*2)-15,
             height: contentView.height-5) 
         

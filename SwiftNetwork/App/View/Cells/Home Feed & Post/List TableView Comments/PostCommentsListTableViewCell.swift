@@ -86,7 +86,7 @@ class PostCommentsListTableViewCell: UITableViewCell {
         
         userImageView.frame = CGRect(
             x: 5,
-            y: 5,
+            y: 10,
             width: contentView.height/2,
             height: contentView.height/2)
         userImageView.layer.cornerRadius = userImageView.height/2.0
@@ -100,7 +100,7 @@ class PostCommentsListTableViewCell: UITableViewCell {
         let labelHeight = contentView.height/2
         commentlabel.frame = CGRect(
              x: userImageView.right+5,
-             y: 5,
+             y: 10,
              width: contentView.width-(size*2)-15,
              height: labelHeight)
         
@@ -146,6 +146,7 @@ class PostCommentsListTableViewCell: UITableViewCell {
         
         let attributedString = joinText(username: username, description: comment)
         commentlabel.attributedText = attributedString
+        userImageView.image = UIImage(named: "user3")
     }
     
 }

@@ -67,9 +67,7 @@ class UserFollowTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.clipsToBounds = true
         addSubsView()
-        
         followButton.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
-        
     }
     
     @objc private func didTapFollowButton() {

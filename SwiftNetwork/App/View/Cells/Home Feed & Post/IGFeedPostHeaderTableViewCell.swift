@@ -38,12 +38,14 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     private let moreButton: UIButton = {
        let button = UIButton()
         button.tintColor = .label
+        button.tintColor = .systemPurple
         button.setImage(UIImage(systemName:"ellipsis"), for: .normal)
         return button
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        //contentView.backgroundColor = .purple
         contentView.addSubview(profilePhotoImageView)
         contentView.addSubview(usernameLabel)
         contentView.addSubview(moreButton)
@@ -60,17 +62,21 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     
     public func configure(with model: User) {
         usernameLabel.text = model.username
-        profilePhotoImageView.image = UIImage(systemName: "person.circle")
+        //profilePhotoImageView.image = UIImage(systemName: "person.circle")
+        profilePhotoImageView.image = UIImage(named: "user5")
         //profilePhotoImageView.sd_setImage(with: model.profilePicture, completed: nil)
-        
-        
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
         let size = contentView.height-4
-        profilePhotoImageView.frame = CGRect(x: 2,y: 2,width: size,height: size)
-        profilePhotoImageView.layer.cornerRadius = size/2
+        profilePhotoImageView.frame = CGRect(
+            x: 5,
+            y: 15,
+            width: contentView.height/1.5, ///size
+            height: contentView.height/1.5) ///size
+        profilePhotoImageView.layer.cornerRadius = profilePhotoImageView.height/2 //size/2
         
         usernameLabel.frame = CGRect(
             x: profilePhotoImageView.right+10,

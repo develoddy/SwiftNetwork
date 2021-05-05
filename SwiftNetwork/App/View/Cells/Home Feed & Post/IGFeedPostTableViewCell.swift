@@ -50,7 +50,7 @@ final class IGFeedPostTableViewCell: UITableViewCell {
         //return
         switch post.postType {
         case .photo:
-            postImageView.image = UIImage(named: "test")
+            postImageView.image = UIImage(named: "img6")
             //label.text = post.caption
         case .video:
             //Load and play video

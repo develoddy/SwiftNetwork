@@ -18,7 +18,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
         let notification = generateNavController(vc: NotificationsViewController(), title: "Notif")
         let profile = generateNavController(vc: ProfileViewController(), title: "Profile")
 
-        viewControllers = [ time, home, explorer, notification, profile  ]
+        viewControllers = [ profile, time, home, explorer, notification ]
     }
     
     fileprivate func generateNavController(vc: UIViewController, title: String) -> UINavigationController/*UIViewController*/ {

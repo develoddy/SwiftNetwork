@@ -97,5 +97,7 @@ class CustomHeaderTableViewCell: UITableViewCell {
         
         let attributedString = joinText(username: username, description: comment)
         commentlabel.attributedText = attributedString
+        
+        userImageView.image = UIImage(named: "user5")
     }
 }

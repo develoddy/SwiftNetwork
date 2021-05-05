@@ -21,8 +21,9 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     public var delegate: ProfileInfoHeaderCollectionReusableViewDelegate?
     
     private let profilePhotoImageView : UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = .purple
+        //let imageView = UIImageView(image: UIImage(named: "user5"))
+        let imageView = UIImageView(image: UIImage(systemName: "person.circle.fill"))
+        imageView.tintColor = .black
         imageView.layer.masksToBounds = true
         return imageView
     }()
@@ -184,6 +185,8 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         delegate?.profileHeaderDidTapEditProfileButton(_header: self)
     }
 }
+
+
 
 /*
  

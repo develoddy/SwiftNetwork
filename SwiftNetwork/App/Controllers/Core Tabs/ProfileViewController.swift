@@ -21,6 +21,7 @@ final class ProfileViewController: UIViewController {
         configureNavigationBar()
         configureCollectionView()
         delegateCollectionView()
+        setupModel()
     }
     
     override func viewDidLayoutSubviews() {
@@ -36,6 +37,38 @@ final class ProfileViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "LogOut", style: .done, target: self, action: #selector(didTapSettingsButton))
     }
     
+    private func setupModel() {
+        let user = User(
+            name: (first: "", last: ""),
+            username: "joe",
+            bio: "",
+            profilePicture: URL(string: "https://wwww.google.com")!,
+            birthDate: Date(),
+            gender: .male,
+            email: "",
+            counts: UserCount(followers: 1, following: 1, posts: 1),
+            joinDate: Date())
+        
+        let post = UserPost(
+            identifier: "",
+            postType: .photo,
+            thumbnailImage: URL(
+                string: "img6")!,
+            postURL: URL(string: "https://wwww.google.com")!,
+            caption: nil,
+            likeCount: [],
+            comments: [],
+            createDate: Date(),
+            taggedUsers: [],
+            owner: user)
+        
+        for _ in 0..<10 {
+            userPosts.append(post)
+        }
+        
+    }
+    
+    ///Configure collections
     private func configureCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -48,18 +81,22 @@ final class ProfileViewController: UIViewController {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView?.backgroundColor = .systemBackground //.red
         
-        //Cells register
-        collectionView?.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
+        ///Photos grid collectionsView
+        collectionView?.register(
+            PhotoCollectionViewCell.self,
+            forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
         
-        // Header
-        collectionView?.register(ProfileInfoHeaderCollectionReusableView.self,
-                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                 withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier)
+        ///Header collections
+        collectionView?.register(
+            ProfileInfoHeaderCollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier)
         
-        //
-        collectionView?.register(ProfileTabsCollectionReusableView.self,
-                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                 withReuseIdentifier: ProfileTabsCollectionReusableView.identifier)
+        ///Tabs collections
+        collectionView?.register(
+            ProfileTabsCollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: ProfileTabsCollectionReusableView.identifier)
         
         guard let collectionView = collectionView else {
             return
@@ -86,50 +123,52 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         if section == 0 {
             return 0
         }
         // return userPosts.count
-        return 30
+        return userPosts.count //10
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        //let model = userPosts[indexPath.row]
+        let model = userPosts[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
-        //cell.configure(with: model)
-        cell.configure(debug: "test")
+        
+        ///let image = model.thumbnailImage.relativeString
+        cell.configure(with: model)
+        //cell.configure(debug: image/*"img6"*/)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         // get the model and open post controller
-        //let model = userPosts[indexPath.row]
+        let model = userPosts[indexPath.row]
         
-        let user = User(name: (first: "", last: ""),
-                        username: "joe",
-                        bio: "",
-                        profilePicture: URL(string: "https://wwww.google.com")!,
-                        birthDate: Date(),
-                        gender: .male,
-                        email: "",
-                        counts: UserCount(followers: 1, following: 1, posts: 1),
-                        joinDate: Date() )
+//        let user = User(name: (first: "", last: ""),
+//                        username: "joe",
+//                        bio: "",
+//                        profilePicture: URL(string: "https://wwww.google.com")!,
+//                        birthDate: Date(),
+//                        gender: .male,
+//                        email: "",
+//                        counts: UserCount(followers: 1, following: 1, posts: 1),
+//                        joinDate: Date() )
+//
+//        let post = UserPost(identifier: "",
+//                            postType: .photo,
+//                            thumbnailImage: URL(string: "https://wwww.google.com")!,
+//                            postURL: URL(string: "https://wwww.google.com")!,
+//                            caption: nil,
+//                            likeCount: [],
+//                            comments: [],
+//                            createDate: Date(),
+//                            taggedUsers: [],
+//                            owner: user)
         
-        let post = UserPost(identifier: "",
-                            postType: .photo,
-                            thumbnailImage: URL(string: "https://wwww.google.com")!,
-                            postURL: URL(string: "https://wwww.google.com")!,
-                            caption: nil,
-                            likeCount: [],
-                            comments: [],
-                            createDate: Date(),
-                            taggedUsers: [],
-                            owner: user)
-        
-        let vc = PostViewController(model: post)
-        vc.title = post.postType.rawValue
+        ///let vc = PostViewController(model: post)
+        let vc = PostViewController(model: model)
+        vc.title = model.postType.rawValue
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -143,16 +182,18 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
         
         if indexPath.section == 1 {
             // Tabs header
-            let tabControllerHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                         withReuseIdentifier: ProfileTabsCollectionReusableView.identifier,
-                                                                         for: indexPath) as! ProfileTabsCollectionReusableView
+            let tabControllerHeader = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: ProfileTabsCollectionReusableView.identifier,
+                for: indexPath) as! ProfileTabsCollectionReusableView
             tabControllerHeader.delegate = self
             return tabControllerHeader
         }
         
-        let profileHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                     withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,
-                                                                     for: indexPath) as! ProfileInfoHeaderCollectionReusableView
+        let profileHeader = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,
+            for: indexPath) as! ProfileInfoHeaderCollectionReusableView
         profileHeader.delegate = self
         return profileHeader
     }
@@ -162,8 +203,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
             return CGSize(width: collectionView.width, height: collectionView.height/3)
         }
         // Size of section tabs
-        return CGSize(width: collectionView.width,
-                      height: 50)
+        return CGSize(width: collectionView.width, height: 50)
     }
 }
 

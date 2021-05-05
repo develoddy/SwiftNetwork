@@ -276,13 +276,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		B362D199263AF5E40086F777 /* Comments */ = {
+		B362D199263AF5E40086F777 /* List TableView Comments */ = {
 			isa = PBXGroup;
 			children = (
-				B362D19A263AF6350086F777 /* PostCommentsListTableViewCell.swift */,
 				B362D1A2263C18120086F777 /* CustomHeaderTableViewCell.swift */,
+				B362D19A263AF6350086F777 /* PostCommentsListTableViewCell.swift */,
 			);
-			path = Comments;
+			path = "List TableView Comments";
 			sourceTree = "<group>";
 		};
 		B39A499A262622E000BE80DF /* Controllers */ = {
@@ -414,7 +414,7 @@
 		B39A4A2D262763C500BE80DF /* Home Feed & Post */ = {
 			isa = PBXGroup;
 			children = (
-				B362D199263AF5E40086F777 /* Comments */,
+				B362D199263AF5E40086F777 /* List TableView Comments */,
 				B39A4A2E262763F600BE80DF /* IGFeedPostHeaderTableViewCell.swift */,
 				B39A4A252627629900BE80DF /* IGFeedPostTableViewCell.swift */,
 				B39A4A362627642B00BE80DF /* IGFeedPostActionsTableViewCell.swift */,
@@ -428,10 +428,8 @@
 		B39A4A45262836E400BE80DF /* CollectionsView Headers */ = {
 			isa = PBXGroup;
 			children = (
-				B362D164263605630086F777 /* CollectionTableViewCell.swift */,
-				B362D16C263607940086F777 /* TableCollectionViewCell.swift */,
-				B39A4A4E262837DF00BE80DF /* ProfileInfoHeaderCollectionReusableView.swift */,
-				B39A4A532628383B00BE80DF /* ProfileTabsCollectionReusableView.swift */,
+				B3D8672D2641AD930011B4E7 /* Home Feed */,
+				B3D8672C2641AD540011B4E7 /* Profile Feed */,
 			);
 			path = "CollectionsView Headers";
 			sourceTree = "<group>";
@@ -443,6 +441,24 @@
 				B3ABE3F2262CD02C00F10ADE /* NotificationLikeEventTableViewCell.swift */,
 			);
 			path = Notifications;
+			sourceTree = "<group>";
+		};
+		B3D8672C2641AD540011B4E7 /* Profile Feed */ = {
+			isa = PBXGroup;
+			children = (
+				B39A4A4E262837DF00BE80DF /* ProfileInfoHeaderCollectionReusableView.swift */,
+				B39A4A532628383B00BE80DF /* ProfileTabsCollectionReusableView.swift */,
+			);
+			path = "Profile Feed";
+			sourceTree = "<group>";
+		};
+		B3D8672D2641AD930011B4E7 /* Home Feed */ = {
+			isa = PBXGroup;
+			children = (
+				B362D164263605630086F777 /* CollectionTableViewCell.swift */,
+				B362D16C263607940086F777 /* TableCollectionViewCell.swift */,
+			);
+			path = "Home Feed";
 			sourceTree = "<group>";
 		};
 		CF171DC54729B90FDD1701E7 /* Pods */ = {
