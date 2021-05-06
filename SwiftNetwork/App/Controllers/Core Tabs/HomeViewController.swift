@@ -1,65 +1,200 @@
-
 //
-//  HomeViewController.swift
-//  Blubinn
+//  TimeLineViewController.swift
+//  SwiftNetwork
 //
-//  Created by Eddy Donald Chinchay Lujan on 31/3/21.
+//  Created by Eddy Donald Chinchay Lujan on 25/4/21.
 //
 
 import UIKit
 
+struct HomeFeedRenderViewModel {
+    let collections: PostRenderViewModel
+    let header: PostRenderViewModel
+    let post: PostRenderViewModel
+    let actions: PostRenderViewModel
+    let descriptions: PostRenderViewModel
+    let comments: PostRenderViewModel
+    let footer: PostRenderViewModel
+}
 
-
-
-
-
-
+//HomeViewController
 class HomeViewController: UIViewController {
     
-    /*private var feedRenderModels = [HomeFeedRenderViewModel]()
-    
-    private let tableView: UITableView = {
-        let table = UITableView()
-        // Register cells
-        table.register(IGFeedPostTableViewCell.self, forCellReuseIdentifier: IGFeedPostTableViewCell.identifier)
-        table.register(IGFeedPostHeaderTableViewCell.self, forCellReuseIdentifier: IGFeedPostHeaderTableViewCell.identifier)
-        table.register(IGFeedPostActionsTableViewCell.self, forCellReuseIdentifier: IGFeedPostActionsTableViewCell.identifier)
-        table.register(IGFeedPostGeneralTableViewCell.self, forCellReuseIdentifier: IGFeedPostGeneralTableViewCell.identifier)
-        return table
-    }()
-    
-    private let followingButton : UIButton = {
-        let button = UIButton()
-        button.setTitle("Following", for: .normal)
-        button.backgroundColor = .secondarySystemBackground
-        button.setTitleColor(.label, for: .normal)
-        button.setTitleColor(UIColor.black, for: .normal)
+    private let likeButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
+        button.tintColor = .systemRed
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold) //semibold, regular, thin
+        let image = UIImage(systemName: "video.fill", withConfiguration: config)
+        button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
+        button.setImage(image, for: UIControl.State.normal)
+        button.setTitle("Directo", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
+        button.layer.cornerRadius = 10
+        //button.titleLabel?.font = UIFont(name: "Directo", size: 8)
         return button
     }()
     
+    private let commentButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
+        button.tintColor = .systemGreen
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold) //semibold, regular, thin
+        let image = UIImage(systemName: "photo.on.rectangle", withConfiguration: config)
+        button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
+        button.setImage(image, for: UIControl.State.normal)
+        button.setTitle("Foto", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
+        button.layer.cornerRadius = 10
+        
+        return button
+    }()
+    
+    private let sendButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
+        button.tintColor = .systemPurple
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold) //semibold, regular, thin
+        let image = UIImage(systemName: "location.fill", withConfiguration: config)
+        button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
+        button.setImage(image, for: UIControl.State.normal)
+        button.setTitle("Ubicación", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
+        button.layer.cornerRadius = 10
+        return button
+    }()
+    
+    private let tableView: UITableView = {
+        //let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView()
+        return tableView
+    }()
+    
+    private let headerView: UIView = {
+        let headerView = UIView()
+        headerView.backgroundColor = .systemBackground
+        return headerView
+    }()
+    
+    private let imageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "person.circle"))
+        imageView.tintColor = .darkGray
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    private let textField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "¿Eddy, en que piensas?"
+        textField.textColor = .black
+        textField.font = .systemFont(ofSize: 18, weight: .regular)
+        return textField
+    }()
+    
+    private let separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .secondarySystemFill
+        view.translatesAutoresizingMaskIntoConstraints  = false
+        return view
+    }()
+
+    private let buttonVideo: UIButton = {
+        let button = UIButton()
+        return button
+    }()
+    
+    
+    private var models = [HomeFeedRenderViewModel]()
+    private var collections : [CollectionTableCellModel] = []
+    private var comments    : [PostComments] = []
+    private var likes       : [PostLike] = []
+    private var users       : User?
+    private var posts       : UserPost?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
-        createMockModels()
-        //handleNotAuthenticated()
+        setup()
+        setupModels()
         configureTableView()
         delegateTableView()
+        setupNavigationBarItems()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
+        
+        headerView.backgroundColor = .systemBackground
+        headerView.frame = CGRect(
+            x: 0,
+            y: 0,
+            width: view.width,
+            height: 120)
+        
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = CGRect(
+            x: 10,
+            y: 5,
+            width: headerView.height-50,
+            height: 50)
+        imageView.layer.cornerRadius = imageView.height/2
+        
+        textField.backgroundColor = .systemBackground
+        textField.frame = CGRect(
+            x: 15+imageView.width,
+            y: 5,
+            width: headerView.width-20-imageView.width,
+            height: 50)
+        
+        separatorView.frame = CGRect(
+            x: tableView.separatorInset.left,
+            y: 0  ,
+            width: 20,
+            height: 1)
+        
+        let buttonSize = headerView.height
+        let buttons = [likeButton, commentButton, sendButton]
+        for x in 0..<buttons.count {
+            let button = buttons[x]
+            button.frame = CGRect(
+                x: (CGFloat(x)*buttonSize)+(15*CGFloat(x+1)),
+                y: imageView.frame.origin.y + imageView.frame.size.height + 25,
+                width: buttonSize,
+                height: 30)
+        }
+        headerView.addSubview(separatorView)
+        
+        NSLayoutConstraint.activate([
+            separatorView.leadingAnchor.constraint(equalTo:headerView.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo:headerView.trailingAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant:5),
+            separatorView.bottomAnchor.constraint(equalTo:headerView.bottomAnchor)])
     }
     
-    private func setupView() {
-        title = "Home"
-        view.backgroundColor = .systemBackground
+    private func setup() {
         view.addSubview(tableView)
+        tableView.tableHeaderView = createTableHeader()
+        
+        headerView.addSubview(likeButton)
+        headerView.addSubview(commentButton)
+        headerView.addSubview(sendButton)
     }
-
+    
+    private func setupNavigationBarItems() {
+        setupLeftNavItems()
+        setupRightNavItems()
+        setupRemaningNavItems()
+    }
+    
     private func configureTableView() {
-        tableView.backgroundColor = .secondarySystemFill
+        tableView.register(CollectionTableViewCell.self, forCellReuseIdentifier: CollectionTableViewCell.identifier)
+        tableView.register(IGFeedPostTableViewCell.self, forCellReuseIdentifier: IGFeedPostTableViewCell.identifier)
+        tableView.register(IGFeedPostHeaderTableViewCell.self, forCellReuseIdentifier: IGFeedPostHeaderTableViewCell.identifier)
+        tableView.register(IGFeedPostActionsTableViewCell.self, forCellReuseIdentifier: IGFeedPostActionsTableViewCell.identifier)
+        tableView.register(IGFeedPostDescriptionTableViewCell.self, forCellReuseIdentifier: IGFeedPostDescriptionTableViewCell.identifier)
+        tableView.register(IGFeedPostGeneralTableViewCell.self, forCellReuseIdentifier: IGFeedPostGeneralTableViewCell.identifier)
+        tableView.register(IGFeedPostFooterTableViewCell.self, forCellReuseIdentifier: IGFeedPostFooterTableViewCell.identifier)
+        tableView.separatorStyle = .none
     }
     
     private func delegateTableView() {
@@ -67,544 +202,333 @@ class HomeViewController: UIViewController {
         tableView.dataSource = self
     }
     
-    private func createMockModels() {
-        
+    ///Header
+    private func createTableHeader() -> UIView? {
+        view.addSubview(headerView)
+        headerView.addSubview(imageView)
+        headerView.addSubview(textField)
+        headerView.addSubview(buttonVideo)
+        return headerView
+    }
+    
+    ///Collections
+    func createArrayCollections() -> [CollectionTableCellModel] {
+        var collections = [CollectionTableCellModel]()
+        let username = ["eddylujann", "jordann", "paola","rebeca", "jeremy", "lucas", "jean"]
+        for i in 0..<username.count {
+            let data = CollectionTableCellModel(title: username[i], imageName: "img\(i+1)")
+            collections.append(data)
+        }
+        return collections
+    }
+    
+    ///Comments
+    func createArrayComments() -> [PostComments] {
+        var tempComments: [PostComments] = []
+        for i in 0..<5 {
+            let comments = PostComments(identifier: "id-\(i)", username: "\(i) Username", text: "commentario \(i)", createDate: Date(), likes: [])
+            tempComments.append(comments)
+        }
+        return tempComments
+    }
+    
+    ///Likes
+    func createArrayLikes() -> [PostLike] {
+        var likes = [PostLike]()
+        for i in 0..<5 {
+            let data = PostLike(
+                username: "jor \(i)",
+                postIdentifier: "",
+                text: "Mi primera publicacion para el test de la App.",
+                likes: i)
+            likes.append(data)
+        }
+        return likes
+    }
+    
+    ///User
+    func createArrayUser() -> User {
         let user = User(
             name: (first: "", last: ""),
-            username: "@kanye_west",
+            username: "@jordan",
             bio: "",
             profilePicture: URL(string: "https://wwww.google.com")!,
             birthDate: Date(),
             gender: .male,
             email: "",
             counts: UserCount(followers: 1, following: 1, posts: 1),
-            joinDate: Date() )
+            joinDate: Date())
+        return user
+      
+    }
     
+    ///UserPost
+    func createArrayUserPost() -> UserPost {
+        likes = createArrayLikes() ///Se obtiene el array de likes
         let post = UserPost(
-            identifier: "",
+            identifier: "post 2",
             postType: .photo,
             thumbnailImage: URL(string: "https://wwww.google.com")!,
             postURL: URL(string: "https://wwww.google.com")!,
-            caption: nil,
-            likeCount: [],
-            comments: [],
+            caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
+            likeCount: likes,
+            comments: comments,
             createDate: Date(),
             taggedUsers: [],
-            owner: user )
-        
-        var comments = [PostComments]()
-        for x in 0..<3 {
-            comments.append(PostComments(
-                                identifier: "\(x)",
-                                username: "@jenny",
-                                text: "This is the best post I've seen",
-                                createDate: Date(),
-                                likes: []))
-        }
-        
-        for x in 0..<4 {
-            let viewModel = HomeFeedRenderViewModel(
-                header: PostRenderViewModel(
-                    renderType: .header(provider: user)),
-                    post: PostRenderViewModel(renderType: .primaryContent(provider: post)),
-                    actions: PostRenderViewModel(renderType: .actions(provider: "")),
-                    comments: PostRenderViewModel(renderType: .comments(comments: comments)))
-            feedRenderModels.append(viewModel)
-        }
+            owner: users!)
+        return post
     }
     
-    private func handleNotAuthenticated() {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let token = appDelegate.objUsuarioSesion?.token
-        
-        if token == nil {
-            let vc = LoginViewController()
-            vc.modalPresentationStyle = .fullScreen
-            self.present(vc, animated: false)
-        } else {
-            print("ElSE Home")
+    private func setupModels() {
+        collections = createArrayCollections()
+        comments    = createArrayComments()
+        users       = createArrayUser()
+        posts       = createArrayUserPost()
+        for _ in 0..<2 {
+            let viewModel = HomeFeedRenderViewModel(
+                collections : PostRenderViewModel(renderType: .collections(collections  : collections   )),
+                header      : PostRenderViewModel(renderType: .header(provider          : users!        )),
+                post        : PostRenderViewModel(renderType: .primaryContent(provider  : posts!        )),
+                actions     : PostRenderViewModel(renderType: .actions(provider         : posts!        )),
+                descriptions: PostRenderViewModel(renderType: .descriptions(post        : posts!        )),
+                comments    : PostRenderViewModel(renderType: .comments(comments        : comments      )),
+                footer      : PostRenderViewModel(renderType: .footer(footer            : "")           )
+            )
+            models.append(viewModel)
         }
     }
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return feedRenderModels.count * 4
+        return models.count * 7
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let x = section
-        let model: HomeFeedRenderViewModel
-        
-        
-        if x == 0 {
-            model = feedRenderModels[0]
-        } else {
-            let position = x % 4 == 0 ?  x/4 : ((x - (x % 4)) / 4)
-            model = feedRenderModels[position]
-        }
-        
-        let subSection = x % 4
-        if subSection == 0 {
-            //header
+        let count = section
+        var model: HomeFeedRenderViewModel
+        if count == 0 { ///Pinta el collection de imagenes
+            model = models[0]
             return 1
-        }
-        else if subSection == 1 {
-            //post
-            return 1
-        }
-        else if subSection == 2 {
-            //actions
-            return 1
-        }
-        else if subSection == 3 {
-            //comments
-            let commentsModel = model.comments
-            switch commentsModel.renderType {
-                case .comments(let comments):
-                    return comments.count > 3 ? 3 : comments.count
-                case .header, .actions, .primaryContent: return 0
+        } else { /// Pinta el resto de contenido del post (hader, posts, actions, comments)
+            let position = count % 7 == 0 ? count / 7 : ((count - (count % 7)) / 7)
+            model = models[position]
+            let subSection = count % 7
+            if subSection      == 1 { return 1 } /// Header
+            else if subSection == 2 { return 1 } /// Post
+            else if subSection == 3 { return 1 } /// Actions
+            else if subSection == 4 { return 1 } /// Description
+            else if subSection == 5 { /// Comments
+                let commentsModel = model.comments
+                switch commentsModel.renderType {
+                    case .comments(let comments):
+                        return comments.count > 0 ? 2 : comments.count /// Retorna el total de comentarios
+                    case .header, .actions, .primaryContent, .collections, .descriptions, .footer :
+                        return 0
+                }
             }
+            else if subSection == 6 { return 1 } /// Footer
+            return 0
         }
-        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let x = indexPath.section
         let model: HomeFeedRenderViewModel
-        
-        if x == 0 {
-            model = feedRenderModels[0]
-        } else {
-            let position = x % 4 == 0 ?  x/4 : ((x - (x % 4)) / 4)
-            model = feedRenderModels[position]
-        }
-        
-        let subSection = x % 4
-        
-        if subSection == 0 {
-            //header
-            switch model.header.renderType {
-            case .header(let user):
-                let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier, for: indexPath) as! IGFeedPostHeaderTableViewCell
-                cell.configure(with: user)
-                cell.delegate = self
-                return cell
-            case .comments, .actions, .primaryContent: return UITableViewCell()
+        let count = indexPath.section
+        if count == 0 { ///Pinta el collection de imagenes
+            model = models[0]
+            switch model.collections.renderType {
+                case .collections(let collections):
+                    let cell = tableView.dequeueReusableCell(
+                        withIdentifier: CollectionTableViewCell.identifier,
+                        for: indexPath) as! CollectionTableViewCell
+                    cell.configure(with: collections)
+                    cell.delegate = self
+                    
+                    
+                    let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
+                    separatorView.backgroundColor = .secondarySystemFill
+                    
+                    separatorView.translatesAutoresizingMaskIntoConstraints  = false
+                    cell.contentView.addSubview(separatorView)
+                    NSLayoutConstraint.activate([
+                        separatorView.leadingAnchor.constraint(equalTo:cell.contentView.leadingAnchor),
+                        separatorView.trailingAnchor.constraint(equalTo:cell.contentView.trailingAnchor),
+                        separatorView.heightAnchor.constraint(equalToConstant:5),
+                        separatorView.bottomAnchor.constraint(equalTo:cell.contentView.bottomAnchor)])
+                    
+                    
+                    return cell
+            case .comments, .actions, .primaryContent, .header, .descriptions, .footer :
+                    return UITableViewCell()
+                }
+        } else { /// Pinta el resto de contenido del post (hader, posts, actions, comments)
+            let position = count % 7 == 7 ? count/7 : ((count - (count % 7)) / 7)
+            model = models[position]
+            let subSection = count % 7
+            if subSection == 1 { /// Header
+                switch model.header.renderType {
+                    case .header(let user):
+                        let cell = tableView.dequeueReusableCell(
+                            withIdentifier: IGFeedPostHeaderTableViewCell.identifier,
+                            for: indexPath) as! IGFeedPostHeaderTableViewCell
+                        cell.configure(with: user)
+                        return cell
+                    case .comments, .actions, .primaryContent, .collections, .descriptions, .footer :
+                        return UITableViewCell()
+                }
+            } else if subSection == 2 { /// Post
+                switch model.post.renderType {
+                    case .primaryContent(let post):
+                        let cell = tableView.dequeueReusableCell(
+                            withIdentifier: IGFeedPostTableViewCell.identifier,
+                            for: indexPath) as! IGFeedPostTableViewCell
+                        cell.configure(with: post)
+                        return cell
+                    case .comments, .actions, .header, .collections, .descriptions, .footer :
+                        return UITableViewCell()
+                }
+            } else if subSection == 3 { /// Actions
+                switch model.actions.renderType {
+                    case .actions(let provider):
+                        let cell = tableView.dequeueReusableCell(
+                            withIdentifier: IGFeedPostActionsTableViewCell.identifier,
+                            for: indexPath) as! IGFeedPostActionsTableViewCell
+                        cell.configure(with: provider)
+                        cell.delegate = self
+                        return cell
+                    case .comments, .header, .primaryContent, .collections, .descriptions, .footer :
+                        return UITableViewCell()
+                }
+            } else if subSection == 4 { /// Descriptions
+                switch model.descriptions.renderType {
+                    case .descriptions(let post):
+                        let cell = tableView.dequeueReusableCell(
+                            withIdentifier: IGFeedPostDescriptionTableViewCell.identifier,
+                            for: indexPath) as! IGFeedPostDescriptionTableViewCell
+                        cell.configure(with: post)
+                        return cell
+                    case .comments, .header, .primaryContent, .collections, .actions, .footer:
+                        return UITableViewCell()
+                }
+            } else if subSection == 5 { /// comments
+                switch model.comments.renderType {
+                case .comments(let comments):
+                    let comment = comments[indexPath.row] ///Se obtiene cada fila del array de comments
+                    let cell = tableView.dequeueReusableCell(
+                        withIdentifier: IGFeedPostGeneralTableViewCell.identifier,
+                        for: indexPath) as! IGFeedPostGeneralTableViewCell
+                    cell.configure(with: comment)
+                    return cell
+                case .header, .actions, .primaryContent, .collections, .descriptions, .footer :
+                    return UITableViewCell()
+                }
+            } else if subSection == 6 { /// Footer
+                switch model.footer.renderType {
+                    case .footer(/*let footer*/_):
+                        let cell = tableView.dequeueReusableCell(
+                            withIdentifier: IGFeedPostFooterTableViewCell.identifier,
+                            for: indexPath) as! IGFeedPostFooterTableViewCell
+                            cell.configure()
+                        return cell
+                case .comments, .header, .primaryContent, .collections, .actions, .descriptions:
+                        return UITableViewCell()
+                }
             }
+            return UITableViewCell()
         }
-        else if subSection == 1 {
-            //post
-            switch model.post.renderType {
-            case .primaryContent(let post):
-                let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostTableViewCell.identifier, for: indexPath) as! IGFeedPostTableViewCell
-                cell.configure(with: post)
-                return cell
-            case .comments, .actions, .header: return UITableViewCell()
-            }
-        }
-        else if subSection == 2 {
-            //actions
-            switch model.actions.renderType {
-            case .actions(let provider):
-                let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostActionsTableViewCell.identifier, for: indexPath) as! IGFeedPostActionsTableViewCell
-                cell.delegate = self
-                return cell
-                
-            case .comments, .header, .primaryContent: return UITableViewCell()
-            }
-        }
-        else if subSection == 3 {
-            //comments
-            switch model.comments.renderType {
-            case .comments(let comments):
-                let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier, for: indexPath) as! IGFeedPostGeneralTableViewCell
-                cell.configure(with: comments)
-                return cell
-            case .header, .actions, .primaryContent: return UITableViewCell()
-            }
-        }
-       
-        return UITableViewCell()
     }
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        print("Did select normal list item")
     }
     
+    ///Height de Cell
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let subSection = indexPath.section % 4
-        if subSection == 0 {
-            // Header
-            return 70
-        } else if subSection == 1 {
-            // Post
-            return tableView.width
+        if indexPath.section == 0 { return 320 } //Collection
+        else {
+            let subSection = indexPath.section % 7
+            if subSection        == 1 { return 70 } /// Header
+            else if subSection   == 2 { return tableView.width } /// Post
+            else if subSection   == 3 { return 60 }  /// Actions
+            else if subSection   == 4 { return 90 } /// Description
+            else if subSection   == 5 { return 30  } /// Comment
+            else if subSection   == 6 { return 50  } /// Footer
+            return 0
         }
-        else if subSection == 2 {
-            // Actions (Like, Comment)
-            return 60
-        }
-        else if subSection == 3 {
-            // Comment row
-            return 50
-        }
-        return 0
     }
-    
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView()
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let subSection = section % 4
-        return subSection == 3 ? 70 : 0
-    }
-    
-    
-}
-
-
-extension HomeViewController: IGFeedPostHeaderTableViewCellDelegate {
-    func didTapMoreButton() {
-        let acctionSheet = UIAlertController(title: "Post Option", message: nil, preferredStyle: .actionSheet)
-        acctionSheet.addAction(UIAlertAction(title: "Report Post", style: .destructive, handler: { [weak self] _ in
-            self?.reportPost()
-        }))
-        acctionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        present(acctionSheet, animated: true)
-    }
-    
-    func reportPost() {
-        
+        let subSection = section % 7
+        return subSection == 6 ? 20 : 0
     }
 }
 
+extension HomeViewController: CollectionTableViewCellDelegate {
+    func didSelectItem(with model: CollectionTableCellModel) {
+        print("Selected \(model.title)")
+    }
+}
 
+//MARK: Actions buttons
 extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
+  
     func didTapLikeButton() {
         print("like")
     }
     
-    func didTapCommentButton() {
-        print("comment")
+    func didTapCommentButton(model: UserPost) {
+        let vc = ListCommentsViewController(model: model)
+        vc.title = "Coments"
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func didTapSendButton() {
         print("Send")
-    }*/
+    }
 }
 
-
-
-
-/*
- 
- 
- //
- //  TimeLineViewController.swift
- //  SwiftNetwork
- //
- //  Created by Eddy Donald Chinchay Lujan on 25/4/21.
- //
-
- import UIKit
- import AVFoundation
-
-
- enum CellModel {
-     case collectionView(models: [CollectionTableCellModel], rows: Int)
-     case list(models: HomeFeedRenderViewModel)
- }
-
- struct CollectionTableCellModel {
-     let title: String
-     let imageName: String
- }
-
- struct HomeFeedRenderViewModel {
-     let header: PostRenderViewModel
-     let post: PostRenderViewModel
-     let actions: PostRenderViewModel
-     let comments: PostRenderViewModel
- }
-
-
-
- class TimeLineViewController: UIViewController {
-     
-     //private var feedRenderModels = [HomeFeedRenderViewModel]()
-     private var models = [CellModel]()
-     
-     private let tableView: UITableView = {
-         let tableView = UITableView(frame: .zero, style: .grouped)
-         tableView.register(IGFeedPostTableViewCell.self, forCellReuseIdentifier: IGFeedPostTableViewCell.identifier)
-         tableView.register(IGFeedPostHeaderTableViewCell.self, forCellReuseIdentifier: IGFeedPostHeaderTableViewCell.identifier)
-         tableView.register(IGFeedPostActionsTableViewCell.self, forCellReuseIdentifier: IGFeedPostActionsTableViewCell.identifier)
-         tableView.register(IGFeedPostGeneralTableViewCell.self, forCellReuseIdentifier: IGFeedPostGeneralTableViewCell.identifier)
-         return tableView
-     }()
-
-     override func viewDidLoad() {
-         super.viewDidLoad()
-         setup()
-         setupModels()
-         configureTableView()
-         delegateTableView()
-     }
-     
-     override func viewDidLayoutSubviews() {
-         super.viewDidLayoutSubviews()
-         tableView.frame = view.bounds
-     }
-     
-     private func setup() {
-         view.addSubview(tableView)
-         tableView.tableHeaderView = createTableHeader()
-     }
-
-     
-     private func setupModels() {
-         models.append(.collectionView(models: [
-             CollectionTableCellModel(title: "Test 1",imageName: "test"),
-             CollectionTableCellModel(title: "Test 2",imageName: "test"),
-             CollectionTableCellModel(title: "Test 3",imageName: "test"),
-             CollectionTableCellModel(title: "Test 4",imageName: "test"),
-             CollectionTableCellModel(title: "Test 5",imageName: "test"),
-         ],rows: 2))
-         
-         let user = User(
-             name: (first: "", last: ""),
-             username: "@kanye_west",
-             bio: "",
-             profilePicture: URL(string: "https://wwww.google.com")!,
-             birthDate: Date(),
-             gender: .male,
-             email: "",
-             counts: UserCount(followers: 1, following: 1, posts: 1),
-             joinDate: Date() )
-     
-         let post = UserPost(
-             identifier: "",
-             postType: .photo,
-             thumbnailImage: URL(string: "https://wwww.google.com")!,
-             postURL: URL(string: "https://wwww.google.com")!,
-             caption: nil,
-             likeCount: [],
-             comments: [],
-             createDate: Date(),
-             taggedUsers: [],
-             owner: user )
-         
-         var comments = [PostComments]()
-         for x in 0..<3 {
-             let comm = PostComments(
-                                 identifier: "\(x)",
-                                 username: "@jenny",
-                                 text: "This is the best post I've seen",
-                                 createDate: Date(),
-                                 likes: [])
-             
-             comments.append(comm)
-             
-         }
-         
-         for x in 0..<4 {
-             let viewModel = HomeFeedRenderViewModel(
-                 header: PostRenderViewModel(renderType: .header(provider: user)),
-                 post: PostRenderViewModel(renderType: .primaryContent(provider: post)),
-                 actions: PostRenderViewModel(renderType: .actions(provider: "")),
-                 comments: PostRenderViewModel(renderType: .comments(comments: comments)))
-             models.append(.list(models: viewModel ))
-         }
-         
-     }
+// MARK: Navigation Buttons
+extension HomeViewController {
+    private func setupRemaningNavItems() {
+        let titleImageView = UIImageView(image: UIImage(systemName: "bag.fill"))
+        titleImageView.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        titleImageView.contentMode = .scaleAspectFit
+        navigationItem.titleView = titleImageView
+        
+        navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.navigationBar.isTranslucent = false
+    }
     
-     private func configureTableView() {
-         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-         tableView.register(CollectionTableViewCell.self, forCellReuseIdentifier: CollectionTableViewCell.identifier)
-     }
-     
-     private func createTableHeader() -> UIView? {
-         
-         let headerView = UIView(frame: CGRect(x: 0,
-                                               y: 0,
-                                               width: view.width,
-                                               height: 100))
-         headerView.backgroundColor = .systemBackground
-         view.addSubview(headerView)
-         
-         let imageView = UIImageView(image: UIImage(systemName: "person.circle"))
-         imageView.tintColor = .systemBlue
-         imageView.contentMode = .scaleAspectFit
-         headerView.addSubview(imageView)
-         imageView.frame = CGRect(x: 5, y: 5, width: headerView.height-10, height: headerView.height-10)
-         
-         
-         let textField = UITextField()
-         textField.placeholder = "¿Eddy, en que piensas?"
-         textField.frame = view.bounds
-         textField.layer.borderWidth = 1
-         textField.layer.cornerRadius = 12
-         textField.layer.borderColor = UIColor.systemGray.cgColor
-         textField.textColor = .black
-         //textField.text = "Custom section header"
-         textField.font = .systemFont(ofSize: 22, weight: .thin)
-         headerView.addSubview(textField)
-         
-         textField.frame = CGRect(x: 10+imageView.width,
-                                  y: 10,
-                                  width: headerView.width-20-imageView.width,
-                                  height: headerView.height-20)
-         return headerView
-     }
-     
-     private func delegateTableView() {
-         tableView.delegate = self
-         tableView.dataSource = self
-     }
- }
-
- extension TimeLineViewController: UITableViewDelegate, UITableViewDataSource {
-     
-     func numberOfSections(in tableView: UITableView) -> Int {
-         return models.count
-     }
-     
-     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         //let modelListCount = models.count
-         let type = models[section]
-         
-         switch type {
-         case .list(let model):
-             return models.count
-             
-         case .collectionView(_, _):
-             return 1
-         }
-         //return 0
-     }
-     
-     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-         let modelListCount = models.count
-         
-         switch models[indexPath.section] {
-             case .list(let models):
-                 let model = models
-                 let subSection = indexPath.row % modelListCount
-                 
-                 if subSection == 1 {
-                     switch model.header.renderType {
-                         case .header(let user):
-                             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier,
-                                                                      for: indexPath) as! IGFeedPostHeaderTableViewCell
-                             cell.configure(with: user)
-                             return cell
-                         case .comments, .actions, .primaryContent: return UITableViewCell()
-                     }
-                 }
-                 else if subSection == 2 {
-                     //post
-                     switch model.post.renderType {
-                         case .primaryContent(let post):
-                             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostTableViewCell.identifier,
-                                                                      for: indexPath) as! IGFeedPostTableViewCell
-                             cell.configure(with: post)
-                             return cell
-                         case .comments, .actions, .header: return UITableViewCell()
-                     }
-                 } else if subSection == 3 {
-                     //actions
-                     switch model.actions.renderType {
-                         case .actions(let provider):
-                             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostActionsTableViewCell.identifier,
-                                                                      for: indexPath) as! IGFeedPostActionsTableViewCell
-                             cell.delegate = self
-                             return cell
-                         case .comments, .header, .primaryContent: return UITableViewCell()
-                     }
-                 } else if subSection == 4 {
-                     //comments
-                     switch model.comments.renderType {
-                         case .comments(let comments):
-         
-                             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier,
-                                                                      for: indexPath) as! IGFeedPostGeneralTableViewCell
-                             cell.configure(with: comments)
-                             return cell
-                         case .header, .actions, .primaryContent: return UITableViewCell()
-                     }
-                 }
-                 
-             case .collectionView(let models, _):
-                 let cell = tableView.dequeueReusableCell(withIdentifier: CollectionTableViewCell.identifier,
-                                                          for: indexPath) as! CollectionTableViewCell
-                 cell.configure(with: models)
-                 cell.delegate = self
-                 return cell
-         }
-         return UITableViewCell()
-     }
-     
-     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-         tableView.deselectRow(at: indexPath, animated: true)
-         print("Did select normal list item")
-     }
-     
-     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-         let modelListCount = models.count
-         
-         switch models[indexPath.section] {
-             case .list(_):
-                 let subSection = indexPath.row % modelListCount //4
-                 if subSection == 1 {
-                     // Header
-                     return 70
-                 } else if subSection == 2 {
-                     // Post
-                     return tableView.width
-                 }else if subSection == 3 {
-                     // Actions (Like, Comment)
-                     return 60
-                 }
-                 else if subSection == 4 {
-                     // Comment row
-                     return 50
-                 }
-                 
-             case .collectionView(_, _/*let rows*/): return 280 /// 180 *  CGFloat(rows)
-         }
-         return 0
-     }
-     
-     /*func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-         return UIView()
-     }
-     
-     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-         let subSection = section % models.count
-         return subSection == 4 ? 70 : 0
-     }*/
- }
-
- extension TimeLineViewController: CollectionTableViewCellDelegate {
-     func didSelectItem(with model: CollectionTableCellModel) {
-         print("Selected \(model.title)")
-     }
- }
-
- extension TimeLineViewController: IGFeedPostActionsTableViewCellDelegate {
-     func didTapLikeButton() {
-         print("like")
-     }
-     
-     func didTapCommentButton() {
-         print("comment")
-     }
-     
-     func didTapSendButton() {
-         print("Send")
-     }
- }
-
- */
+    private func setupLeftNavItems() {
+        let followButton = UIButton(type: .system)
+        followButton.setImage(UIImage(systemName: "person.crop.circle.fill.badge.plus"), for: .normal)
+        followButton.tintColor = .black
+        followButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: followButton)
+    }
+    
+    private func  setupRightNavItems() {
+        let searchButton = UIButton(type: .system)
+        searchButton.setImage(UIImage(systemName: "paperplane"), for: .normal)
+        searchButton.tintColor = .black
+        searchButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        
+        let composeButton = UIButton(type: .system)
+        composeButton.setImage(UIImage(systemName: "plus.rectangle.on.rectangle"), for: .normal)
+        composeButton.tintColor = .black
+        composeButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(customView: searchButton),
+            UIBarButtonItem(customView: composeButton)
+        ]
+    }
+}

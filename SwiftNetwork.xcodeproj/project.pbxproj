@@ -15,7 +15,7 @@
 		B3110EF7262600FC00354C25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3110EF5262600FC00354C25 /* LaunchScreen.storyboard */; };
 		B3110F02262600FC00354C25 /* SwiftNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3110F01262600FC00354C25 /* SwiftNetworkTests.swift */; };
 		B3110F0D262600FD00354C25 /* SwiftNetworkUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3110F0C262600FD00354C25 /* SwiftNetworkUITests.swift */; };
-		B362D15D263561840086F777 /* TimeLineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D15C263561840086F777 /* TimeLineViewController.swift */; };
+		B362D15D263561840086F777 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D15C263561840086F777 /* HomeViewController.swift */; };
 		B362D165263605630086F777 /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D164263605630086F777 /* CollectionTableViewCell.swift */; };
 		B362D16D263607940086F777 /* TableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D16C263607940086F777 /* TableCollectionViewCell.swift */; };
 		B362D17F2638AB760086F777 /* IGFeedPostDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D17E2638AB760086F777 /* IGFeedPostDescriptionTableViewCell.swift */; };
@@ -27,7 +27,6 @@
 		B39A49A62626232500BE80DF /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49A22626232500BE80DF /* AuthManager.swift */; };
 		B39A49A72626232500BE80DF /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49A32626232500BE80DF /* DatabaseManager.swift */; };
 		B39A49A82626232500BE80DF /* StorageManeger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49A42626232500BE80DF /* StorageManeger.swift */; };
-		B39A49B62626236E00BE80DF /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49B22626236D00BE80DF /* HomeViewController.swift */; };
 		B39A49B72626236E00BE80DF /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49B32626236E00BE80DF /* ExploreViewController.swift */; };
 		B39A49B82626236E00BE80DF /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49B42626236E00BE80DF /* ProfileViewController.swift */; };
 		B39A49B92626236E00BE80DF /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49B52626236E00BE80DF /* NotificationsViewController.swift */; };
@@ -106,7 +105,7 @@
 		B3110F08262600FC00354C25 /* SwiftNetworkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftNetworkUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3110F0C262600FD00354C25 /* SwiftNetworkUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftNetworkUITests.swift; sourceTree = "<group>"; };
 		B3110F0E262600FD00354C25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B362D15C263561840086F777 /* TimeLineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineViewController.swift; sourceTree = "<group>"; };
+		B362D15C263561840086F777 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B362D164263605630086F777 /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
 		B362D16C263607940086F777 /* TableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCollectionViewCell.swift; sourceTree = "<group>"; };
 		B362D177263695070086F777 /* video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video.mp4; sourceTree = "<group>"; };
@@ -119,7 +118,6 @@
 		B39A49A22626232500BE80DF /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		B39A49A32626232500BE80DF /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		B39A49A42626232500BE80DF /* StorageManeger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageManeger.swift; sourceTree = "<group>"; };
-		B39A49B22626236D00BE80DF /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B39A49B32626236E00BE80DF /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		B39A49B42626236E00BE80DF /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B39A49B52626236E00BE80DF /* NotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
@@ -309,10 +307,9 @@
 			isa = PBXGroup;
 			children = (
 				B39A49B32626236E00BE80DF /* ExploreViewController.swift */,
-				B39A49B22626236D00BE80DF /* HomeViewController.swift */,
 				B39A49B52626236E00BE80DF /* NotificationsViewController.swift */,
 				B39A49B42626236E00BE80DF /* ProfileViewController.swift */,
-				B362D15C263561840086F777 /* TimeLineViewController.swift */,
+				B362D15C263561840086F777 /* HomeViewController.swift */,
 				B39A4A192627459F00BE80DF /* TabBarController.swift */,
 			);
 			path = "Core Tabs";
@@ -716,7 +713,7 @@
 				B39A4A412628162000BE80DF /* FormTableViewCell.swift in Sources */,
 				B39A49E72626241C00BE80DF /* UserLoginBC.swift in Sources */,
 				B39A49DD262623FD00BE80DF /* Constants.swift in Sources */,
-				B362D15D263561840086F777 /* TimeLineViewController.swift in Sources */,
+				B362D15D263561840086F777 /* HomeViewController.swift in Sources */,
 				B3110EEB262600F900354C25 /* AppDelegate.swift in Sources */,
 				B39A49CC2626239900BE80DF /* PublishPostViewController.swift in Sources */,
 				B39A4A262627629900BE80DF /* IGFeedPostTableViewCell.swift in Sources */,
@@ -732,7 +729,6 @@
 				B39A4A0626263A3A00BE80DF /* Alerts.swift in Sources */,
 				B362D16D263607940086F777 /* TableCollectionViewCell.swift in Sources */,
 				B39A49E22626241300BE80DF /* UserBE.swift in Sources */,
-				B39A49B62626236E00BE80DF /* HomeViewController.swift in Sources */,
 				B39A49D4262623A400BE80DF /* LoginViewController.swift in Sources */,
 				B39A49FC2626385400BE80DF /* Closures.swift in Sources */,
 				B39A4A6A2628777D00BE80DF /* Models.swift in Sources */,

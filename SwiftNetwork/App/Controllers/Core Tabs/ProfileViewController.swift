@@ -49,20 +49,21 @@ final class ProfileViewController: UIViewController {
             counts: UserCount(followers: 1, following: 1, posts: 1),
             joinDate: Date())
         
-        let post = UserPost(
-            identifier: "",
-            postType: .photo,
-            thumbnailImage: URL(
-                string: "img6")!,
-            postURL: URL(string: "https://wwww.google.com")!,
-            caption: nil,
-            likeCount: [],
-            comments: [],
-            createDate: Date(),
-            taggedUsers: [],
-            owner: user)
-        
-        for _ in 0..<10 {
+        for i in 0..<10 {
+            
+            let post = UserPost(
+                identifier: "",
+                postType: .photo,
+                thumbnailImage: URL(
+                    string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
+                postURL: URL(string: "https://wwww.google.com")!,
+                caption: nil,
+                likeCount: [],
+                comments: [],
+                createDate: Date(),
+                taggedUsers: [],
+                owner: user)
+            
             userPosts.append(post)
         }
         
@@ -133,7 +134,6 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let model = userPosts[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
-        
         ///let image = model.thumbnailImage.relativeString
         cell.configure(with: model)
         //cell.configure(debug: image/*"img6"*/)
@@ -181,7 +181,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
         }
         
         if indexPath.section == 1 {
-            // Tabs header
+            ///Tabs header
             let tabControllerHeader = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: ProfileTabsCollectionReusableView.identifier,
@@ -189,7 +189,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
             tabControllerHeader.delegate = self
             return tabControllerHeader
         }
-        
+        ///Header
         let profileHeader = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
             withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,

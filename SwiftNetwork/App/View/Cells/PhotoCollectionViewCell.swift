@@ -12,6 +12,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "PhotoCollectionViewCell"
     
+    let containerView = UIView(frame: CGRect(x:0,y:0,width:320,height:500))
     private let photoImageView: UIImageView = {
        let imageView = UIImageView()
         imageView.clipsToBounds = true
@@ -43,6 +44,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     public func configure(with model: UserPost) {
         let url = model.thumbnailImage
         photoImageView.sd_setImage(with: url, completed: nil)
+        
+        
         /*let task = URLSession.shared.dataTask(with: url, completionHandler: { data, _, _ in
             self.photoImageView.image = UIImage(data: data!)
             

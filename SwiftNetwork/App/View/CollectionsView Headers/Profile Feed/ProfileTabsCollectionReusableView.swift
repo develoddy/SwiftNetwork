@@ -18,14 +18,10 @@ class ProfileTabsCollectionReusableView:  UICollectionReusableView {
     
     public var delegate: ProfileTabsCollectionReusableViewDelegate?
     
-    struct Constants {
-        static let padding: CGFloat = 8
-    }
-    
     private let gridButton: UIButton = {
         let button  = UIButton()
         button.clipsToBounds = true
-        button.tintColor = .systemBlue
+        button.tintColor = Constants.ProfileTabsCollectionReusableViewColor.colorPink
         button.setBackgroundImage(UIImage(systemName: "square.grid.2x2"), for: .normal)
         return button
     }()
@@ -53,26 +49,26 @@ class ProfileTabsCollectionReusableView:  UICollectionReusableView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let size =  height - (Constants.padding * 2)
+        let size =  height - (Constants.ProfileTabsCollectionReusableViewColor.padding * 2)
         let gridButtonX = ((width/2)-size)/2
         gridButton.frame = CGRect(x: gridButtonX,
-                                  y: Constants.padding,
+                                  y: Constants.ProfileTabsCollectionReusableViewColor.padding,
                                     width: size,
                                     height: size)
         taggedButton.frame = CGRect(x: gridButtonX + (width/2),
-                                    y: Constants.padding,
+                                    y: Constants.ProfileTabsCollectionReusableViewColor.padding,
                                     width: size,
                                     height: size)
     }
     
     @objc private func didTapGridButton() {
-        gridButton.tintColor = .systemBlue
+        gridButton.tintColor = Constants.ProfileTabsCollectionReusableViewColor.colorPink
         taggedButton.tintColor = .lightGray
         delegate?.didTapGridButtonTab()
     }
     
     @objc private func didTapTaggedButton() {
-        taggedButton.tintColor = .systemBlue
+        taggedButton.tintColor = Constants.ProfileTabsCollectionReusableViewColor.colorPink
         gridButton.tintColor = .lightGray
         delegate?.didTapTaggedButtonTab()
     }

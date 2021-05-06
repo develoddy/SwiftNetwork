@@ -53,37 +53,45 @@ class NotificationLikeEventTableViewCell: UITableViewCell {
         selectionStyle = .none
     }
     
-    @objc private func didTapPostButton() {
-        guard let model = model else {
-            return
-        }
-        
-        delgate?.didTapRelatedPostButton(model: model)
-    }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         //photho, text, post button
-        profileImageView.frame = CGRect(x: 3, y: 3, width: contentView.height-6, height: contentView.height-6)
+        profileImageView.frame = CGRect(
+            x: 3,
+            y: 3,
+            width: contentView.height-6,
+            height: contentView.height-6)
         profileImageView.layer.cornerRadius = profileImageView.height/2
         
         let size = contentView.height-4
-        postButton.frame = CGRect(x: contentView.width-5-size, y: 2, width: size, height: size)
+        postButton.frame = CGRect(
+            x: contentView.width-5-size,
+            y: 2,
+            width: size,
+            height: size)
         
-        label.frame = CGRect(x: profileImageView.right+5,
-                             y: 0,
-                             width: contentView.width-size-profileImageView.width-16,
-                             height: contentView.height)
+        label.frame = CGRect(
+            x: profileImageView.right+5,
+            y: 0,
+            width: contentView.width-size-profileImageView.width-16,
+            height: contentView.height)
     }
     
     public func configure(with model: UserNotification) {
         
-        label.text = model.user.username
+        //label.text = model.user.username
+        //label.text = model.text
+        
+        let username = model.user.username
+        let description = model.text
+        
+        
+        let attributedString = joinText(username: username, description: description)
+        label.attributedText = attributedString
         
         self.model = model
         switch model.type {
@@ -93,15 +101,26 @@ class NotificationLikeEventTableViewCell: UITableViewCell {
                 return
             }
             postButton.sd_setBackgroundImage(with: thumbnail, for: .normal, completed: nil)
-            
-            
             break
+            
         case .follow:
             break
         }
         
-        label.text = model.text
+        
         profileImageView.sd_setImage(with: model.user.profilePicture, completed: nil)
+    }
+    
+    private func joinText(username:String, description:String) -> NSMutableAttributedString {
+        let boldText  = username + " "
+        let attrs = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)]
+        let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
+        
+        let normalText = description
+        let attrs2 = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(14))]
+        let normalString = NSMutableAttributedString(string:normalText, attributes:attrs2)
+        attributedString.append(normalString)
+        return attributedString
     }
     
     override func prepareForReuse() {
@@ -110,4 +129,14 @@ class NotificationLikeEventTableViewCell: UITableViewCell {
         label.text = nil
         profileImageView.image = nil
     }
+    
+    
+    @objc private func didTapPostButton() {
+        guard let model = model else {
+            return
+        }
+        
+        delgate?.didTapRelatedPostButton(model: model)
+    }
 }
+

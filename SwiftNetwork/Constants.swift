@@ -47,4 +47,21 @@ struct Constants {
     struct Constants {
         static let cornerRadius: CGFloat = 9
     }
+    
+    struct ProfileInfoHeaderCollectionReusableViewColor {
+        static let colorPink = UIColor(red: 244/255, green: 41/255, blue: 108/255, alpha: 1.0) /* #f4296c */
+    }
+    
+    struct ProfileTabsCollectionReusableViewColor {
+        static let padding: CGFloat = 8
+        static let colorPink = UIColor(red: 244/255, green: 41/255, blue: 108/255, alpha: 1.0) /* #f4296c */
+    }
+    
+    struct ColorText {
+        static let shifter = UIColor(red: 244/255, green: 41/255, blue: 108/255, alpha: 1.0) /* #f4296c */
+    }
+    
+    struct ColorButton {
+        static let shifter = UIColor(red: 244/255, green: 41/255, blue: 108/255, alpha: 1.0) /* #f4296c */
+    }
 }

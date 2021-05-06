@@ -46,7 +46,6 @@ final class NotificationsViewController: UIViewController {
         setupView()
         configureTableView()
         //addNoNotificationsView()
-        
         //spinner.startAnimating()
     }
 
@@ -58,12 +57,12 @@ final class NotificationsViewController: UIViewController {
     }
     
     private func fetchNotifications() {
-        for x in 0...100 {
-            
+        
+        for i in 0..<10 {
             let user = User(name: (first: "", last: ""),
                             username: "@username",
                             bio: "",
-                            profilePicture: URL(string: "https://wwww.google.com")!,
+                            profilePicture: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
                             birthDate: Date(),
                             gender: .male,
                             email: "",
@@ -73,7 +72,7 @@ final class NotificationsViewController: UIViewController {
             
             let post = UserPost(identifier: "",
                                 postType: .photo,
-                                thumbnailImage: URL(string: "https://wwww.google.com")!,
+                                thumbnailImage: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
                                 postURL: URL(string: "https://wwww.google.com")!,
                                 caption: nil,
                                 likeCount: [],
@@ -83,9 +82,11 @@ final class NotificationsViewController: UIViewController {
                                 owner: user)
             
             let model = UserNotification(
-                type: x % 2 == 0 ?
+                type: i % 2 == 0 ?
                     .like(post: post):
-                    .follow(state: .not_following), text: "Hello World",user: user)
+                    .follow(state: .not_following),
+                text: "He mentioned you in his comments.", user: user)
+            
             self.models.append(model)
             
         }
@@ -98,8 +99,7 @@ final class NotificationsViewController: UIViewController {
     }
     
     private func setupView() {
-        //title = "Notifications"
-        navigationItem.title = "Notificationsss"
+        navigationItem.title = "Notifications"
         view.backgroundColor = .systemBackground
 
         view.addSubview(tableView)
@@ -116,15 +116,12 @@ final class NotificationsViewController: UIViewController {
 
 // MARK: TableView
 extension NotificationsViewController: UITableViewDelegate, UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return models.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let model = models[indexPath.row]
-        
         switch model.type {
         case .like(_):
             //like cell
@@ -143,14 +140,12 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 52
+        return 70
     }
 }
 
-
 extension NotificationsViewController: NotificationLikeEventTableViewCellDelegate {
     func didTapRelatedPostButton(model: UserNotification) {
-        
         switch model.type {
         case .like(let post):
             let vc = PostViewController(model: post)
@@ -160,7 +155,6 @@ extension NotificationsViewController: NotificationLikeEventTableViewCellDelegat
         case .follow(_):
             fatalError("Dev Issue: Should never get called")
         }
-        
     }
 }
 
