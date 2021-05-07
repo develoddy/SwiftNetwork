@@ -41,7 +41,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
             selected: (UIImage(systemName: "person")!),
             unselected: (UIImage(systemName: "person.fill")?.withTintColor(Constants.ColorButton.shifter))!)
     
-        viewControllers = [ notification, profile, home, explorer  ]
+        viewControllers = [ profile, notification, home, explorer ]
     
         colorNavController()
     }

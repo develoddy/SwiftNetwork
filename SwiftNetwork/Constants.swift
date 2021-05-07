@@ -49,19 +49,21 @@ struct Constants {
     }
     
     struct ProfileInfoHeaderCollectionReusableViewColor {
-        static let colorPink = UIColor(red: 244/255, green: 41/255, blue: 108/255, alpha: 1.0) /* #f4296c */
+        /// ///UIColor(red: 151/255, green: 51/255, blue: 238/255, alpha: 1.0) /* #9733ee */
+        static let colorPink = UIColor(red: 252/255, green: 0/255, blue: 255/255, alpha: 1.0) /* #fc00ff */
     }
     
     struct ProfileTabsCollectionReusableViewColor {
         static let padding: CGFloat = 8
-        static let colorPink = UIColor(red: 244/255, green: 41/255, blue: 108/255, alpha: 1.0) /* #f4296c */
+        static let colorPink = UIColor(red: 252/255, green: 0/255, blue: 255/255, alpha: 1.0) /* #fc00ff */
     }
     
     struct ColorText {
-        static let shifter = UIColor(red: 244/255, green: 41/255, blue: 108/255, alpha: 1.0) /* #f4296c */
+        ///timber
+        static let shifter = UIColor(red: 252/255, green: 0/255, blue: 255/255, alpha: 1.0) /* #fc00ff */
     }
     
     struct ColorButton {
-        static let shifter = UIColor(red: 244/255, green: 41/255, blue: 108/255, alpha: 1.0) /* #f4296c */
+        static let shifter = UIColor(red: 252/255, green: 0/255, blue: 255/255, alpha: 1.0) /* #fc00ff */
     }
 }

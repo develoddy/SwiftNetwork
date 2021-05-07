@@ -44,17 +44,12 @@ class PostViewController: UIViewController {
     private var renderModels = [PostRenderViewModel]()
     
     private let tableView: UITableView = {
-        let table = UITableView()
-        // Register cells
-        table.register(IGFeedPostTableViewCell.self, forCellReuseIdentifier: IGFeedPostTableViewCell.identifier)
-        table.register(IGFeedPostHeaderTableViewCell.self, forCellReuseIdentifier: IGFeedPostHeaderTableViewCell.identifier)
-        table.register(IGFeedPostActionsTableViewCell.self, forCellReuseIdentifier: IGFeedPostActionsTableViewCell.identifier)
-        table.register(IGFeedPostGeneralTableViewCell.self, forCellReuseIdentifier: IGFeedPostGeneralTableViewCell.identifier)
-        table.register(IGFeedPostFooterTableViewCell.self, forCellReuseIdentifier: IGFeedPostFooterTableViewCell.identifier)
-        return table
+        let tableView = UITableView()
+        //let tableView = UITableView(frame: .zero, style: .grouped)
+        return tableView
     }()
     
-    // MARK: Init
+    // MARK: Init Receive data from the ProfileViewcontroller
     init(model: UserPost?) {
         self.model = model
         super.init(nibName: nil, bundle: nil)
@@ -69,11 +64,16 @@ class PostViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         configureTableView()
+        delegateTableView()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
     }
     
     private func configureModels() {
-        
-        // 4 comments
+        /*
         var comments = [PostComments]()
         for x in 0..<4 {
             comments.append(
@@ -98,7 +98,7 @@ class PostViewController: UIViewController {
             counts: UserCount(followers: 1, following: 1, posts: 1),
             joinDate: Date())
         
-        ///User post
+        
         let post = UserPost(
             identifier: "",
             postType: .photo,
@@ -109,30 +109,23 @@ class PostViewController: UIViewController {
             comments: comments,
             createDate: Date(),
             taggedUsers: [],
-            owner:  user)
+            owner:  user)*/
         
         guard let userPostModel = self.model else {
             return
         }
         
         
-        // Header
-        //renderModels.append(PostRenderViewModel(renderType: .header(provider: userPostModel.owner )))
-        
-        // Post
+        /// Header
+        renderModels.append(PostRenderViewModel(renderType: .header(provider: userPostModel.owner )))
+        ///Post
         renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: userPostModel)))
-        
-        // Actions
-        renderModels.append(PostRenderViewModel(renderType: .actions(provider: post)))
-        
-        
-        
-        renderModels.append(PostRenderViewModel(renderType: .comments(comments: comments)))
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
+        ///Actions
+        renderModels.append(PostRenderViewModel(renderType: .actions(provider: userPostModel))) //post
+        ///Description
+        renderModels.append(PostRenderViewModel(renderType: .descriptions(post: userPostModel))) //post
+        ///comment
+        renderModels.append(PostRenderViewModel(renderType: .comments(comments: userPostModel.comments))) //comments
     }
     
     private func setupView() {
@@ -142,14 +135,22 @@ class PostViewController: UIViewController {
     
     private func configureTableView() {
         tableView.backgroundColor = .secondarySystemFill
+        tableView.register(IGFeedPostTableViewCell.self, forCellReuseIdentifier: IGFeedPostTableViewCell.identifier)
+        tableView.register(IGFeedPostHeaderTableViewCell.self, forCellReuseIdentifier: IGFeedPostHeaderTableViewCell.identifier)
+        tableView.register(IGFeedPostActionsTableViewCell.self, forCellReuseIdentifier: IGFeedPostActionsTableViewCell.identifier)
+        tableView.register(IGFeedPostDescriptionTableViewCell.self, forCellReuseIdentifier: IGFeedPostDescriptionTableViewCell.identifier)
+        tableView.register(IGFeedPostGeneralTableViewCell.self, forCellReuseIdentifier: IGFeedPostGeneralTableViewCell.identifier)
+        tableView.register(IGFeedPostFooterTableViewCell.self, forCellReuseIdentifier: IGFeedPostFooterTableViewCell.identifier)
+        tableView.separatorStyle = .none
+    }
+    
+    private func delegateTableView() {
         tableView.delegate = self
         tableView.dataSource = self
     }
 }
 
 extension PostViewController: UITableViewDelegate, UITableViewDataSource {
-    
-
     func numberOfSections(in tableView: UITableView) -> Int {
         return renderModels.count
     }
@@ -157,7 +158,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch renderModels[section].renderType {
         case .actions(_):  return 1
-        case .comments(let comments): return comments.count > 4 ? 4 : comments.count
+        case .comments(let comments): return comments.count > 0 ? comments.count : comments.count
         case .primaryContent(_):  return 1
         case .header(_):  return 1
         case .descriptions(_):  return 1
@@ -168,29 +169,34 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let model = renderModels[indexPath.section]
         
         switch model.renderType {
-        case .actions(let actions):
+        case .actions(_/**let actions**/):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostActionsTableViewCell.identifier, for: indexPath) as! IGFeedPostActionsTableViewCell
             return cell
         case .comments(let comments):
+            let comment = comments[indexPath.row] ///Se obtiene cada fila del array de comments
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier, for: indexPath) as! IGFeedPostGeneralTableViewCell
+            cell.configure(with: comment)
             return cell
         case .primaryContent(let post):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostTableViewCell.identifier, for: indexPath) as! IGFeedPostTableViewCell
+            cell.configure(with: post)
             return cell
         case .header(let user):
-            let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier, for: indexPath) as! IGFeedPostHeaderTableViewCell
+              let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier,for: indexPath) as! IGFeedPostHeaderTableViewCell
+            cell.configure(with: user)
+            cell.backgroundColor = .red
             return cell
-        case .descriptions(let descriptions):
+        case .descriptions(let post):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
+            cell.configure(with: post)
             return cell
-        case .footer(let footer):
+        case .footer(_/**let footer**/):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostFooterTableViewCell.identifier, for: indexPath) as! IGFeedPostFooterTableViewCell
             return cell
-        case .collections(collections: let collections):
+        case .collections(_/**let collections**/):
             return UITableViewCell()
         }
     }
@@ -202,13 +208,13 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let model = renderModels[indexPath.section]
         switch model.renderType {
-        case .actions(_): return 60
-        case .comments(_): return 50
-        case .primaryContent(_): return tableView.width
-        case .header(_): return 70
-        case .descriptions(_): return 60
-        case .collections(_): return 50
-        case .footer(_): return 50
+        case .actions(_): return 60 ///Actions
+        case .comments(_): return 30 ///Comments
+        case .primaryContent(_): return tableView.width ///Post
+        case .header(_): return 70 ///Hader
+        case .descriptions(_): return 90 ///Descriptions
+        case .collections(_): return 50 ///Collections
+        case .footer(_): return 50 ///Footer
         }
     }
 }

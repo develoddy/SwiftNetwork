@@ -45,7 +45,7 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        //contentView.backgroundColor = .purple
+        contentView.backgroundColor = .systemBackground
         contentView.addSubview(profilePhotoImageView)
         contentView.addSubview(usernameLabel)
         contentView.addSubview(moreButton)
@@ -54,17 +54,6 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    @objc private func didTapButton() {
-        delegate?.didTapMoreButton()
-    }
-    
-    public func configure(with model: User) {
-        usernameLabel.text = model.username
-        //profilePhotoImageView.image = UIImage(systemName: "person.circle")
-        profilePhotoImageView.image = UIImage(named: "user5")
-        //profilePhotoImageView.sd_setImage(with: model.profilePicture, completed: nil)
     }
     
     override func layoutSubviews() {
@@ -92,5 +81,19 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         usernameLabel.text = nil
         profilePhotoImageView.image = nil
         
+    }
+    
+    public func configure(with model: User) {
+        usernameLabel.text = model.username
+        //profilePhotoImageView.image = UIImage(systemName: "person.circle")
+        profilePhotoImageView.image = UIImage(named: "user5")
+        //profilePhotoImageView.sd_setImage(with: model.profilePicture, completed: nil)
+    }
+    
+    
+    
+    
+    @objc private func didTapButton() {
+        delegate?.didTapMoreButton()
     }
 }

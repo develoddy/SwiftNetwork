@@ -50,7 +50,9 @@ final class IGFeedPostTableViewCell: UITableViewCell {
         //return
         switch post.postType {
         case .photo:
-            postImageView.image = UIImage(named: "img6")
+            let url = post.thumbnailImage
+            postImageView.sd_setImage(with: url, completed: nil)
+            //postImageView.image = UIImage(named: post.) //"img6"
             //label.text = post.caption
         case .video:
             //Load and play video

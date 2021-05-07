@@ -38,6 +38,31 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupModel() {
+        
+        var likes = [PostLike]()
+        for i in 0..<5 {
+            let data = PostLike(
+                username: "jor \(i)",
+                postIdentifier: "",
+                text: "Mi primera publicacion para el test de la App.",
+                likes: i)
+            likes.append(data)
+        }
+        
+        var comments = [PostComments]()
+        for x in 0..<4 {
+            comments.append(
+                PostComments(
+                    identifier: "123\(x)",
+                    username: "@save",
+                    text: "Great post!",
+                    createDate: Date(),
+                    likes: []
+                )
+            )
+        }
+        
+        
         let user = User(
             name: (first: "", last: ""),
             username: "joe",
@@ -50,16 +75,15 @@ final class ProfileViewController: UIViewController {
             joinDate: Date())
         
         for i in 0..<10 {
-            
             let post = UserPost(
                 identifier: "",
                 postType: .photo,
                 thumbnailImage: URL(
                     string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
                 postURL: URL(string: "https://wwww.google.com")!,
-                caption: nil,
-                likeCount: [],
-                comments: [],
+                caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
+                likeCount: likes,
+                comments: comments,
                 createDate: Date(),
                 taggedUsers: [],
                 owner: user)
@@ -127,50 +151,26 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
         if section == 0 {
             return 0
         }
-        // return userPosts.count
-        return userPosts.count //10
+        return userPosts.count
     }
     
+    ///PhotoCollectionViewCell
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let model = userPosts[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
-        ///let image = model.thumbnailImage.relativeString
         cell.configure(with: model)
-        //cell.configure(debug: image/*"img6"*/)
         return cell
     }
     
+    ///Select o click on photo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         // get the model and open post controller
         let model = userPosts[indexPath.row]
-        
-//        let user = User(name: (first: "", last: ""),
-//                        username: "joe",
-//                        bio: "",
-//                        profilePicture: URL(string: "https://wwww.google.com")!,
-//                        birthDate: Date(),
-//                        gender: .male,
-//                        email: "",
-//                        counts: UserCount(followers: 1, following: 1, posts: 1),
-//                        joinDate: Date() )
-//
-//        let post = UserPost(identifier: "",
-//                            postType: .photo,
-//                            thumbnailImage: URL(string: "https://wwww.google.com")!,
-//                            postURL: URL(string: "https://wwww.google.com")!,
-//                            caption: nil,
-//                            likeCount: [],
-//                            comments: [],
-//                            createDate: Date(),
-//                            taggedUsers: [],
-//                            owner: user)
-        
-        ///let vc = PostViewController(model: post)
         let vc = PostViewController(model: model)
-        vc.title = model.postType.rawValue
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
+        vc.title = "Posts" ///model.postType.rawValue
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

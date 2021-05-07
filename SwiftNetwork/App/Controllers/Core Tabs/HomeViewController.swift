@@ -268,7 +268,8 @@ class HomeViewController: UIViewController {
         let post = UserPost(
             identifier: "post 2",
             postType: .photo,
-            thumbnailImage: URL(string: "https://wwww.google.com")!,
+            thumbnailImage: URL(
+                string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img2.jpeg")!,
             postURL: URL(string: "https://wwww.google.com")!,
             caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
             likeCount: likes,
