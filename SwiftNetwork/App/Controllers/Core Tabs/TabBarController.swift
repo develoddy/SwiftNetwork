@@ -24,6 +24,12 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
             unselected: (UIImage(systemName: "house.fill")?.withTintColor(Constants.ColorButton.shifter))!)
         
         let explorer = generateNavController(
+            vc: SearchViewController(), //ExplorerViewController(),
+            title: "Explore",
+            selected: UIImage(systemName: "magnifyingglass")!,
+            unselected: (UIImage(systemName: "magnifyingglass")?.withTintColor(Constants.ColorButton.shifter))!)
+        
+        let explorer2 = generateNavController(
             vc: ExplorerViewController(),
             title: "Explore",
             selected: UIImage(systemName: "magnifyingglass")!,
@@ -41,7 +47,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
             selected: (UIImage(systemName: "person")!),
             unselected: (UIImage(systemName: "person.fill")?.withTintColor(Constants.ColorButton.shifter))!)
     
-        viewControllers = [ profile, notification, home, explorer ]
+        viewControllers = [ explorer, explorer2, profile, notification, home ]
     
         colorNavController()
     }

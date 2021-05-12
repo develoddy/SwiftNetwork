@@ -62,7 +62,6 @@ final class ProfileViewController: UIViewController {
             )
         }
         
-        
         let user = User(
             name: (first: "", last: ""),
             username: "joe",

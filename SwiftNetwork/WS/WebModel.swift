@@ -38,9 +38,10 @@ class WebModel: NSObject {
         }
     }
 
-    @discardableResult class func iniciarSesion(_ objUser : UserBE,
-                                                conCompletionCorrecto completionCorrecto : @escaping Closures.Login,
-                                                error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+    @discardableResult class func iniciarSesion(
+        _ objUser : UserBE,
+        conCompletionCorrecto completionCorrecto : @escaping Closures.Login,
+        error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
         
         let dic : [String : Any] = [
             "email"         : objUser.email!    ,
@@ -67,6 +68,40 @@ class WebModel: NSObject {
             }
         }
     }
+    
+    //MARK: A call is made to the backend
+    @discardableResult class func  startSearch(_ objSearch : UserSearchBE,
+                                               _ token: String?,
+                                               conCompletionCorrecto completionCorrecto : @escaping Closures.SearchUser,
+                                               error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        
+        let dic : [String : Any] = [ "name": objSearch.name!,
+                                     "typedevice": 1,
+                                     "tokendevice": "Se debe enviar el token push del dispositivo"]
+        
+        let resultSearch = WebSender.doPOSTTokenToURL(conURL: self.CDMWebModelURLBase,
+                                                      conPath: "api/auth/listNameUser" as NSString,
+                                                      conParametros: dic,
+                                                      conToken: token! as NSString) { (objRespuesta) in
+    
+            let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
+            let arrayRespuesta       = diccionarioRespuesta?["error"]
+            let mensajeError         = WebModel.obtenerMensajeDeError(paraData: diccionarioRespuesta)
+            if arrayRespuesta == nil {
+                if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
+                    let objUsuario = WebTranslator.translateResponseSearchnBE(diccionarioRespuesta!)
+                    completionCorrecto(objUsuario)///Success
+                }
+            } else {
+                if  arrayRespuesta as! String == Constants.Error.unauthorized {
+                    let mensajeErrorFinal = (diccionarioRespuesta != nil && diccionarioRespuesta?.count == 0) ? Constants.LogInError.logInInvalidte: mensajeError
+                   procesoIncorrecto(mensajeErrorFinal)///Ko
+               }
+            }
+        }
+        return resultSearch
+    }
+    
     
     
     @discardableResult class func sesionSignIn(_ objUser : UserBE,

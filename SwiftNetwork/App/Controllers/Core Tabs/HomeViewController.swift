@@ -114,6 +114,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        handleNotAuthenticated()
         setupModels()
         configureTableView()
         delegateTableView()
@@ -178,6 +179,17 @@ class HomeViewController: UIViewController {
         headerView.addSubview(likeButton)
         headerView.addSubview(commentButton)
         headerView.addSubview(sendButton)
+    }
+    
+    private func handleNotAuthenticated() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let token = appDelegate.objUsuarioSesion?.token
+        
+        if token == nil {
+            let vc = LoginViewController()
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc, animated: false)
+        }
     }
     
     private func setupNavigationBarItems() {

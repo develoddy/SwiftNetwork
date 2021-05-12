@@ -10,10 +10,10 @@ import UIKit
 class UserLoginBC: NSObject {
     
     //MARK: logOut
-    @discardableResult class func logOut(_ token: String?,
-                                        conCompletionCorrecto completioCorrecto: @escaping Closures.LogOut,
-                                        conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError ) -> URLSessionDataTask? {
-        
+    @discardableResult class func logOut(
+        _ token: String?,
+        conCompletionCorrecto completioCorrecto: @escaping Closures.LogOut,
+        conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError ) -> URLSessionDataTask? {
         
         return WebModel.sesionSignOut(token!, conCompletionCorrecto: { (objUser) in
             completioCorrecto(objUser)
@@ -24,9 +24,11 @@ class UserLoginBC: NSObject {
     
     
     //MARK: logIn
-    @discardableResult class func logIn(_ objUser: UserBE,
-                                        conCompletionCorrecto completioCorrecto: @escaping Closures.Login,
-                                        conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError ) -> URLSessionDataTask? {
+    @discardableResult class func logIn(
+        _ objUser: UserBE,
+        conCompletionCorrecto completioCorrecto: @escaping Closures.Login,
+        conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError ) -> URLSessionDataTask? {
+        
         if objUser.email?.count == 0 {
             completionIncorrecto("You need enter your email")
             return nil
@@ -46,9 +48,11 @@ class UserLoginBC: NSObject {
     }
     
     //MARK: signIn
-    @discardableResult class func signIn(_ objUser: UserBE,
-                                        conCompletionCorrecto completioCorrecto: @escaping Closures.Login,
-                                        conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError ) -> URLSessionDataTask? {
+    @discardableResult class func signIn(
+        _ objUser: UserBE,
+        conCompletionCorrecto completioCorrecto: @escaping Closures.Login,
+        conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError ) -> URLSessionDataTask? {
+        
         if objUser.name?.count == 0 {
             completionIncorrecto("You need enter your name")
             return nil
@@ -66,8 +70,10 @@ class UserLoginBC: NSObject {
             return nil
         }
             
-        return WebModel.sesionSignIn(objUser, conCompletionCorrecto: { (objUser) in
+        return WebModel.sesionSignIn(
+            objUser, conCompletionCorrecto: { (objUser) in
             UserLoginBC.guardarSesion(deUsuario: objUser)
+                
             completioCorrecto(objUser)
         }, error: { (mensajeError) in
             completionIncorrecto(mensajeError)
