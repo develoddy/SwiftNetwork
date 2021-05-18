@@ -28,8 +28,9 @@ class HomeViewController: UIViewController {
         button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
         button.setImage(image, for: UIControl.State.normal)
         button.setTitle("Directo", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
         button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
+        ///button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
         button.layer.cornerRadius = 10
         //button.titleLabel?.font = UIFont(name: "Directo", size: 8)
         return button
@@ -42,24 +43,25 @@ class HomeViewController: UIViewController {
         let image = UIImage(systemName: "photo.on.rectangle", withConfiguration: config)
         button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
         button.setImage(image, for: UIControl.State.normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
         button.setTitle("Foto", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
+        ///button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
         button.layer.cornerRadius = 10
-        
         return button
     }()
     
     private let sendButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
-        button.tintColor = .systemPurple
+        button.tintColor = Constants.Color.blue
         let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold) //semibold, regular, thin
         let image = UIImage(systemName: "location.fill", withConfiguration: config)
         button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
         button.setImage(image, for: UIControl.State.normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
         button.setTitle("Ubicación", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
+        ///button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
         button.layer.cornerRadius = 10
         return button
     }()
@@ -77,18 +79,29 @@ class HomeViewController: UIViewController {
     }()
     
     private let imageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "person.circle"))
+        //let imageView = UIImageView(image: UIImage(systemName: "person.circle"))
+        let imageView = UIImageView(image: UIImage(named: "user3"))
         imageView.tintColor = .darkGray
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
-    private let textField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "¿Eddy, en que piensas?"
-        textField.textColor = .black
-        textField.font = .systemFont(ofSize: 18, weight: .regular)
-        return textField
+//    private let textField: UITextField = {
+//        let textField = UITextField()
+//        textField.placeholder = "¿Eddy, en que piensas?"
+//        textField.textColor = .black
+//        textField.font = .systemFont(ofSize: 18, weight: .regular)
+//        return textField
+//    }()
+    
+    private let writePostButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("¿Eddy, en que piensas?", for: .normal)
+        button.contentHorizontalAlignment = .left
+        button.setTitleColor(Constants.Color.lightDark, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .regular)
+        //button.backgroundColor = .systemGreen
+        return button
     }()
     
     private let separatorView: UIView = {
@@ -114,11 +127,12 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        handleNotAuthenticated()
+        //handleNotAuthenticated()
         setupModels()
         configureTableView()
         delegateTableView()
         setupNavigationBarItems()
+        addButtonActions()
     }
     
     override func viewDidLayoutSubviews() {
@@ -140,9 +154,9 @@ class HomeViewController: UIViewController {
             height: 50)
         imageView.layer.cornerRadius = imageView.height/2
         
-        textField.backgroundColor = .systemBackground
-        textField.frame = CGRect(
-            x: 15+imageView.width,
+        writePostButton.backgroundColor = .systemBackground
+        writePostButton.frame = CGRect(
+            x: 20+imageView.width,
             y: 5,
             width: headerView.width-20-imageView.width,
             height: 50)
@@ -164,7 +178,6 @@ class HomeViewController: UIViewController {
                 height: 30)
         }
         headerView.addSubview(separatorView)
-        
         NSLayoutConstraint.activate([
             separatorView.leadingAnchor.constraint(equalTo:headerView.leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo:headerView.trailingAnchor),
@@ -175,7 +188,6 @@ class HomeViewController: UIViewController {
     private func setup() {
         view.addSubview(tableView)
         tableView.tableHeaderView = createTableHeader()
-        
         headerView.addSubview(likeButton)
         headerView.addSubview(commentButton)
         headerView.addSubview(sendButton)
@@ -195,7 +207,7 @@ class HomeViewController: UIViewController {
     private func setupNavigationBarItems() {
         setupLeftNavItems()
         setupRightNavItems()
-        setupRemaningNavItems()
+        //setupRemaningNavItems()
     }
     
     private func configureTableView() {
@@ -214,11 +226,23 @@ class HomeViewController: UIViewController {
         tableView.dataSource = self
     }
     
+    private func addButtonActions() {
+        writePostButton.addTarget(self, action: #selector(didTapWritePostButton), for: .touchUpInside)
+    }
+    
+    @objc private func didTapWritePostButton() {
+        let vc = PublishPostViewController()
+        vc.title = "Create Post"
+        vc.modalPresentationStyle = .fullScreen
+        vc.navigationItem.largeTitleDisplayMode = .never
+        present(UINavigationController(rootViewController: vc), animated: true)
+    }
+    
     ///Header
     private func createTableHeader() -> UIView? {
         view.addSubview(headerView)
         headerView.addSubview(imageView)
-        headerView.addSubview(textField)
+        headerView.addSubview(writePostButton)
         headerView.addSubview(buttonVideo)
         return headerView
     }
@@ -262,7 +286,7 @@ class HomeViewController: UIViewController {
     func createArrayUser() -> User {
         let user = User(
             name: (first: "", last: ""),
-            username: "@jordan",
+            username: "jordan",
             bio: "",
             profilePicture: URL(string: "https://wwww.google.com")!,
             birthDate: Date(),
@@ -281,7 +305,7 @@ class HomeViewController: UIViewController {
             identifier: "post 2",
             postType: .photo,
             thumbnailImage: URL(
-                string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img2.jpeg")!,
+                string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img9.jpeg")!,
             postURL: URL(string: "https://wwww.google.com")!,
             caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
             likeCount: likes,
@@ -358,20 +382,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                         for: indexPath) as! CollectionTableViewCell
                     cell.configure(with: collections)
                     cell.delegate = self
-                    
-                    
-                    let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
-                    separatorView.backgroundColor = .secondarySystemFill
-                    
-                    separatorView.translatesAutoresizingMaskIntoConstraints  = false
-                    cell.contentView.addSubview(separatorView)
-                    NSLayoutConstraint.activate([
-                        separatorView.leadingAnchor.constraint(equalTo:cell.contentView.leadingAnchor),
-                        separatorView.trailingAnchor.constraint(equalTo:cell.contentView.trailingAnchor),
-                        separatorView.heightAnchor.constraint(equalToConstant:5),
-                        separatorView.bottomAnchor.constraint(equalTo:cell.contentView.bottomAnchor)])
-                    
-                    
                     return cell
             case .comments, .actions, .primaryContent, .header, .descriptions, .footer :
                     return UITableViewCell()
@@ -387,6 +397,17 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                             withIdentifier: IGFeedPostHeaderTableViewCell.identifier,
                             for: indexPath) as! IGFeedPostHeaderTableViewCell
                         cell.configure(with: user)
+                        let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
+                        separatorView.backgroundColor = .secondarySystemFill
+                        
+                        separatorView.translatesAutoresizingMaskIntoConstraints  = false
+                        cell.contentView.addSubview(separatorView)
+                        
+                        NSLayoutConstraint.activate([
+                            separatorView.leadingAnchor.constraint(equalTo:cell.contentView.leadingAnchor),
+                            separatorView.trailingAnchor.constraint(equalTo:cell.contentView.trailingAnchor),
+                            separatorView.heightAnchor.constraint(equalToConstant:5),
+                            separatorView.topAnchor.constraint(equalTo:cell.contentView.topAnchor)])
                         return cell
                     case .comments, .actions, .primaryContent, .collections, .descriptions, .footer :
                         return UITableViewCell()
@@ -461,7 +482,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     ///Height de Cell
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 { return 320 } //Collection
+        if indexPath.section == 0 { return 250 } //Collection
         else {
             let subSection = indexPath.section % 7
             if subSection        == 1 { return 70 } /// Header
@@ -512,33 +533,46 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
 // MARK: Navigation Buttons
 extension HomeViewController {
     private func setupRemaningNavItems() {
-        let titleImageView = UIImageView(image: UIImage(systemName: "bag.fill"))
+        //let titleImageView = UIImageView(image: UIImage(systemName: "bag"))
+        let titleImageView = UIImageView(image: UIImage(named: "logo"))
+        ///titleImageView.backgroundColor = .red
+        titleImageView.tintColor = Constants.Color.blue
         titleImageView.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
         titleImageView.contentMode = .scaleAspectFit
         navigationItem.titleView = titleImageView
+        
+        
+    }
+    
+    private func setupLeftNavItems() {
+        /*let followButton = UIButton(type: .system)
+        followButton.setImage(UIImage(systemName: "person.crop.circle.fill.badge.plus"), for: .normal)
+        followButton.tintColor = Constants.ColorText.purple
+        followButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: followButton)*/
+        
+        
+        let followButton = UIButton(type: .system)
+        followButton.setTitle("N O O R I", for: .normal)
+        followButton.titleLabel?.font = .systemFont(ofSize: 26, weight: .black )
+        followButton.tintColor = Constants.Color.blue
+        followButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: followButton)
         
         navigationController?.navigationBar.backgroundColor = .white
         navigationController?.navigationBar.isTranslucent = false
     }
     
-    private func setupLeftNavItems() {
-        let followButton = UIButton(type: .system)
-        followButton.setImage(UIImage(systemName: "person.crop.circle.fill.badge.plus"), for: .normal)
-        followButton.tintColor = .black
-        followButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: followButton)
-    }
-    
     private func  setupRightNavItems() {
         let searchButton = UIButton(type: .system)
-        searchButton.setImage(UIImage(systemName: "paperplane"), for: .normal)
-        searchButton.tintColor = .black
+        searchButton.setImage(UIImage(systemName: "paperplane.fill"), for: .normal)
+        searchButton.tintColor =  Constants.Color.blue
         searchButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
         
         let composeButton = UIButton(type: .system)
-        composeButton.setImage(UIImage(systemName: "plus.rectangle.on.rectangle"), for: .normal)
-        composeButton.tintColor = .black
-        composeButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+        composeButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        composeButton.tintColor = Constants.Color.blue
+        composeButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(customView: searchButton),
             UIBarButtonItem(customView: composeButton)

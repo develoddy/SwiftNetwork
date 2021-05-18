@@ -35,10 +35,18 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         return label
     }()
     
+    private let postTimeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "44 min"
+        label.font = .systemFont(ofSize: 12, weight: .regular)
+        label.backgroundColor = .systemBackground
+        return label
+    }()
+    
     private let moreButton: UIButton = {
        let button = UIButton()
         button.tintColor = .label
-        button.tintColor = .systemPurple
+        button.tintColor = Constants.Color.blue
         button.setImage(UIImage(systemName:"ellipsis"), for: .normal)
         return button
     }()
@@ -48,6 +56,7 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         contentView.backgroundColor = .systemBackground
         contentView.addSubview(profilePhotoImageView)
         contentView.addSubview(usernameLabel)
+        contentView.addSubview(postTimeLabel)
         contentView.addSubview(moreButton)
         moreButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
     }
@@ -67,11 +76,20 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
             height: contentView.height/1.5) ///size
         profilePhotoImageView.layer.cornerRadius = profilePhotoImageView.height/2 //size/2
         
+        
+        let labelHeight = contentView.height/3
+        //usernameLabel.backgroundColor = .systemRed
         usernameLabel.frame = CGRect(
             x: profilePhotoImageView.right+10,
-            y: 2,
+            y: 15,
             width: contentView.width-(size*2)-15,
-            height: contentView.height-4)
+            height: labelHeight)//contentView.height-4)
+        
+        postTimeLabel.frame = CGRect(
+            x: profilePhotoImageView.right+10,
+            y: usernameLabel.bottom,
+            width: contentView.width-(size*2)-15,
+            height: labelHeight)
         
         moreButton.frame = CGRect(x: contentView.width-size, y: 2, width: size, height: size)
     }

@@ -7,6 +7,26 @@
 
 import UIKit
 
+struct CollectionTableCellModel {
+    let title: String
+    let imageName: String
+}
+
+/// States of render cell
+enum StoriesRenderType {
+    case create(create: String)
+    case stories(stories: [CollectionTableCellModel])
+}
+
+/// Model of  renderd Post
+struct StoriesRenderViewModel {
+    let renderType: StoriesRenderType
+}
+
+
+
+
+
 protocol CollectionTableViewCellDelegate: AnyObject {
     func didSelectItem(with model: CollectionTableCellModel)
 }
@@ -18,6 +38,7 @@ class CollectionTableViewCell: UITableViewCell {
     static let identifier = "CollectionTableViewCell"
     
     private var models = [CollectionTableCellModel]()
+    private var renderModels = [StoriesRenderViewModel]()
     
     private let collectionView: UICollectionView
     
@@ -35,11 +56,12 @@ class CollectionTableViewCell: UITableViewCell {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        collectionView.backgroundColor = .systemBackground //.systemGray 
+        collectionView.backgroundColor = .systemBackground 
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
     
         collectionView.register(TableCollectionViewCell.self, forCellWithReuseIdentifier: TableCollectionViewCell.identifier)
+        collectionView.register(TableCreateStorieViewCell.self, forCellWithReuseIdentifier: TableCreateStorieViewCell.identifier)
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -55,6 +77,13 @@ class CollectionTableViewCell: UITableViewCell {
     public func configure(with models: [CollectionTableCellModel]) {
         self.models = models
         collectionView.reloadData()
+        
+//        guard let userPostModel = self.models else {
+//            return
+//        }
+        
+        renderModels.append(StoriesRenderViewModel(renderType: .create(create: "")))
+        renderModels.append(StoriesRenderViewModel(renderType: .stories(stories: self.models)))
     }
     
     required init?(coder: NSCoder) {
@@ -63,22 +92,55 @@ class CollectionTableViewCell: UITableViewCell {
 }
 
 extension CollectionTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return renderModels.count
+    }
    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return models.count
+        //return models.count
+        switch renderModels[section].renderType {
+        case .create(_): return 1
+        case .stories(let stories): return stories.count > 0 ? stories.count : stories.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let model = models[indexPath.row]
+        /*let model = models[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TableCollectionViewCell.identifier,
                                                       for: indexPath) as! TableCollectionViewCell
         cell.configure(with: model)
-        return cell
+        return cell*/
+        
+        
+        let model = renderModels[indexPath.section]
+        switch model.renderType {
+        case .create(_):
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TableCreateStorieViewCell.identifier, for: indexPath) as! TableCreateStorieViewCell
+            return cell
+        
+        case .stories(let stories):
+            let model = stories[indexPath.row]
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TableCollectionViewCell.identifier,
+                                                          for: indexPath) as! TableCollectionViewCell
+            cell.configure(with: model)
+            return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let model = renderModels[indexPath.section]
+        switch model.renderType {
+        //case .actions(_): return 60 ///Actions
+        case .create(_): return 50
+        case .stories(_): return 50
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width/2.9, height: collectionView.frame.width/1.4) //1.7
+        ///return CGSize(width: collectionView.frame.width/2.9, height: collectionView.frame.width/1.4) //1.7
+        return CGSize(width: collectionView.frame.width/3, height: collectionView.frame.width/1.7) //1.7
     }
         
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

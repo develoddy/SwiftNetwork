@@ -41,6 +41,7 @@ class WebTranslator: NSObject {
             let jsonUser = try! JSONDecoder().decode(WebUserSearchData.self, from: json)
             for i in 0..<jsonUser.user.count {
                 var search = Search()
+                search.username = jsonUser.user[i].username
                 search.name = jsonUser.user[i].name
                 searchs.append(search)
             }

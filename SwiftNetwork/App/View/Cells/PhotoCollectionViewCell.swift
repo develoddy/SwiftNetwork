@@ -17,15 +17,15 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     private let photoImageView: UIImageView = {
        let imageView = UIImageView()
         imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill //.scaleAspectFit
         return imageView
     }()
     
     private let label: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 14, weight: .bold)
         label.text = "Name"
-        label.font = .systemFont(ofSize: 22, weight: .semibold)
         return label
     }()
     
@@ -44,7 +44,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.backgroundColor = .secondarySystemBackground
-        contentView.layer.cornerRadius = 8
+        contentView.layer.cornerRadius = 0
         contentView.layer.masksToBounds = true
         
         contentView.addSubview(photoImageView)
@@ -61,7 +61,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         photoImageView.frame = contentView.bounds
-        label.frame = CGRect(x: 10, y: contentView.height/2, width: contentView.width-20, height: contentView.height/2)
+        label.frame = CGRect(x: 10, y: contentView.height/2, width: contentView.width-20, height: contentView.height/1.5)
     }
     
     override func prepareForReuse() {

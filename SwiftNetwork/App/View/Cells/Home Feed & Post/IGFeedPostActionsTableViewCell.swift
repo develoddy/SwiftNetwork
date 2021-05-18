@@ -23,40 +23,59 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     
     private let likeButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 28, weight: .semibold) //semibold, regular, thin
-        let image = UIImage(systemName: "heart", withConfiguration: config)
+        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .regular) //semibold, regular, thin
+        let image = UIImage(systemName: "hand.thumbsup", withConfiguration: config)
         button.setImage(image, for: .normal)
-        button.tintColor = .black
+        button.tintColor = .darkGray
+        //button.titleLabel?.font = .systemFont(ofSize: 8, weight: .regular)
         return button
     }()
     
     private let commentButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 26, weight: .semibold) //semibold, regular, thin
-        let image = UIImage(systemName: "message", withConfiguration: config)
+        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .regular) //semibold, regular, thin
+        let image = UIImage(systemName: "message", withConfiguration: config) ///message
         button.setImage(image, for: .normal)
-        button.tintColor = .black
+        button.tintColor = .darkGray
         return button
     }()
+    
+    private let shareButton: UIButton = {
+        let button = UIButton()
+        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .regular) //semibold, regular, thin
+        let image = UIImage(systemName: "arrowshape.turn.up.right", withConfiguration: config) ///arrowshape.turn.up.right
+        button.setImage(image, for: .normal)
+        button.tintColor = .darkGray
+        return button
+    }()
+    
     
     private let sendButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 26, weight: .semibold) //semibold, regular, thin
-        let image = UIImage(systemName: "paperplane", withConfiguration: config)
+        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .regular) //semibold, regular, thin
+        let image = UIImage(systemName: "paperplane", withConfiguration: config) ///paperplane
         button.setImage(image, for: .normal)
-        button.tintColor = .black
+        button.tintColor = .darkGray
         return button
     }()
     
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        //contentView.backgroundColor = .systemPink
         contentView.addSubview(likeButton)
         contentView.addSubview(commentButton)
         contentView.addSubview(sendButton)
+        contentView.addSubview(shareButton)
         
         likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         commentButton.addTarget(self, action: #selector(didTapCommetnButton), for: .touchUpInside)
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
+        
+        addTextOnLikeButton()
+        addTextOnCommentButton()
+        addTextOnShareButton()
+        addTextOnSendButton()
     }
     
     required init?(coder: NSCoder) {
@@ -69,10 +88,9 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        // like, comment, send
-        let buttonSize = contentView.height-10
-        
-        let buttons = [likeButton, commentButton, sendButton]
+        // like, comment, send, shared
+        /*let buttonSize = contentView.height-10
+        let buttons = [likeButton, commentButton, sendButton, shareButton]
         for x in 0..<buttons.count {
             let button = buttons[x]
             button.frame = CGRect(
@@ -80,6 +98,22 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
                 y: 5,
                 width: buttonSize,
                 height: buttonSize)
+        }*/
+        
+        //let buttonSize = contentView.height
+        
+        let buttons = [likeButton, commentButton, shareButton, sendButton ]
+        let widthSize = (contentView.width / CGFloat(buttons.count))//-6
+        
+        for x in 0..<buttons.count {
+            let button = buttons[x]
+            button.backgroundColor = .systemBackground
+            ///button.layer.cornerRadius = 5
+            button.frame = CGRect(
+                x: (CGFloat(x)*widthSize)+(1*CGFloat(x)), //x+1
+                y: 5,
+                width: widthSize,
+                height: widthSize/2)
         }
     }
     
@@ -102,5 +136,121 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     }
     @objc private func didTapSendButton() {
         delegate?.didTapSendButton()
+    }
+}
+
+
+//MARK: BUTTONS
+extension IGFeedPostActionsTableViewCell {
+    private func addTextOnLikeButton() {
+        likeButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+        let buttonText: NSString = "\nLike" // 10\nPost
+        let newlineRange: NSRange = buttonText.range(of: "\n")
+        
+        //getting both substrings
+        var substring1 = ""
+        var substring2 = ""
+        
+        if(newlineRange.location != NSNotFound) {
+            substring1 = buttonText.substring(to: newlineRange.location)
+            substring2 = buttonText.substring(from: newlineRange.location)
+        }
+        
+        let font1: UIFont = UIFont(name: "HelveticaNeue-Bold", size: 17.0)!
+        ///label.font = UIFont.boldSystemFont(ofSize: 16.0)
+        let attributes1 = [NSMutableAttributedString.Key.font: font1]
+        let attrString1 = NSMutableAttributedString(string: substring1, attributes: attributes1)
+        
+        let font2: UIFont = UIFont(name: "Arial", size: 14.0)!
+        let attributes2 = [NSMutableAttributedString.Key.font: font2]
+        let attrString2 = NSMutableAttributedString(string: substring2, attributes: attributes2)
+        
+        //appending both attributed strings
+        attrString1.append(attrString2)
+        likeButton.setAttributedTitle(attrString1, for: [])
+    }
+    
+    private func addTextOnCommentButton() {
+        commentButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+        let buttonText: NSString = "\nComment" // 10\nPost
+        let newlineRange: NSRange = buttonText.range(of: "\n")
+        
+        //getting both substrings
+        var substring1 = ""
+        var substring2 = ""
+        
+        if(newlineRange.location != NSNotFound) {
+            substring1 = buttonText.substring(to: newlineRange.location)
+            substring2 = buttonText.substring(from: newlineRange.location)
+        }
+        
+        let font1: UIFont = UIFont(name: "HelveticaNeue-Bold", size: 17.0)!
+        ///label.font = UIFont.boldSystemFont(ofSize: 16.0)
+        let attributes1 = [NSMutableAttributedString.Key.font: font1]
+        let attrString1 = NSMutableAttributedString(string: substring1, attributes: attributes1)
+        
+        let font2: UIFont = UIFont(name: "Arial", size: 14.0)!
+        let attributes2 = [NSMutableAttributedString.Key.font: font2]
+        let attrString2 = NSMutableAttributedString(string: substring2, attributes: attributes2)
+        
+        //appending both attributed strings
+        attrString1.append(attrString2)
+        commentButton.setAttributedTitle(attrString1, for: [])
+    }
+    
+    private func addTextOnShareButton() {
+        shareButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+        let buttonText: NSString = "\nShare" // 10\nPost
+        let newlineRange: NSRange = buttonText.range(of: "\n")
+        
+        //getting both substrings
+        var substring1 = ""
+        var substring2 = ""
+        
+        if(newlineRange.location != NSNotFound) {
+            substring1 = buttonText.substring(to: newlineRange.location)
+            substring2 = buttonText.substring(from: newlineRange.location)
+        }
+        
+        let font1: UIFont = UIFont(name: "HelveticaNeue-Bold", size: 17.0)!
+        ///label.font = UIFont.boldSystemFont(ofSize: 16.0)
+        let attributes1 = [NSMutableAttributedString.Key.font: font1]
+        let attrString1 = NSMutableAttributedString(string: substring1, attributes: attributes1)
+        
+        let font2: UIFont = UIFont(name: "Arial", size: 14.0)!
+        let attributes2 = [NSMutableAttributedString.Key.font: font2]
+        let attrString2 = NSMutableAttributedString(string: substring2, attributes: attributes2)
+        
+        //appending both attributed strings
+        attrString1.append(attrString2)
+        shareButton.setAttributedTitle(attrString1, for: [])
+    }
+    
+    private func addTextOnSendButton() {
+        sendButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+        let buttonText: NSString = "\nSend" // 10\nPost
+        let newlineRange: NSRange = buttonText.range(of: "\n")
+        
+        //getting both substrings
+        var substring1 = ""
+        var substring2 = ""
+        
+        if(newlineRange.location != NSNotFound) {
+            substring1 = buttonText.substring(to: newlineRange.location)
+            substring2 = buttonText.substring(from: newlineRange.location)
+        }
+        
+        let font1: UIFont = UIFont(name: "HelveticaNeue-Bold", size: 17.0)!
+        ///label.font = UIFont.boldSystemFont(ofSize: 16.0)
+        let attributes1 = [NSMutableAttributedString.Key.font: font1]
+        let attrString1 = NSMutableAttributedString(string: substring1, attributes: attributes1)
+        
+        let font2: UIFont = UIFont(name: "Arial", size: 14.0)!
+        let attributes2 = [NSMutableAttributedString.Key.font: font2]
+        let attrString2 = NSMutableAttributedString(string: substring2, attributes: attributes2)
+        
+        //appending both attributed strings
+        attrString1.append(attrString2)
+        sendButton.setAttributedTitle(attrString1, for: [])
     }
 }

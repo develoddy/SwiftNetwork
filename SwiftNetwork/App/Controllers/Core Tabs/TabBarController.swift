@@ -19,35 +19,35 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
        
         let home = generateNavController(
             vc: HomeViewController(),
-            title: "Home",
-            selected: (UIImage(systemName: "house")!),
-            unselected: (UIImage(systemName: "house.fill")?.withTintColor(Constants.ColorButton.shifter))!)
+            title: "Online",
+            selected: (UIImage(systemName: "house.fill")!),
+            unselected: (UIImage(systemName: "house.fill")?.withTintColor(Constants.Color.blue))!)
         
         let explorer = generateNavController(
             vc: SearchViewController(), //ExplorerViewController(),
             title: "Explore",
-            selected: UIImage(systemName: "magnifyingglass")!,
-            unselected: (UIImage(systemName: "magnifyingglass")?.withTintColor(Constants.ColorButton.shifter))!)
-        
-        let explorer2 = generateNavController(
-            vc: ExplorerViewController(),
-            title: "Explore",
-            selected: UIImage(systemName: "magnifyingglass")!,
-            unselected: (UIImage(systemName: "magnifyingglass")?.withTintColor(Constants.ColorButton.shifter))!)
-        
+            selected: UIImage(systemName: "binoculars.fill")!,
+            unselected: (UIImage(systemName: "binoculars.fill")?.withTintColor(Constants.Color.blue))!)
+       
         let notification = generateNavController(
             vc: NotificationsViewController(),
             title: "Notifications",
-            selected: UIImage(systemName: "bell")!,
-            unselected: (UIImage(systemName: "bell.fill")?.withTintColor(Constants.ColorButton.shifter))! )
+            selected: UIImage(systemName: "bell.fill")!,
+            unselected: (UIImage(systemName: "bell.fill")?.withTintColor(Constants.Color.blue))! )
         
         let profile = generateNavController(
             vc: ProfileViewController(),
             title: "Profile",
-            selected: (UIImage(systemName: "person")!),
-            unselected: (UIImage(systemName: "person.fill")?.withTintColor(Constants.ColorButton.shifter))!)
+            selected: (UIImage(systemName: "person.fill")!),
+            unselected: (UIImage(systemName: "person.fill")?.withTintColor(Constants.Color.blue))!)
+        
+        let menu = generateNavController(
+            vc: MenuViewController(),
+            title: "Menu",
+            selected: (UIImage(systemName: "line.horizontal.3.circle.fill")!), //text.justify
+            unselected: (UIImage(systemName: "line.horizontal.3.circle.fill")?.withTintColor(Constants.Color.blue))!)
     
-        viewControllers = [ explorer, explorer2, profile, notification, home ]
+        viewControllers = [ profile, home, explorer, notification, menu ]
     
         colorNavController()
     }
@@ -66,7 +66,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
         
         switch (tabBarIndex) {
         case 0:
-            print("Home")
+            print("Online")
         case 1:
             print("explorer")
         case 2:
@@ -83,7 +83,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
         for item in items {
             item.imageInsets = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
             let unselectedItem = [NSAttributedString.Key.foregroundColor: UIColor.secondaryLabel]
-            let selectedItem = [NSAttributedString.Key.foregroundColor: Constants.ColorText.shifter]
+            let selectedItem = [NSAttributedString.Key.foregroundColor: Constants.Color.blue]
             item.setTitleTextAttributes(unselectedItem, for: .normal)
             item.setTitleTextAttributes(selectedItem, for: .selected)
         }

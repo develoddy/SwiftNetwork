@@ -15,7 +15,6 @@
 		B3110EF7262600FC00354C25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3110EF5262600FC00354C25 /* LaunchScreen.storyboard */; };
 		B3110F02262600FC00354C25 /* SwiftNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3110F01262600FC00354C25 /* SwiftNetworkTests.swift */; };
 		B3110F0D262600FD00354C25 /* SwiftNetworkUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3110F0C262600FD00354C25 /* SwiftNetworkUITests.swift */; };
-		B3453A0E2645473F00474D35 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3453A0D2645473F00474D35 /* SearchCollectionViewCell.swift */; };
 		B362D15D263561840086F777 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D15C263561840086F777 /* HomeViewController.swift */; };
 		B362D165263605630086F777 /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D164263605630086F777 /* CollectionTableViewCell.swift */; };
 		B362D16D263607940086F777 /* TableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D16C263607940086F777 /* TableCollectionViewCell.swift */; };
@@ -70,6 +69,11 @@
 		B3B8911726488E2A003AE17A /* SearchResultsResponseBE.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B8911626488E2A003AE17A /* SearchResultsResponseBE.swift */; };
 		B3B8911C26488E67003AE17A /* SearchBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B8911B26488E67003AE17A /* SearchBC.swift */; };
 		B3B89148264BB835003AE17A /* WebUserSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B89147264BB835003AE17A /* WebUserSearch.swift */; };
+		B3B89163264BC5DF003AE17A /* SearchResultViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B89162264BC5DF003AE17A /* SearchResultViewTableViewCell.swift */; };
+		B3B89186264DD98A003AE17A /* UILabel+ToggleFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B89183264DD989003AE17A /* UILabel+ToggleFonts.swift */; };
+		B3B89187264DD98A003AE17A /* FontNames-iOS12.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B89184264DD98A003AE17A /* FontNames-iOS12.swift */; };
+		B3B89188264DD98A003AE17A /* UIFont+PrintAll.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B89185264DD98A003AE17A /* UIFont+PrintAll.swift */; };
+		B3B891952650251F003AE17A /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B891942650251E003AE17A /* MenuViewController.swift */; };
 		E3F9DBCC6D94FC270A7DD908 /* Pods_SwiftNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 746FCDA75E96D3DF0B956D63 /* Pods_SwiftNetwork.framework */; };
 /* End PBXBuildFile section */
 
@@ -110,7 +114,6 @@
 		B3110F08262600FC00354C25 /* SwiftNetworkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftNetworkUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3110F0C262600FD00354C25 /* SwiftNetworkUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftNetworkUITests.swift; sourceTree = "<group>"; };
 		B3110F0E262600FD00354C25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B3453A0D2645473F00474D35 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
 		B362D15C263561840086F777 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B362D164263605630086F777 /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
 		B362D16C263607940086F777 /* TableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -166,6 +169,11 @@
 		B3B8911626488E2A003AE17A /* SearchResultsResponseBE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsResponseBE.swift; sourceTree = "<group>"; };
 		B3B8911B26488E67003AE17A /* SearchBC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBC.swift; sourceTree = "<group>"; };
 		B3B89147264BB835003AE17A /* WebUserSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebUserSearch.swift; sourceTree = "<group>"; };
+		B3B89162264BC5DF003AE17A /* SearchResultViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewTableViewCell.swift; sourceTree = "<group>"; };
+		B3B89183264DD989003AE17A /* UILabel+ToggleFonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+ToggleFonts.swift"; sourceTree = "<group>"; };
+		B3B89184264DD98A003AE17A /* FontNames-iOS12.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FontNames-iOS12.swift"; sourceTree = "<group>"; };
+		B3B89185264DD98A003AE17A /* UIFont+PrintAll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+PrintAll.swift"; sourceTree = "<group>"; };
+		B3B891942650251E003AE17A /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuViewController.swift; path = "/Users/eddylujan/Documentos/Proyect/SwiftNetwork/SwiftNetwork/App/Controllers/Core Tabs/MenuViewController.swift"; sourceTree = "<absolute>"; };
 		C6030F76C779F341CA9D7FF3 /* Pods_SwiftNetwork_SwiftNetworkUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftNetwork_SwiftNetworkUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC2C9A743BC6072490A15BF1 /* Pods-SwiftNetwork.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftNetwork.release.xcconfig"; path = "Target Support Files/Pods-SwiftNetwork/Pods-SwiftNetwork.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -287,14 +295,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		B3453A0C264546AD00474D35 /* Explorer Feed */ = {
-			isa = PBXGroup;
-			children = (
-				B3453A0D2645473F00474D35 /* SearchCollectionViewCell.swift */,
-			);
-			path = "Explorer Feed";
-			sourceTree = "<group>";
-		};
 		B362D199263AF5E40086F777 /* List TableView Comments */ = {
 			isa = PBXGroup;
 			children = (
@@ -328,6 +328,7 @@
 		B39A49B02626234C00BE80DF /* Core Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				B3B891942650251E003AE17A /* MenuViewController.swift */,
 				B39A49B32626236E00BE80DF /* ExploreViewController.swift */,
 				B39A49B52626236E00BE80DF /* NotificationsViewController.swift */,
 				B39A49B42626236E00BE80DF /* ProfileViewController.swift */,
@@ -414,6 +415,9 @@
 		B39A49FA2626382E00BE80DF /* ClasesGeneral */ = {
 			isa = PBXGroup;
 			children = (
+				B3B89184264DD98A003AE17A /* FontNames-iOS12.swift */,
+				B3B89185264DD98A003AE17A /* UIFont+PrintAll.swift */,
+				B3B89183264DD989003AE17A /* UILabel+ToggleFonts.swift */,
 				B39A49FB2626385400BE80DF /* Closures.swift */,
 				B39A4A002626387700BE80DF /* KeyChain.swift */,
 				B39A4A0526263A3A00BE80DF /* Alerts.swift */,
@@ -424,7 +428,8 @@
 		B39A4A242627626300BE80DF /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				B3ABE3EC262CCF7400F10ADE /* Notifications */,
+				B3B8915A264BC54C003AE17A /* Explorer Feed */,
+				B3ABE3EC262CCF7400F10ADE /* Notifications Feed */,
 				B39A4A2D262763C500BE80DF /* Home Feed & Post */,
 				B39A4A402628162000BE80DF /* FormTableViewCell.swift */,
 				B39A4A462628372A00BE80DF /* PhotoCollectionViewCell.swift */,
@@ -450,20 +455,19 @@
 		B39A4A45262836E400BE80DF /* CollectionsView Headers */ = {
 			isa = PBXGroup;
 			children = (
-				B3453A0C264546AD00474D35 /* Explorer Feed */,
 				B3D8672D2641AD930011B4E7 /* Home Feed */,
 				B3D8672C2641AD540011B4E7 /* Profile Feed */,
 			);
 			path = "CollectionsView Headers";
 			sourceTree = "<group>";
 		};
-		B3ABE3EC262CCF7400F10ADE /* Notifications */ = {
+		B3ABE3EC262CCF7400F10ADE /* Notifications Feed */ = {
 			isa = PBXGroup;
 			children = (
 				B3ABE3ED262CCFFA00F10ADE /* NotificationFollowEventTableViewCell.swift */,
 				B3ABE3F2262CD02C00F10ADE /* NotificationLikeEventTableViewCell.swift */,
 			);
-			path = Notifications;
+			path = "Notifications Feed";
 			sourceTree = "<group>";
 		};
 		B3B8910D26473D3E003AE17A /* Manager */ = {
@@ -488,6 +492,14 @@
 				B39A49E12626241300BE80DF /* UserBE.swift */,
 			);
 			path = "Login NSObject";
+			sourceTree = "<group>";
+		};
+		B3B8915A264BC54C003AE17A /* Explorer Feed */ = {
+			isa = PBXGroup;
+			children = (
+				B3B89162264BC5DF003AE17A /* SearchResultViewTableViewCell.swift */,
+			);
+			path = "Explorer Feed";
 			sourceTree = "<group>";
 		};
 		B3D8672C2641AD540011B4E7 /* Profile Feed */ = {
@@ -759,6 +771,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3ABE3F3262CD02C00F10ADE /* NotificationLikeEventTableViewCell.swift in Sources */,
+				B3B89163264BC5DF003AE17A /* SearchResultViewTableViewCell.swift in Sources */,
 				B39A49F22626242600BE80DF /* WebSender.swift in Sources */,
 				B39A4A412628162000BE80DF /* FormTableViewCell.swift in Sources */,
 				B39A49E72626241C00BE80DF /* UserLoginBC.swift in Sources */,
@@ -769,6 +782,7 @@
 				B39A4A262627629900BE80DF /* IGFeedPostTableViewCell.swift in Sources */,
 				B362D1A3263C18130086F777 /* CustomHeaderTableViewCell.swift in Sources */,
 				B362D19B263AF6360086F777 /* PostCommentsListTableViewCell.swift in Sources */,
+				B3B891952650251F003AE17A /* MenuViewController.swift in Sources */,
 				B39A49C72626239900BE80DF /* ListViewController.swift in Sources */,
 				B39A4A372627642B00BE80DF /* IGFeedPostActionsTableViewCell.swift in Sources */,
 				B39A4A012626387700BE80DF /* KeyChain.swift in Sources */,
@@ -778,9 +792,11 @@
 				B39A4A542628383B00BE80DF /* ProfileTabsCollectionReusableView.swift in Sources */,
 				B39A4A0626263A3A00BE80DF /* Alerts.swift in Sources */,
 				B362D16D263607940086F777 /* TableCollectionViewCell.swift in Sources */,
+				B3B89186264DD98A003AE17A /* UILabel+ToggleFonts.swift in Sources */,
 				B39A49E22626241300BE80DF /* UserBE.swift in Sources */,
 				B3B8911726488E2A003AE17A /* SearchResultsResponseBE.swift in Sources */,
 				B39A49D4262623A400BE80DF /* LoginViewController.swift in Sources */,
+				B3B89187264DD98A003AE17A /* FontNames-iOS12.swift in Sources */,
 				B39A49FC2626385400BE80DF /* Closures.swift in Sources */,
 				B39A4A6A2628777D00BE80DF /* Models.swift in Sources */,
 				B39A4A1A2627459F00BE80DF /* TabBarController.swift in Sources */,
@@ -790,7 +806,6 @@
 				B362D165263605630086F777 /* CollectionTableViewCell.swift in Sources */,
 				B39A4A4F262837DF00BE80DF /* ProfileInfoHeaderCollectionReusableView.swift in Sources */,
 				B39A49CB2626239900BE80DF /* SettingsViewController.swift in Sources */,
-				B3453A0E2645473F00474D35 /* SearchCollectionViewCell.swift in Sources */,
 				B39A49CA2626239900BE80DF /* SearchResultViewController.swift in Sources */,
 				B39A49CE2626239900BE80DF /* PostEditorViewController.swift in Sources */,
 				B3110EED262600F900354C25 /* SceneDelegate.swift in Sources */,
@@ -802,6 +817,7 @@
 				B39A49B72626236E00BE80DF /* ExploreViewController.swift in Sources */,
 				B362D18726399E2A0086F777 /* IGFeedPostFooterTableViewCell.swift in Sources */,
 				B362D17F2638AB760086F777 /* IGFeedPostDescriptionTableViewCell.swift in Sources */,
+				B3B89188264DD98A003AE17A /* UIFont+PrintAll.swift in Sources */,
 				B39A4A3C2627645B00BE80DF /* IGFeedPostGeneralTableViewCell.swift in Sources */,
 				B39A4A472628372A00BE80DF /* PhotoCollectionViewCell.swift in Sources */,
 				B39A49F12626242600BE80DF /* WebResponse.swift in Sources */,

@@ -14,6 +14,7 @@ enum SearchResult {
     case playlist(model: String)
 }
 
+
 class SearchResultViewController: UIViewController {
     
     //private var results: [SearchResult] = []
@@ -25,7 +26,7 @@ class SearchResultViewController: UIViewController {
         tableView.isHidden = true
         return tableView
     }()
-    
+  
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -44,7 +45,8 @@ class SearchResultViewController: UIViewController {
     }
     
     private func configureTableView() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(SearchResultViewTableViewCell.self, forCellReuseIdentifier: SearchResultViewTableViewCell.identifier)
+        tableView.separatorStyle = .none
     }
     
     private func delegateTableView() {
@@ -52,10 +54,11 @@ class SearchResultViewController: UIViewController {
         tableView.dataSource = self
     }
     
-    func update(with results: [Search] /*[SearchResult]*/) {
+    ///Receive data from the SearchViewController
+    func update(with results: [Search]) {
         self.results = results
         tableView.reloadData()
-        tableView.isHidden = results.isEmpty //false //!result.isEmpty
+        tableView.isHidden = results.isEmpty
     }
 }
 
@@ -66,10 +69,19 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let result = results[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultViewTableViewCell.identifier, for: indexPath) as! SearchResultViewTableViewCell
+        cell.configure(with: result)
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = result.name
-        cell.textLabel?.textColor = .blue
+        //}
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 65
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        print("Did select normal list item")
     }
 }

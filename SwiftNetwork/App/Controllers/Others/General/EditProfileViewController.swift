@@ -17,8 +17,8 @@ struct EditProfileFormModel {
 final class EditProfileViewController: UIViewController {
     
     private let tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(FormTableViewCell.self, forCellReuseIdentifier: FormTableViewCell.identifier)
+        //let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .grouped)
         return tableView
     }()
     
@@ -31,6 +31,7 @@ final class EditProfileViewController: UIViewController {
         configureBarButton()
         configureTableView()
         delegateTableView()
+        
     }
     
     //MARK: viewDidLayoutSubviews
@@ -70,7 +71,9 @@ final class EditProfileViewController: UIViewController {
     }
     
     private func configureTableView() {
-        tableView.backgroundColor = .secondarySystemFill
+        tableView.backgroundColor = .systemBackground
+        tableView.register(FormTableViewCell.self, forCellReuseIdentifier: FormTableViewCell.identifier)
+        //tableView.separatorStyle = .none
     }
     
     private func delegateTableView() {
@@ -110,10 +113,11 @@ final class EditProfileViewController: UIViewController {
 extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     private func createTableHeaderView() -> UIView {
-        let header = UIView(frame: CGRect(x: 0,
-                                          y: 0,
-                                          width: view.width,
-                                          height: view.height/4).integral)
+        let header = UIView(frame: CGRect(
+                                x: 0,
+                                y: 0,
+                                width: view.width,
+                                height: view.height/4).integral)
         
         let size = header.height/1.5
         let profilePhotoButton = UIButton(frame: CGRect(
@@ -122,12 +126,27 @@ extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource 
                                             width: size,
                                             height: size) )
         header.addSubview(profilePhotoButton)
+        
+        let label = UILabel(frame: CGRect(
+                                x: 10,
+                                y: profilePhotoButton.bottom+5,
+                                width: view.width-20,
+                                height: 20))
+        label.backgroundColor = .systemBackground
+        label.text = "Change profile picture"
+        label.font = .systemFont(ofSize: 14, weight: .bold)
+        label.textColor = Constants.Color.blue
+        label.textAlignment = .center
+        header.addSubview(label)
+        
+        
         profilePhotoButton.layer.masksToBounds = true
         profilePhotoButton.layer.cornerRadius = size/2.0
         profilePhotoButton.tintColor = .label
         profilePhotoButton.addTarget(self, action: #selector(didTapProfilePhotoButton), for: .touchUpInside)
         
-        profilePhotoButton.setBackgroundImage(UIImage(systemName: "person.circle"), for: .normal)
+        //profilePhotoButton.setBackgroundImage(UIImage(systemName: "person.circle"), for: .normal)
+        profilePhotoButton.setBackgroundImage(UIImage(named: "eddy"), for: .normal)
         profilePhotoButton.layer.borderWidth = 1
         profilePhotoButton.layer.borderColor = UIColor.secondarySystemBackground.cgColor
         
@@ -152,6 +171,14 @@ extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource 
         let model = models[indexPath.section][indexPath.row]
         cell.configure(with: model)
         cell.delegate = self
+        ///tableView.separatorStyle = .singleLine
+        //cell.separatorInset = UIEdgeInsets.init(top: 0.0, left: 25.0, bottom: 0.0, right: 25.0)
+        //cell.layoutMargins = UIEdgeInsets.init(top: 0.0, left: 100.0, bottom: 0.0, right: 0.0)
+        
+        //let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
+        //cell.contentView.addSubview(separatorView)
+        //tableView.tableFooterView = UIView(frame: .zero)
+        
         return cell
     }
     

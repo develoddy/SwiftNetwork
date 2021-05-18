@@ -37,61 +37,6 @@ final class ProfileViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "LogOut", style: .done, target: self, action: #selector(didTapSettingsButton))
     }
     
-    private func setupModel() {
-        
-        var likes = [PostLike]()
-        for i in 0..<5 {
-            let data = PostLike(
-                username: "jor \(i)",
-                postIdentifier: "",
-                text: "Mi primera publicacion para el test de la App.",
-                likes: i)
-            likes.append(data)
-        }
-        
-        var comments = [PostComments]()
-        for x in 0..<4 {
-            comments.append(
-                PostComments(
-                    identifier: "123\(x)",
-                    username: "@save",
-                    text: "Great post!",
-                    createDate: Date(),
-                    likes: []
-                )
-            )
-        }
-        
-        let user = User(
-            name: (first: "", last: ""),
-            username: "joe",
-            bio: "",
-            profilePicture: URL(string: "https://wwww.google.com")!,
-            birthDate: Date(),
-            gender: .male,
-            email: "",
-            counts: UserCount(followers: 1, following: 1, posts: 1),
-            joinDate: Date())
-        
-        for i in 0..<10 {
-            let post = UserPost(
-                identifier: "",
-                postType: .photo,
-                thumbnailImage: URL(
-                    string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
-                postURL: URL(string: "https://wwww.google.com")!,
-                caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
-                likeCount: likes,
-                comments: comments,
-                createDate: Date(),
-                taggedUsers: [],
-                owner: user)
-            
-            userPosts.append(post)
-        }
-        
-    }
-    
     ///Configure collections
     private func configureCollectionView() {
         let layout = UICollectionViewFlowLayout()
@@ -180,12 +125,13 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
         }
         
         if indexPath.section == 1 {
-            ///Tabs header
+            ///Tabs
             let tabControllerHeader = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: ProfileTabsCollectionReusableView.identifier,
                 for: indexPath) as! ProfileTabsCollectionReusableView
             tabControllerHeader.delegate = self
+            
             return tabControllerHeader
         }
         ///Header
@@ -199,7 +145,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if section == 0 {
-            return CGSize(width: collectionView.width, height: collectionView.height/3)
+            return CGSize(width: collectionView.width, height: collectionView.height/1) //3
         }
         // Size of section tabs
         return CGSize(width: collectionView.width, height: 50)
@@ -242,6 +188,15 @@ extension ProfileViewController: ProfileInfoHeaderCollectionReusableViewDelegate
         vc.title = "Edit Profile"
         present(UINavigationController(rootViewController: vc), animated: true)
     }
+    
+    func profileWritePostDidTapEditProfileButton(_post: ProfileInfoHeaderCollectionReusableView) {
+        let vc = PublishPostViewController()
+        vc.title = "Create Post"
+        vc.modalPresentationStyle = .fullScreen
+        vc.navigationItem.largeTitleDisplayMode = .never
+        //present(vc, animated: true)
+        present(UINavigationController(rootViewController: vc), animated: true)
+    }
 }
 
 // MARK: ProfileTabsCollectionReusableViewDelegate
@@ -254,8 +209,64 @@ extension ProfileViewController: ProfileTabsCollectionReusableViewDelegate {
     func didTapTaggedButtonTab() {
         // Reload collection view with data
     }
+}
+
+extension ProfileViewController {
     
-    
+    private func setupModel() {
+        
+        var likes = [PostLike]()
+        for i in 0..<5 {
+            let data = PostLike(
+                username: "jor \(i)",
+                postIdentifier: "",
+                text: "Mi primera publicacion para el test de la App.",
+                likes: i)
+            likes.append(data)
+        }
+        
+        var comments = [PostComments]()
+        for x in 0..<4 {
+            comments.append(
+                PostComments(
+                    identifier: "123\(x)",
+                    username: "@save",
+                    text: "Great post!",
+                    createDate: Date(),
+                    likes: []
+                )
+            )
+        }
+        
+        let user = User(
+            name: (first: "", last: ""),
+            username: "joe",
+            bio: "",
+            profilePicture: URL(string: "https://wwww.google.com")!,
+            birthDate: Date(),
+            gender: .male,
+            email: "",
+            counts: UserCount(followers: 1, following: 1, posts: 1),
+            joinDate: Date())
+        
+        for i in 0..<10 {
+            let post = UserPost(
+                identifier: "",
+                postType: .photo,
+                thumbnailImage: URL(
+                    string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
+                postURL: URL(string: "https://wwww.google.com")!,
+                caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
+                likeCount: likes,
+                comments: comments,
+                createDate: Date(),
+                taggedUsers: [],
+                owner: user)
+            
+            userPosts.append(post)
+        }
+        
+    }
 }
 
 

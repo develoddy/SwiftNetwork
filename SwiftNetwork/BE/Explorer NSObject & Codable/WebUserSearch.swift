@@ -12,6 +12,7 @@ struct WebUserSearchData: Codable {
 }
 
 struct UserDecodable: Codable {
+    var username: String?
     var name: String?
 }
 
@@ -21,5 +22,6 @@ struct WebUserModel {
 }
 
 struct Search {
+    var username: String?
     var name: String?
 }

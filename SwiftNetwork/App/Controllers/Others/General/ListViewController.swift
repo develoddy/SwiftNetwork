@@ -19,7 +19,6 @@ class ListViewController: UIViewController {
     }()
     
     // MARK: Init
-    
     init(data:[UserRelationship]) {
         self.data = data
         super.init(nibName: nil, bundle: nil)

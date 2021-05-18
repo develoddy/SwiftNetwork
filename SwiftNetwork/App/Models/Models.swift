@@ -81,8 +81,5 @@ struct CommenttLike {
     let commentIdentifier: String
 }
 
-struct CollectionTableCellModel {
-    let title: String
-    let imageName: String
-}
+
 

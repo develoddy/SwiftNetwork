@@ -49,6 +49,15 @@ class SearchViewController: UIViewController {
             return NSCollectionLayoutSection(group: group)
     }))
     
+    private let dismmeView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.alpha = 0.4
+        view.isHidden = true
+        return view
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -61,10 +70,19 @@ class SearchViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         collectionView.frame = view.bounds
+        dismmeView.frame = view.bounds
     }
     
     private func setupView() {
         view.addSubview(collectionView)
+        view.addSubview(dismmeView)
+    }
+    
+    private func configureDisnmeView() {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(didCancelSearch))
+        gesture.numberOfTouchesRequired = 1
+        gesture.numberOfTapsRequired = 1
+        dismmeView.addGestureRecognizer(gesture)
     }
     
     private func getTokenLocal() -> String {
@@ -90,7 +108,11 @@ class SearchViewController: UIViewController {
 }
 
 //MARK: UISearchResultsUpdating
-extension SearchViewController: UISearchResultsUpdating {
+extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
+   
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print("xxxxxx")
+    }
     
     func updateSearchResults(for searchController: UISearchController) {
         guard let resultsComtroller = searchController.searchResultsController as? SearchResultViewController,
@@ -108,7 +130,12 @@ extension SearchViewController: UISearchResultsUpdating {
         } , conCompletionIncorrecto: {(mensajeError) in
             print("mensajeError:\(mensajeError)")
         })
-
+    }
+    
+    @objc private func didCancelSearch() {
+        print("cancel")
+        self.dismmeView.isHidden = true
+       
     }
 }
 

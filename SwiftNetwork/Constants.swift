@@ -48,22 +48,23 @@ struct Constants {
         static let cornerRadius: CGFloat = 9
     }
     
-    struct ProfileInfoHeaderCollectionReusableViewColor {
-        /// ///UIColor(red: 151/255, green: 51/255, blue: 238/255, alpha: 1.0) /* #9733ee */
-        static let colorPink = UIColor(red: 252/255, green: 0/255, blue: 255/255, alpha: 1.0) /* #fc00ff */
-    }
-    
     struct ProfileTabsCollectionReusableViewColor {
         static let padding: CGFloat = 8
-        static let colorPink = UIColor(red: 252/255, green: 0/255, blue: 255/255, alpha: 1.0) /* #fc00ff */
     }
     
-    struct ColorText {
-        ///timber
-        static let shifter = UIColor(red: 252/255, green: 0/255, blue: 255/255, alpha: 1.0) /* #fc00ff */
+    struct Color {
+        static let blue = UIColor(red: 0, green: 0.4824, blue: 1, alpha: 1.0) /* #007bff */
+        static let blueLight = UIColor(red: 234/255, green: 244/255, blue: 255/255, alpha: 1.0) /* #eaf4ff */
+        static let green = UIColor(red: 40/255, green: 167/255, blue: 69/255, alpha: 1.0) /* #28a745 */
+        static let light = UIColor(red: 247/255, green: 249/255, blue: 250/255, alpha: 1.0) /* #f7f9fa */
+        static let lightDark = UIColor(red: 91/255, green: 112/255, blue: 131/255, alpha: 1.0) /* #5b7083 */
+        static let black = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0) /* #000 */
     }
     
-    struct ColorButton {
-        static let shifter = UIColor(red: 252/255, green: 0/255, blue: 255/255, alpha: 1.0) /* #fc00ff */
+    struct Icon {
+        static let photo = "photo"
+        static let more = "ellipsis"
+        static let filter = "line.horizontal.3.decrease"
     }
+    
 }
