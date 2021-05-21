@@ -25,3 +25,7 @@ struct Search {
     var username: String?
     var name: String?
 }
+
+
+
+

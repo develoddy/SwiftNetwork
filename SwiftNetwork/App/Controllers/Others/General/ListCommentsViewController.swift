@@ -9,13 +9,13 @@ import UIKit
 
 
 /// States of render cell
-enum UserPostRenderType {
-    case primaryContent(posts: UserPost) //Post
+enum UserPostViewModelRenderType {
+    case primaryContent(posts: UserPostViewModel) //Post
 }
 
 /// Model of  renderd Post
-struct UserPostRenderViewModel {
-    let renderType: UserPostRenderType
+struct UserPostViewModelRenderViewModel {
+    let renderType: UserPostViewModelRenderType
 }
 
 class ListCommentsViewController: UIViewController {
@@ -26,12 +26,12 @@ class ListCommentsViewController: UIViewController {
         return tableView
     }()
     
-    private let model: UserPost?
+    private let model: UserPostViewModel?
     
-    private var renderModels = [UserPostRenderViewModel]()
+    private var renderModels = [UserPostViewModelRenderViewModel]()
     
     // MARK: Init
-    init(model: UserPost?) {
+    init(model: UserPostViewModel?) {
         self.model = model
         super.init(nibName: nil, bundle: nil)
         configureModels()
@@ -86,10 +86,10 @@ class ListCommentsViewController: UIViewController {
    
     
     private func configureModels() {
-        guard let userPostModel = self.model else {
+        guard let UserPostViewModelModel = self.model else {
             return
         }
-        renderModels.append(UserPostRenderViewModel(renderType: .primaryContent(posts: userPostModel)))
+        renderModels.append(UserPostViewModelRenderViewModel(renderType: .primaryContent(posts: UserPostViewModelModel)))
     }
 }
 
@@ -113,7 +113,7 @@ extension ListCommentsViewController: UITableViewDelegate, UITableViewDataSource
             case .primaryContent(let posts):
                 let comment = posts.comments[indexPath.row]
                 let cell = tableView.dequeueReusableCell(withIdentifier: PostCommentsListTableViewCell.identifier, for: indexPath) as! PostCommentsListTableViewCell
-                cell.configure(with: comment.username, with: comment.text)
+                cell.configure(with: comment.username, with: comment.content)
                 return cell
         }
     }

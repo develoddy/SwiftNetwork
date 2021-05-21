@@ -171,6 +171,7 @@ class RegistrationViewController: UIViewController {
         emailField.becomeFirstResponder()
         passwordField.becomeFirstResponder()
     
+        /**
         let objUser = UserBE()
         objUser.name = nameField.text!
         objUser.username = usernameField.text!
@@ -203,6 +204,34 @@ class RegistrationViewController: UIViewController {
                 conCompletion: nil
             )
         })
+         */
+        
+        guard let name = nameField.text, let username = usernameField.text, let email = emailField.text, let password =  passwordField.text else {
+            return
+        }
+        
+        AuthManager.shared.registerNewUser(name: name, username: username, email: email, password: password) { (registered) in
+            if registered {
+                let actionSheet = UIAlertController(
+                    title: Constants.SignUp.titleAlert,
+                    message: Constants.SignUp.subTitleAlert,
+                    preferredStyle: .alert)
+                actionSheet.addAction(UIAlertAction(title: "Ok",
+                                                    style: .default,
+                                                    handler: { _ in
+                    self.delegateEmail?.sendEmail(email: email)
+                    self.dismiss(animated: true, completion: nil)
+                }))
+                self.present(actionSheet, animated: true)
+            } else {
+                Alerts.showAlertErrorWhitTitle(
+                    titulo: Constants.LogInError.titleAlertVerificationFailed,
+                    conMensaje: "¡Error!",
+                    conNombreDeBotonCancelar: "Aceptar",
+                    enControlador: self,
+                    conCompletion: nil)
+            }
+        }
     }
 }
 

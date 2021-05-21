@@ -146,11 +146,13 @@ class WebSender: NSObject {
     
     
     ///Get
-    @discardableResult class func doGETTokenToURL(conURL url                : NSString                              ,
-                                                  conPath path              : NSString                              ,
-                                                  conParametros parametros  : Any?                                  ,
-                                                  conToken token            : NSString                              ,
-                                                  conCompletion completion  : @escaping (_ objRespuesta : WebResponse) -> Void) -> URLSessionDataTask {
+    @discardableResult class
+    func doGETTokenToURL(conURL url                : NSString                              ,
+                         conPath path              : NSString                              ,
+                         conParametros parametros  : Any?                                  ,
+                         conToken token            : NSString                              ,
+                         conCompletion completion  : @escaping (_ objRespuesta : WebResponse) -> Void) -> URLSessionDataTask {
+        
         let configuracionSesion = URLSessionConfiguration.default
         configuracionSesion.httpAdditionalHeaders = self.createHeaderRequestWithToken(token) as? [AnyHashable: Any]
         let sesion = URLSession.init(configuration: configuracionSesion)
@@ -373,6 +375,8 @@ class WebSender: NSObject {
         if error == nil && data != nil {
             respuesta = self.detResponseInJSONWithData(data!)
         }
+        
+        //print("respuesta \(respuesta)")
         let urlResponse = response as? HTTPURLResponse
         let headerFields : NSDictionary? = urlResponse?.allHeaderFields as NSDictionary?
         let objResponse = WebResponse()

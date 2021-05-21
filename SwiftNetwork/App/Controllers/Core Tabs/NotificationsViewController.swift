@@ -7,14 +7,14 @@
 
 import UIKit
 enum UserNotificationType {
-    case like(post: UserPost)
+    case like(post: UserPostViewModel)
     case follow(state: FollowState)
 }
 
 struct UserNotification {
     let type: UserNotificationType
     let text: String
-    let user: User
+    let user: UserViewModel
 }
 
 final class NotificationsViewController: UIViewController {
@@ -59,18 +59,46 @@ final class NotificationsViewController: UIViewController {
     private func fetchNotifications() {
         
         for i in 0..<10 {
-            let user = User(name: (first: "", last: ""),
-                            username: "@username",
-                            bio: "",
-                            profilePicture: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
-                            birthDate: Date(),
-                            gender: .male,
-                            email: "",
-                            counts: UserCount(followers: 1, following: 1, posts: 1),
-                            joinDate: Date() )
+            let user = UserViewModel(
+                name: (first: "", last: ""),
+                username: "@username",
+                bio: "",
+                profilePicture: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
+                dayOfBirth: Date(),
+                gender: .male,
+                publicEmail: "",
+                counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
+                joinDate: Date(),
+                countryId: 0,
+                image: "",
+                imageHeader: "",
+                title: "",
+                likes: "",
+                dislikes: "",
+                address: "",
+                phone: "",
+                userssId: 0,
+                nivelId: 0,
+                sentimentalId: 0,
+                imagenBin: "",
+                valor: "",
+                id: 0
+                
+                /**name: (first: "", last: ""),
+                username: "@username",
+                bio: "",
+                profilePicture: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
+                birthDate: Date(),
+                gender: .male,
+                email: "",
+                counts: UserCount(followers: 1, following: 1, posts: 1),
+                joinDate: Date()**/
             
             
-            let post = UserPost(identifier: "",
+            )
+            
+            
+            let post = UserPostViewModel(identifier: "",
                                 postType: .photo,
                                 thumbnailImage: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
                                 postURL: URL(string: "https://wwww.google.com")!,

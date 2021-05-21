@@ -23,12 +23,12 @@ import UIKit
 /// States of render cell
 enum PostRenderType {
     case collections(collections: [CollectionTableCellModel])
-    case header(provider: User)
-    case primaryContent(provider: UserPost) //Post
-    case actions(provider: UserPost) // Like, comment, share
-    case descriptions(post: UserPost)
-    case comments(comments: [PostComments])
-    //case comments(post: UserPost)
+    case header(provider: UserViewModel)
+    case primaryContent(provider: UserPostViewModel) //Post
+    case actions(provider: UserPostViewModel) // Like, comment, share
+    case descriptions(post: UserPostViewModel)
+    case comments(comments: [PostCommentsViewModel])
+    //case comments(post: UserPostViewModel)
     case footer(footer: String)
 }
 
@@ -39,7 +39,7 @@ struct PostRenderViewModel {
 
 class PostViewController: UIViewController {
     
-    private let model: UserPost?
+    private let model: UserPostViewModel?
     
     private var renderModels = [PostRenderViewModel]()
     
@@ -50,7 +50,7 @@ class PostViewController: UIViewController {
     }()
     
     // MARK: Init Receive data from the ProfileViewcontroller
-    init(model: UserPost?) {
+    init(model: UserPostViewModel?) {
         self.model = model
         super.init(nibName: nil, bundle: nil)
         configureModels()
@@ -99,7 +99,7 @@ class PostViewController: UIViewController {
             joinDate: Date())
         
         
-        let post = UserPost(
+        let post = UserPostViewModel(
             identifier: "",
             postType: .photo,
             thumbnailImage: URL(string: "https://wwww.google.com")!,
@@ -111,21 +111,21 @@ class PostViewController: UIViewController {
             taggedUsers: [],
             owner:  user)*/
         
-        guard let userPostModel = self.model else {
+        guard let UserPostViewModelModel = self.model else {
             return
         }
         
         
         /// Header
-        renderModels.append(PostRenderViewModel(renderType: .header(provider: userPostModel.owner )))
+        renderModels.append(PostRenderViewModel(renderType: .header(provider: UserPostViewModelModel.owner )))
         ///Post
-        renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: userPostModel)))
+        renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: UserPostViewModelModel)))
         ///Actions
-        renderModels.append(PostRenderViewModel(renderType: .actions(provider: userPostModel))) //post
+        renderModels.append(PostRenderViewModel(renderType: .actions(provider: UserPostViewModelModel))) //post
         ///Description
-        renderModels.append(PostRenderViewModel(renderType: .descriptions(post: userPostModel))) //post
+        renderModels.append(PostRenderViewModel(renderType: .descriptions(post: UserPostViewModelModel))) //post
         ///comment
-        renderModels.append(PostRenderViewModel(renderType: .comments(comments: userPostModel.comments))) //comments
+        renderModels.append(PostRenderViewModel(renderType: .comments(comments: UserPostViewModelModel.comments))) //comments
     }
     
     private func setupView() {

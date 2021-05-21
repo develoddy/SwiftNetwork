@@ -98,7 +98,7 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         return attributedString
     }
     
-    public func configure(with model: UserPost) {
+    public func configure(with model: UserPostViewModel) {
         
         ///Caption de post
         let usernameText = model.owner.username

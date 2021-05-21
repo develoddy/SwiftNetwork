@@ -69,7 +69,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         label.text = nil
     }
     
-    public func configure(with model: UserPost) {
+    public func configure(with model: UserPostViewModel) {
         let url = model.thumbnailImage
         photoImageView.sd_setImage(with: url, completed: nil)
         

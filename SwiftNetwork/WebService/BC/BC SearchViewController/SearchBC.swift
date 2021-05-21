@@ -18,7 +18,7 @@ class SearchBC: NSObject {
             return nil
         }
         
-        let resultSearch = WebModel.startSearch(objSearch, token!, conCompletionCorrecto: { (objSearch) in
+        let resultSearch = WebModelSearchViewController.startSearch(objSearch, token!, conCompletionCorrecto: { (objSearch) in
             completioCorrecto(objSearch)
         }, error: { (mensajeError) in
             print("mensajeError")

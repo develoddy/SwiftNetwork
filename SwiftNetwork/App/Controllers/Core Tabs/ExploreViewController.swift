@@ -16,7 +16,7 @@ class ExplorerViewController: UIViewController {
         return searchBar
     }()
     
-    private var models = [UserPost]()
+    private var models = [UserPostViewModel]()
     
     private var collectionView: UICollectionView?
     
@@ -245,7 +245,7 @@ extension ExplorerViewController: UICollectionViewDelegate, UICollectionViewData
                         joinDate: Date() )
         
         
-        let post = UserPost(identifier: "",
+        let post = UserPostViewModel(identifier: "",
                             postType: .photo,
                             thumbnailImage: URL(
                                 string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img2.jpeg")!,
@@ -271,8 +271,31 @@ extension ExplorerViewController {
     private func setupModel() {
         
         for i in 0..<10 {
-            let user = User(
+            let user = UserViewModel(
                 name: (first: "", last: ""),
+                username: "@username",
+                bio: "",
+                profilePicture: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
+                dayOfBirth: Date(),
+                gender: .male,
+                publicEmail: "",
+                counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
+                joinDate: Date(),
+                countryId: 0,
+                image: "",
+                imageHeader: "",
+                title: "",
+                likes: "",
+                dislikes: "",
+                address: "",
+                phone: "",
+                userssId: 0,
+                nivelId: 0,
+                sentimentalId: 0,
+                imagenBin: "",
+                valor: "",
+                id: 0
+                /**name: (first: "", last: ""),
                 username: "joe",
                 bio: "",
                 profilePicture: URL(string: "https://wwww.google.com")!,
@@ -280,9 +303,10 @@ extension ExplorerViewController {
                 gender: .male,
                 email: "",
                 counts: UserCount(followers: 1, following: 1, posts: 1),
-                joinDate: Date())
+                joinDate: Date()**/
+            )
             
-            let post = UserPost(
+            let post = UserPostViewModel(
                 identifier: "",
                 postType: .photo,
                 thumbnailImage: URL(

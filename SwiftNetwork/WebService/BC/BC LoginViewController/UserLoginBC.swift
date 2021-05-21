@@ -15,7 +15,7 @@ class UserLoginBC: NSObject {
         conCompletionCorrecto completioCorrecto: @escaping Closures.LogOut,
         conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError ) -> URLSessionDataTask? {
         
-        return WebModel.sesionSignOut(token!, conCompletionCorrecto: { (objUser) in
+        return WebModelLoginViewController.sesionSignOut(token!, conCompletionCorrecto: { (objUser) in
             completioCorrecto(objUser)
         }, error: { (mensajeError) in
             completionIncorrecto(mensajeError)
@@ -39,7 +39,7 @@ class UserLoginBC: NSObject {
             return nil
         }
             
-        return WebModel.iniciarSesion(objUser, conCompletionCorrecto: { (objUser) in
+        return WebModelLoginViewController.iniciarSesion(objUser, conCompletionCorrecto: { (objUser) in
             UserLoginBC.guardarSesion(deUsuario: objUser)
             completioCorrecto(objUser)
         }, error: { (mensajeError) in
@@ -70,7 +70,7 @@ class UserLoginBC: NSObject {
             return nil
         }
             
-        return WebModel.sesionSignIn(
+        return WebModelLoginViewController.sesionSignIn(
             objUser, conCompletionCorrecto: { (objUser) in
             UserLoginBC.guardarSesion(deUsuario: objUser)
                 

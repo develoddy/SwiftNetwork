@@ -35,7 +35,7 @@ class ProfileTabsCollectionReusableView:  UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = Constants.Color.light
+        backgroundColor = Constants.Color.lightDark
         addSubview(gridButton)
         addSubview(taggedButton)
         

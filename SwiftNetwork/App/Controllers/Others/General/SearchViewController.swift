@@ -14,7 +14,7 @@ enum Searchçresult {
 
 class SearchViewController: UIViewController {
     
-    private var models = [UserPost]()
+    private var models = [UserPostViewModel]()
     
     private let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: SearchResultViewController())
@@ -176,8 +176,31 @@ extension SearchViewController {
     private func setupModel() {
         
         for i in 0..<10 {
-            let user = User(
+            let user = UserViewModel(
                 name: (first: "", last: ""),
+                username: "@username",
+                bio: "",
+                profilePicture: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
+                dayOfBirth: Date(),
+                gender: .male,
+                publicEmail: "",
+                counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
+                joinDate: Date(),
+                countryId: 0,
+                image: "",
+                imageHeader: "",
+                title: "",
+                likes: "",
+                dislikes: "",
+                address: "",
+                phone: "",
+                userssId: 0,
+                nivelId: 0,
+                sentimentalId: 0,
+                imagenBin: "",
+                valor: "",
+                id: 0
+                /**name: (first: "", last: ""),
                 username: "joe",
                 bio: "",
                 profilePicture: URL(
@@ -186,9 +209,10 @@ extension SearchViewController {
                 gender: .male,
                 email: "",
                 counts: UserCount(followers: 1, following: 1, posts: 1),
-                joinDate: Date())
+                joinDate: Date()**/
+            )
             
-            let post = UserPost(
+            let post = UserPostViewModel(
                 identifier: "",
                 postType: .photo,
                 thumbnailImage: URL(

@@ -9,7 +9,7 @@ import UIKit
 
 protocol IGFeedPostActionsTableViewCellDelegate: AnyObject {
     func didTapLikeButton()
-    func didTapCommentButton(model: UserPost)
+    func didTapCommentButton(model: UserPostViewModel)
     func didTapSendButton()
 }
 
@@ -19,7 +19,7 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     
     public var delegate: IGFeedPostActionsTableViewCellDelegate?
     
-    private var model: UserPost?
+    private var model: UserPostViewModel?
     
     private let likeButton: UIButton = {
         let button = UIButton()
@@ -82,7 +82,7 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configure(with post: UserPost) {
+    public func configure(with post: UserPostViewModel) {
         model = post
     }
     

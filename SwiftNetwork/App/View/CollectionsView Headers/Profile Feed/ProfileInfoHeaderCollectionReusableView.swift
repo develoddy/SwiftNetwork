@@ -12,7 +12,6 @@ protocol ProfileInfoHeaderCollectionReusableViewDelegate {
     func profileHeaderDidTapFollowersButton( _header:  ProfileInfoHeaderCollectionReusableView)
     func profileHeaderDidTapFollowingButton( _header:  ProfileInfoHeaderCollectionReusableView)
     func profileHeaderDidTapEditProfileButton( _header:  ProfileInfoHeaderCollectionReusableView)
-    
     func profileWritePostDidTapEditProfileButton( _post:  ProfileInfoHeaderCollectionReusableView)
 }
 
@@ -22,7 +21,6 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     static let identifier = "ProfileInfoHeaderCollectionReusableView"
     
     public var delegate: ProfileInfoHeaderCollectionReusableViewDelegate?
-    
     
     private let uploadImageButton : UIButton = {
         let button = UIButton()
@@ -43,7 +41,6 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         button.layer.cornerRadius = 26
         return button
     }()
-    
     
     private let portadaImageView: UIImageView = {
         let imageView = UIImageView()
@@ -71,7 +68,6 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         button.setTitleColor(.label, for: .normal)
         return button
     }()
-    
     
     private let followersButton : UIButton = {
         let button = UIButton()
@@ -121,8 +117,6 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
         return button
     }()
-    
-    
     
     ///Ubication
     private let ubicationImageView : UIImageView = {
@@ -271,8 +265,6 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         return button
     }()
     
-    
-    
     // MARK: Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -288,11 +280,8 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
    
     private func addSubviews() {
-        
-        
         addSubview(portadaImageView)
         addSubview(profilePhotoImageView)
         
@@ -319,7 +308,6 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         addSubview(imageViewProfile)
         addSubview(writePostButton)
         
-        
         addSubview(imageButton)
         addSubview(audioButton)
         addSubview(ubicationButton)
@@ -337,8 +325,6 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-    
         portadaImageView.frame = CGRect(
             x: 0,
             y: 0,
@@ -362,7 +348,6 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
             height: 40).integral
         downloadImageButton.layer.cornerRadius = downloadImageButton.height/2
 
-        
         let botomButtons = portadaImageView.bottom+10
         let profilePhotoSize = width/4
         profilePhotoImageView.frame = CGRect(
@@ -467,9 +452,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
             width: width-10,
             height: joinedLabelTextSize.height).integral
         
-        
         //MARK: Publicar Post
-        
         let labelTitlePublicationSize = labelTitlePublication.sizeThatFits(frame.size)
         labelTitlePublication.frame = CGRect(
             x: 10,
@@ -492,14 +475,12 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
             height: 50)
         imageViewProfile.layer.cornerRadius = imageViewProfile.height/2
         
-        //writePostButton.backgroundColor = .systemBackground
         writePostButton.frame = CGRect(
             x: 20+imageViewProfile.width,
             y: labelTitlePublication.bottom+5,
             width: width-35-imageViewProfile.width,
             height: 50)
     
-        
         let heightButtons: CGFloat =  40
         let withButtons = (width/3)-5
         imageButton.frame = CGRect(
@@ -529,7 +510,6 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
             width: width-20,
             height: 40)
         administratorPostLabel.layer.cornerRadius = administratorPostLabel.height/2
-        
     }
     
     // MARK: - Actions

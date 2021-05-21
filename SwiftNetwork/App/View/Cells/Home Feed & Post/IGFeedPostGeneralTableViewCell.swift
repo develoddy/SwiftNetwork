@@ -73,10 +73,10 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
         return attributedString
     }
     
-    public func configure(with model: PostComments) {
+    public func configure(with model: PostCommentsViewModel) {
         ///Comentarios
         let username = model.username
-        let comment = model.text
+        let comment = model.content
         let attributedString = joinText(username: username, description: comment)
         labelTextComment.attributedText = attributedString
     }

@@ -13,5 +13,10 @@ class Closures: NSObject {
     typealias Login = (_ usuario : ResponseTokenBE) -> Void
     typealias LogOut = (_ usuario : ResponseLogOutBE) -> Void
     typealias SearchUser = (_ usuario: [Search]) -> Void
+    
+    ///ProfileViewcontroller
+    typealias iReqResponsePostLike = (_ usuario: IReqResponsePostLike) -> Void
+    typealias iReqResponsePostComments = (_ usuario: IReqResponsePostComments) -> Void
+    
 }
 

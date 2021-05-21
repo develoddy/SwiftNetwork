@@ -28,7 +28,6 @@ class LoginViewController: UIViewController {
     
     let gradient = CAGradientLayer()
     
-    
     //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,10 +40,7 @@ class LoginViewController: UIViewController {
         configureTermsButton()
         configurePrivacyButton()
         configureCreateAccountButton()
-        
         delegatesFields()
-        
-    
     }
     
     //MARK: viewDidLayoutSubviews
@@ -202,6 +198,7 @@ class LoginViewController: UIViewController {
         passwordField.resignFirstResponder()
         usernameEmailField.resignFirstResponder()
         
+        /**
         let objUser = UserBE()
         objUser.email = usernameEmailField.text!
         objUser.password = passwordField.text!
@@ -220,9 +217,34 @@ class LoginViewController: UIViewController {
                 conCompletion: nil
             )
         })
+         **/
+        
+        guard let usernameEmail = usernameEmailField.text, let password = passwordField.text else {
+            return
+        }
+        
+        AuthManager.shared.login(email: usernameEmail, password: password) { success in
+            DispatchQueue.main.async {
+                if success {
+                    /// User logged in
+                    let vc = TabBarController()
+                    vc.modalPresentationStyle = .fullScreen
+                    self.present(vc, animated: true)
+                } else {
+                    ///Error ocurred
+                    Alerts.showAlertErrorWhitTitle(
+                        titulo: Constants.LogInError.titleAlertVerificationFailed,
+                        conMensaje: "¡Email or password is incorrrect!",
+                        conNombreDeBotonCancelar: "Aceptar",
+                        enControlador: self,
+                        conCompletion: nil)
+                }
+            }
+        }
+        
+        
     }
     @objc private func didTapTermsButton() {}
-    
     @objc private func didTapPrivacyButton() {}
     @objc private func didTapCreateAccountButton() {
         let vc = RegistrationViewController()

@@ -119,10 +119,10 @@ class HomeViewController: UIViewController {
     
     private var models = [HomeFeedRenderViewModel]()
     private var collections : [CollectionTableCellModel] = []
-    private var comments    : [PostComments] = []
-    private var likes       : [PostLike] = []
-    private var users       : User?
-    private var posts       : UserPost?
+    private var comments    : [PostCommentsViewModel] = []
+    private var likes       : [PostLikeViewModel] = []
+    private var users       : UserViewModel?
+    private var posts       : UserPostViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -259,20 +259,30 @@ class HomeViewController: UIViewController {
     }
     
     ///Comments
-    func createArrayComments() -> [PostComments] {
-        var tempComments: [PostComments] = []
+    func createArrayComments() -> [PostCommentsViewModel] {
+        var tempComments: [PostCommentsViewModel] = []
         for i in 0..<5 {
-            let comments = PostComments(identifier: "id-\(i)", username: "\(i) Username", text: "commentario \(i)", createDate: Date(), likes: [])
+            let comments = PostCommentsViewModel(
+                id: i+1,
+                username: "@save",
+                type_id: 0,
+                ref_id: 0,
+                userss_id: 0,
+                content: "Great post!",
+                comentario_id: 0,
+                createdAt: Date(),
+                likes: []
+                /*identifier: "id-\(i)", username: "\(i) Username", text: "commentario \(i)", createDate: Date(), likes: []*/)
             tempComments.append(comments)
         }
         return tempComments
     }
     
     ///Likes
-    func createArrayLikes() -> [PostLike] {
-        var likes = [PostLike]()
+    func createArrayLikes() -> [PostLikeViewModel] {
+        var likes = [PostLikeViewModel]()
         for i in 0..<5 {
-            let data = PostLike(
+            let data = PostLikeViewModel(
                 username: "jor \(i)",
                 postIdentifier: "",
                 text: "Mi primera publicacion para el test de la App.",
@@ -283,9 +293,32 @@ class HomeViewController: UIViewController {
     }
     
     ///User
-    func createArrayUser() -> User {
-        let user = User(
+    func createArrayUser() -> UserViewModel {
+        let user = UserViewModel(
             name: (first: "", last: ""),
+            username: "@username",
+            bio: "",
+            profilePicture: URL(string: "https://wwww.google.com")!,
+            dayOfBirth: Date(),
+            gender: .male,
+            publicEmail: "",
+            counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
+            joinDate: Date(),
+            countryId: 0,
+            image: "",
+            imageHeader: "",
+            title: "",
+            likes: "",
+            dislikes: "",
+            address: "",
+            phone: "",
+            userssId: 0,
+            nivelId: 0,
+            sentimentalId: 0,
+            imagenBin: "",
+            valor: "",
+            id: 0
+            /**name: (first: "", last: ""),
             username: "jordan",
             bio: "",
             profilePicture: URL(string: "https://wwww.google.com")!,
@@ -293,15 +326,16 @@ class HomeViewController: UIViewController {
             gender: .male,
             email: "",
             counts: UserCount(followers: 1, following: 1, posts: 1),
-            joinDate: Date())
+            joinDate: Date()**/
+        )
         return user
       
     }
     
-    ///UserPost
-    func createArrayUserPost() -> UserPost {
+    ///UserPostViewModel
+    func createArrayUserPostViewModel() -> UserPostViewModel {
         likes = createArrayLikes() ///Se obtiene el array de likes
-        let post = UserPost(
+        let post = UserPostViewModel(
             identifier: "post 2",
             postType: .photo,
             thumbnailImage: URL(
@@ -320,7 +354,7 @@ class HomeViewController: UIViewController {
         collections = createArrayCollections()
         comments    = createArrayComments()
         users       = createArrayUser()
-        posts       = createArrayUserPost()
+        posts       = createArrayUserPostViewModel()
         for _ in 0..<2 {
             let viewModel = HomeFeedRenderViewModel(
                 collections : PostRenderViewModel(renderType: .collections(collections  : collections   )),
@@ -518,7 +552,7 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
         print("like")
     }
     
-    func didTapCommentButton(model: UserPost) {
+    func didTapCommentButton(model: UserPostViewModel) {
         let vc = ListCommentsViewController(model: model)
         vc.title = "Coments"
         vc.navigationItem.largeTitleDisplayMode = .never
