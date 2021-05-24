@@ -113,7 +113,7 @@ extension ListCommentsViewController: UITableViewDelegate, UITableViewDataSource
             case .primaryContent(let posts):
                 let comment = posts.comments[indexPath.row]
                 let cell = tableView.dequeueReusableCell(withIdentifier: PostCommentsListTableViewCell.identifier, for: indexPath) as! PostCommentsListTableViewCell
-                cell.configure(with: comment.username, with: comment.content)
+                cell.configure(with: comment.username!, with: comment.content!)
                 return cell
         }
     }
@@ -124,7 +124,7 @@ extension ListCommentsViewController: UITableViewDelegate, UITableViewDataSource
             case .primaryContent(let posts):
                 let post = posts
                 let cell = tableView.dequeueReusableCell(withIdentifier: CustomHeaderTableViewCell.identifier) as! CustomHeaderTableViewCell
-                cell.configure(with: post.owner.username, with: post.caption!)
+                cell.configure(with: post.owner.username!, with: post.caption!)
             
                 let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
                 separatorView.backgroundColor = .secondarySystemFill

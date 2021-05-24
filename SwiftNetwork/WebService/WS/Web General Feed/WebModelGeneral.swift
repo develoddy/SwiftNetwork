@@ -17,9 +17,10 @@ class WebModelGeneral: NSObject {
     ///Call to WebSender - doGETTokenToURL sending by parameters :
     /// - Url, Path, Dic and token
     ///Return object codable iReqResponsePostLike, On the contrary mensajeError
-    @discardableResult class func  startApiToGetPostLikeData(_ token: String?,
-                                                             conCompletionCorrecto completionCorrecto : @escaping Closures.iReqResponsePostLike ,
-                                                             error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+    @discardableResult
+    class func startApiToGetPostLikeData(_ token: String?,
+                                         conCompletionCorrecto completionCorrecto : @escaping Closures.iReqResponsePostLike ,
+                                         error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
         let dic : [Any]? = nil
         let result = WebSender.doGETTokenToURL(conURL: self.CDMWebModelURLBase,
                                                conPath: "api/auth/likes" as NSString,
@@ -32,20 +33,116 @@ class WebModelGeneral: NSObject {
             if arrayRespuesta == nil {
                 if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
                     let objUsuario = WebTranslatorGeneral.translateResponsePostLikeBE(diccionarioRespuesta!)
-                    //print("translateResponsePostLikeBE:: \(objUsuario)")
                     completionCorrecto(objUsuario)
                 }
             } else {
                 if  arrayRespuesta as! String == Constants.Error.unauthorized {
                     let mensajeErrorFinal = (diccionarioRespuesta != nil && diccionarioRespuesta?.count == 0) ? Constants.LogInError.logInInvalidte: mensajeError
-                    
-                   procesoIncorrecto(mensajeErrorFinal)///Ko
+                    procesoIncorrecto(mensajeErrorFinal)///Ko
                }
             }
         }
         return result
     }
     
+    
+    ///This functions receives by parameter the token
+    ///Call to WebSender - doGETTokenToURL sending by parameters :
+    /// - Url, Path, Dic and token
+    ///Return object codable iReqResponsePostLike, On the contrary mensajeError
+    @discardableResult class
+    func startApiToGetPostCommentsData(_ token: String?,
+                                  conCompletionCorrecto completionCorrecto : @escaping Closures.iReqResponsePostComments ,
+                                  error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        let dic : [Any]? = nil
+        let result = WebSender.doGETTokenToURL(conURL: self.CDMWebModelURLBase,
+                                               conPath: "api/auth/comments" as NSString,
+                                               conParametros: dic,
+                                               conToken: token! as NSString) { (objRespuesta) in
+            
+            let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
+            let arrayRespuesta       = diccionarioRespuesta?["error"]
+            let mensajeError         = WebModelGeneral.obtenerMensajeDeError(paraData: diccionarioRespuesta)
+            if arrayRespuesta == nil {
+                if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
+                    let objUsuario = WebTranslatorGeneral.translateResponsePostCommentsBE(diccionarioRespuesta!)
+                    completionCorrecto(objUsuario)
+                }
+            } else {
+                if  arrayRespuesta as! String == Constants.Error.unauthorized {
+                    let mensajeErrorFinal = (diccionarioRespuesta != nil && diccionarioRespuesta?.count == 0) ? Constants.LogInError.logInInvalidte: mensajeError
+                    procesoIncorrecto(mensajeErrorFinal)///Ko
+               }
+            }
+        }
+        return result
+    }
+    
+    
+    ///This functions receives by parameter the token
+    ///Call to WebSender - doGETTokenToURL sending by parameters :
+    /// - Url, Path, Dic and token
+    ///Return object codable iReqResponsePostLike, On the contrary mensajeError
+    @discardableResult class
+    func startApiToGetUsersData(_ token: String?,
+                                conCompletionCorrecto completionCorrecto : @escaping Closures.iReqResponseUser ,
+                                error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        let dic : [Any]? = nil
+        let result = WebSender.doGETTokenToURL(conURL: self.CDMWebModelURLBase,
+                                               conPath: "api/auth/users" as NSString,
+                                               conParametros: dic,
+                                               conToken: token! as NSString) { (objRespuesta) in
+            
+            let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
+            let arrayRespuesta       = diccionarioRespuesta?["error"]
+            let mensajeError         = WebModelGeneral.obtenerMensajeDeError(paraData: diccionarioRespuesta)
+            if arrayRespuesta == nil {
+                if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
+                    let objUsuario = WebTranslatorGeneral.translateResponseUsersBE(diccionarioRespuesta!)
+                    completionCorrecto(objUsuario)
+                }
+            } else {
+                if  arrayRespuesta as! String == Constants.Error.unauthorized {
+                    let mensajeErrorFinal = (diccionarioRespuesta != nil && diccionarioRespuesta?.count == 0) ? Constants.LogInError.logInInvalidte: mensajeError
+                    procesoIncorrecto(mensajeErrorFinal)///Ko
+               }
+            }
+        }
+        return result
+    }
+    
+    
+    ///This functions receives by parameter the token
+    ///Call to WebSender - doGETTokenToURL sending by parameters :
+    /// - Url, Path, Dic and token
+    ///Return object codable iReqResponsePostLike, On the contrary mensajeError
+    @discardableResult class
+    func startApiToGetUserPostData(_ token: String?,
+                                   conCompletionCorrecto completionCorrecto : @escaping Closures.iReqResponseUserPost ,
+                                   error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        let dic : [Any]? = nil
+        let result = WebSender.doGETTokenToURL(conURL: self.CDMWebModelURLBase,
+                                               conPath: "api/auth/userpost" as NSString,
+                                               conParametros: dic,
+                                               conToken: token! as NSString) { (objRespuesta) in
+            
+            let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
+            let arrayRespuesta       = diccionarioRespuesta?["error"]
+            let mensajeError         = WebModelGeneral.obtenerMensajeDeError(paraData: diccionarioRespuesta)
+            if arrayRespuesta == nil {
+                if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
+                    let objUsuario = WebTranslatorGeneral.translateResponseUserPostBE(diccionarioRespuesta!)
+                    completionCorrecto(objUsuario)
+                }
+            } else {
+                if  arrayRespuesta as! String == Constants.Error.unauthorized {
+                    let mensajeErrorFinal = (diccionarioRespuesta != nil && diccionarioRespuesta?.count == 0) ? Constants.LogInError.logInInvalidte: mensajeError
+                    procesoIncorrecto(mensajeErrorFinal)///Ko
+               }
+            }
+        }
+        return result
+    }
     
     
     

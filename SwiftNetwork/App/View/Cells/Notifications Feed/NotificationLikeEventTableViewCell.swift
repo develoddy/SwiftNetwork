@@ -90,7 +90,7 @@ class NotificationLikeEventTableViewCell: UITableViewCell {
         let description = model.text
         
         
-        let attributedString = joinText(username: username, description: description)
+        let attributedString = joinText(username: username!, description: description)
         label.attributedText = attributedString
         
         self.model = model

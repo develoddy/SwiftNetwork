@@ -7,35 +7,46 @@
 
 import Foundation
 
+// MARK: - IReqResponseUser
+struct IReqResUserViewModel: Codable {
+    var user: [User]?
+    var status: String?
+}
+
 // MARK: - User
 struct UserViewModel {
-    let name: (first:String, last:String)
-    let username: String
-    let bio: String
-    let profilePicture: URL
-    let dayOfBirth: Date
-    let gender: GenderViewModel
-    let publicEmail: String
-    let counts: UserCountViewModel
-    let joinDate: Date
-    let countryId: Int
-    let image: String
-    let imageHeader: String
-    let title: String
-    let likes: String
-    let dislikes: String
-    let address: String
-    let phone: String
-    let userssId: Int
-    let nivelId: Int
-    let sentimentalId: Int
-    let imagenBin: String
-    let valor : String
-    let id: Int
+    var name: (first:String, last:String)?
+    var username: String?
+    var bio: String?
+    var profilePicture: URL?
+    var dayOfBirth: Date?
+    var gender: GenderViewModel?
+    var publicEmail: String?
+    var counts: UserCountViewModel?
+    var joinDate: Date?
+    var countryId: Int?
+    var image: String?
+    var imageHeader: String?
+    var title: String?
+    var likes: String?
+    var dislikes: String?
+    var address: String?
+    var phone: String?
+    var userssId: Int?
+    var nivelId: Int?
+    var sentimentalId: Int?
+    var imagenBin: String?
+    var valor : String?
+    var id: Int?
 }
 
 
 // MARK: - Gender
-enum GenderViewModel {
-    case male, female, ether
+struct GenderViewModel: Codable {
+    ///case male, female, ether
+    var gender: String?
 }
+// MARK: - Gender
+/*enum GenderViewModel {
+    case male, female, ether
+}*/

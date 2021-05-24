@@ -182,7 +182,7 @@ extension SearchViewController {
                 bio: "",
                 profilePicture: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
                 dayOfBirth: Date(),
-                gender: .male,
+                gender: GenderViewModel(gender: "male"),//.male,
                 publicEmail: "",
                 counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
                 joinDate: Date(),

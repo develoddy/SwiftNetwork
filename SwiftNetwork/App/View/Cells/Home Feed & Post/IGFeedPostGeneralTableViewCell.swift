@@ -77,7 +77,7 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
         ///Comentarios
         let username = model.username
         let comment = model.content
-        let attributedString = joinText(username: username, description: comment)
+        let attributedString = joinText(username: username!, description: comment!)
         labelTextComment.attributedText = attributedString
     }
 }

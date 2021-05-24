@@ -265,12 +265,12 @@ class HomeViewController: UIViewController {
             let comments = PostCommentsViewModel(
                 id: i+1,
                 username: "@save",
-                type_id: 0,
-                ref_id: 0,
-                userss_id: 0,
+                typeId: 0,
+                refId: 0,
+                userssId: 0,
                 content: "Great post!",
-                comentario_id: 0,
-                createdAt: Date(),
+                comentarioId: 0,
+                createdAt: "",//Date(),
                 likes: []
                 /*identifier: "id-\(i)", username: "\(i) Username", text: "commentario \(i)", createDate: Date(), likes: []*/)
             tempComments.append(comments)
@@ -300,7 +300,7 @@ class HomeViewController: UIViewController {
             bio: "",
             profilePicture: URL(string: "https://wwww.google.com")!,
             dayOfBirth: Date(),
-            gender: .male,
+            gender: GenderViewModel(gender: "male"),//.male,
             publicEmail: "",
             counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
             joinDate: Date(),

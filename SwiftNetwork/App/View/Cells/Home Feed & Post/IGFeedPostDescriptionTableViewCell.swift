@@ -104,7 +104,7 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         let usernameText = model.owner.username
         guard let description = model.caption else { return  }
     
-        let attributedString = joinText(username: usernameText, description: description)
+        let attributedString = joinText(username: usernameText!, description: description)
         descriptionLabel.attributedText = attributedString
         
         ///Total Likes

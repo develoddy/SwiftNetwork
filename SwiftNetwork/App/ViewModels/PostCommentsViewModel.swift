@@ -9,15 +9,52 @@ import Foundation
 
 
 // MARK: - PostComments
+//struct PostCommentsViewModel {
+//    var id: Int
+//    var username: String
+//    var typeId: Int
+//    var refId: Int
+//    var userssId: Int
+//    var content: String
+//    var comentarioId: Int
+//    var createdAt: Date
+//    var likes: [CommenttLikeViewModel]
+//}
+
+// MARK: - PostCommentsViewModel
+struct IReqResPostCommentsViewModel {
+    var postComments: [PostComments]?
+    var status: String?
+
+    enum CodingKeys: String, CodingKey {
+        case postComments = "PostComments"
+        case status
+    }
+}
+
+// MARK: - PostComments
 struct PostCommentsViewModel {
-    var id: Int
-    var username: String
-    var type_id: Int
-    var ref_id: Int
-    var userss_id: Int
-    var content: String
-    var comentario_id: Int
-    var createdAt: Date
-    var likes: [CommenttLikeViewModel]
+    var id: Int?
+    var username: String?
+    var typeId, refId, userssId: Int?
+    var content: String?
+    var comentarioId: Int?
+    var createdAt: String?
+    var likes: [LikeViewModel]?
+
+    enum CodingKeys: String, CodingKey {
+        case id, username
+        case typeId = "typeId"
+        case refId = "refId"
+        case userssId = "userssId"
+        case content
+        case comentarioId = "comentarioId"
+        case createdAt, likes
+    }
+}
+
+// MARK: - Like
+struct LikeViewModel {
+    var username, commentIdentifier: String?
 }
 

@@ -14,7 +14,7 @@ class APIService: NSObject {
     ///Llamar a Web Service API
     ///Send Token
     ///Return Oject codable IReqResponsePostLike to ProfileViewcontroller
-    public func apiToGetPostLikeData(token: String, completion: @escaping (IReqResponsePostLike) -> Void) {
+    public func apiToGetPostLikeData(token: String, completion: @escaping (IReqResponsePostLike) -> Void) { 
         ///Calla API
         GeneralBC.apiToGetPostLikeDataBC(token) { (objPostLike) in
             completion(objPostLike)
@@ -23,27 +23,40 @@ class APIService: NSObject {
         }
     }
     
-    func apiToGetPostCommentsData(completion : @escaping (PostCommentsViewModel) -> ()) {
-        //completion()
-        //Llamar a Web Service
+    ///Llamar a Web Service API
+    ///Send Token
+    ///Return Oject codable IReqResponsePostComments to ProfileViewcontroller
+    func apiToGetPostCommentsData(token: String, completion : @escaping (IReqResponsePostComments) -> ()) {
+        ///Call API
+        GeneralBC.apiToGetPostCommentsDataBC(token) { (object) in
+            completion(object)
+        } conCompletionIncorrecto: { (mensajeError) in
+            print(mensajeError)
+        }
     }
     
-    func apiToGetUserData(completion : @escaping (PostLikeViewModel) -> ()) {
-        //completion()
-        //Llamar a Web Service
-        
-        /**URLSession.shared.dataTask(with: sourcesURL) { (data, urlResponse, error) in
-            if let data = data {
-                let jsonDecoder = JSONDecoder()
-                let empData = try! jsonDecoder.decode(Employees.self, from: data)
-                    completion(empData)
-            }
-        }.resume()**/
+    ///Llamar a Web Service API
+    ///Send Token
+    ///Return Oject codable IReqResponsePostComments to ProfileViewcontroller
+    func apiToGetUsersData(token: String, completion : @escaping (IReqResponseUser) -> ()) {
+        ///Call API
+        GeneralBC.apiToGetUsersDataBC(token) { (object) in
+            //print( "APIService - apiToGetUsersData:::::: \(object)")
+            completion(object)
+        } conCompletionIncorrecto: { (mensajeError) in
+            print(mensajeError)
+        }
+
     }
     
-    func apiToGetUserPostViewModelData(completion : @escaping (UserPostViewModel) -> ()) {
-        //completion()
-        //Llamar a Web Service
+    func apiToGetUserPostViewModelData(token: String, completion : @escaping (IReqResponseUserPost) -> ()) {
+        ///Call API
+        GeneralBC.apiToGetUserPostDataBC(token) { (object) in
+            completion(object)
+        } conCompletionIncorrecto: { (mensajeError) in
+            print(mensajeError)
+        }
+
     }
     
 }

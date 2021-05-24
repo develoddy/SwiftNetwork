@@ -7,104 +7,247 @@
 
 import Foundation
 
-
 // MARK: - IReqResponseUserPost
 public struct IReqResponseUserPost: Codable  {
     var identifier: String?
     var postType: UserPostTypeCodable?
-    var thumbnailImage: URL?
-    var postURL: URL?
+    var thumbnailImage: String?
+    var postURL: String?
     var caption: String?
     var likeCount: [IReqResponsePostLike]?
     var comments: [IReqResponsePostComments]?
-    var createDate: Date?
+    var createDate: String?
     var taggedUsers: [IReqResponseUser]?
     var owner: IReqResponseUser?
 }
 
 // MARK: - IReqResponseUser
 struct IReqResponseUser: Codable {
-    ///var name: (first:String?, last:String?)
-    var username: String?
-    var bio: String?
-    var profilePicture: URL?
-    var dayOfBirth: Date?
-    var gender: GenderCodable?
+    var user: [User]?
+    var status: String?
+}
+
+// MARK: - User
+struct User: Codable {
+    var name, last, username, bio: String?
+    var profilePicture: String?
+    var dayOfBirth: String?
+    var gender: Gender?
     var publicEmail: String?
-    var counts: UserCountCodable?
-    var joinDate: Date?
+    var counts: Counts?
+    var joinDate: String?
     var countryId: Int?
-    var image: String?
-    var imageHeader: String?
-    var title: String?
-    var likes: String?
-    var dislikes: String?
-    var address: String?
-    var phone: String?
-    var userssId: Int?
-    var nivelId: Int?
-    var sentimentalId: Int?
-    var imagenBin: String?
-    var valor : String?
+    var image, imageHeader, title, likes: String?
+    var dislikes, address, phone: String?
+    var userssID, nivelID, sentimentalID: Int?
+    var imagenBin, valor: String?
     var id: Int?
-}
-// MARK: - UserCountCodable
-struct UserCountCodable: Codable {
-    var followers: Int?
-    var following: Int?
-    var posts: Int?
-}
-// MARK: - GenderCodable
-enum GenderCodable:Int, Codable {
-    case male, female, ether
+
+    enum CodingKeys: String, CodingKey {
+        case name, last, username, bio, profilePicture, dayOfBirth, gender, publicEmail, counts, joinDate
+        case countryId = "countryId"
+        case image, imageHeader, title, likes, dislikes, address, phone
+        case userssID = "userssId"
+        case nivelID = "nivelId"
+        case sentimentalID = "sentimentalId"
+        case imagenBin, valor, id
+    }
 }
 
+// MARK: - Counts
+struct Counts: Codable {
+    var followers, following, posts: Int?
+}
 
+// MARK: - Gender
+struct Gender: Codable {
+    ///case male, female, ether
+    var gender: String?
+}
 
-// MARK: - IReqResponsePostComments IReqResponsePostComments
-struct IReqResponsePostComments: Codable  {
+// MARK: - IReqResponsePostComments
+struct IReqResponsePostComments: Codable {
+    var postComments: [PostComments]?
+    var status: String?
+}
+
+// MARK: - PostComments
+struct PostComments: Codable {
     var id: Int?
     var username: String?
-    var type_id: Int?
-    var ref_id: Int?
-    var userss_id: Int?
+    var typeId, refId, userssId: Int?
     var content: String?
-    var comentario_id: Int?
+    var comentarioId: Int?
     var createdAt: Date?
-    var likes: [CommenttLikeCodable]?
+    var likes: [Like]?
+
+    enum CodingKeys: String, CodingKey {
+        case id, username
+        case typeId = "typeId"
+        case refId = "refId"
+        case userssId = "userssId"
+        case content
+        case comentarioId = "comentarioId"
+        case createdAt, likes
+    }
 }
-// MARK: - CommenttLikeCodable
-struct CommenttLikeCodable: Codable  {
-    var username: String?
-    var commentIdentifier: String?
+
+// MARK: - Like
+struct Like: Codable {
+    var username, commentIdentifier: String?
 }
 
-
-
+// MARK: - LikeCount
+struct LikeCount: Codable {
+    let username, postIdentifier, text: String
+    let likes: Int
+}
 // MARK: - IReqResponsePostLike
-class IReqResponsePostLike: Codable {
+struct IReqResponsePostLike: Codable {
     var data: [PostLikeCodable]?
     var status: String?
 }
 // MARK: - PostLikeCodable
-class PostLikeCodable: Codable {
+struct PostLikeCodable: Codable {
     var username : String?
     var postIdentifier: String?
     var text: String?
     var likes: Int?
 }
-
-
-
-
 // MARK: - UserPostTypeCodable
-public enum UserPostTypeCodable: String,Codable {
-    case photo = "Photo"
-    case video = "Video"
+struct UserPostTypeCodable: Codable {
+    let photo, video: String
 }
-
 // MARK: - DescriptionsCodable
 struct DescriptionsCodable: Codable  {
     var text: String
     var likes: Int
 }
+
+
+
+
+/*
+ 
+ // This file was generated from JSON Schema using quicktype, do not modify it directly.
+ // To parse the JSON, add this file to your project and do:
+ //
+ //   let iReqResponseUserPost = try? newJSONDecoder().decode(IReqResponseUserPost.self, from: jsonData)
+
+ import Foundation
+
+ // MARK: - IReqResponseUserPost
+ struct IReqResponseUserPost: Codable {
+     let identifier: String
+     let postType: PostType
+     let thumbnailImage: String
+     let postURL: String
+     let caption: String
+     let likeCount: [LikeCount]
+     let comments: [Comment]
+     let createDate: String
+     let taggedUsers: [TaggedUser]
+     let owner: Owner
+ }
+
+ // MARK: - Comment
+ struct Comment: Codable {
+     let postComments: [PostComment]
+
+     enum CodingKeys: String, CodingKey {
+         case postComments = "PostComments"
+     }
+ }
+
+ // MARK: - PostComment
+ struct PostComment: Codable {
+     let username, postIdentifier, text: String
+     let likes: [Like]
+     let id, typeID, refID, userssID: Int
+     let content: String
+     let comentarioID: Int
+     let createdAt: String
+
+     enum CodingKeys: String, CodingKey {
+         case username, postIdentifier, text, likes, id
+         case typeID = "typeId"
+         case refID = "refId"
+         case userssID = "userssId"
+         case content
+         case comentarioID = "comentarioId"
+         case createdAt
+     }
+ }
+
+ // MARK: - Like
+ struct Like: Codable {
+     let username, commentIdentifier: String
+ }
+
+ // MARK: - LikeCount
+ struct LikeCount: Codable {
+     let username, postIdentifier, text: String
+     let likes: Int
+ }
+
+ // MARK: - Owner
+ struct Owner: Codable {
+     let user: [User]
+     let status: String
+ }
+
+ // MARK: - User
+ struct User: Codable {
+     let name, last, username, bio: String
+     let profilePicture: String
+     let dayOfBirth: String
+     let gender: Gender
+     let publicEmail: String
+     let counts: Counts
+     let joinDate: String
+     let countryID: Int
+     let image, imageHeader, title, likes: String
+     let dislikes, address, phone: String
+     let userssID, nivelID, sentimentalID: Int
+     let imagenBin, valor: String
+     let id: Int
+
+     enum CodingKeys: String, CodingKey {
+         case name, last, username, bio, profilePicture, dayOfBirth, gender, publicEmail, counts, joinDate
+         case countryID = "countryId"
+         case image, imageHeader, title, likes, dislikes, address, phone
+         case userssID = "userssId"
+         case nivelID = "nivelId"
+         case sentimentalID = "sentimentalId"
+         case imagenBin, valor, id
+     }
+ }
+
+ // MARK: - Counts
+ struct Counts: Codable {
+     let followers, following, posts: Int
+ }
+
+ // MARK: - Gender
+ struct Gender: Codable {
+     let gender: String
+ }
+
+ // MARK: - PostType
+ struct PostType: Codable {
+     let photo, video: String
+ }
+
+ // MARK: - TaggedUser
+ struct TaggedUser: Codable {
+     let user: [User]
+     let status: String
+
+     enum CodingKeys: String, CodingKey {
+         case user = "User"
+         case status
+     }
+ }
+
+
+*/

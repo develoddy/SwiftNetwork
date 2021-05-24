@@ -17,18 +17,24 @@ enum SelectedScope: Int {
 final class ProfileViewController: UIViewController {
     
     private var collectionView: UICollectionView?
+   
+    private var postLikeViewModel = [PostLikeViewModel]()
+    
+    private var likeViewModel = [LikeViewModel]()
+    private var comments = [PostCommentsViewModel]()
+    
     
     private var userPosts = [UserPostViewModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        //setupView()
+        setupView()
         handleNotAuthenticated()
         configureNavigationBar()
         configureCollectionView()
         delegateCollectionView()
-        setupModel()
+        
         
     }
     
@@ -38,7 +44,13 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupView() {
-        title = "Profile"
+        //title = "Profile"
+        /*fetchPostLikeData { (object) in
+            self.setupModel(postLikeViewModel: object)
+        }*/
+        
+        setupModel()
+        
     }
     
     
@@ -231,10 +243,10 @@ extension ProfileViewController: ProfileTabsCollectionReusableViewDelegate {
     func didTapGridButtonTab() {
         // Reload collection view with data
         
-        DispatchQueue.main.async{
+        /*DispatchQueue.main.async{
             self.setupModel()
             self.collectionView?.reloadData()
-        }
+        }*/
     }
     
     func didTapTaggedButtonTab() {
@@ -258,17 +270,17 @@ extension ProfileViewController: ProfileTabsCollectionReusableViewDelegate {
             likes.append(data)
         }
         
-        var comments = [PostCommentsViewModel]()
-        for x in 0..<2 {
+        //var comments = [PostCommentsViewModel]()
+        /*for x in 0..<2 {
             comments.append(
-                PostCommentsViewModel(
+                IReqResPostCommentsViewModel(
                     id: x+1,
                     username: "@save",
-                    type_id: 0,
-                    ref_id: 0,
-                    userss_id: 0,
+                    typeId: 0,
+                    refId: 0,
+                    userssId: 0,
                     content: "Great post!",
-                    comentario_id: 0,
+                    comentarioId: 0,
                     createdAt: Date(),
                     likes: []
                     
@@ -279,7 +291,7 @@ extension ProfileViewController: ProfileTabsCollectionReusableViewDelegate {
                     likes: []*/
                 )
             )
-        }
+        }*/
         
         let user = UserViewModel(
             name: (first: "", last: ""),
@@ -287,7 +299,7 @@ extension ProfileViewController: ProfileTabsCollectionReusableViewDelegate {
             bio: "",
             profilePicture: URL(string: "https://wwww.google.com")!,
             dayOfBirth: Date(),
-            gender: .male,
+            gender: GenderViewModel(gender: "male"),//.male,
             publicEmail: "",
             counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
             joinDate: Date(),
@@ -305,15 +317,6 @@ extension ProfileViewController: ProfileTabsCollectionReusableViewDelegate {
             imagenBin: "",
             valor: "",
             id: 0
-            /**name: (first: "", last: ""),
-            username: "joe",
-            bio: "",
-            profilePicture: URL(string: "https://wwww.google.com")!,
-            birthDate: Date(),
-            gender: .male,
-            email: "",
-            counts: UserCount(followers: 1, following: 1, posts: 1),
-            joinDate: Date()**/
         
         )
         
@@ -346,81 +349,121 @@ extension ProfileViewController {
     
     ///Call APIService
     ///Loop through the data and save it to the Model object
-    private func fetchPostLikeData() -> [PostLikeViewModel] {
-        var likes = [PostLikeViewModel]()
+    
+   
+    //public func fetchPostLikeData(completion: @escaping([PostLikeViewModel]) -> Void) {
+    public func fetchPostLikeData() -> [PostLikeViewModel] {
+        ///var postLikeViewModel = [PostLikeViewModel]()
+        ///PostLikeViewModel
         APIService.shared.apiToGetPostLikeData(token: handleNotAuthenticated()) {(iReqResponsePostLike) in
-            let count = iReqResponsePostLike.data!.count
-            for i in 0..<count {
+            let count = iReqResponsePostLike.data?.count
+            for i in 0..<count!{
                 let data = PostLikeViewModel(
                     username        : iReqResponsePostLike.data![i].username!   ,
                     postIdentifier  : iReqResponsePostLike.data![i].text!       ,
                     text            : iReqResponsePostLike.data![i].text!       ,
                     likes           : iReqResponsePostLike.data![i].likes!      )
-                likes.append(data)
+                self.postLikeViewModel.append(data)
             }
-            print(likes)
+            //completion(self.postLikeViewModel)
         }
-        return likes
+        return self.postLikeViewModel
     }
+    
+    
+    public func fetchPostCommentsData(completion: @escaping ([PostCommentsViewModel]) -> Void) {
+        APIService.shared.apiToGetPostCommentsData(token: handleNotAuthenticated()) {(iReqResponsePostComments) in
+            ///LikeViewModel array
+            let countComments = iReqResponsePostComments.postComments?.count
+            if countComments != 0 {
+                for i in 0..<countComments! {
+                    let countLikes = iReqResponsePostComments.postComments![i].likes!.count
+                    for x in 0..<countLikes {
+                        var like = LikeViewModel()
+                        like.commentIdentifier = iReqResponsePostComments.postComments![i].likes![x].commentIdentifier
+                        like.username = iReqResponsePostComments.postComments![i].likes![x].username
+                        self.likeViewModel.append(like)
+                    }
+                }
+                
+                ///PostCommentsViewModel array
+                for i in 0..<countComments! {
+                    var comment = PostCommentsViewModel()
+                    comment.id = iReqResponsePostComments.postComments![i].id
+                    comment.username = iReqResponsePostComments.postComments![i].username
+                    comment.typeId = iReqResponsePostComments.postComments![i].typeId
+                    comment.refId = iReqResponsePostComments.postComments![i].refId
+                    comment.userssId = iReqResponsePostComments.postComments![i].userssId
+                    comment.content = iReqResponsePostComments.postComments![i].content
+                    comment.comentarioId = iReqResponsePostComments.postComments![i].comentarioId
+                    //comment.createdAt = iReqResponsePostComments.postComments![i].createdAt
+                    comment.likes = self.likeViewModel
+                    self.comments.append(comment)
+                }
+            } else {
+                completion([])
+            }
+        }
+    }
+    
+    
+    
     ///Call APIService
-    private func fetchPostCommentsData() -> [UserViewModel] {
-        var user = [UserViewModel]()
-        return user
+    private func fetchUsersData() -> [UserViewModel] {
+        var users = [UserViewModel]()
+        APIService.shared.apiToGetUsersData(token: handleNotAuthenticated()) { (iReqResponseUser) in
+            let countUsers = iReqResponseUser.user?.count
+            if countUsers != 0 {
+                for i in 0..<countUsers! {
+                    var user = UserViewModel()
+                    user.name = (first:"", last:"")
+                    user.username = iReqResponseUser.user![i].username
+                    user.bio = ""
+                    user.profilePicture = URL(string: iReqResponseUser.user![i].profilePicture!)
+                    user.dayOfBirth = Date()
+                    user.gender = GenderViewModel(gender: "male")
+                    user.publicEmail = iReqResponseUser.user![i].publicEmail
+                    user.counts = UserCountViewModel(followers: 1, following: 1, posts: 1)
+                    user.joinDate = Date()
+                    user.countryId = iReqResponseUser.user![i].countryId
+                    user.image = ""
+                    user.imageHeader = ""
+                    user.title = ""
+                    user.likes = ""
+                    user.dislikes = ""
+                    user.address = ""
+                    user.phone = ""
+                    user.userssId = 0
+                    user.nivelId = 0
+                    user.sentimentalId = 0
+                    user.imagenBin = ""
+                    user.valor = ""
+                    user.id = 0
+                    users.append(user)
+                }
+            }
+        }
+        return users
     }
-    ///Call APIService
-    private func fetchUserData() -> [PostCommentsViewModel] {
-        var comments = [PostCommentsViewModel]()
-        return comments
-    }
+    
+    
     ///Call APIService
     private func fetchUserPostData() -> [UserPostViewModel] {
         var userPosts = [UserPostViewModel]()
+        APIService.shared.apiToGetUserPostViewModelData(token: handleNotAuthenticated()) { (iReqResponseUserPost) in
+            print(" fetchUserPostData:::::: \(iReqResponseUserPost)")
+        }
         return userPosts
     }
     
     
-    
+
     
     
     
     private func setupModel() {
         
-        /*var likes = [PostLike]()
-        for i in 0..<5 {
-            let data = PostLike(
-                username: "jor \(i)",
-                postIdentifier: "",
-                text: "Mi primera publicacion para el test de la App.",
-                likes: i)
-            likes.append(data)
-        }*/
-        
-        
-        
-        
-        
-      
-        var comments = [PostCommentsViewModel]()
-        for x in 0..<4 {
-            comments.append(
-                PostCommentsViewModel(
-                    id: x+1,
-                    username: "@save",
-                    type_id: 0,
-                    ref_id: 0,
-                    userss_id: 0,
-                    content: "Great post!",
-                    comentario_id: 0,
-                    createdAt: Date(),
-                    likes: []
-                    /*identifier: "123\(x)",
-                    username: "@save",
-                    text: "Great post!",
-                    createDate: Date(),
-                    likes: []*/
-                )
-            )
-        }
+        fetchUserPostData()
         
         let user = UserViewModel(
             name: (first: "", last: ""),
@@ -428,7 +471,7 @@ extension ProfileViewController {
             bio: "",
             profilePicture: URL(string: "https://wwww.google.com")!,
             dayOfBirth: Date(),
-            gender: .male,
+            gender: GenderViewModel(gender: "male"), //.male,
             publicEmail: "",
             counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
             joinDate: Date(),
@@ -446,21 +489,9 @@ extension ProfileViewController {
             imagenBin: "",
             valor: "",
             id: 0
-            /**name: (first: "", last: ""),
-            username: "joe",
-            bio: "",
-            profilePicture: URL(string: "https://wwww.google.com")!,
-            birthDate: Date(),
-            gender: .male,
-            email: "",
-            counts: UserCount(followers: 1, following: 1, posts: 1),
-            joinDate: Date()**/
         )
         
-        
-        
-        ///Call fetchPostLikeData
-        let likes = fetchPostLikeData()
+    
         
         for i in 0..<10 {
             let post = UserPostViewModel(
@@ -470,7 +501,7 @@ extension ProfileViewController {
                     string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
                 postURL: URL(string: "https://wwww.google.com")!,
                 caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
-                likeCount: likes,
+                likeCount: postLikeViewModel,
                 comments: comments,
                 createDate: Date(),
                 taggedUsers: [],
@@ -478,16 +509,5 @@ extension ProfileViewController {
             
             userPosts.append(post)
         }
-        
     }
 }
-
-
-
-
-
-
-
-
-
-
