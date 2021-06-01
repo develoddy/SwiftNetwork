@@ -77,7 +77,7 @@ class NotificationFollowEventTableViewCell: UITableViewCell {
             y: (contentView.height-buttonHeight)/2,
             width: size,
             height: buttonHeight)
-        followButton.backgroundColor = Constants.Color.green
+        followButton.backgroundColor = Constants.Color.purple
         
         label.frame = CGRect(
             x: profileImageView.right+5,

@@ -7,19 +7,14 @@
 
 import Foundation
 
-/*
-struct IReqResponsePostLikeViewModel {
-    var data: [PostLikeViewModel]?
-    var status: String?
+struct FeaturePostLikeResponseViewModel {
+    let postlikes: PostLikeResponseViewModel
 }
 
-struct PostLikeViewModel {
-    let username: String?
-    var postIdentifier: String?
-    let text: String?
-    let likes: Int?
+struct PostLikeResponseViewModel {
+    let data: [PostLikeViewModel]
+    let status: String
 }
-*/
 
 // MARK: - PostLike
 struct PostLikeViewModel {
@@ -28,3 +23,5 @@ struct PostLikeViewModel {
     let text: String
     let likes: Int
 }
+
+

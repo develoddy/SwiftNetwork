@@ -13,29 +13,26 @@ enum SelectedScope: Int {
     case tagged = 1
 }
 
+
 /// Profile view controller
 final class ProfileViewController: UIViewController {
     
     private var collectionView: UICollectionView?
-   
+    
     private var postLikeViewModel = [PostLikeViewModel]()
+    private var postCommentsViewModel = [PostCommentsViewModel]()
+    private var userViewModel = UserViewModel()
+    private var userPostViewModel = [UserPostViewModel]()
     
-    private var likeViewModel = [LikeViewModel]()
-    private var comments = [PostCommentsViewModel]()
-    
-    
-    private var userPosts = [UserPostViewModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        setupView()
-        handleNotAuthenticated()
+        //setupView()
         configureNavigationBar()
         configureCollectionView()
         delegateCollectionView()
-        
-        
+        setupModel(tabs: "grid")
     }
     
     override func viewDidLayoutSubviews() {
@@ -44,15 +41,7 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupView() {
-        //title = "Profile"
-        /*fetchPostLikeData { (object) in
-            self.setupModel(postLikeViewModel: object)
-        }*/
-        
-        setupModel()
-        
     }
-    
     
     private func handleNotAuthenticated() -> String {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -90,7 +79,6 @@ final class ProfileViewController: UIViewController {
             PhotoCollectionViewCell.self,
             forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
         
-        
         ///Header collections
         collectionView?.register(
             ProfileInfoHeaderCollectionReusableView.self,
@@ -102,6 +90,12 @@ final class ProfileViewController: UIViewController {
             ProfileTabsCollectionReusableView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: ProfileTabsCollectionReusableView.identifier)
+        
+        ///Tabs collections
+        collectionView?.register(
+            ProfileTabsCollectionReusableView2.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: ProfileTabsCollectionReusableView2.identifier)
         
         
         guard let collectionView = collectionView else {
@@ -132,45 +126,54 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
         if section == 0 {
             return 0
         }
-        return userPosts.count
+        return userPostViewModel.count
     }
     
     ///PhotoCollectionViewCell
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let model = userPosts[indexPath.row]
+        let model = userPostViewModel[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
         cell.configure(with: model)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        guard kind == UICollectionView.elementKindSectionHeader else {
-            // Footer
-            return UICollectionReusableView()
-        }
-        
-        if indexPath.section == 1 {
+        ///Si el array del objeto es 1 o superior
+        if userPostViewModel.count > 0 {
+            ///Header
+            if indexPath.section == 0 {
+                let model = userPostViewModel[indexPath.row]
+                if kind == UICollectionView.elementKindSectionHeader {
+                    let profileHeader = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: kind,
+                    withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,
+                    for: indexPath) as! ProfileInfoHeaderCollectionReusableView
+                    profileHeader.configure(model: model)
+                    profileHeader.delegate = self
+                    return profileHeader
+                }
+            }
             ///Tabs
             let tabControllerHeader = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
+                ofKind: kind, //UICollectionView.elementKindSectionHeader,
                 withReuseIdentifier: ProfileTabsCollectionReusableView.identifier,
                 for: indexPath) as! ProfileTabsCollectionReusableView
-            tabControllerHeader.delegate = self
+                tabControllerHeader.delegate = self
+                return tabControllerHeader
+        }
+       
+        else { ///Simula la carga
+            let tabControllerHeader = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: ProfileTabsCollectionReusableView2.identifier,
+            for: indexPath) as! ProfileTabsCollectionReusableView2
             return tabControllerHeader
         }
-        ///Header
-        let profileHeader = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,
-            for: indexPath) as! ProfileInfoHeaderCollectionReusableView
-        profileHeader.delegate = self
-        return profileHeader
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if section == 0 {
-            return CGSize(width: collectionView.width, height: collectionView.height/1.3) //3
+            return CGSize(width: collectionView.width, height: collectionView.height/1.4) //3
         }
         // Size of section tabs
         return CGSize(width: collectionView.width, height: 50)
@@ -180,7 +183,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         // get the model and open post controller
-        let model = userPosts[indexPath.row]
+        let model = userPostViewModel[indexPath.row]
         let vc = PostViewController(model: model)
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
@@ -237,277 +240,184 @@ extension ProfileViewController: ProfileInfoHeaderCollectionReusableViewDelegate
     }
 }
 
+
+
+
 // MARK: ProfileTabsCollectionReusableViewDelegate
 extension ProfileViewController: ProfileTabsCollectionReusableViewDelegate {
-    
     func didTapGridButtonTab() {
         // Reload collection view with data
-        
-        /*DispatchQueue.main.async{
-            self.setupModel()
-            self.collectionView?.reloadData()
-        }*/
+        userPostViewModel = [UserPostViewModel]()
+        self.setupModel(tabs: "grid")
     }
     
     func didTapTaggedButtonTab() {
-        // Reload collection view with data
-        /*switch ind {
-        case SelectedScope.photos.rawValue :
-            
-        case SelectedScope.tagged.rawValue :
-        }*/
-        
-        
-        self.userPosts = [UserPostViewModel]()
-        
-        var likes = [PostLikeViewModel]()
-        for i in 0..<2 {
-            let data = PostLikeViewModel(
-                username: "jor \(i)",
-                postIdentifier: "",
-                text: "Mi primera publicacion para el test de la App.",
-                likes: i)
-            likes.append(data)
-        }
-        
-        //var comments = [PostCommentsViewModel]()
-        /*for x in 0..<2 {
-            comments.append(
-                IReqResPostCommentsViewModel(
-                    id: x+1,
-                    username: "@save",
-                    typeId: 0,
-                    refId: 0,
-                    userssId: 0,
-                    content: "Great post!",
-                    comentarioId: 0,
-                    createdAt: Date(),
-                    likes: []
-                    
-                    /*identifier: "123\(x)",
-                    username: "@save",
-                    text: "Great post!",
-                    createDate: Date(),
-                    likes: []*/
-                )
-            )
-        }*/
-        
-        let user = UserViewModel(
-            name: (first: "", last: ""),
-            username: "@username",
-            bio: "",
-            profilePicture: URL(string: "https://wwww.google.com")!,
-            dayOfBirth: Date(),
-            gender: GenderViewModel(gender: "male"),//.male,
-            publicEmail: "",
-            counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
-            joinDate: Date(),
-            countryId: 0,
-            image: "",
-            imageHeader: "",
-            title: "",
-            likes: "",
-            dislikes: "",
-            address: "",
-            phone: "",
-            userssId: 0,
-            nivelId: 0,
-            sentimentalId: 0,
-            imagenBin: "",
-            valor: "",
-            id: 0
-        
-        )
-        
-        for i in 0..<5 {
-            let post = UserPostViewModel(
-                identifier: "",
-                postType: .photo,
-                thumbnailImage: URL(
-                    string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
-                postURL: URL(string: "https://wwww.google.com")!,
-                caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
-                likeCount: likes,
-                comments: comments,
-                createDate: Date(),
-                taggedUsers: [],
-                owner: user)
-            
-            userPosts.append(post)
-            
-        }
-        
-
-        DispatchQueue.main.async{
-            self.collectionView?.reloadData()
-        }
+        //Reload collection view with data
+        userPostViewModel = [UserPostViewModel]()
+        setupModel(tabs: "tagged")
     }
 }
 
-extension ProfileViewController {
-    
-    ///Call APIService
-    ///Loop through the data and save it to the Model object
-    
-   
-    //public func fetchPostLikeData(completion: @escaping([PostLikeViewModel]) -> Void) {
-    public func fetchPostLikeData() -> [PostLikeViewModel] {
-        ///var postLikeViewModel = [PostLikeViewModel]()
-        ///PostLikeViewModel
-        APIService.shared.apiToGetPostLikeData(token: handleNotAuthenticated()) {(iReqResponsePostLike) in
-            let count = iReqResponsePostLike.data?.count
-            for i in 0..<count!{
-                let data = PostLikeViewModel(
-                    username        : iReqResponsePostLike.data![i].username!   ,
-                    postIdentifier  : iReqResponsePostLike.data![i].text!       ,
-                    text            : iReqResponsePostLike.data![i].text!       ,
-                    likes           : iReqResponsePostLike.data![i].likes!      )
-                self.postLikeViewModel.append(data)
-            }
-            //completion(self.postLikeViewModel)
-        }
-        return self.postLikeViewModel
-    }
-    
-    
-    public func fetchPostCommentsData(completion: @escaping ([PostCommentsViewModel]) -> Void) {
-        APIService.shared.apiToGetPostCommentsData(token: handleNotAuthenticated()) {(iReqResponsePostComments) in
-            ///LikeViewModel array
-            let countComments = iReqResponsePostComments.postComments?.count
-            if countComments != 0 {
-                for i in 0..<countComments! {
-                    let countLikes = iReqResponsePostComments.postComments![i].likes!.count
-                    for x in 0..<countLikes {
-                        var like = LikeViewModel()
-                        like.commentIdentifier = iReqResponsePostComments.postComments![i].likes![x].commentIdentifier
-                        like.username = iReqResponsePostComments.postComments![i].likes![x].username
-                        self.likeViewModel.append(like)
-                    }
-                }
-                
-                ///PostCommentsViewModel array
-                for i in 0..<countComments! {
-                    var comment = PostCommentsViewModel()
-                    comment.id = iReqResponsePostComments.postComments![i].id
-                    comment.username = iReqResponsePostComments.postComments![i].username
-                    comment.typeId = iReqResponsePostComments.postComments![i].typeId
-                    comment.refId = iReqResponsePostComments.postComments![i].refId
-                    comment.userssId = iReqResponsePostComments.postComments![i].userssId
-                    comment.content = iReqResponsePostComments.postComments![i].content
-                    comment.comentarioId = iReqResponsePostComments.postComments![i].comentarioId
-                    //comment.createdAt = iReqResponsePostComments.postComments![i].createdAt
-                    comment.likes = self.likeViewModel
-                    self.comments.append(comment)
-                }
-            } else {
-                completion([])
-            }
-        }
-    }
-    
-    
-    
-    ///Call APIService
-    private func fetchUsersData() -> [UserViewModel] {
-        var users = [UserViewModel]()
-        APIService.shared.apiToGetUsersData(token: handleNotAuthenticated()) { (iReqResponseUser) in
-            let countUsers = iReqResponseUser.user?.count
-            if countUsers != 0 {
-                for i in 0..<countUsers! {
-                    var user = UserViewModel()
-                    user.name = (first:"", last:"")
-                    user.username = iReqResponseUser.user![i].username
-                    user.bio = ""
-                    user.profilePicture = URL(string: iReqResponseUser.user![i].profilePicture!)
-                    user.dayOfBirth = Date()
-                    user.gender = GenderViewModel(gender: "male")
-                    user.publicEmail = iReqResponseUser.user![i].publicEmail
-                    user.counts = UserCountViewModel(followers: 1, following: 1, posts: 1)
-                    user.joinDate = Date()
-                    user.countryId = iReqResponseUser.user![i].countryId
-                    user.image = ""
-                    user.imageHeader = ""
-                    user.title = ""
-                    user.likes = ""
-                    user.dislikes = ""
-                    user.address = ""
-                    user.phone = ""
-                    user.userssId = 0
-                    user.nivelId = 0
-                    user.sentimentalId = 0
-                    user.imagenBin = ""
-                    user.valor = ""
-                    user.id = 0
-                    users.append(user)
-                }
-            }
-        }
-        return users
-    }
-    
-    
-    ///Call APIService
-    private func fetchUserPostData() -> [UserPostViewModel] {
-        var userPosts = [UserPostViewModel]()
-        APIService.shared.apiToGetUserPostViewModelData(token: handleNotAuthenticated()) { (iReqResponseUserPost) in
-            print(" fetchUserPostData:::::: \(iReqResponseUserPost)")
-        }
-        return userPosts
-    }
-    
-    
 
-    
-    
-    
-    private func setupModel() {
+extension ProfileViewController {
+
+    ///Call APIService
+    ///Loop through the data and save it to the Model object //fetchUserPostData
+    public func setupModel(tabs: String) {
         
-        fetchUserPostData()
+        let group = DispatchGroup()
+        group.enter()
+        group.enter()
+        group.enter()
+        group.enter()
         
-        let user = UserViewModel(
-            name: (first: "", last: ""),
-            username: "@username",
-            bio: "",
-            profilePicture: URL(string: "https://wwww.google.com")!,
-            dayOfBirth: Date(),
-            gender: GenderViewModel(gender: "male"), //.male,
-            publicEmail: "",
-            counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
-            joinDate: Date(),
-            countryId: 0,
-            image: "",
-            imageHeader: "",
-            title: "",
-            likes: "",
-            dislikes: "",
-            address: "",
-            phone: "",
-            userssId: 0,
-            nivelId: 0,
-            sentimentalId: 0,
-            imagenBin: "",
-            valor: "",
-            id: 0
-        )
+        var iReqResponseFeaturePosLike: IReqResponseFeaturePosLike?
+        var iReqResponsePostComments: IReqResponsePostComments?
+        var iReqResponseUser: IReqResponseUser?
+        var iReqResponseUserPost: IReqResponseUserPost?
         
-    
-        
-        for i in 0..<10 {
-            let post = UserPostViewModel(
-                identifier: "",
-                postType: .photo,
-                thumbnailImage: URL(
-                    string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
-                postURL: URL(string: "https://wwww.google.com")!,
-                caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
-                likeCount: postLikeViewModel,
-                comments: comments,
-                createDate: Date(),
-                taggedUsers: [],
-                owner: user)
-            
-            userPosts.append(post)
+        ///Call to API apiToGetPostLikeData
+        APIService.shared.apiToGetPostLikeData(token: handleNotAuthenticated(), tabs: tabs) {(result) in
+            defer {
+                group.leave()
+            }
+            switch result {
+                case .success(let model):
+                    iReqResponseFeaturePosLike = model
+                case .failure(let error):
+                    print(error.localizedDescription)
+            }
         }
+        
+        ///Call to API apiToGetPostCommentsData
+        APIService.shared.apiToGetPostCommentsData(token: handleNotAuthenticated(), tabs: tabs) {(result) in
+            defer {
+                group.leave()
+            }
+            switch result {
+            case .success(let model):
+                iReqResponsePostComments = model
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        
+        ///Call to API apiToGetUsersData
+        APIService.shared.apiToGetUsersData(token: handleNotAuthenticated(), tabs: tabs) { (result) in
+            defer {
+                group.leave()
+            }
+            switch result {
+            case .success(let model):
+                iReqResponseUser = model
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        
+        ///Call to API apiToGetUserPostViewModelData
+        APIService.shared.apiToGetUserPostViewModelData(token: handleNotAuthenticated(), tabs: tabs) { (result) in
+            defer {
+                group.leave()
+            }
+            
+            switch result {
+            case .success(let model):
+                iReqResponseUserPost = model
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        
+        ///Configure Models
+        group.notify(queue: .main) {
+            guard let iPostLike = iReqResponseFeaturePosLike?.postlikes?.items,
+                  let iPostComments = iReqResponsePostComments?.postComments,
+                  let iReqResponseUser = iReqResponseUser?.user,
+                  let iReqResponseUserPost = iReqResponseUserPost?.userpost else {
+                return
+            }
+            self.configureModels(
+                iPostLike: iPostLike,
+                iPostComments: iPostComments,
+                iReqResponseUser: iReqResponseUser,
+                iReqResponseUserPost: iReqResponseUserPost)
+        }
+    }
+    
+    ///configureModels
+    func configureModels(iPostLike: [IPostLike],
+                         iPostComments: [PostComments],
+                         iReqResponseUser: UserClass,
+                         iReqResponseUserPost: [Userpost]) {
+        
+        ///Insert data in the model [PostLikeViewModel]()
+        for items in iPostLike {
+            postLikeViewModel.append(
+                PostLikeViewModel(username: items.username!,
+                                  postIdentifier: items.postIdentifier!,
+                                  text: items.text!,
+                                  likes: items.likes!))
+        }
+        
+        ///Insert data in the model UserViewModel()
+        for items in iPostComments {
+            postCommentsViewModel.append(
+                PostCommentsViewModel(id: items.id,
+                                      username: items.username,
+                                      typeId: items.typeId,
+                                      refId: items.refId,
+                                      userssId: items.userssId,
+                                      content: items.content,
+                                      comentarioId: items.comentarioId,
+                                      createdAt: items.createdAt,
+                                      likes: []))
+        }
+        
+        ///Insert data in the model [PostCommentsViewModel]()
+        userViewModel.name = iReqResponseUser.name
+        userViewModel.last = iReqResponseUser.last
+        userViewModel.username = iReqResponseUser.username
+        userViewModel.bio = iReqResponseUser.name
+        userViewModel.profilePicture = URL(string: iReqResponseUser.profilePicture!)
+        userViewModel.dayOfBirth = Date()
+        userViewModel.gender = GenderViewModel(gender: "male")
+        userViewModel.publicEmail = iReqResponseUser.publicEmail
+        userViewModel.counts = UserCountViewModel(followers: 1, following: 1, posts: 1)
+        userViewModel.joinDate = Date()
+        userViewModel.countryId = 0
+        userViewModel.image =  iReqResponseUser.image
+        userViewModel.imageHeader = iReqResponseUser.imageHeader
+        userViewModel.title = iReqResponseUser.title
+        userViewModel.likes =  iReqResponseUser.likes
+        userViewModel.dislikes = iReqResponseUser.dislikes
+        userViewModel.address = iReqResponseUser.address
+        userViewModel.phone = iReqResponseUser.phone
+        userViewModel.userssId = 0
+        userViewModel.nivelId = 0
+        userViewModel.sentimentalId = 0
+        userViewModel.imagenBin = iReqResponseUser.imagenBin
+        userViewModel.valor = iReqResponseUser.valor
+        userViewModel.id = 0
+    
+        ///Insert data in the model [UserPostViewModel]()
+        for items in iReqResponseUserPost {
+            userPostViewModel.append(
+                UserPostViewModel(
+                    identifier: items.identifier!,
+                    postType: .photo,
+                    thumbnailImage: URL(string: items.thumbnailImage!)!,
+                    postURL: URL(string: items.thumbnailImage!)!,
+                    caption: items.caption,
+                    likeCount: postLikeViewModel, /// [PostLikeViewModel]
+                    comments: postCommentsViewModel, ///[PostCommentsViewModel]
+                    createDate: Date(),
+                    taggedUsers: [], ///UserViewModel
+                    owner: userViewModel))
+        }
+      
+        //DispatchQueue.main.async{
+            self.collectionView?.reloadData()
+        //}
     }
 }

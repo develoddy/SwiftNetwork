@@ -85,15 +85,7 @@ class HomeViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
-    
-//    private let textField: UITextField = {
-//        let textField = UITextField()
-//        textField.placeholder = "¿Eddy, en que piensas?"
-//        textField.textColor = .black
-//        textField.font = .systemFont(ofSize: 18, weight: .regular)
-//        return textField
-//    }()
-    
+        
     private let writePostButton: UIButton = {
         let button = UIButton()
         button.setTitle("¿Eddy, en que piensas?", for: .normal)
@@ -270,7 +262,7 @@ class HomeViewController: UIViewController {
                 userssId: 0,
                 content: "Great post!",
                 comentarioId: 0,
-                createdAt: "",//Date(),
+                createdAt: "",// Date(),
                 likes: []
                 /*identifier: "id-\(i)", username: "\(i) Username", text: "commentario \(i)", createDate: Date(), likes: []*/)
             tempComments.append(comments)
@@ -281,21 +273,22 @@ class HomeViewController: UIViewController {
     ///Likes
     func createArrayLikes() -> [PostLikeViewModel] {
         var likes = [PostLikeViewModel]()
-        for i in 0..<5 {
+        /*for i in 0..<5 {
             let data = PostLikeViewModel(
                 username: "jor \(i)",
                 postIdentifier: "",
                 text: "Mi primera publicacion para el test de la App.",
                 likes: i)
             likes.append(data)
-        }
+        }*/
         return likes
     }
     
     ///User
     func createArrayUser() -> UserViewModel {
         let user = UserViewModel(
-            name: (first: "", last: ""),
+            name: "",
+            last: "",//(first: "", last: ""),
             username: "@username",
             bio: "",
             profilePicture: URL(string: "https://wwww.google.com")!,
@@ -589,7 +582,7 @@ extension HomeViewController {
         let followButton = UIButton(type: .system)
         followButton.setTitle("N O O R I", for: .normal)
         followButton.titleLabel?.font = .systemFont(ofSize: 26, weight: .black )
-        followButton.tintColor = Constants.Color.blue
+        followButton.tintColor = Constants.Color.purple
         followButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: followButton)
         
@@ -600,12 +593,12 @@ extension HomeViewController {
     private func  setupRightNavItems() {
         let searchButton = UIButton(type: .system)
         searchButton.setImage(UIImage(systemName: "paperplane.fill"), for: .normal)
-        searchButton.tintColor =  Constants.Color.blue
+        searchButton.tintColor =  Constants.Color.purple
         searchButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
         
         let composeButton = UIButton(type: .system)
         composeButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        composeButton.tintColor = Constants.Color.blue
+        composeButton.tintColor = Constants.Color.purple
         composeButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(customView: searchButton),

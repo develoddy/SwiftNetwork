@@ -191,6 +191,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .descriptions(let post):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
+            print(post)
             cell.configure(with: post)
             return cell
         case .footer(_/**let footer**/):

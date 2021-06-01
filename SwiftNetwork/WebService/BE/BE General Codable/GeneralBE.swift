@@ -7,8 +7,13 @@
 
 import Foundation
 
+struct IReqResponseUserPost: Codable {
+    var userpost: [Userpost]?
+    var status: String?
+}
+
 // MARK: - IReqResponseUserPost
-public struct IReqResponseUserPost: Codable  {
+public struct Userpost: Codable  {
     var identifier: String?
     var postType: UserPostTypeCodable?
     var thumbnailImage: String?
@@ -17,18 +22,18 @@ public struct IReqResponseUserPost: Codable  {
     var likeCount: [IReqResponsePostLike]?
     var comments: [IReqResponsePostComments]?
     var createDate: String?
-    var taggedUsers: [IReqResponseUser]?
+    var taggedUsers: [IReqResponseTaggedUsers]?
     var owner: IReqResponseUser?
 }
 
-// MARK: - IReqResponseUser
-struct IReqResponseUser: Codable {
-    var user: [User]?
+// MARK: - IReqResponseTaggedUsers
+struct IReqResponseTaggedUsers: Codable {
+    var user: [TaggedUsersClass]?
     var status: String?
 }
 
 // MARK: - User
-struct User: Codable {
+struct TaggedUsersClass: Codable {
     var name, last, username, bio: String?
     var profilePicture: String?
     var dayOfBirth: String?
@@ -54,6 +59,45 @@ struct User: Codable {
     }
 }
 
+
+
+// MARK: - User
+struct IReqResponseUser: Codable {
+    var user: UserClass?
+    var status: String?
+}
+
+// MARK: - UserClass
+struct UserClass: Codable {
+    var name, last, username, bio: String?
+    var profilePicture: String?
+    var dayOfBirth: String?
+    var gender: Gender?
+    var publicEmail: String?
+    var counts: Counts?
+    var joinDate: String?
+    var countryID: Int?
+    var image, imageHeader, title, likes: String?
+    var dislikes, address, phone: String?
+    var userssID, nivelID, sentimentalID: Int?
+    var imagenBin, valor: String?
+    var id: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case name, last, username, bio, profilePicture, dayOfBirth, gender, publicEmail, counts, joinDate
+        case countryID = "countryId"
+        case image, imageHeader, title, likes, dislikes, address, phone
+        case userssID = "userssId"
+        case nivelID = "nivelId"
+        case sentimentalID = "sentimentalId"
+        case imagenBin, valor, id
+    }
+}
+
+
+
+
+
 // MARK: - Counts
 struct Counts: Codable {
     var followers, following, posts: Int?
@@ -78,7 +122,7 @@ struct PostComments: Codable {
     var typeId, refId, userssId: Int?
     var content: String?
     var comentarioId: Int?
-    var createdAt: Date?
+    var createdAt: String?
     var likes: [Like]?
 
     enum CodingKeys: String, CodingKey {
@@ -102,13 +146,21 @@ struct LikeCount: Codable {
     let username, postIdentifier, text: String
     let likes: Int
 }
+
+
+// MARK: - LikeCountIreqResponsePosLike
+struct IReqResponseFeaturePosLike: Codable {
+    var postlikes: IReqResponsePostLike?
+}
+
+
 // MARK: - IReqResponsePostLike
 struct IReqResponsePostLike: Codable {
-    var data: [PostLikeCodable]?
+    var items: [IPostLike]?
     var status: String?
 }
 // MARK: - PostLikeCodable
-struct PostLikeCodable: Codable {
+struct IPostLike: Codable {
     var username : String?
     var postIdentifier: String?
     var text: String?
@@ -128,7 +180,6 @@ struct DescriptionsCodable: Codable  {
 
 
 /*
- 
  // This file was generated from JSON Schema using quicktype, do not modify it directly.
  // To parse the JSON, add this file to your project and do:
  //
@@ -138,6 +189,12 @@ struct DescriptionsCodable: Codable  {
 
  // MARK: - IReqResponseUserPost
  struct IReqResponseUserPost: Codable {
+     let userpost: [Userpost]
+     let status: String
+ }
+
+ // MARK: - Userpost
+ struct Userpost: Codable {
      let identifier: String
      let postType: PostType
      let thumbnailImage: String
@@ -192,7 +249,7 @@ struct DescriptionsCodable: Codable  {
 
  // MARK: - Owner
  struct Owner: Codable {
-     let user: [User]
+     let user: User
      let status: String
  }
 
@@ -242,11 +299,6 @@ struct DescriptionsCodable: Codable  {
  struct TaggedUser: Codable {
      let user: [User]
      let status: String
-
-     enum CodingKeys: String, CodingKey {
-         case user = "User"
-         case status
-     }
  }
 
 

@@ -144,7 +144,6 @@ class WebSender: NSObject {
         return postDataTask
     }
     
-    
     ///Get
     @discardableResult class
     func doGETTokenToURL(conURL url                : NSString                              ,
@@ -157,6 +156,7 @@ class WebSender: NSObject {
         configuracionSesion.httpAdditionalHeaders = self.createHeaderRequestWithToken(token) as? [AnyHashable: Any]
         let sesion = URLSession.init(configuration: configuracionSesion)
         let urlServicio = URL(string: "\(url)/\(path)")
+        
         let request = NSMutableURLRequest(url: urlServicio!)
         request.addValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")

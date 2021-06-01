@@ -100,15 +100,16 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
     
     public func configure(with model: UserPostViewModel) {
         
+        //print(model.likeCount.count)
         ///Caption de post
         let usernameText = model.owner.username
         guard let description = model.caption else { return  }
     
-        let attributedString = joinText(username: usernameText!, description: description)
+        let attributedString = joinText(username: usernameText ?? "", description: description)
         descriptionLabel.attributedText = attributedString
         
         ///Total Likes
-        let countLikes = model.likeCount.count
+        let countLikes = model.likeCount.count+1
         var likes : Int = 0
         for i in 0..<countLikes {
             likes = i

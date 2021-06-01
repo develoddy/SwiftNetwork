@@ -15,9 +15,10 @@ class Closures: NSObject {
     typealias SearchUser = (_ usuario: [Search]) -> Void
     
     ///ProfileViewcontroller
-    typealias iReqResponsePostLike = (_ usuario: IReqResponsePostLike) -> Void ///IReqResponsePostLike
+    typealias iReqResponsePostLike = (_ usuario: IReqResponseFeaturePosLike) -> Void ///IReqResponsePostLike
     typealias iReqResponsePostComments = (_ usuario: IReqResponsePostComments) -> Void ///IReqResponsePostComments
-    typealias iReqResponseUser = (_ usuario: IReqResponseUser) -> Void ///IReqResponseUser
+    typealias iReqResponseUser = (_ usuario: IReqResponseUser) -> Void ///IReqResponseUser IReqResponseTaggedUsers
+    typealias iReqResponseTaggedUsers = (_ usuario: IReqResponseTaggedUsers) -> Void ///IReqResponseTaggedUsers
     typealias iReqResponseUserPost = (_ usuario: IReqResponseUserPost) -> Void 
     
 }

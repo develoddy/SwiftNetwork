@@ -21,7 +21,7 @@ class ProfileTabsCollectionReusableView:  UICollectionReusableView {
     private let gridButton: UIButton = {
         let button  = UIButton()
         button.clipsToBounds = true
-        button.tintColor = Constants.Color.blue
+        button.tintColor = Constants.Color.purple
         button.setBackgroundImage(UIImage(systemName: "square.grid.2x2"), for: .normal)
         return button
     }()
@@ -35,7 +35,7 @@ class ProfileTabsCollectionReusableView:  UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = Constants.Color.lightDark
+        backgroundColor = Constants.Color.whiteLight
         addSubview(gridButton)
         addSubview(taggedButton)
         
@@ -62,14 +62,47 @@ class ProfileTabsCollectionReusableView:  UICollectionReusableView {
     }
     
     @objc private func didTapGridButton() {
-        gridButton.tintColor = Constants.Color.blue
+        gridButton.tintColor = Constants.Color.purple
         taggedButton.tintColor = .lightGray
         delegate?.didTapGridButtonTab()
     }
     
     @objc private func didTapTaggedButton() {
-        taggedButton.tintColor = Constants.Color.blue
+        taggedButton.tintColor = Constants.Color.purple
         gridButton.tintColor = .lightGray
         delegate?.didTapTaggedButtonTab()
+    }
+}
+
+
+
+
+///Simula la carga para mostrar datos en el profileViewcontroller
+class ProfileTabsCollectionReusableView2:  UICollectionReusableView {
+    
+    static let identifier = "ProfileTabsCollectionReusableView2"
+    private let gridButton: UIButton = {
+        let button  = UIButton()
+        return button
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .systemBackground
+        addSubview(gridButton)
+        
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let size =  height - (Constants.ProfileTabsCollectionReusableViewColor.padding * 2)
+        let gridButtonX = ((width/2)-size)/2
+        gridButton.frame = CGRect(x: gridButtonX,
+                                  y: Constants.ProfileTabsCollectionReusableViewColor.padding,
+                                    width: size,
+                                    height: size)
     }
 }

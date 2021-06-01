@@ -19,10 +19,11 @@ class WebModelGeneral: NSObject {
     ///Return object codable iReqResponsePostLike, On the contrary mensajeError
     @discardableResult
     class func startApiToGetPostLikeData(_ token: String?,
+                                         _ tabs: String?,
                                          conCompletionCorrecto completionCorrecto : @escaping Closures.iReqResponsePostLike ,
                                          error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
-        let dic : [Any]? = nil
-        let result = WebSender.doGETTokenToURL(conURL: self.CDMWebModelURLBase,
+        let dic : [String : Any] = [ "tabs": tabs as Any ]
+        let result = WebSender.doPOSTTokenToURL(conURL: self.CDMWebModelURLBase,
                                                conPath: "api/auth/likes" as NSString,
                                                conParametros: dic,
                                                conToken: token! as NSString) { (objRespuesta) in
@@ -52,10 +53,12 @@ class WebModelGeneral: NSObject {
     ///Return object codable iReqResponsePostLike, On the contrary mensajeError
     @discardableResult class
     func startApiToGetPostCommentsData(_ token: String?,
+                                       _ tabs: String?,
                                   conCompletionCorrecto completionCorrecto : @escaping Closures.iReqResponsePostComments ,
                                   error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
-        let dic : [Any]? = nil
-        let result = WebSender.doGETTokenToURL(conURL: self.CDMWebModelURLBase,
+        ///let dic : [Any]? = nil
+        let dic : [String : Any] = [ "tabs": tabs as Any ]
+        let result = WebSender.doPOSTTokenToURL(conURL: self.CDMWebModelURLBase,
                                                conPath: "api/auth/comments" as NSString,
                                                conParametros: dic,
                                                conToken: token! as NSString) { (objRespuesta) in
@@ -85,10 +88,13 @@ class WebModelGeneral: NSObject {
     ///Return object codable iReqResponsePostLike, On the contrary mensajeError
     @discardableResult class
     func startApiToGetUsersData(_ token: String?,
+                                _ tabs: String?,
                                 conCompletionCorrecto completionCorrecto : @escaping Closures.iReqResponseUser ,
                                 error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
-        let dic : [Any]? = nil
-        let result = WebSender.doGETTokenToURL(conURL: self.CDMWebModelURLBase,
+       
+        let dic : [String : Any] = [ "tabs": tabs as Any ]
+        
+        let result = WebSender.doPOSTTokenToURL(conURL: self.CDMWebModelURLBase,
                                                conPath: "api/auth/users" as NSString,
                                                conParametros: dic,
                                                conToken: token! as NSString) { (objRespuesta) in
@@ -118,10 +124,12 @@ class WebModelGeneral: NSObject {
     ///Return object codable iReqResponsePostLike, On the contrary mensajeError
     @discardableResult class
     func startApiToGetUserPostData(_ token: String?,
+                                   _ tabs: String?,
                                    conCompletionCorrecto completionCorrecto : @escaping Closures.iReqResponseUserPost ,
                                    error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
-        let dic : [Any]? = nil
-        let result = WebSender.doGETTokenToURL(conURL: self.CDMWebModelURLBase,
+        ///let dic : [Any]? = nil
+        let dic : [String : Any] = [ "tabs": tabs as Any ]
+        let result = WebSender.doPOSTTokenToURL(conURL: self.CDMWebModelURLBase,
                                                conPath: "api/auth/userpost" as NSString,
                                                conParametros: dic,
                                                conToken: token! as NSString) { (objRespuesta) in

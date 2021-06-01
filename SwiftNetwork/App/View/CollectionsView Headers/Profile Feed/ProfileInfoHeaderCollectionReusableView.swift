@@ -92,7 +92,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         button.setTitle("Edit Your Profile", for: .normal)
         button.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
         button.tintColor = .white
-        button.backgroundColor = Constants.Color.blue
+        button.backgroundColor = Constants.Color.purple
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         button.layer.cornerRadius = 26
@@ -101,7 +101,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     
     private let nameLabel : UILabel = {
         let label = UILabel()
-        label.text = "Eddy Lujan"
+        //label.text = "Eddy Lujan"
         label.numberOfLines = 1
         label.font = .systemFont(ofSize: 22, weight: .bold)
         return label
@@ -109,7 +109,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     
     private let usernameLabel : UIButton = { //checkmark.seal.fill
         let button = UIButton()
-        button.setTitle("@eddylujann", for: .normal)
+        //button.setTitle("@eddylujann", for: .normal)
         button.setTitleColor(Constants.Color.lightDark, for: .normal)
         button.contentHorizontalAlignment = .left
         button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
@@ -221,10 +221,10 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         button.setImage(UIImage(systemName: "photo.on.rectangle.angled"), for: .normal)
         button.tintColor = .systemGreen
         button.setTitle("Photo", for: .normal)
-        button.setTitleColor(Constants.Color.blue, for: .normal)
+        button.setTitleColor(Constants.Color.black, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
         button.layer.masksToBounds = true
-        button.backgroundColor = Constants.Color.blueLight
+        button.backgroundColor = Constants.Color.whiteLight
         return button
     }()
     
@@ -233,10 +233,10 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         button.setImage(UIImage(systemName: "waveform"), for: .normal)
         button.setTitle("Audio", for: .normal)
         button.tintColor = .systemPurple
-        button.setTitleColor(Constants.Color.blue, for: .normal)
+        button.setTitleColor(Constants.Color.black, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
         button.layer.masksToBounds = true
-        button.backgroundColor = Constants.Color.blueLight
+        button.backgroundColor = Constants.Color.whiteLight
         return button
     }()
     
@@ -246,9 +246,9 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
         button.setTitle("Ubication", for: .normal)
         button.tintColor = .systemRed
-        button.setTitleColor(Constants.Color.blue, for: .normal)
+        button.setTitleColor(Constants.Color.black, for: .normal)
         button.layer.masksToBounds = true
-        button.backgroundColor = Constants.Color.blueLight
+        button.backgroundColor = Constants.Color.whiteLight
         return button
     }()
     
@@ -312,7 +312,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         addSubview(audioButton)
         addSubview(ubicationButton)
         
-        addSubview(administratorPostLabel)
+        //addSubview(administratorPostLabel)
     }
     
     private func addButtonActions() {
@@ -394,14 +394,14 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         nameLabel.frame = CGRect(
             x: 10,
             y: 5+profilePhotoImageView.bottom,
-            width: width-10,
+            width: nameLabelSize.width, //width-editProfileButton.width-20,
             height: nameLabelSize.height).integral
         
         let usernameLabelSize = usernameLabel.sizeThatFits(frame.size)
         usernameLabel.frame = CGRect(
             x: 10,
             y: nameLabel.bottom+2,
-            width: width-10,
+            width: usernameLabelSize.width,
             height: usernameLabelSize.height).integral
         
         
@@ -410,17 +410,17 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         let sizeRound = width/14
         ubicationImageView.frame = CGRect(
             x: 10,
-            y: usernameLabel.bottom+15,
+            y: usernameLabel.bottom+20,
             width: sizeRound,
             height:sizeRound)
         ubicationImageView.layer.cornerRadius = sizeRound/2
         
-        let bioLabelSize = ubicationLabel.sizeThatFits(frame.size)
+        let ubicationLabelSize = ubicationLabel.sizeThatFits(frame.size)
         ubicationLabel.frame = CGRect(
             x: ubicationImageView.right+5,
-            y: usernameLabel.bottom+20,
+            y: usernameLabel.bottom+25,
             width: width-10,
-            height: bioLabelSize.height).integral
+            height: ubicationLabelSize.height).integral
         
         ///Date
         dateOfBirthImageView.frame = CGRect(
@@ -456,7 +456,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         let labelTitlePublicationSize = labelTitlePublication.sizeThatFits(frame.size)
         labelTitlePublication.frame = CGRect(
             x: 10,
-            y: joinedImageView.bottom+20,
+            y: joinedImageView.bottom+25,
             width: 150,
             height: labelTitlePublicationSize.height).integral
         
@@ -464,7 +464,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         let moreButtonSize = labelTitlePublication.sizeThatFits(frame.size)
         moreButton.frame = CGRect(
             x: width-5-buttonWidth,
-            y: joinedImageView.bottom+20,
+            y: joinedImageView.bottom+25,
             width: buttonWidth,
             height: moreButtonSize.height).integral
 
@@ -510,6 +510,17 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
             width: width-20,
             height: 40)
         administratorPostLabel.layer.cornerRadius = administratorPostLabel.height/2
+    }
+    
+    override func prepareForReuse() {
+        nameLabel.text = nil
+        usernameLabel.setTitle(nil, for: .normal)
+    }
+    
+    
+    public func configure(model: UserPostViewModel) { //UserViewModel
+        nameLabel.text = model.owner.name
+        usernameLabel.setTitle(model.owner.username, for: .normal)
     }
     
     // MARK: - Actions

@@ -8,14 +8,15 @@
 import Foundation
 
 // MARK: - IReqResponseUser
-struct IReqResUserViewModel: Codable {
-    var user: [User]?
-    var status: String?
-}
+//struct IReqResUserViewModel: Codable {
+//    var user: [UserViewModel]?
+//    var status: String?
+//}
 
 // MARK: - User
 struct UserViewModel {
-    var name: (first:String, last:String)?
+    //var name: (first:String, last:String)?
+    var name, last: String?
     var username: String?
     var bio: String?
     var profilePicture: URL?

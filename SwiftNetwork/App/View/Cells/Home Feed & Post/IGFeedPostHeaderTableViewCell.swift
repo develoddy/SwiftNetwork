@@ -46,7 +46,7 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     private let moreButton: UIButton = {
        let button = UIButton()
         button.tintColor = .label
-        button.tintColor = Constants.Color.blue
+        button.tintColor = Constants.Color.purple
         button.setImage(UIImage(systemName:"ellipsis"), for: .normal)
         return button
     }()

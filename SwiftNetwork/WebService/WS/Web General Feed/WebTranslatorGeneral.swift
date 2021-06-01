@@ -9,7 +9,7 @@ import Foundation
 
 class WebTranslatorGeneral: NSObject {
     
-    class func translateResponsePostLikeBE(_ objDic : NSDictionary) -> IReqResponsePostLike { // [PostLikeResponse]
+    class func translateResponsePostLikeBE(_ objDic : NSDictionary) -> IReqResponseFeaturePosLike  { // IReqResponsePostLike
         //let iReqResponsePostLike = IReqResponsePostLike()
        
         ///Convert Object dicctionary a Json Codable IReqResponsePostLike
@@ -19,11 +19,10 @@ class WebTranslatorGeneral: NSObject {
             let jsonData:NSData = try JSONSerialization.data(withJSONObject: objDic, options: JSONSerialization.WritingOptions.prettyPrinted) as NSData
             let jsonString = String(data: jsonData as Data, encoding: String.Encoding.utf8)
             let json = jsonString!.data(using: .utf8)!
-            /*let jsonPostLike*/ respuestaJSON  = try! JSONDecoder().decode(IReqResponsePostLike.self, from: json)
-            
-            return respuestaJSON as! IReqResponsePostLike //jsonPostLike
+            respuestaJSON  = try! JSONDecoder().decode(IReqResponseFeaturePosLike.self, from: json)
+            return respuestaJSON as! IReqResponseFeaturePosLike //jsonPostLike
         } catch {
-            return respuestaJSON as! IReqResponsePostLike
+            return respuestaJSON as! IReqResponseFeaturePosLike
         }
     }
     
@@ -37,7 +36,7 @@ class WebTranslatorGeneral: NSObject {
             let jsonString = String(data: jsonData as Data, encoding: String.Encoding.utf8)
             let json = jsonString!.data(using: .utf8)!
             /*let jsonPostComments*/ respuestaJSON = try! JSONDecoder().decode(IReqResponsePostComments.self, from: json)
-            ///print(respuestaJSON)
+            
             return respuestaJSON as! IReqResponsePostComments //jsonPostComments
         } catch {
             return respuestaJSON as! IReqResponsePostComments
@@ -59,9 +58,10 @@ class WebTranslatorGeneral: NSObject {
         }
     }
     
+    
     ///Convert Object dicctionary a Json Codable IReqResponseUserPost
     ///Return Object Codable
-    class func translateResponseUserPostBE(_ objDic : NSDictionary) -> IReqResponseUserPost {
+    class func translateResponseUserPostBE(_ objDic : NSDictionary) -> IReqResponseUserPost { 
 
         var iReqResponseUserPost = IReqResponseUserPost()
         do {

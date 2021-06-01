@@ -272,7 +272,8 @@ extension ExplorerViewController {
         
         for i in 0..<10 {
             let user = UserViewModel(
-                name: (first: "", last: ""),
+                name: "",
+                last: "",//(first: "", last: ""),
                 username: "@username",
                 bio: "",
                 profilePicture: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,

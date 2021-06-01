@@ -21,31 +21,31 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
             vc: HomeViewController(),
             title: "Online",
             selected: (UIImage(systemName: "house.fill")!),
-            unselected: (UIImage(systemName: "house.fill")?.withTintColor(Constants.Color.blue))!)
+            unselected: (UIImage(systemName: "house.fill")?.withTintColor(Constants.Color.purple))!)
         
         let explorer = generateNavController(
             vc: SearchViewController(), //ExplorerViewController(),
             title: "Explore",
             selected: UIImage(systemName: "binoculars.fill")!,
-            unselected: (UIImage(systemName: "binoculars.fill")?.withTintColor(Constants.Color.blue))!)
+            unselected: (UIImage(systemName: "binoculars.fill")?.withTintColor(Constants.Color.purple))!)
        
         let notification = generateNavController(
             vc: NotificationsViewController(),
             title: "Notifications",
             selected: UIImage(systemName: "bell.fill")!,
-            unselected: (UIImage(systemName: "bell.fill")?.withTintColor(Constants.Color.blue))! )
+            unselected: (UIImage(systemName: "bell.fill")?.withTintColor(Constants.Color.purple))! )
         
         let profile = generateNavController(
             vc: ProfileViewController(),
             title: "Profile",
             selected: (UIImage(systemName: "person.fill")!),
-            unselected: (UIImage(systemName: "person.fill")?.withTintColor(Constants.Color.blue))!)
+            unselected: (UIImage(systemName: "person.fill")?.withTintColor(Constants.Color.purple))!)
         
         let menu = generateNavController(
             vc: MenuViewController(),
             title: "Menu",
             selected: (UIImage(systemName: "line.horizontal.3.circle.fill")!), //text.justify
-            unselected: (UIImage(systemName: "line.horizontal.3.circle.fill")?.withTintColor(Constants.Color.blue))!)
+            unselected: (UIImage(systemName: "line.horizontal.3.circle.fill")?.withTintColor(Constants.Color.purple))!)
     
         viewControllers = [ profile, home, explorer, notification, menu ]
     
@@ -83,7 +83,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
         for item in items {
             item.imageInsets = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
             let unselectedItem = [NSAttributedString.Key.foregroundColor: UIColor.secondaryLabel]
-            let selectedItem = [NSAttributedString.Key.foregroundColor: Constants.Color.blue]
+            let selectedItem = [NSAttributedString.Key.foregroundColor: Constants.Color.purple]
             item.setTitleTextAttributes(unselectedItem, for: .normal)
             item.setTitleTextAttributes(selectedItem, for: .selected)
         }
