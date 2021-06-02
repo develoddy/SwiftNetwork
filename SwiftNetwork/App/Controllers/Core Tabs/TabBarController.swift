@@ -47,7 +47,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
             selected: (UIImage(systemName: "line.horizontal.3.circle.fill")!), //text.justify
             unselected: (UIImage(systemName: "line.horizontal.3.circle.fill")?.withTintColor(Constants.Color.purple))!)
     
-        viewControllers = [ profile, home, explorer, notification, menu ]
+        viewControllers = [ home, menu, profile, explorer, notification  ]
     
         colorNavController()
     }

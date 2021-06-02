@@ -41,6 +41,8 @@ class LoginViewController: UIViewController {
         configurePrivacyButton()
         configureCreateAccountButton()
         delegatesFields()
+        ///Es para entrar directamente al perfil, lueglo se tiene que quitar esta funcion del viewLoad
+        didTapLoginButton()
     }
     
     //MARK: viewDidLayoutSubviews

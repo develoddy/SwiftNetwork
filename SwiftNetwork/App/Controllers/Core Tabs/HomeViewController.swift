@@ -79,9 +79,8 @@ class HomeViewController: UIViewController {
     }()
     
     private let imageView: UIImageView = {
-        //let imageView = UIImageView(image: UIImage(systemName: "person.circle"))
-        let imageView = UIImageView(image: UIImage(named: "user3"))
-        imageView.tintColor = .darkGray
+        let imageView = UIImageView(image: UIImage(systemName: "person.circle"))
+        imageView.tintColor = Constants.Color.purple
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -92,7 +91,6 @@ class HomeViewController: UIViewController {
         button.contentHorizontalAlignment = .left
         button.setTitleColor(Constants.Color.lightDark, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .regular)
-        //button.backgroundColor = .systemGreen
         return button
     }()
     
@@ -131,7 +129,7 @@ class HomeViewController: UIViewController {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
         
-        headerView.backgroundColor = .systemBackground
+        //headerView.backgroundColor = Constants.Color.whiteLighxt
         headerView.frame = CGRect(
             x: 0,
             y: 0,
@@ -141,14 +139,14 @@ class HomeViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         imageView.frame = CGRect(
             x: 10,
-            y: 5,
-            width: headerView.height-50,
-            height: 50)
+            y: 10,
+            width:40,
+            height: 40)
         imageView.layer.cornerRadius = imageView.height/2
         
         writePostButton.backgroundColor = .systemBackground
         writePostButton.frame = CGRect(
-            x: 20+imageView.width,
+            x: 15+imageView.width,
             y: 5,
             width: headerView.width-20-imageView.width,
             height: 50)
@@ -517,7 +515,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             else if subSection   == 3 { return 60 }  /// Actions
             else if subSection   == 4 { return 90 } /// Description
             else if subSection   == 5 { return 30  } /// Comment
-            else if subSection   == 6 { return 50  } /// Footer
+            else if subSection   == 6 { return 45  } /// Footer
             return 0
         }
     }

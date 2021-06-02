@@ -63,7 +63,7 @@ struct Constants {
         static let grayDark = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 1.0) /* #323232 */
         static let purple = UIColor(red: 105/255, green: 48/255, blue: 195/255, alpha: 1.0) /* #6930c3 */
         static let dark = UIColor(red: 37/255, green: 37/255, blue: 37/255, alpha: 1.0) /* #252525 */
-        static let whiteLight =  UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1.0) /* #f6f6f6 */
+        static let whiteLight =  UIColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1.0) /* #e8e8e8 */
     }
     
     struct Icon {

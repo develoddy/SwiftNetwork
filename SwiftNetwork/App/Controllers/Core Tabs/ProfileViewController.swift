@@ -138,6 +138,10 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        /*guard kind == UICollectionView.elementKindSectionHeader else {
+            // Footer
+            return UICollectionReusableView()
+        }*/
         ///Si el array del objeto es 1 o superior
         if userPostViewModel.count > 0 {
             ///Header

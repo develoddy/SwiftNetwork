@@ -89,6 +89,9 @@
 		B3B891B526541AE0003AE17A /* GeneralBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B891B426541AE0003AE17A /* GeneralBC.swift */; };
 		B3B891BC265446D7003AE17A /* PostLikeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B891BB265446D7003AE17A /* PostLikeViewModel.swift */; };
 		B3B891C22654476B003AE17A /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B891C12654476B003AE17A /* APIService.swift */; };
+		B3C243A3266655C200C2C866 /* MenuHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C243A2266655C200C2C866 /* MenuHeaderCollectionReusableView.swift */; };
+		B3C243A92666566E00C2C866 /* MenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C243A82666566E00C2C866 /* MenuCollectionViewCell.swift */; };
+		B3C243AE266656B600C2C866 /* MenuFooterCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C243AD266656B600C2C866 /* MenuFooterCollectionReusableView.swift */; };
 		E3F9DBCC6D94FC270A7DD908 /* Pods_SwiftNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 746FCDA75E96D3DF0B956D63 /* Pods_SwiftNetwork.framework */; };
 /* End PBXBuildFile section */
 
@@ -203,6 +206,9 @@
 		B3B891B426541AE0003AE17A /* GeneralBC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralBC.swift; sourceTree = "<group>"; };
 		B3B891BB265446D7003AE17A /* PostLikeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLikeViewModel.swift; sourceTree = "<group>"; };
 		B3B891C12654476B003AE17A /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		B3C243A2266655C200C2C866 /* MenuHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
+		B3C243A82666566E00C2C866 /* MenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCollectionViewCell.swift; sourceTree = "<group>"; };
+		B3C243AD266656B600C2C866 /* MenuFooterCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuFooterCollectionReusableView.swift; sourceTree = "<group>"; };
 		C6030F76C779F341CA9D7FF3 /* Pods_SwiftNetwork_SwiftNetworkUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftNetwork_SwiftNetworkUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC2C9A743BC6072490A15BF1 /* Pods-SwiftNetwork.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftNetwork.release.xcconfig"; path = "Target Support Files/Pods-SwiftNetwork/Pods-SwiftNetwork.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -493,7 +499,7 @@
 		B39A49F62626244F00BE80DF /* View */ = {
 			isa = PBXGroup;
 			children = (
-				B39A4A45262836E400BE80DF /* CollectionsView Headers */,
+				B39A4A45262836E400BE80DF /* CollectionsView Headers & Footer */,
 				B39A4A242627626300BE80DF /* Cells */,
 				B39A4A73262A235E00BE80DF /* NoNotificationsView.swift */,
 			);
@@ -516,6 +522,7 @@
 		B39A4A242627626300BE80DF /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				B3C243A72666561E00C2C866 /* Menu */,
 				B3B8915A264BC54C003AE17A /* Explorer Feed */,
 				B3ABE3EC262CCF7400F10ADE /* Notifications Feed */,
 				B39A4A2D262763C500BE80DF /* Home Feed & Post */,
@@ -541,13 +548,14 @@
 			path = "Home Feed & Post";
 			sourceTree = "<group>";
 		};
-		B39A4A45262836E400BE80DF /* CollectionsView Headers */ = {
+		B39A4A45262836E400BE80DF /* CollectionsView Headers & Footer */ = {
 			isa = PBXGroup;
 			children = (
+				B3C243A12666558D00C2C866 /* Menu Feed */,
 				B3D8672D2641AD930011B4E7 /* Home Feed */,
 				B3D8672C2641AD540011B4E7 /* Profile Feed */,
 			);
-			path = "CollectionsView Headers";
+			path = "CollectionsView Headers & Footer";
 			sourceTree = "<group>";
 		};
 		B3ABE3EC262CCF7400F10ADE /* Notifications Feed */ = {
@@ -639,6 +647,23 @@
 				B3B891C12654476B003AE17A /* APIService.swift */,
 			);
 			path = "API Service";
+			sourceTree = "<group>";
+		};
+		B3C243A12666558D00C2C866 /* Menu Feed */ = {
+			isa = PBXGroup;
+			children = (
+				B3C243A2266655C200C2C866 /* MenuHeaderCollectionReusableView.swift */,
+				B3C243AD266656B600C2C866 /* MenuFooterCollectionReusableView.swift */,
+			);
+			path = "Menu Feed";
+			sourceTree = "<group>";
+		};
+		B3C243A72666561E00C2C866 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				B3C243A82666566E00C2C866 /* MenuCollectionViewCell.swift */,
+			);
+			path = Menu;
 			sourceTree = "<group>";
 		};
 		B3D8672C2641AD540011B4E7 /* Profile Feed */ = {
@@ -926,6 +951,7 @@
 				B39A49CC2626239900BE80DF /* PublishPostViewController.swift in Sources */,
 				B39A4A262627629900BE80DF /* IGFeedPostTableViewCell.swift in Sources */,
 				B362D1A3263C18130086F777 /* CustomHeaderTableViewCell.swift in Sources */,
+				B3C243A92666566E00C2C866 /* MenuCollectionViewCell.swift in Sources */,
 				B362D19B263AF6360086F777 /* PostCommentsListTableViewCell.swift in Sources */,
 				B3B891952650251F003AE17A /* MenuViewController.swift in Sources */,
 				B39A49C72626239900BE80DF /* ListViewController.swift in Sources */,
@@ -962,6 +988,7 @@
 				B39A4A6F262989ED00BE80DF /* UserFollowTableViewCell.swift in Sources */,
 				B39A4A2F262763F600BE80DF /* IGFeedPostHeaderTableViewCell.swift in Sources */,
 				B362D18F2639B5EA0086F777 /* ListCommentsViewController.swift in Sources */,
+				B3C243AE266656B600C2C866 /* MenuFooterCollectionReusableView.swift in Sources */,
 				B3B89148264BB835003AE17A /* WebUserSearch.swift in Sources */,
 				B39A49C92626239900BE80DF /* SearchViewController.swift in Sources */,
 				B36D600A2657A1C000B9584A /* UserViewModel.swift in Sources */,
@@ -982,6 +1009,7 @@
 				B39A49F02626242600BE80DF /* WebTranslatorLoginViewController.swift in Sources */,
 				B39A49EF2626242600BE80DF /* WebModelLoginViewController.swift in Sources */,
 				B36D601E2657A22100B9584A /* DescriptionsViewModel.swift in Sources */,
+				B3C243A3266655C200C2C866 /* MenuHeaderCollectionReusableView.swift in Sources */,
 				B39A49A82626232500BE80DF /* StorageManeger.swift in Sources */,
 				B39A49A62626232500BE80DF /* AuthManager.swift in Sources */,
 				B39A4A74262A235E00BE80DF /* NoNotificationsView.swift in Sources */,

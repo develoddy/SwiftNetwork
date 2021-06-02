@@ -101,12 +101,6 @@ class UserFollowTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = profileImageView.height/2.0
         
         let buttonWidth = contentView.width > 500 ? 220.0 : contentView.width/3
-        followButton.frame = CGRect(
-            x: contentView.width-5-buttonWidth,
-            y: (contentView.height-40)/2,
-            width: buttonWidth,
-            height: 40
-        )
         
         let labelHeight = contentView.height/2
         nameLabel.frame = CGRect(
@@ -121,6 +115,13 @@ class UserFollowTableViewCell: UITableViewCell {
             y: nameLabel.bottom,
             width: contentView.width-8-profileImageView.width-buttonWidth,
             height: labelHeight
+        )
+        
+        followButton.frame = CGRect(
+            x: contentView.width-5-buttonWidth,
+            y: (contentView.height-40)/2,
+            width: buttonWidth,
+            height: 40
         )
     }
     

@@ -23,14 +23,21 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
     private let boxTextField : UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .systemBackground
+        textField.layer.borderWidth = 1.0
+        textField.layer.borderColor = Constants.Color.whiteLight.cgColor //UIColor.secondaryLabel.cgColor //
+        textField.layer.cornerRadius = Constants.Constants.cornerRadius //22
         textField.placeholder = "Añade un comentario..."
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        textField.leftViewMode = .always
         return textField
     }()
     
     private let toPostButton: UIButton = {
        let button = UIButton()
         button.tintColor = .red //.label
-        button.setImage(UIImage(systemName:"heart.fill"), for: .normal)
+        let config = UIImage.SymbolConfiguration(pointSize: 16, weight: .thin)
+        let image = UIImage(systemName: "suit.heart", withConfiguration: config)
+        button.setImage(image, for: .normal)
         return button
     }()
     
@@ -39,7 +46,7 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
         contentView.backgroundColor = .systemBackground
         contentView.addSubview(profilePhotoImageView)
         contentView.addSubview(boxTextField)
-        contentView.addSubview(toPostButton)
+        //contentView.addSubview(toPostButton)
     }
     
     required init?(coder: NSCoder) {
@@ -53,18 +60,20 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
         profilePhotoImageView.frame = CGRect(
             x: 2,
             y: 2,
-            width: size,
-            height: size)
+            width: 40,//size,
+            height: 40)//size)
         profilePhotoImageView.layer.cornerRadius = size/2
         
+        boxTextField.backgroundColor = Constants.Color.whiteLight
         boxTextField.frame = CGRect(
             x: profilePhotoImageView.right+10,
             y: 2,
-            width: contentView.width-(size*2)-15,
-            height: contentView.height-4)
+            width: contentView.width-(size*1)-20,
+            height: contentView.height-5)
+        boxTextField.layer.cornerRadius = size/2
         
         toPostButton.frame = CGRect(
-            x: contentView.width-size,
+            x: contentView.width-25,
             y: 2,
             width: size,
             height: size)

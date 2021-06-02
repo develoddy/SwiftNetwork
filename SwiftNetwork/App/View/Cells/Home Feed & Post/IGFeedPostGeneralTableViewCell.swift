@@ -48,6 +48,7 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
             width: contentView.width-(size*2)-15,
             height: contentView.height-5) 
         
+        
         likeButton.frame = CGRect(
             x: contentView.width-size,
             y: 2,
