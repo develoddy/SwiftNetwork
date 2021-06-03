@@ -1,2 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-SwiftNetwork-SwiftNetworkUITests/Pods-SwiftNetwork-SwiftNetworkUITests-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework
+${BUILT_PRODUCTS_DIR}/TransitionButton/TransitionButton.framework

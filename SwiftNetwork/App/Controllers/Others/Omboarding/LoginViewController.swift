@@ -7,6 +7,7 @@
 
 import UIKit
 import SafariServices
+import TransitionButton
 
 extension LoginViewController: SendEmailProtocol {
     func sendEmail(email: String) {
@@ -17,16 +18,23 @@ extension LoginViewController: SendEmailProtocol {
 
 class LoginViewController: UIViewController {
     
+    
+    var spinner = UIActivityIndicatorView()
+    
     private let titleLabel = UILabel()
     private let headerView = UIView()
     private let usernameEmailField = UITextField()
     private let passwordField = UITextField()
-    private let loginButton = UIButton()
+    private let button = TransitionButton(frame: CGRect(x: 0, y: 0, width: 250, height: 50)) ///Spinner
+    private let loginButton = TransitionButton(frame: CGRect(x: 0, y: 0, width: 250, height: 50)) ///Spinner //UIButton()
     private let termsButton = UIButton()
     private let privacyButton = UIButton()
     private let createAccountButton = UIButton()
     
     let gradient = CAGradientLayer()
+    
+    
+    
     
     //MARK: viewDidLoad
     override func viewDidLoad() {
@@ -36,14 +44,20 @@ class LoginViewController: UIViewController {
         configureHeaderView()
         configureUsernameEmailField()
         configurePasswordField()
+        
+        ///Spinner
+        //configureSpinnerButton()
         configureLoginButton()
         configureTermsButton()
         configurePrivacyButton()
         configureCreateAccountButton()
         delegatesFields()
         ///Es para entrar directamente al perfil, lueglo se tiene que quitar esta funcion del viewLoad
-        didTapLoginButton()
+        //didTapLoginButton()
+       
     }
+    
+    
     
     //MARK: viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
@@ -164,13 +178,33 @@ class LoginViewController: UIViewController {
         passwordField.layer.borderColor = UIColor.secondaryLabel.cgColor
     }
     
+    
+    ///Spinner
+    func configureSpinnerButton() {
+        button.center = view.center
+        button.backgroundColor = .systemPink
+        button.setTitle("Continue", for: .normal)
+        button.layer.cornerRadius = 12
+        button.addTarget(self, action: #selector(runSpinnerValidationLogin), for: .touchUpInside)
+        button.spinnerColor = .white
+        view.addSubview(button)
+    }
+    
+    ///LogIn
     func configureLoginButton() {
-        loginButton.setTitle("Log In", for: .normal)
+        /*loginButton.setTitle("Log In", for: .normal)
         loginButton.layer.masksToBounds = true
         loginButton.layer.cornerRadius = Constants.Constants.cornerRadius
         loginButton.backgroundColor = .black
         loginButton.setTitleColor(.white, for: .normal)
+        loginButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)*/
+        loginButton.center = view.center
+        loginButton.backgroundColor = Constants.Color.purple
+        loginButton.setTitle("Log In", for: .normal)
+        loginButton.layer.masksToBounds = true
+        loginButton.layer.cornerRadius = Constants.Constants.cornerRadius
         loginButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
+        loginButton.spinnerColor = .white
     }
     
     func configureTermsButton() {
@@ -188,6 +222,7 @@ class LoginViewController: UIViewController {
     func configureCreateAccountButton() {
         createAccountButton.setTitleColor(.label, for: .normal)
         createAccountButton.setTitle("New User? Create an Account", for: .normal)
+        createAccountButton.setTitleColor(.black, for: .normal)
         createAccountButton.addTarget(self, action: #selector(didTapCreateAccountButton), for: .touchUpInside)
     }
     
@@ -196,59 +231,68 @@ class LoginViewController: UIViewController {
         passwordField.delegate = self
     }
     
-    @objc private func didTapLoginButton() {
+    
+    //runSpinnerValidationLogin
+    @objc private func runSpinnerValidationLogin(validate: Bool) {
+        
+        if validate {
+            DispatchQueue.main.asyncAfter(deadline: .now()+4) {
+                self.loginButton.stopAnimation(animationStyle: .expand, revertAfterDelay: 1) {
+                    let vc = TabBarController()
+                    vc.modalPresentationStyle = .fullScreen
+                    self.present(vc, animated: true)
+                }
+            }
+        } else {
+            self.loginButton.stopAnimation(animationStyle: .normal, revertAfterDelay: 1) {
+                self.view.layer.opacity = 1
+                Alerts.showAlertErrorWhitTitle(
+                    titulo: Constants.LogInError.titleAlertVerificationFailed,
+                    conMensaje: "¡Email or password is incorrrect!",
+                    conNombreDeBotonCancelar: "Aceptar",
+                    enControlador: self,
+                    conCompletion: nil)
+            }
+        }
+    }
+    
+    @objc private func didTapLoginButton(){
         passwordField.resignFirstResponder()
         usernameEmailField.resignFirstResponder()
-        
-        /**
-        let objUser = UserBE()
-        objUser.email = usernameEmailField.text!
-        objUser.password = passwordField.text!
-        
-        UserLoginBC.logIn(objUser, conCompletionCorrecto: { (objUsuario) in
-            let vc = TabBarController()
-            vc.modalPresentationStyle = .fullScreen
-            self.present(vc, animated: true)
-        }, conCompletionIncorrecto: {(mensajeError) in
-            
-            Alerts.showAlertErrorWhitTitle(
-                titulo: Constants.LogInError.titleAlertVerificationFailed,
-                conMensaje: mensajeError,
-                conNombreDeBotonCancelar: "Aceptar",
-                enControlador: self,
-                conCompletion: nil
-            )
-        })
-         **/
-        
+
         guard let usernameEmail = usernameEmailField.text, let password = passwordField.text else {
             return
         }
         
+        ///Hacer todar el spinner y opacar el view
+        loginButton.startAnimation()
+        ///view.layer.opacity = 0.5
+        
         AuthManager.shared.login(email: usernameEmail, password: password) { success in
             DispatchQueue.main.async {
                 if success {
-                    /// User logged in
-                    let vc = TabBarController()
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true)
+                    ///Success login
+                    self.runSpinnerValidationLogin(validate: true)
                 } else {
                     ///Error ocurred
-                    Alerts.showAlertErrorWhitTitle(
-                        titulo: Constants.LogInError.titleAlertVerificationFailed,
-                        conMensaje: "¡Email or password is incorrrect!",
-                        conNombreDeBotonCancelar: "Aceptar",
-                        enControlador: self,
-                        conCompletion: nil)
+                    self.runSpinnerValidationLogin(validate: false)
                 }
             }
         }
+        /*spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        spinner.center = view.center
+        spinner.style = UIActivityIndicatorView.Style.large
+        spinner.color = .red
+        spinner.hidesWhenStopped = true
         
-        
+        view.addSubview(spinner)
+        spinner.startAnimating()*/
     }
     @objc private func didTapTermsButton() {}
     @objc private func didTapPrivacyButton() {}
     @objc private func didTapCreateAccountButton() {
+        
+        spinner.stopAnimating()
         let vc = RegistrationViewController()
         vc.delegateEmail = self
         vc.title = "Create Account"

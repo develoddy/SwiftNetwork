@@ -14,9 +14,9 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3847153A6E5EEFB86565BA840768F429"
-               BuildableName = "SDWebImage.framework"
-               BlueprintName = "SDWebImage"
+               BlueprintIdentifier = "E30FF5B0268E3027AF18D788DB9BB7E7"
+               BuildableName = "TransitionButton.framework"
+               BlueprintName = "TransitionButton"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

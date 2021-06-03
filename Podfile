@@ -6,6 +6,9 @@ target 'SwiftNetwork' do
   use_frameworks!
 
   pod 'SDWebImage'
+  pod 'SDWebImage'
+  pod 'TransitionButton'
+
   # Pods for SwiftNetwork
 
   target 'SwiftNetworkTests' do
