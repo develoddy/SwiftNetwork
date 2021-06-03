@@ -20,33 +20,34 @@ class LoginViewController: UIViewController {
     
     
     var spinner = UIActivityIndicatorView()
-    
+    private let logoImageView = UIImageView()
     private let titleLabel = UILabel()
     private let headerView = UIView()
     private let usernameEmailField = UITextField()
     private let passwordField = UITextField()
-    private let button = TransitionButton(frame: CGRect(x: 0, y: 0, width: 250, height: 50)) ///Spinner
+    private let button =  TransitionButton(frame: CGRect(x: 0, y: 0, width: 250, height: 50)) ///Spinner
     private let loginButton = TransitionButton(frame: CGRect(x: 0, y: 0, width: 250, height: 50)) ///Spinner //UIButton()
     private let termsButton = UIButton()
     private let privacyButton = UIButton()
     private let createAccountButton = UIButton()
+    ///New Interface
+    private let titleLoginlabel = UILabel()
+    private var emailLabel = UILabel()
+    private let emailText = TextFieldWithPadding()
+    private var passwordLabel = UILabel()
+    private let passwordText = TextFieldWithPadding()
     
     let gradient = CAGradientLayer()
-    
-    
-    
     
     //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        configureTitleLabel()
-        configureHeaderView()
-        configureUsernameEmailField()
-        configurePasswordField()
         
+        configureHeaderView()
+        configureTitleLabel()
+        configureLogoImageView()
         ///Spinner
-        //configureSpinnerButton()
         configureLoginButton()
         configureTermsButton()
         configurePrivacyButton()
@@ -54,16 +55,23 @@ class LoginViewController: UIViewController {
         delegatesFields()
         ///Es para entrar directamente al perfil, lueglo se tiene que quitar esta funcion del viewLoad
         //didTapLoginButton()
+        
+    
+        configureEmailLabel()
+        configureEmailText()
+        
+        configurePasswordLabel()
+        configurePasswordText()
        
     }
     
-    
-    
+
     //MARK: viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         gradient.frame = view.bounds
         
+        ///HeaderView
         headerView.frame = CGRect(
             x: 0,
             y: 0.0,
@@ -71,113 +79,163 @@ class LoginViewController: UIViewController {
             height: view.height/3.0
         )
         
-        usernameEmailField.frame = CGRect(
+        let size = headerView.height/3
+        ///LogoImageView
+        logoImageView.frame = CGRect(
+            x: (view.width-size)/2,
+            y: (headerView.height-size)/2.5,
+            width: size,
+            height: size)
+        logoImageView.layer.cornerRadius = logoImageView.height/2
+        
+        ///Title
+        let titleLabelSize = titleLabel.sizeThatFits(view.frame.size)
+        titleLabel.frame = CGRect(
+            x: 20,
+            y: logoImageView.bottom+35,
+            width: view.width - 40,
+            height: titleLabelSize.height).integral
+        
+        ///emailLabel
+        let emailLabellSize = emailLabel.sizeThatFits(view.frame.size)
+        emailLabel.frame = CGRect(
             x: 25,
             y: headerView.bottom + 20,
             width: view.width - 50,
-            height: 52.0
-        )
+            height: emailLabellSize.height).integral
         
-        passwordField.frame = CGRect(
+        ///emailText
+        let emailTextlSize = emailText.sizeThatFits(view.frame.size)
+        emailText.frame = CGRect(
             x: 25,
-            y: usernameEmailField.bottom + 10,
+            y: emailLabel.bottom+5,
             width: view.width - 50,
-            height: 52.0
-        )
+            height: emailTextlSize.height).integral
         
+        ///PasswordLabel
+        let passwordLabelize = passwordLabel.sizeThatFits(view.frame.size)
+        passwordLabel.frame = CGRect(
+            x: 25,
+            y: emailText.bottom+20,
+            width: view.width - 50,
+            height: passwordLabelize.height).integral
+        
+        ///PassworsText
+        let passwordTextlSize = passwordText.sizeThatFits(view.frame.size)
+        passwordText.frame = CGRect(
+            x: 25,
+            y: passwordLabel.bottom+5,
+            width: view.width - 50,
+            height: passwordTextlSize.height).integral
+        
+        ///Button Login
+        loginButton.layer.masksToBounds = true
         loginButton.frame = CGRect(
             x: 25,
-            y: passwordField.bottom + 10,
+            y: passwordText.bottom + 20,
             width: view.width - 50,
-            height: 52.0
-        )
+            height: 52.0)
+        loginButton.layer.cornerRadius = loginButton.height/2
         
+        ///CreateAccount
         createAccountButton.frame = CGRect(
             x: 25,
             y: loginButton.bottom + 10,
             width: view.width - 50,
-            height: 52.0
-        )
+            height: 52.0)
         
+        ///TermsButton
         termsButton.frame = CGRect(
             x: 10,
             y: view.height-view.safeAreaInsets.bottom-100,
             width: view.width - 20,
-            height: 50
-        )
+            height: 50)
         
+        ///PrivacyButton
         privacyButton.frame = CGRect(
             x: 10,
             y: view.height-view.safeAreaInsets.bottom-50,
             width: view.width - 20,
-            height: 50
-        )
+            height: 50)
     }
     
     func setupView() {
         view.backgroundColor = .systemBackground
         view.addSubview(headerView)
-        view.addSubview(usernameEmailField)
-        view.addSubview(passwordField)
+        view.addSubview(logoImageView)
+        ///TextFields
+        view.addSubview(emailLabel)
+        view.addSubview(emailText)
+        view.addSubview(passwordLabel)
+        view.addSubview(passwordText)
+        ///UIbuttons
         view.addSubview(loginButton)
         view.addSubview(termsButton)
         view.addSubview(privacyButton)
         view.addSubview(createAccountButton)
     }
     
-    func configureTitleLabel() {
-        titleLabel.text = "Logotipo"
-        titleLabel.textColor = .white
-        titleLabel.textAlignment = .center
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 34.0)
-        titleLabel.frame = CGRect(
-            x: 20,
-            y: view.width/3,
-            width: view.width - 40,
-            height: 50
-        )
-    }
-    
     func configureHeaderView() {
         headerView.clipsToBounds = true
-        gradient.colors = [UIColor(red: 51/255, green: 51/255, blue: 153/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 0/255, blue: 204/255, alpha: 1.0).cgColor]
+        //gradient.colors = [UIColor(red: 51/255, green: 51/255, blue: 153/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 0/255, blue: 204/255, alpha: 1.0).cgColor]
+        gradient.colors = [UIColor.systemBackground.cgColor,
+                           UIColor.systemBackground.cgColor]
         gradient.locations = [0.0, 0.6, 0.8]
         gradient.frame = view.bounds
         headerView.layer.insertSublayer(gradient, at: 0)
+        
+        headerView.addSubview(logoImageView)
         headerView.addSubview(titleLabel)
     }
     
-    func configureUsernameEmailField() {
-        usernameEmailField.placeholder = "Username or Email"
-        usernameEmailField.text = "eddylujann@gmail.com"
-        usernameEmailField.returnKeyType = .next
-        usernameEmailField.leftViewMode = .always
-        usernameEmailField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        usernameEmailField.autocapitalizationType = .none
-        usernameEmailField.autocorrectionType = .no
-        usernameEmailField.layer.masksToBounds = true
-        usernameEmailField.layer.cornerRadius = Constants.Constants.cornerRadius
-        usernameEmailField.backgroundColor = .secondarySystemBackground
-        usernameEmailField.layer.borderWidth = 1.0
-        usernameEmailField.layer.borderColor = UIColor.secondaryLabel.cgColor
+    func configureLogoImageView() {
+        logoImageView.backgroundColor = Constants.Color.purple
+        logoImageView.layer.masksToBounds = true
     }
     
-    func configurePasswordField() {
-        passwordField.isSecureTextEntry = true
-        passwordField.placeholder = "Password"
-        passwordField.text = "secret"
-        passwordField.returnKeyType = .continue
-        passwordField.leftViewMode = .always
-        passwordField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        passwordField.autocapitalizationType = .none
-        passwordField.autocorrectionType = .no
-        passwordField.layer.masksToBounds = true
-        passwordField.layer.cornerRadius = Constants.Constants.cornerRadius
-        passwordField.backgroundColor = .secondarySystemBackground
-        passwordField.layer.borderWidth = 1.0
-        passwordField.layer.borderColor = UIColor.secondaryLabel.cgColor
+    func configureTitleLabel() {
+        titleLabel.text = "Log in to Noori"
+        titleLabel.textColor = Constants.Color.black
+        titleLabel.textAlignment = .center
+        titleLabel.font = .systemFont(ofSize: 36, weight: .bold)
     }
     
+    private func configureEmailLabel() {
+        emailLabel.text      = "EMAIL"
+        emailLabel.font      = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+        emailLabel.textColor = Constants.Color.purple
+    }
+    
+    private func configureEmailText() {
+        emailText.placeholder = "Username or Email"
+        emailText.text = "eddylujann@gmail.com"
+        emailText.returnKeyType = .next
+        emailText.leftViewMode = .always
+        emailText.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        emailText.autocapitalizationType = .none
+        emailText.autocorrectionType = .no
+        emailText.layer.masksToBounds = true
+        emailText.backgroundColor = Constants.Color.darkLigth
+    }
+    
+    private func configurePasswordLabel() {
+        passwordLabel.text      = "PASSWORD"
+        passwordLabel.font      = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+        passwordLabel.textColor = Constants.Color.purple
+    }
+    
+    private func configurePasswordText() {
+        passwordText.isSecureTextEntry = true
+        passwordText.placeholder = "Password"
+        passwordText.text = "secret"
+        passwordText.returnKeyType = .continue
+        passwordText.leftViewMode = .always
+        passwordText.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        passwordText.autocapitalizationType = .none
+        passwordText.autocorrectionType = .no
+        passwordText.layer.masksToBounds = true
+        passwordText.backgroundColor = Constants.Color.darkLigth
+    }
     
     ///Spinner
     func configureSpinnerButton() {
@@ -192,12 +250,7 @@ class LoginViewController: UIViewController {
     
     ///LogIn
     func configureLoginButton() {
-        /*loginButton.setTitle("Log In", for: .normal)
-        loginButton.layer.masksToBounds = true
-        loginButton.layer.cornerRadius = Constants.Constants.cornerRadius
-        loginButton.backgroundColor = .black
-        loginButton.setTitleColor(.white, for: .normal)
-        loginButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)*/
+         ///Spinner //UIButton()
         loginButton.center = view.center
         loginButton.backgroundColor = Constants.Color.purple
         loginButton.setTitle("Log In", for: .normal)
@@ -209,32 +262,32 @@ class LoginViewController: UIViewController {
     
     func configureTermsButton() {
         termsButton.setTitle("Terms of Serviced", for: .normal)
-        termsButton.setTitleColor(.secondaryLabel, for: .normal)
+        termsButton.setTitleColor(Constants.Color.dark, for: .normal)
         termsButton.addTarget(self, action: #selector(didTapTermsButton), for: .touchUpInside)
     }
     
     func configurePrivacyButton() {
         privacyButton.setTitle("Privacy Polocy", for: .normal)
-        privacyButton.setTitleColor(.secondaryLabel, for: .normal)
+        privacyButton.setTitleColor(Constants.Color.dark, for: .normal)
         privacyButton.addTarget(self, action: #selector(didTapPrivacyButton), for: .touchUpInside)
     }
     
     func configureCreateAccountButton() {
         createAccountButton.setTitleColor(.label, for: .normal)
         createAccountButton.setTitle("New User? Create an Account", for: .normal)
-        createAccountButton.setTitleColor(.black, for: .normal)
+        createAccountButton.setTitleColor(Constants.Color.black, for: .normal)
+        createAccountButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         createAccountButton.addTarget(self, action: #selector(didTapCreateAccountButton), for: .touchUpInside)
     }
     
     private func delegatesFields() {
-        usernameEmailField.delegate = self
-        passwordField.delegate = self
+        emailText.delegate = self
+        passwordText.delegate = self
     }
     
     
     //runSpinnerValidationLogin
     @objc private func runSpinnerValidationLogin(validate: Bool) {
-        
         if validate {
             DispatchQueue.main.asyncAfter(deadline: .now()+4) {
                 self.loginButton.stopAnimation(animationStyle: .expand, revertAfterDelay: 1) {
@@ -256,11 +309,12 @@ class LoginViewController: UIViewController {
         }
     }
     
-    @objc private func didTapLoginButton(){
-        passwordField.resignFirstResponder()
-        usernameEmailField.resignFirstResponder()
+    @objc private func didTapLoginButton() {
+        
+        passwordText.resignFirstResponder()
+        emailText.resignFirstResponder()
 
-        guard let usernameEmail = usernameEmailField.text, let password = passwordField.text else {
+        guard let usernameEmail = emailText.text, let password = passwordText.text else {
             return
         }
         
@@ -299,18 +353,36 @@ class LoginViewController: UIViewController {
         present(UINavigationController(rootViewController: vc), animated: true)
     }
     
+    
+    ///Animate button
+    private func animateView(_ viewToAnimate: UIView) {
+        UIView.animate(withDuration: 0.15, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0.5, options: .curveEaseIn) {
+            viewToAnimate.transform = CGAffineTransform(scaleX: 0.92, y: 0.92)
+        } completion: { (_) in
+            print("Animation complete")
+        }
+    }
 }
 
 
 extension LoginViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == usernameEmailField {
-            passwordField.becomeFirstResponder()
-        } else if textField == passwordField {
+        if textField == emailText {
+            passwordText.becomeFirstResponder()
+        } else if textField == passwordText {
             didTapLoginButton()
         }
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.text?.count == 0  {
+            print("Esta vacio....")
+            loginButton.isEnabled = false
+        } else {
+            print("Esta lleno....")
+        }
     }
     
 }

@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/eddylujan/Documentos/Proyect/SwiftNetwork/SwiftNetwork/App/Controllers/Core Tabs/MenuViewController.swift">
-   </FileRef>
-   <FileRef
       location = "group:SwiftNetwork.xcodeproj">
    </FileRef>
    <FileRef

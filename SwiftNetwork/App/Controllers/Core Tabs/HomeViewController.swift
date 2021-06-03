@@ -270,7 +270,7 @@ class HomeViewController: UIViewController {
     
     ///Likes
     func createArrayLikes() -> [PostLikeViewModel] {
-        var likes = [PostLikeViewModel]()
+        let likes = [PostLikeViewModel]()
         /*for i in 0..<5 {
             let data = PostLikeViewModel(
                 username: "jor \(i)",
@@ -604,3 +604,5 @@ extension HomeViewController {
         ]
     }
 }
+
+
