@@ -48,7 +48,7 @@ class TableCreateStorieViewCell: UICollectionViewCell {
     private let plusImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "plus.circle.fill")
-        imageView.tintColor = Constants.Color.green
+        imageView.tintColor = Constants.Color.purple
         //imageView.backgroundColor = .systemGreen
         imageView.layer.masksToBounds = true
         imageView.clipsToBounds = true
@@ -73,7 +73,7 @@ class TableCreateStorieViewCell: UICollectionViewCell {
         super.init(frame: frame)
         ///contentView.backgroundColor = .yellow
         contentView.addSubview(superStoryView)
-        contentView.addSubview(myImageView)
+        //contentView.addSubview(myImageView)
         
         //contentView.addSubview(subView)
     }
@@ -86,7 +86,7 @@ class TableCreateStorieViewCell: UICollectionViewCell {
         super.layoutSubviews()
         superStoryView.frame = CGRect(
             x: 5,
-            y: 5,
+            y: 15,
             width: contentView.width-10,
             height: contentView.height-5-25)
         superStoryView.addSubview(myImageView)
@@ -118,7 +118,7 @@ class TableCreateStorieViewCell: UICollectionViewCell {
         labelText.frame = CGRect(
             x: 0,
             y: plusImageView.bottom+3,
-            width: contentView.width,
+            width: contentView.width-15,
             height: 20)
         
         //label.frame = CGRect(x: 15, y: contentView.height/1.8, width: contentView.width-20, height: contentView.height/2)
@@ -188,10 +188,9 @@ class TableCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        
         superStoryView.frame = CGRect(
             x: 5,
-            y: 5,
+            y: 15,
             width: contentView.width-10,
             height: contentView.height-5-25)
         //superStoryView.layer.cornerRadius = superView.height/2

@@ -7,37 +7,54 @@
 
 import UIKit
 
+protocol IGFeedPostFooterTableViewCellDelegate: AnyObject {
+    func didTapComment(model: UserPostViewModel)
+}
+
+
+
 class IGFeedPostFooterTableViewCell: UITableViewCell {
     
     static let identifier = "IGFeedPostFooterTableViewCell"
+    
+    public var delegate: IGFeedPostFooterTableViewCellDelegate?
+    
+    private var model: UserPostViewModel?
     
     private let profilePhotoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
-        imageView.tintColor = .label
+        imageView.tintColor = Constants.Color.black
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
-    private let boxTextField : UITextField = {
+    /*private let boxTextField : UITextField = {
         let textField = UITextField()
-        textField.backgroundColor = .systemBackground
-        textField.layer.borderWidth = 1.0
-        textField.layer.borderColor = Constants.Color.whiteLight.cgColor //UIColor.secondaryLabel.cgColor //
-        textField.layer.cornerRadius = Constants.Constants.cornerRadius //22
-        textField.placeholder = "Añade un comentario..."
+        textField.placeholder = "Add a comment..."
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         textField.leftViewMode = .always
+        textField.font = .systemFont(ofSize: 14, weight: .regular)
         return textField
+    }()*/
+    
+    private let boxTextButton : UIButton = {
+        let button = UIButton()
+        button.setTitle("Add a comment...", for: .normal)
+        button.contentHorizontalAlignment = .left
+        button.setTitleColor(Constants.Color.dark, for: .normal)
+        button.titleLabel?.font = Constants.fontSize.regular
+        return button
     }()
     
-    private let toPostButton: UIButton = {
-       let button = UIButton()
-        button.tintColor = .red //.label
-        let config = UIImage.SymbolConfiguration(pointSize: 16, weight: .thin)
-        let image = UIImage(systemName: "suit.heart", withConfiguration: config)
+    private let postButton: UIButton = {
+        let button = UIButton()
+        let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
+        let image = UIImage(systemName: "paperplane.fill", withConfiguration: config)
         button.setImage(image, for: .normal)
+        button.layer.masksToBounds = true
+        button.contentMode = .scaleAspectFit
         return button
     }()
     
@@ -45,8 +62,10 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .systemBackground
         contentView.addSubview(profilePhotoImageView)
-        contentView.addSubview(boxTextField)
-        //contentView.addSubview(toPostButton)
+        contentView.addSubview(boxTextButton)
+        contentView.addSubview(postButton)
+        
+        boxTextButton.addTarget(self, action: #selector(didTapCommentButton), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -56,34 +75,60 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let size = contentView.height-4
+        let size = contentView.height
         profilePhotoImageView.frame = CGRect(
-            x: 2,
-            y: 2,
-            width: 40,//size,
-            height: 40)//size)
+            x: 10,
+            y: 5,
+            width: 40,
+            height: 40)
         profilePhotoImageView.layer.cornerRadius = size/2
         
-        boxTextField.backgroundColor = Constants.Color.whiteLight
-        boxTextField.frame = CGRect(
-            x: profilePhotoImageView.right+10,
-            y: 2,
-            width: contentView.width-(size*1)-20,
-            height: contentView.height-5)
-        boxTextField.layer.cornerRadius = size/2
+        boxTextButton.backgroundColor = .systemBackground
+        boxTextButton.frame = CGRect(
+            x: profilePhotoImageView.right+5,
+            y: 0,
+            width: contentView.width-size-profilePhotoImageView.width-20,
+            height: contentView.height)
         
-        toPostButton.frame = CGRect(
-            x: contentView.width-25,
-            y: 2,
+        postButton.backgroundColor = .systemBackground
+        postButton.frame = CGRect(
+            x: contentView.width-5-size,
+            y: 0,
             width: size,
             height: size)
     }
     
-    public func configure() {
+    public func configure(with post: UserPostViewModel) {
         profilePhotoImageView.image = UIImage(systemName: "person.circle")
+        model = post
     }
     
     override func prepareForReuse() {
     }
     
+    @objc private func didTapCommentButton() {
+        guard let model = model else {
+            return
+        }
+        delegate?.didTapComment(model: model)
+    }
+}
+
+
+extension IGFeedPostFooterTableViewCell: UITextFieldDelegate {
+    
+    /*func textFieldDidBeginEditing(_ textField: UITextField) {
+        guard let model = model else {
+            return
+        }
+        delegate?.didTapComment(model: model)
+    }*/
+    
+    /*func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let model = model else {
+            return false
+        }
+        delegate?.didTapComment(model: model)
+        return true
+    }*/
 }

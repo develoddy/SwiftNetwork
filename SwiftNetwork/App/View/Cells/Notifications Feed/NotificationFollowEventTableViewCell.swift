@@ -72,18 +72,21 @@ class NotificationFollowEventTableViewCell: UITableViewCell {
         
         let size: CGFloat = 100
         let buttonHeight: CGFloat = 40
+        
+        label.backgroundColor = .blue
+        label.frame = CGRect(
+            x: profileImageView.right+5,
+            y: 0,
+            width: contentView.width-size-profileImageView.width-16,
+            height: contentView.height)
+        
+        followButton.backgroundColor = .yellow
         followButton.frame = CGRect(
             x: contentView.width-5-size,
             y: (contentView.height-buttonHeight)/2,
             width: size,
             height: buttonHeight)
         followButton.backgroundColor = Constants.Color.purple
-        
-        label.frame = CGRect(
-            x: profileImageView.right+5,
-            y: 0,
-            width: contentView.width-size-profileImageView.width-16,
-            height: contentView.height)
     }
     
     public func configure(with model: UserNotification) {

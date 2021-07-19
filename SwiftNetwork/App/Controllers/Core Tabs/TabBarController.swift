@@ -20,32 +20,32 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
         let home = generateNavController(
             vc: HomeViewController(),
             title: "Online",
-            selected: (UIImage(systemName: "house.fill")!),
-            unselected: (UIImage(systemName: "house.fill")?.withTintColor(Constants.Color.purple))!)
+            selected: (UIImage(systemName: "house")!),
+            unselected: (UIImage(systemName: "house")?.withTintColor(Constants.Color.purple))!)
         
         let explorer = generateNavController(
             vc: SearchViewController(), //ExplorerViewController(),
             title: "Explore",
-            selected: UIImage(systemName: "binoculars.fill")!,
-            unselected: (UIImage(systemName: "binoculars.fill")?.withTintColor(Constants.Color.purple))!)
+            selected: UIImage(systemName: "magnifyingglass")!,
+            unselected: (UIImage(systemName: "magnifyingglass")?.withTintColor(Constants.Color.purple))!)
        
         let notification = generateNavController(
             vc: NotificationsViewController(),
             title: "Notifications",
-            selected: UIImage(systemName: "bell.fill")!,
+            selected: UIImage(systemName: "bell")!,
             unselected: (UIImage(systemName: "bell.fill")?.withTintColor(Constants.Color.purple))! )
         
         let profile = generateNavController(
             vc: ProfileViewController(),
             title: "Profile",
-            selected: (UIImage(systemName: "person.fill")!),
-            unselected: (UIImage(systemName: "person.fill")?.withTintColor(Constants.Color.purple))!)
+            selected: (UIImage(systemName: "person")!),
+            unselected: (UIImage(systemName: "person")?.withTintColor(Constants.Color.purple))!)
         
         let menu = generateNavController(
             vc: MenuViewController(),
             title: "Menu",
-            selected: (UIImage(systemName: "line.horizontal.3.circle.fill")!), //text.justify
-            unselected: (UIImage(systemName: "line.horizontal.3.circle.fill")?.withTintColor(Constants.Color.purple))!)
+            selected: (UIImage(systemName: "line.horizontal.3.circle")!), //text.justify
+            unselected: (UIImage(systemName: "line.horizontal.3.circle")?.withTintColor(Constants.Color.purple))!)
     
         viewControllers = [ home, menu, profile, explorer, notification  ]
     

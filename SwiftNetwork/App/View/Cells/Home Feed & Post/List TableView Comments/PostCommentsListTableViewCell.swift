@@ -9,11 +9,11 @@ import UIKit
 
 
 class PostCommentsListTableViewCell: UITableViewCell {
-
+    
     static let identifier = "PostCommentsListTableViewCell"
     
     private let userImageView: UIImageView = {
-        let imageView = UIImageView()
+        let imageView = UIImageView() 
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
         imageView.backgroundColor = .secondarySystemBackground
@@ -63,6 +63,7 @@ class PostCommentsListTableViewCell: UITableViewCell {
         return button
     }()
     
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         //contentView.backgroundColor = .systemGreen
@@ -71,8 +72,8 @@ class PostCommentsListTableViewCell: UITableViewCell {
         contentView.addSubview(likeButton)
         contentView.addSubview(timeToPostCommentLabel)
         contentView.addSubview(replyToCommentLabel)
-        
         contentView.addSubview(countLikesLabel)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -146,7 +147,24 @@ class PostCommentsListTableViewCell: UITableViewCell {
         
         let attributedString = joinText(username: username, description: comment)
         commentlabel.attributedText = attributedString
-        userImageView.image = UIImage(named: "user3")
+        userImageView.image = UIImage(named: "person.crop.circle")
+    }
+}
+
+
+/*
+extension PostCommentsListTableViewCell: UICollectionViewDataSource{
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 0
     }
     
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        return UICollectionViewCell()
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        print("\(collectionView.tag) ---- \(indexPath.item) ")
+    }
 }
+*/

@@ -23,55 +23,38 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     
     private let likeButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular) //semibold, regular, thin
-        let image = UIImage(systemName: "hand.thumbsup", withConfiguration: config)
+        let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
+        let image = UIImage(systemName: "heart", withConfiguration: config)
         button.setImage(image, for: .normal)
         button.tintColor = Constants.Color.black
-        button.setTitle("Like", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
         return button
     }()
     
     private let commentButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular) //semibold, regular, thin
+        let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
         let image = UIImage(systemName: "message", withConfiguration: config) ///message
         button.setImage(image, for: .normal)
         button.tintColor = Constants.Color.black
-        
-        button.setTitle("Comments", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
-        return button
-    }()
-    
-    private let shareButton: UIButton = {
-        let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular) //semibold, regular, thin
-        let image = UIImage(systemName: "arrowshape.turn.up.right", withConfiguration: config) ///arrowshape.turn.up.right
-        button.setImage(image, for: .normal)
-        button.tintColor = Constants.Color.black
-        
-        button.setTitle("Shared", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
         return button
     }()
     
     
     private let sendButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular) //semibold, regular, thin
-        let image = UIImage(systemName: "paperplane", withConfiguration: config) ///paperplane
+        let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
+        let image = UIImage(systemName: "square.and.arrow.up", withConfiguration: config) ///paperplane
         button.setImage(image, for: .normal)
         button.tintColor = Constants.Color.black
-        button.setTitle("Send", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
-
-       
-        
+        return button
+    }()
+    
+    private let bookmarkButton: UIButton = {
+        let button = UIButton()
+        let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
+        let image = UIImage(systemName: "bookmark", withConfiguration: config) ///paperplane
+        button.setImage(image, for: .normal)
+        button.tintColor = Constants.Color.black
         return button
     }()
     
@@ -82,7 +65,8 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
         contentView.addSubview(likeButton)
         contentView.addSubview(commentButton)
         contentView.addSubview(sendButton)
-        contentView.addSubview(shareButton)
+        
+        contentView.addSubview(bookmarkButton)
         
         likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         commentButton.addTarget(self, action: #selector(didTapCommetnButton), for: .touchUpInside)
@@ -104,40 +88,31 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        // like, comment, send, shared
         
-        //let buttonSize = contentView.height //-15
-        let buttonSize = contentView.width/4 //-15
-        let buttons = [likeButton, commentButton, shareButton, sendButton ]
+        ///Like, comment, send, shared, send
+        let buttonSize = contentView.height-10
+        let buttons = [likeButton, commentButton, sendButton ]
     
         for x in 0..<buttons.count {
             let button = buttons[x]
-            button.backgroundColor = .systemBackground
+            button.contentHorizontalAlignment = .left
             button.frame = CGRect(
-                x: (CGFloat(x)*buttonSize)+(1*CGFloat(x+1)),
+                x: (CGFloat(x)*buttonSize)+(10*CGFloat(x+1)),
                 y: 5,
-                width: buttonSize-5,
-                height: buttonSize/2)
+                width: buttonSize,
+                height: buttonSize)
         }
         
-        /*let buttons = [likeButton, commentButton, shareButton, sendButton ]
-        let widthSize = (contentView.width / CGFloat(buttons.count))//-6
-        
-        for x in 0..<buttons.count {
-            let button = buttons[x]
-            button.backgroundColor = .systemBackground
-            ///button.layer.cornerRadius = 5
-            button.frame = CGRect(
-                x: (CGFloat(x)*widthSize)+(1*CGFloat(x)), //x+1
-                y: 5,
-                width: widthSize,
-                height: widthSize/2)
-        }*/
+        ///Like, comment, send, shared, send
+        bookmarkButton.frame = CGRect(
+            x: contentView.width-buttonSize-15,
+            y: 5,
+            width: buttonSize,
+            height: buttonSize)
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
     }
     
     @objc private func didTapLikeButton() {
@@ -145,11 +120,9 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     }
     
     @objc private func didTapCommetnButton() {
-        
         guard let model = model else {
             return
         }
-        
         delegate?.didTapCommentButton(model: model)
     }
     @objc private func didTapSendButton() {
@@ -217,7 +190,6 @@ extension IGFeedPostActionsTableViewCell {
     }
     
     private func addTextOnShareButton() {
-        shareButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
         let buttonText: NSString = "\n10" // 10\nPost
         let newlineRange: NSRange = buttonText.range(of: "\n")
         
@@ -241,7 +213,6 @@ extension IGFeedPostActionsTableViewCell {
         
         //appending both attributed strings
         attrString1.append(attrString2)
-        shareButton.setAttributedTitle(attrString1, for: [])
     }
     
     private func addTextOnSendButton() {

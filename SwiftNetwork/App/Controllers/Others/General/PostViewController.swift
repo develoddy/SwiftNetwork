@@ -28,8 +28,8 @@ enum PostRenderType {
     case actions(provider: UserPostViewModel) // Like, comment, share
     case descriptions(post: UserPostViewModel)
     case comments(comments: [PostCommentsViewModel])
-    //case comments(post: UserPostViewModel)
-    case footer(footer: String)
+    //case footer(footer: String)
+    case footer(footer: UserPostViewModel) 
 }
 
 /// Model of  renderd Post
@@ -43,7 +43,7 @@ class PostViewController: UIViewController {
     
     private var renderModels = [PostRenderViewModel]()
     
-    private let tableView: UITableView = {
+    private let tableView: UITableView = {  		
         let tableView = UITableView()
         //let tableView = UITableView(frame: .zero, style: .grouped)
         return tableView
@@ -219,3 +219,4 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 }
+

@@ -18,7 +18,28 @@ struct UserPostViewModelRenderViewModel {
     let renderType: UserPostViewModelRenderType
 }
 
-class ListCommentsViewController: UIViewController {
+extension ListCommentsViewController: UITextFieldDelegate {
+   
+    
+    /*func textFieldDidBeginEditing(_ textField: UITextField) {
+        DispatchQueue.main.async{
+            if textField == self.inputTextfield {
+                print("entrooooooo")
+                let beginning = textField.beginningOfDocument
+                textField.selectedTextRange = textField.textRange(from: beginning, to: beginning)
+                textField.insertText("Hello")
+            }
+        }
+    }*/
+}
+
+class ListCommentsViewController: UIViewController  {
+    
+    private let model: UserPostViewModel?
+    
+    private var renderModels = [UserPostViewModelRenderViewModel]()
+    
+    var bottomConstraint: NSLayoutConstraint?
     
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -26,9 +47,84 @@ class ListCommentsViewController: UIViewController {
         return tableView
     }()
     
-    private let model: UserPostViewModel?
+    let messageInputContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
     
-    private var renderModels = [UserPostViewModelRenderViewModel]()
+    private let profilePhotoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "eddy")
+        imageView.clipsToBounds = true
+        imageView.layer.masksToBounds = true
+        imageView.backgroundColor = Constants.Color.darkLigth
+        imageView.layer.borderWidth = 1
+        imageView.layer.borderColor = Constants.Color.dark.cgColor
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
+    private let inputTextfield : UITextField = {
+        let textfield = UITextField()
+        textfield.attributedPlaceholder = NSAttributedString(string: "Escribe un comentario...", attributes: [NSAttributedString.Key.foregroundColor: Constants.Color.dark])
+        textfield.font = Constants.fontSize.regular
+        textfield.backgroundColor = Constants.Color.darkLigth
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: textfield.frame.height))
+        textfield.leftView = paddingView
+        textfield.leftViewMode = UITextField.ViewMode.always
+        textfield.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
+        return textfield
+    }()
+    
+    private let sendButton : UIButton = {
+        let button = UIButton()
+        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
+        let image = UIImage(systemName: "paperplane.fill", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        button.layer.masksToBounds = true
+        button.contentMode = .scaleAspectFit
+        button.tintColor = Constants.Color.dark
+        button.isEnabled = false
+        return button
+    }()
+    
+    ///icons
+    private let facesButton: UIButton = {
+        let button = UIButton()
+        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
+        let image = UIImage(systemName: "face.smiling", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        button.clipsToBounds = true
+        button.layer.masksToBounds = true
+        button.tintColor = Constants.Color.dark
+        
+        return button
+    }()
+    
+    private let imagesButton: UIButton = {
+        let button = UIButton()
+        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
+        let image = UIImage(systemName: "photo.on.rectangle.angled", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        button.clipsToBounds = true
+        button.layer.masksToBounds = true
+        button.tintColor = Constants.Color.dark
+        return button
+    }()
+    
+    private let gifButton: UIButton = {
+        let button = UIButton()
+        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
+        let image = UIImage(systemName: "gift", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        button.clipsToBounds = true
+        button.layer.masksToBounds = true
+        button.tintColor = Constants.Color.dark
+        return button
+    }()
+    
+    
     
     // MARK: Init
     init(model: UserPostViewModel?) {
@@ -50,19 +146,137 @@ class ListCommentsViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        tableView.backgroundColor = .systemBackground
         tableView.frame = view.bounds
     }
     
-    private func setupView() {
-        view.backgroundColor = .systemBackground
-        view.addSubview(tableView)
-        //tableView.tableHeaderView = createTableHeader()
+    override var hidesBottomBarWhenPushed: Bool {
+        ///tabBarController?.tabBar.isHidden = true
+        get{ return navigationController?.topViewController == self }
+        set{ super.hidesBottomBarWhenPushed = newValue }
     }
     
+    ///SetupView
+    private func setupView() {
+        view.addSubview(tableView)
+        inputTextfield.delegate = self
+        
+        view.addSubview(messageInputContainerView)
+        view.addConstraintWhithFormat(format:"H:|[v0]|",views: messageInputContainerView)
+        view.addConstraintWhithFormat(format:"V:[v0(120)]",views: messageInputContainerView)
+        
+        bottomConstraint = NSLayoutConstraint(item: messageInputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -0)
+        view.addConstraint(bottomConstraint!)
+        
+        setupInputComponents()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+    }
+    
+    ///Validate textfield if empty.
+    ///Paint bottom depending if it is empty or not.
+    @objc func textDidChange(textField: UITextField) {
+        let validateBool = !inputTextfield.text!.isEmpty
+        ///sendButton.isEnabled = !inputTextfield.text!.isEmpty
+        if !validateBool {
+            sendButton.isEnabled = validateBool
+            sendButton.tintColor = Constants.Color.dark
+            
+        } else {
+            sendButton.isEnabled = validateBool
+            sendButton.tintColor = Constants.Color.purple
+        }
+    }
+    
+    @objc private func  handleKeyboardNotification(notification: NSNotification) {
+        if let userInfo: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardFrame = userInfo.cgRectValue
+            let isKeyBoardShowing = notification.name == UIResponder.keyboardWillShowNotification
+            bottomConstraint?.constant = isKeyBoardShowing ? -keyboardFrame.height : 0
+            UIView.animate(withDuration: 0, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                self.view.layoutIfNeeded()
+            }, completion: {(completed) in
+                let indexPath = NSIndexPath(item: self.renderModels.count-1, section: 0)
+                self.tableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
+            })
+        }
+    }
+    
+    private func setupInputComponents() {
+        let topBorderView = UIView()
+        topBorderView.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
+        
+        messageInputContainerView.addSubview(profilePhotoImageView)
+        messageInputContainerView.addSubview(inputTextfield)
+        messageInputContainerView.addSubview(topBorderView)
+        
+        ///Icons
+        messageInputContainerView.addSubview(facesButton)
+        messageInputContainerView.addSubview(imagesButton)
+        messageInputContainerView.addSubview(gifButton)
+        messageInputContainerView.addSubview(sendButton)
+        
+        topBorderView.frame = CGRect(
+            x: 0,
+            y: 0,
+            width: view.width,
+            height: 0.5)
+        
+        //let size = messageInputContainerView.height
+        profilePhotoImageView.frame = CGRect(
+            x: 10,
+            y: 15,
+            width: 50,
+            height: 50)
+        profilePhotoImageView.layer.cornerRadius = profilePhotoImageView.height/2
+        
+        
+        inputTextfield.frame = CGRect(
+            x: profilePhotoImageView.right+5,
+            y: 15,
+            width: view.width-profilePhotoImageView.width-30, //view.width-size-profilePhotoImageView.width-25,
+            height: 50)
+        inputTextfield.layer.cornerRadius = inputTextfield.height/2
+        
+        ///Icons
+        facesButton.frame = CGRect(
+            x: 10,
+            y: profilePhotoImageView.bottom+5,
+            width: 30,
+            height: 30)
+        facesButton.layer.cornerRadius = facesButton.height/2
+        
+        
+        imagesButton.frame = CGRect(
+            x: facesButton.right+10,
+            y: profilePhotoImageView.bottom+5,
+            width: 30,
+            height: 30)
+        imagesButton.layer.cornerRadius = imagesButton.height/2
+        
+        gifButton.frame = CGRect(
+            x: imagesButton.right+10,
+            y: profilePhotoImageView.bottom+5,
+            width: 30,
+            height: 30)
+        gifButton.layer.cornerRadius = gifButton.height/2
+        
+        
+        sendButton.frame = CGRect(
+            x: view.width-gifButton.width-15, 
+            y: inputTextfield.bottom+5,
+            width: 30,
+            height: 30)
+        sendButton.layer.cornerRadius = sendButton.height/2
+    }
+    
+    
     private func configureTableView() {
-        tableView.backgroundColor = .systemBackground //.secondarySystemFill 
+        tableView.backgroundColor = .systemBackground
         tableView.register(PostCommentsListTableViewCell.self, forCellReuseIdentifier: PostCommentsListTableViewCell.identifier)
         tableView.register(CustomHeaderTableViewCell.self, forCellReuseIdentifier: CustomHeaderTableViewCell.identifier)
+        
         tableView.separatorStyle = .none
     }
     
@@ -82,8 +296,6 @@ class ListCommentsViewController: UIViewController {
         attributedString.append(normalString)
         return attributedString
     }
-    
-   
     
     private func configureModels() {
         guard let UserPostViewModelModel = self.model else {
@@ -140,6 +352,8 @@ extension ListCommentsViewController: UITableViewDelegate, UITableViewDataSource
         }
     }
     
+    
+    
     ///Height de Cell (List Comments
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 65.0
@@ -154,5 +368,7 @@ extension ListCommentsViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         print("Did select normal list item")
+        inputTextfield.endEditing(true)
     }
+    
 }

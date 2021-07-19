@@ -146,10 +146,7 @@ extension ExplorerViewController: UISearchBarDelegate, UISearchResultsUpdating {
         print(query)
     }
     
-   
-    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-
         searchBar.resignFirstResponder()
         guard let text = searchBar.text, !text.isEmpty else {
             return

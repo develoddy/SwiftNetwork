@@ -15,6 +15,9 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
 
     private let labelTextComment: UILabel = {
         let label = UILabel()
+        ///label.backgroundColor = .systemYellow
+        label.font = .systemFont(ofSize: 10, weight: .regular)
+        label.textColor = Constants.Color.dark
         return label
     }()
     
@@ -29,7 +32,7 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        ///contentView.backgroundColor = .red
+        contentView.backgroundColor = .systemBackground
         contentView.addSubview(labelTextComment)
         contentView.addSubview(likeButton)
     }
@@ -41,25 +44,35 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         let size = contentView.height-4
-    
+        
+        let labelTextCommentSize = labelTextComment.sizeThatFits(frame.size)
         labelTextComment.frame = CGRect(
-            x: 10,
+            x: 15,
+            y: 0,
+            width: contentView.width-(size*2)-5,
+            height: labelTextCommentSize.height ).integral //contentView.height-5)
+       
+        /*likeButton.frame = CGRect(
+            x: contentView.width-size-15,
             y: 5,
-            width: contentView.width-(size*2)-15,
-            height: contentView.height-5) 
-        
-        
-        likeButton.frame = CGRect(
-            x: contentView.width-size,
-            y: 2,
             width: size,
-            height: size)
+            height: size)*/
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         labelTextComment.text = nil
     }
+    
+    
+    public func configure(with model: PostCommentsViewModel) {
+        /*let username = model.username
+        let comment = model.content
+        let attributedString = joinText(username: username!, description: comment!)
+        labelTextComment.attributedText = attributedString*/
+        labelTextComment.text = "HACE 12 HORAS"
+    }
+    
     
     private func joinText(username:String, description:String) -> NSMutableAttributedString {
         ///Username
@@ -74,11 +87,7 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
         return attributedString
     }
     
-    public func configure(with model: PostCommentsViewModel) {
-        ///Comentarios
-        let username = model.username
-        let comment = model.content
-        let attributedString = joinText(username: username!, description: comment!)
-        labelTextComment.attributedText = attributedString
-    }
+   
+    
+   
 }

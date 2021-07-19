@@ -43,7 +43,7 @@ class CollectionTableViewCell: UITableViewCell {
     private let collectionView: UICollectionView
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    
+       
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 170, height: 170)
@@ -56,7 +56,7 @@ class CollectionTableViewCell: UITableViewCell {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        collectionView.backgroundColor = .systemBackground 
+        collectionView.backgroundColor = .systemBackground
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
     
@@ -140,7 +140,7 @@ extension CollectionTableViewCell: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         ///return CGSize(width: collectionView.frame.width/2.9, height: collectionView.frame.width/1.4) //1.7
-        return CGSize(width: collectionView.frame.width/3, height: collectionView.frame.width/1.7) //1.7
+        return CGSize(width: collectionView.frame.width/3.2, height: collectionView.frame.width/1.8) //1.7
     }
         
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

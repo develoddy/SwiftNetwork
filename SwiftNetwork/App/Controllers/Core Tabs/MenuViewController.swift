@@ -183,7 +183,6 @@ class MenuViewController: UIViewController {
      ///CollectionViewCell the MenuCollectionViewCell grid
      func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
          let model = menuCollectionViewModel[indexPath.row]
-         print(model)
          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MenuCollectionViewCell.identifier, for: indexPath) as! MenuCollectionViewCell
          cell.configure(model: model)
          return cell

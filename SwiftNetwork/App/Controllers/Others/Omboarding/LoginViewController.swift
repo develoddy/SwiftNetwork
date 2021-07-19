@@ -54,9 +54,8 @@ class LoginViewController: UIViewController {
         configureCreateAccountButton()
         delegatesFields()
         ///Es para entrar directamente al perfil, lueglo se tiene que quitar esta funcion del viewLoad
-        //didTapLoginButton()
+        ///didTapLoginButton()
         
-    
         configureEmailLabel()
         configureEmailText()
         
@@ -274,7 +273,7 @@ class LoginViewController: UIViewController {
     
     func configureCreateAccountButton() {
         createAccountButton.setTitleColor(.label, for: .normal)
-        createAccountButton.setTitle("New User? Create an Account", for: .normal)
+        createAccountButton.setTitle("", for: .normal)
         createAccountButton.setTitleColor(Constants.Color.black, for: .normal)
         createAccountButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         createAccountButton.addTarget(self, action: #selector(didTapCreateAccountButton), for: .touchUpInside)
@@ -285,8 +284,6 @@ class LoginViewController: UIViewController {
         passwordText.delegate = self
     }
     
-    
-    //runSpinnerValidationLogin
     @objc private func runSpinnerValidationLogin(validate: Bool) {
         if validate {
             DispatchQueue.main.asyncAfter(deadline: .now()+4) {
@@ -345,7 +342,6 @@ class LoginViewController: UIViewController {
     @objc private func didTapTermsButton() {}
     @objc private func didTapPrivacyButton() {}
     @objc private func didTapCreateAccountButton() {
-        
         spinner.stopAnimating()
         let vc = RegistrationViewController()
         vc.delegateEmail = self

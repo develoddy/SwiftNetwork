@@ -7,23 +7,23 @@
 
 import UIKit
 
-
 enum SelectedScope: Int {
     case photos = 0
     case tagged = 1
 }
 
-
 /// Profile view controller
 final class ProfileViewController: UIViewController {
     
     private var collectionView: UICollectionView?
-    
     private var postLikeViewModel = [PostLikeViewModel]()
     private var postCommentsViewModel = [PostCommentsViewModel]()
     private var userViewModel = UserViewModel()
     private var userPostViewModel = [UserPostViewModel]()
     
+    var spinner = UIActivityIndicatorView()
+    var VW_overlay: UIView = UIView()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +33,22 @@ final class ProfileViewController: UIViewController {
         configureCollectionView()
         delegateCollectionView()
         setupModel(tabs: "grid")
+        setupSpinner()
+        
+        ///Spinner
+        VW_overlay = UIView(frame: UIScreen.main.bounds)
+        VW_overlay.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+    }
+    
+    private func setupSpinner() {
+        spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        spinner.center = view.center
+        spinner.style = UIActivityIndicatorView.Style.large
+        spinner.color = Constants.Color.dark
+        spinner.hidesWhenStopped = true
+        
+        view.addSubview(spinner)
+        spinner.startAnimating()
     }
     
     override func viewDidLayoutSubviews() {
@@ -236,11 +252,9 @@ extension ProfileViewController: ProfileInfoHeaderCollectionReusableViewDelegate
     
     func profileWritePostDidTapEditProfileButton(_post: ProfileInfoHeaderCollectionReusableView) {
         let vc = PublishPostViewController()
-        vc.title = "Create Post"
         vc.modalPresentationStyle = .fullScreen
         vc.navigationItem.largeTitleDisplayMode = .never
-        //present(vc, animated: true)
-        present(UINavigationController(rootViewController: vc), animated: true)
+        present(UINavigationController(rootViewController: vc), animated: true)///present(vc, animated: true)
     }
 }
 
@@ -419,6 +433,10 @@ extension ProfileViewController {
                     taggedUsers: [], ///UserViewModel
                     owner: userViewModel))
         }
+        
+        ///Cuando el objeto UserPostVieewModel termine de cargar los datos, entonces el spiner se detendrá y mostrara la view.
+        spinner.stopAnimating()
+        VW_overlay.isHidden = true
       
         //DispatchQueue.main.async{
             self.collectionView?.reloadData()

@@ -4,10 +4,11 @@
 target 'SwiftNetwork' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-
+  
+  pod 'FloatingPanel'
   pod 'SDWebImage'
   pod 'SDWebImage'
-  #pod 'TransitionButton'
+  pod 'TransitionButton'
 
   post_install do |installer|
   installer.pods_project.targets.each do |target|

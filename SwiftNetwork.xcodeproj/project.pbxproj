@@ -15,6 +15,8 @@
 		B3110EF7262600FC00354C25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3110EF5262600FC00354C25 /* LaunchScreen.storyboard */; };
 		B3110F02262600FC00354C25 /* SwiftNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3110F01262600FC00354C25 /* SwiftNetworkTests.swift */; };
 		B3110F0D262600FD00354C25 /* SwiftNetworkUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3110F0C262600FD00354C25 /* SwiftNetworkUITests.swift */; };
+		B34F436026A19FA40076766C /* ContactsMessengerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34F435F26A19FA40076766C /* ContactsMessengerViewController.swift */; };
+		B34F437126A1A6750076766C /* StoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34F437026A1A6750076766C /* StoryViewController.swift */; };
 		B362D15D263561840086F777 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D15C263561840086F777 /* HomeViewController.swift */; };
 		B362D165263605630086F777 /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D164263605630086F777 /* CollectionTableViewCell.swift */; };
 		B362D16D263607940086F777 /* TableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D16C263607940086F777 /* TableCollectionViewCell.swift */; };
@@ -91,6 +93,9 @@
 		B3C243A3266655C200C2C866 /* MenuHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C243A2266655C200C2C866 /* MenuHeaderCollectionReusableView.swift */; };
 		B3C243A92666566E00C2C866 /* MenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C243A82666566E00C2C866 /* MenuCollectionViewCell.swift */; };
 		B3C243AE266656B600C2C866 /* MenuFooterCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C243AD266656B600C2C866 /* MenuFooterCollectionReusableView.swift */; };
+		B3D9E83C2698556A00F4A27D /* SettingsLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D9E83B2698556A00F4A27D /* SettingsLauncher.swift */; };
+		B3D9E8452698665D00F4A27D /* CustomSharedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D9E8442698665D00F4A27D /* CustomSharedCollectionViewCell.swift */; };
+		B3D9E84D26987AF500F4A27D /* BaseViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D9E84C26987AF500F4A27D /* BaseViewCell.swift */; };
 		B3F57BCE2668D69F00496B54 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F57BCD2668D69F00496B54 /* MenuViewController.swift */; };
 		B3F57BD32668DD1300496B54 /* TextFieldWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F57BD22668DD1300496B54 /* TextFieldWithPadding.swift */; };
 		B3F57BD82668DDC900496B54 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F57BD72668DDC900496B54 /* PaddingLabel.swift */; };
@@ -134,6 +139,8 @@
 		B3110F08262600FC00354C25 /* SwiftNetworkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftNetworkUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3110F0C262600FD00354C25 /* SwiftNetworkUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftNetworkUITests.swift; sourceTree = "<group>"; };
 		B3110F0E262600FD00354C25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B34F435F26A19FA40076766C /* ContactsMessengerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsMessengerViewController.swift; sourceTree = "<group>"; };
+		B34F437026A1A6750076766C /* StoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryViewController.swift; sourceTree = "<group>"; };
 		B362D15C263561840086F777 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B362D164263605630086F777 /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
 		B362D16C263607940086F777 /* TableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -210,6 +217,9 @@
 		B3C243A2266655C200C2C866 /* MenuHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		B3C243A82666566E00C2C866 /* MenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCollectionViewCell.swift; sourceTree = "<group>"; };
 		B3C243AD266656B600C2C866 /* MenuFooterCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuFooterCollectionReusableView.swift; sourceTree = "<group>"; };
+		B3D9E83B2698556A00F4A27D /* SettingsLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLauncher.swift; sourceTree = "<group>"; };
+		B3D9E8442698665D00F4A27D /* CustomSharedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSharedCollectionViewCell.swift; sourceTree = "<group>"; };
+		B3D9E84C26987AF500F4A27D /* BaseViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewCell.swift; sourceTree = "<group>"; };
 		B3F57BCD2668D69F00496B54 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B3F57BD22668DD1300496B54 /* TextFieldWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithPadding.swift; sourceTree = "<group>"; };
 		B3F57BD72668DDC900496B54 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
@@ -428,8 +438,8 @@
 				B39A49B52626236E00BE80DF /* NotificationsViewController.swift */,
 				B39A49B42626236E00BE80DF /* ProfileViewController.swift */,
 				B362D15C263561840086F777 /* HomeViewController.swift */,
-				B39A4A192627459F00BE80DF /* TabBarController.swift */,
 				B3F57BCD2668D69F00496B54 /* MenuViewController.swift */,
+				B39A4A192627459F00BE80DF /* TabBarController.swift */,
 			);
 			path = "Core Tabs";
 			sourceTree = "<group>";
@@ -456,6 +466,9 @@
 				B39A49C12626239900BE80DF /* SearchViewController.swift */,
 				B39A49C32626239900BE80DF /* SettingsViewController.swift */,
 				B362D18E2639B5EA0086F777 /* ListCommentsViewController.swift */,
+				B3D9E83B2698556A00F4A27D /* SettingsLauncher.swift */,
+				B34F435F26A19FA40076766C /* ContactsMessengerViewController.swift */,
+				B34F437026A1A6750076766C /* StoryViewController.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -684,10 +697,20 @@
 		B3D8672D2641AD930011B4E7 /* Home Feed */ = {
 			isa = PBXGroup;
 			children = (
+				B3D9E8432698662300F4A27D /* Actions Shared */,
 				B362D164263605630086F777 /* CollectionTableViewCell.swift */,
 				B362D16C263607940086F777 /* TableCollectionViewCell.swift */,
 			);
 			path = "Home Feed";
+			sourceTree = "<group>";
+		};
+		B3D9E8432698662300F4A27D /* Actions Shared */ = {
+			isa = PBXGroup;
+			children = (
+				B3D9E8442698665D00F4A27D /* CustomSharedCollectionViewCell.swift */,
+				B3D9E84C26987AF500F4A27D /* BaseViewCell.swift */,
+			);
+			path = "Actions Shared";
 			sourceTree = "<group>";
 		};
 		CF171DC54729B90FDD1701E7 /* Pods */ = {
@@ -946,6 +969,7 @@
 				B36D60052657A1A800B9584A /* UserPostViewModel.swift in Sources */,
 				B3B891B026541AA4003AE17A /* WebPostLikeData.swift in Sources */,
 				B36D5FD12656CD1800B9584A /* WebTranslatorGeneral.swift in Sources */,
+				B3D9E8452698665D00F4A27D /* CustomSharedCollectionViewCell.swift in Sources */,
 				B3F57BCE2668D69F00496B54 /* MenuViewController.swift in Sources */,
 				B3B891C22654476B003AE17A /* APIService.swift in Sources */,
 				B39A49F22626242600BE80DF /* WebSender.swift in Sources */,
@@ -955,6 +979,7 @@
 				B362D15D263561840086F777 /* HomeViewController.swift in Sources */,
 				B3110EEB262600F900354C25 /* AppDelegate.swift in Sources */,
 				B36D600F2657A1CE00B9584A /* UserCountViewModel.swift in Sources */,
+				B34F437126A1A6750076766C /* StoryViewController.swift in Sources */,
 				B39A49CC2626239900BE80DF /* PublishPostViewController.swift in Sources */,
 				B39A4A262627629900BE80DF /* IGFeedPostTableViewCell.swift in Sources */,
 				B3F57BD32668DD1300496B54 /* TextFieldWithPadding.swift in Sources */,
@@ -969,6 +994,7 @@
 				B39A49B82626236E00BE80DF /* ProfileViewController.swift in Sources */,
 				B39A49A72626232500BE80DF /* DatabaseManager.swift in Sources */,
 				B39A4A542628383B00BE80DF /* ProfileTabsCollectionReusableView.swift in Sources */,
+				B3D9E83C2698556A00F4A27D /* SettingsLauncher.swift in Sources */,
 				B36D60142657A1F000B9584A /* PostCommentsViewModel.swift in Sources */,
 				B39A4A0626263A3A00BE80DF /* Alerts.swift in Sources */,
 				B362D16D263607940086F777 /* TableCollectionViewCell.swift in Sources */,
@@ -981,6 +1007,7 @@
 				B3B89187264DD98A003AE17A /* FontNames-iOS12.swift in Sources */,
 				B39A49FC2626385400BE80DF /* Closures.swift in Sources */,
 				B39A4A6A2628777D00BE80DF /* Models.swift in Sources */,
+				B3D9E84D26987AF500F4A27D /* BaseViewCell.swift in Sources */,
 				B39A4A1A2627459F00BE80DF /* TabBarController.swift in Sources */,
 				B3ABE3EE262CCFFA00F10ADE /* NotificationFollowEventTableViewCell.swift in Sources */,
 				B39A49CD2626239900BE80DF /* EditProfileViewController.swift in Sources */,
@@ -999,6 +1026,7 @@
 				B3C243AE266656B600C2C866 /* MenuFooterCollectionReusableView.swift in Sources */,
 				B3B89148264BB835003AE17A /* WebUserSearch.swift in Sources */,
 				B39A49C92626239900BE80DF /* SearchViewController.swift in Sources */,
+				B34F436026A19FA40076766C /* ContactsMessengerViewController.swift in Sources */,
 				B36D600A2657A1C000B9584A /* UserViewModel.swift in Sources */,
 				B39A49B72626236E00BE80DF /* ExploreViewController.swift in Sources */,
 				B362D18726399E2A0086F777 /* IGFeedPostFooterTableViewCell.swift in Sources */,
