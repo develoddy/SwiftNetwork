@@ -17,8 +17,7 @@ extension LoginViewController: SendEmailProtocol {
 }
 
 class LoginViewController: UIViewController {
-    
-    
+
     var spinner = UIActivityIndicatorView()
     private let logoImageView = UIImageView()
     private let titleLabel = UILabel()

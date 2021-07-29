@@ -124,8 +124,6 @@ class ListCommentsViewController: UIViewController  {
         return button
     }()
     
-    
-    
     // MARK: Init
     init(model: UserPostViewModel?) {
         self.model = model

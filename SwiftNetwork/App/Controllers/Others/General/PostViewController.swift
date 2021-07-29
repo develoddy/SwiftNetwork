@@ -22,7 +22,7 @@ import UIKit
 
 /// States of render cell
 enum PostRenderType {
-    case collections(collections: [CollectionTableCellModel])
+    case collections(collections: [CollectionTableCellModel], createStory: [CollectionTableCellModel])
     case header(provider: UserViewModel)
     case primaryContent(provider: UserPostViewModel) //Post
     case actions(provider: UserPostViewModel) // Like, comment, share
@@ -115,7 +115,6 @@ class PostViewController: UIViewController {
             return
         }
         
-        
         /// Header
         renderModels.append(PostRenderViewModel(renderType: .header(provider: UserPostViewModelModel.owner )))
         ///Post
@@ -163,7 +162,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         case .header(_):  return 1
         case .descriptions(_):  return 1
         case .footer(_): return 1
-        case .collections(_): return 1
+        case .collections(_,_): return 1
         }
         
     }
@@ -197,13 +196,9 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         case .footer(_/**let footer**/):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostFooterTableViewCell.identifier, for: indexPath) as! IGFeedPostFooterTableViewCell
             return cell
-        case .collections(_/**let collections**/):
+        case .collections(_,_):
             return UITableViewCell()
         }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -214,9 +209,13 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         case .primaryContent(_): return tableView.width ///Post
         case .header(_): return 70 ///Hader
         case .descriptions(_): return 90 ///Descriptions
-        case .collections(_): return 50 ///Collections
+        case .collections(_,_): return 50 ///Collections
         case .footer(_): return 50 ///Footer
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

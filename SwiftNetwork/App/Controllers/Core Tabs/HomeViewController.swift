@@ -8,8 +8,6 @@
 import UIKit
 //import FloatingPanel
 
-
-
 struct HomeFeedRenderViewModel {
     let collections: PostRenderViewModel
     let header: PostRenderViewModel
@@ -20,95 +18,17 @@ struct HomeFeedRenderViewModel {
     let footer: PostRenderViewModel
 }
 
-class SendViewController: UIViewController {
 
-    private let labelUser: UILabel = {
-        let label = UILabel()
-        label.text = "¡Hola, Eddy!"
-        label.font = .systemFont(ofSize: 15, weight: .semibold)
-        label.textColor = .lightGray
-        return label
-    }()
-    
-    private let label: UILabel = {
-        let label = UILabel()
-        label.text = "¿A dónde quieres ir?"
-        label.font = .systemFont(ofSize: 16, weight: .semibold)
-        return label
-    }()
-    
-    private let labelImg: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .green
-        return label
-    }()
-    
-    private let searchButtom: UIButton = {
-        let button = UIButton()
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
-        button.contentHorizontalAlignment = .left
-        button.setTitle("Introduce un destino 11", for: .normal)
-        button.setTitleColor(UIColor(red: 142/255, green: 142/255, blue: 142/255, alpha: 1.0),for: .normal)
-        button.layer.cornerRadius = 5
-        return button
-    }()
-
-    // MARK: - LIFE CYCLE
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupView()
-    }
-    
-    func setupView() {
-        view.addSubview(labelUser)
-        view.addSubview(label)
-        view.addSubview(searchButtom)
-        view.addSubview(labelImg)
-       
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        labelUser.sizeToFit()
-        //labelUser.backgroundColor = .red
-        labelUser.frame =
-            CGRect(x        : 20,
-                   y        : 10,
-                   width    : view.frame.size.width - 40,
-                   height   : labelUser.frame.size.height)
-        
-        label.sizeToFit()
-        //label.backgroundColor = .blue
-        label.frame =
-            CGRect(x        : 20,
-                   y        : labelUser.frame.origin.y + labelUser.frame.size.height + 5,
-                   width    : view.frame.size.width - 40,
-                   height   :  label.frame.size.height)
-        
-        searchButtom.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1.0)
-        searchButtom.frame =
-            CGRect(x        : 20,
-                   y        : label.frame.origin.y + label.frame.size.height + 10,
-                   width    : view.frame.size.width - 40,
-                   height   : 50)
-    }
-}
-
-
-//HomeViewController
 class HomeViewController: UIViewController {
     
-    let settingsLauncher = SettingsLauncher()
+    //let settingsLauncher = SettingsLauncher()
+    //let heigth: CGFloat = 250
+    var model : HomeFeedRenderViewModel?
     
-    //var tranparentView = UIView()
     private let tableMenuView: UITableView = {
-        //let tableView = UITableView(frame: .zero, style: .grouped)
-        let tableView = UITableView()
+        let tableView = UITableView()///let tableView = UITableView(frame: .zero, style: .grouped)
         return tableView
     }()
-    
-    let heigth: CGFloat = 250
     
     private let likeButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
@@ -120,9 +40,7 @@ class HomeViewController: UIViewController {
         button.setTitle("Directo", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
         button.setTitleColor(.black, for: .normal)
-        ///button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
         button.layer.cornerRadius = 10
-        //button.titleLabel?.font = UIFont(name: "Directo", size: 8)
         return button
     }()
     
@@ -136,7 +54,6 @@ class HomeViewController: UIViewController {
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
         button.setTitle("Foto", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        ///button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
         button.layer.cornerRadius = 10
         return button
     }()
@@ -144,20 +61,18 @@ class HomeViewController: UIViewController {
     private let sendButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
         button.tintColor = Constants.Color.blue
-        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold) //semibold, regular, thin
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold)
         let image = UIImage(systemName: "location.fill", withConfiguration: config)
         button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
         button.setImage(image, for: UIControl.State.normal)
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
         button.setTitle("Ubicación", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        ///button.backgroundColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
         button.layer.cornerRadius = 10
         return button
     }()
     
     private let tableView: UITableView = {
-        //let tableView = UITableView(frame: .zero, style: .grouped)
         let tableView = UITableView()
         return tableView
     }()
@@ -214,6 +129,7 @@ class HomeViewController: UIViewController {
     }()
 
     private var models = [HomeFeedRenderViewModel]()
+    private var story : [CollectionTableCellModel] = []
     private var collections : [CollectionTableCellModel] = []
     private var comments    : [PostCommentsViewModel] = []
     private var likes       : [PostLikeViewModel] = []
@@ -233,7 +149,6 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        ///TabBarController
         tabBarController?.tabBar.isHidden = false
     }
     
@@ -282,7 +197,6 @@ class HomeViewController: UIViewController {
             separatorView.trailingAnchor.constraint(equalTo:headerView.trailingAnchor),
             separatorView.heightAnchor.constraint(equalToConstant:5),
             separatorView.bottomAnchor.constraint(equalTo:headerView.bottomAnchor)])
-        
     }
     
     private func setup() {
@@ -350,6 +264,15 @@ class HomeViewController: UIViewController {
         headerView.addSubview(writePostButton)
         headerView.addSubview(uploadImageButton)
         return headerView
+    }
+    
+    ///Create Story Collections
+    func createStoryCollections() -> [CollectionTableCellModel] {
+        var collections = [CollectionTableCellModel]()
+        let data = CollectionTableCellModel(title: "eddy", imageName: "eddy")
+        collections.append(data)
+
+        return collections
     }
     
     ///Collections
@@ -448,13 +371,14 @@ class HomeViewController: UIViewController {
     }
     
     private func setupModels() {
+        story       = createStoryCollections()
         collections = createArrayCollections()
         comments    = createArrayComments()
         users       = createArrayUser()
         posts       = createArrayUserPostViewModel()
         for _ in 0..<2 {
             let viewModel = HomeFeedRenderViewModel(
-                collections : PostRenderViewModel(renderType: .collections(collections  : collections   )),
+                collections : PostRenderViewModel(renderType: .collections(collections  : collections, createStory: story )),
                 header      : PostRenderViewModel(renderType: .header(provider          : users!        )),
                 post        : PostRenderViewModel(renderType: .primaryContent(provider  : posts!        )),
                 actions     : PostRenderViewModel(renderType: .actions(provider         : posts!        )),
@@ -467,6 +391,7 @@ class HomeViewController: UIViewController {
     }
 }
 
+//MARK:- TableView
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -474,9 +399,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var model : HomeFeedRenderViewModel
         let count = section
-        
         if count == 0 { ///Pinta el collection de imagenes
             model = models[0]
             return 1
@@ -500,12 +423,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         if count == 0 { ///Pinta el collection de imagenes
             model = models[0]
             switch model.collections.renderType {
-                case .collections(let collections):
+            case .collections(let collections, let createStory):
                     let cell = tableView.dequeueReusableCell(
                         withIdentifier: CollectionTableViewCell.identifier,
                         for: indexPath) as! CollectionTableViewCell
-                    cell.configure(with: collections)
-                    cell.delegate = self
+                        cell.configure(with: collections, with: createStory)
+                        cell.delegate = self
                     return cell
             case .comments, .actions, .primaryContent, .header, .descriptions, .footer :
                     return UITableViewCell()
@@ -520,8 +443,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                         let cell = tableView.dequeueReusableCell(
                             withIdentifier: IGFeedPostHeaderTableViewCell.identifier,
                             for: indexPath) as! IGFeedPostHeaderTableViewCell
-                        cell.configure(with: user)
-                        
+                            cell.configure(with: user)
                         return cell
                     case .comments, .actions, .primaryContent, .collections, .descriptions, .footer :
                         return UITableViewCell()
@@ -616,7 +538,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     ///Height de Cell
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 { return 237 } //Collection
+        if indexPath.section == 0 { return view.height/3 } //Collection
         else {
             let subSection = indexPath.section % 7
             if subSection        == 1 { return 70 } /// Header
@@ -652,10 +574,41 @@ extension HomeViewController: IGFeedPostFooterTableViewCellDelegate {
 }
 
 extension HomeViewController: CollectionTableViewCellDelegate {
-    func didSelectItem(with model: CollectionTableCellModel) {
-        print("Selected \(model.title)")
+ 
+    ///Show all story in list or collections
+    func didPushUpStoryButton() {
+        let vc = SettingStoryViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navVC.navigationItem.largeTitleDisplayMode = .never
+        present(navVC, animated: true)
+    }
+    
+    ///Create story and collections the images
+    func didSelectItem(with model: CollectionTableCellModel, type: String ) {
+        //print("Selected \(model.title) y el tipo es::: \(type)")
+        switch type {
+        case Constants.storyCollections.createStory:
+            print("Createstory")
+        case Constants.storyCollections.collections:
+            //print("Collections: \(model)")
+             //let model = userPostViewModel[indexPath.row]
+            let vc = StoryViewController(model: model)
+            //let navVC = UINavigationController(rootViewController: vc)
+            let modalStyle: UIModalTransitionStyle = UIModalTransitionStyle.crossDissolve
+            vc.modalTransitionStyle = modalStyle
+            vc.modalPresentationStyle = .fullScreen
+            //navVC.navigationItem.largeTitleDisplayMode = .never
+            present(vc, animated: true)
+             
+        default:
+            print("Default")
+        }
     }
 }
+
+
+
 
 //MARK: - Actions buttons
 extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
@@ -663,7 +616,7 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
     func didTapLikeButton() {
         print("like")
     }
-    
+
     func didTapCommentButton(model: UserPostViewModel) {
         let vc = ListCommentsViewController(model: model)
         vc.title = "Coments"
@@ -677,19 +630,13 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
     }
     
     public func showControllerForSetting(index:Int, setting: Setting) {
-        /*let dummySettingsViewController = UIViewController()
-        dummySettingsViewController.view.backgroundColor = .white
-        dummySettingsViewController.navigationItem.title = setting.name
-        navigationController?.navigationBar.tintColor = UIColor.black
-        navigationController?.pushViewController(dummySettingsViewController, animated: true)*/
-        
         switch index {
             case 0: //Share in your story
-                let vc = StoryViewController()
-                vc.navigationItem.title = setting.name
-                vc.modalPresentationStyle = .fullScreen
-                vc.navigationItem.largeTitleDisplayMode = .never
-                present(UINavigationController(rootViewController: vc), animated: true)
+//                let vc = StoryViewController()
+//                vc.navigationItem.title = setting.name
+//                vc.modalPresentationStyle = .fullScreen
+//                vc.navigationItem.largeTitleDisplayMode = .never
+//                present(UINavigationController(rootViewController: vc), animated: true)
                 break
             case 1: //Send by menssenger ListContactMessenger
                 let vc = ContactsMessengerViewController()
@@ -710,11 +657,7 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
     }
 }
 
-
-
-
-
-// MARK: Navigation Buttons
+// MARK: - Navigation Buttons
 extension HomeViewController {
     private func setupRemaningNavItems() {
         //let titleImageView = UIImageView(image: UIImage(systemName: "bag"))
@@ -724,7 +667,6 @@ extension HomeViewController {
         titleImageView.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
         titleImageView.contentMode = .scaleAspectFit
         navigationItem.titleView = titleImageView
-        
     }
     
     private func setupLeftNavItems() {
@@ -734,14 +676,12 @@ extension HomeViewController {
         followButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: followButton)*/
         
-        
         let followButton = UIButton(type: .system)
         followButton.setTitle("N O O R I", for: .normal)
         followButton.titleLabel?.font = .systemFont(ofSize: 26, weight: .black )
         followButton.tintColor = Constants.Color.black
         followButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: followButton)
-        
         navigationController?.navigationBar.backgroundColor = .white
         navigationController?.navigationBar.isTranslucent = false
     }

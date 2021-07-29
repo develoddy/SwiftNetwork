@@ -87,4 +87,8 @@ struct Constants {
         static let semibold = UIFont.systemFont(ofSize: 14, weight: .semibold)
     }
     
+    struct storyCollections {
+        static let createStory = "createStory"
+        static let collections = "collections"
+    }
 }

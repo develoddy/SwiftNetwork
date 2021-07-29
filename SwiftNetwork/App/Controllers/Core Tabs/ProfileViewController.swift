@@ -16,25 +16,27 @@ enum SelectedScope: Int {
 final class ProfileViewController: UIViewController {
     
     private var collectionView: UICollectionView?
+    
     private var postLikeViewModel = [PostLikeViewModel]()
+    
     private var postCommentsViewModel = [PostCommentsViewModel]()
+    
     private var userViewModel = UserViewModel()
+    
     private var userPostViewModel = [UserPostViewModel]()
     
     var spinner = UIActivityIndicatorView()
+    
     var VW_overlay: UIView = UIView()
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        //setupView()
+        setupView()
         configureNavigationBar()
         configureCollectionView()
         delegateCollectionView()
         setupModel(tabs: "grid")
         setupSpinner()
-        
         ///Spinner
         VW_overlay = UIView(frame: UIScreen.main.bounds)
         VW_overlay.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
@@ -46,7 +48,6 @@ final class ProfileViewController: UIViewController {
         spinner.style = UIActivityIndicatorView.Style.large
         spinner.color = Constants.Color.dark
         spinner.hidesWhenStopped = true
-        
         view.addSubview(spinner)
         spinner.startAnimating()
     }
@@ -57,6 +58,7 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupView() {
+        view.backgroundColor = .systemBackground
     }
     
     private func handleNotAuthenticated() -> String {
@@ -72,17 +74,19 @@ final class ProfileViewController: UIViewController {
     }
     
     private func configureNavigationBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "LogOut", style: .done, target: self, action: #selector(didTapSettingsButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "LogOut",
+            style: .done,
+            target: self,
+            action: #selector(didTapSettingsButton))
     }
     
     ///Configure collections
     private func configureCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        
         layout.minimumLineSpacing = 1
         layout.minimumInteritemSpacing = 1
-        
         layout.sectionInset = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
         let size = (view.width-4)/3
         layout.itemSize = CGSize(width: size, height: size)
@@ -112,7 +116,6 @@ final class ProfileViewController: UIViewController {
             ProfileTabsCollectionReusableView2.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: ProfileTabsCollectionReusableView2.identifier)
-        
         
         guard let collectionView = collectionView else {
             return
@@ -209,12 +212,9 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
         navigationController?.pushViewController(vc, animated: true)
         vc.title = "Posts" ///model.postType.rawValue
     }
-    
-    
 }
 
-
-// MARK: ProfileInfoHeaderCollectionReusableViewDelegate
+// MARK: - ProfileInfoHeaderCollectionReusableViewDelegate
 extension ProfileViewController: ProfileInfoHeaderCollectionReusableViewDelegate {
     
     func profileHeaderDidTapPostButton(_header: ProfileInfoHeaderCollectionReusableView) {
@@ -258,10 +258,7 @@ extension ProfileViewController: ProfileInfoHeaderCollectionReusableViewDelegate
     }
 }
 
-
-
-
-// MARK: ProfileTabsCollectionReusableViewDelegate
+// MARK: - ProfileTabsCollectionReusableViewDelegate
 extension ProfileViewController: ProfileTabsCollectionReusableViewDelegate {
     func didTapGridButtonTab() {
         // Reload collection view with data
@@ -276,13 +273,11 @@ extension ProfileViewController: ProfileTabsCollectionReusableViewDelegate {
     }
 }
 
-
+// MARK: - ProfileViewController
 extension ProfileViewController {
-
     ///Call APIService
     ///Loop through the data and save it to the Model object //fetchUserPostData
     public func setupModel(tabs: String) {
-        
         let group = DispatchGroup()
         group.enter()
         group.enter()

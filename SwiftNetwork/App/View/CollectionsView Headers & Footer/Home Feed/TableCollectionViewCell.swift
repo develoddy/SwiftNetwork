@@ -7,8 +7,6 @@
 
 import UIKit
 
-
-
 class TableCreateStorieViewCell: UICollectionViewCell {
     
     static let identifier = "TableCreateStorieViewCell"
@@ -26,7 +24,7 @@ class TableCreateStorieViewCell: UICollectionViewCell {
     
     private let myImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "eddy")
+        //imageView.image = UIImage(named: "eddy")
         imageView.layer.masksToBounds = true
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
@@ -44,7 +42,6 @@ class TableCreateStorieViewCell: UICollectionViewCell {
         return label
     }()
     
-   
     private let plusImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "plus.circle.fill")
@@ -86,7 +83,7 @@ class TableCreateStorieViewCell: UICollectionViewCell {
         super.layoutSubviews()
         superStoryView.frame = CGRect(
             x: 5,
-            y: 15,
+            y: 30,
             width: contentView.width-10,
             height: contentView.height-5-25)
         superStoryView.addSubview(myImageView)
@@ -122,7 +119,11 @@ class TableCreateStorieViewCell: UICollectionViewCell {
             height: 20)
         
         //label.frame = CGRect(x: 15, y: contentView.height/1.8, width: contentView.width-20, height: contentView.height/2)
-        
+    }
+    
+    public func configure(with story: CollectionTableCellModel) {
+        labelText.text = story.title
+        myImageView.image = UIImage(named: story.imageName)
     }
 }
 
@@ -190,10 +191,9 @@ class TableCollectionViewCell: UICollectionViewCell {
         
         superStoryView.frame = CGRect(
             x: 5,
-            y: 15,
+            y: 30,
             width: contentView.width-10,
             height: contentView.height-5-25)
-        //superStoryView.layer.cornerRadius = superView.height/2
         superStoryView.addSubview(myImageView)
         
         myImageView.frame = CGRect(
@@ -202,7 +202,11 @@ class TableCollectionViewCell: UICollectionViewCell {
             width: contentView.width-10,
             height: contentView.height-5-25)
         
-        label.frame = CGRect(x: 15, y: contentView.height/1.8, width: contentView.width-20, height: contentView.height/2)
+        label.frame = CGRect(
+            x: 15,
+            y: contentView.height/1.8,
+            width: contentView.width-20,
+            height: contentView.height/2)
         
         myLabel.frame = CGRect(
             x: 5,

@@ -17,7 +17,6 @@ struct EditProfileFormModel {
 final class EditProfileViewController: UIViewController {
     
     private let tableView: UITableView = {
-        //let tableView = UITableView()
         let tableView = UITableView(frame: .zero, style: .grouped)
         return tableView
     }()
@@ -139,17 +138,14 @@ extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource 
         label.textAlignment = .center
         header.addSubview(label)
         
-        
         profilePhotoButton.layer.masksToBounds = true
         profilePhotoButton.layer.cornerRadius = size/2.0
         profilePhotoButton.tintColor = .label
         profilePhotoButton.addTarget(self, action: #selector(didTapProfilePhotoButton), for: .touchUpInside)
         
-        //profilePhotoButton.setBackgroundImage(UIImage(systemName: "person.circle"), for: .normal)
         profilePhotoButton.setBackgroundImage(UIImage(named: "eddy"), for: .normal)
         profilePhotoButton.layer.borderWidth = 1
         profilePhotoButton.layer.borderColor = UIColor.secondarySystemBackground.cgColor
-        
         
         return header
     }
@@ -171,14 +167,6 @@ extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource 
         let model = models[indexPath.section][indexPath.row]
         cell.configure(with: model)
         cell.delegate = self
-        ///tableView.separatorStyle = .singleLine
-        //cell.separatorInset = UIEdgeInsets.init(top: 0.0, left: 25.0, bottom: 0.0, right: 25.0)
-        //cell.layoutMargins = UIEdgeInsets.init(top: 0.0, left: 100.0, bottom: 0.0, right: 0.0)
-        
-        //let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
-        //cell.contentView.addSubview(separatorView)
-        //tableView.tableFooterView = UIView(frame: .zero)
-        
         return cell
     }
     

@@ -136,7 +136,6 @@ class SettingsLauncher: NSObject {
                 width: self.collectionView.frame.width,
                 height: self.collectionView.frame.height)
         }) { (complted: Bool) in
-           
         }
     }
 }
@@ -214,7 +213,7 @@ extension SettingsLauncher: UICollectionViewDataSource, UICollectionViewDelegate
 }
 
 
-//MARK: - EXTENSION
+//MARK: - Extension
 ///Button cancel
 extension SettingsLauncher: CustomSharedFooterCollectionViewCellDelegate {
     func didTapCancelButton() {

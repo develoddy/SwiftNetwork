@@ -27,12 +27,24 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         return imageView
     }()
     
+    /*
+     private let likeButton: UIButton = {
+         let button = UIButton()
+         let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
+         let image = UIImage(systemName: "heart", withConfiguration: config)
+         button.setImage(image, for: .normal)
+         button.tintColor = Constants.Color.black
+         return button
+     }()
+     */
+    
     private let usernameLabelButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(Constants.Color.black, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         button.contentHorizontalAlignment = .left
-        button.setImage(UIImage(systemName: "checkmark.seal.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(Constants.Color.purple), for: .normal)
+        let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .semibold)
+        button.setImage(UIImage(systemName: "checkmark.seal.fill", withConfiguration: config)?.withRenderingMode(.alwaysOriginal).withTintColor(Constants.Color.purple), for: .normal)
         button.semanticContentAttribute = .forceRightToLeft
         return button
     }()
@@ -76,7 +88,7 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
             y: 15,
             width: contentView.height/1.5, ///size
             height: contentView.height/1.5) ///size
-        profilePhotoImageView.layer.cornerRadius = profilePhotoImageView.height/2 //size/2
+        profilePhotoImageView.layer.cornerRadius = profilePhotoImageView.height/2 
         
         
         let labelHeight = contentView.height/3
@@ -94,7 +106,11 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
             width: contentView.width-(size*2)-15,
             height: postTimeLabelSize.height).integral
         
-        moreButton.frame = CGRect(x: contentView.width-size, y: 2, width: size, height: size)
+        moreButton.frame = CGRect(
+            x: contentView.width-size,
+            y: 2,
+            width: size,
+            height: size)
     }
     
     override func prepareForReuse() {
