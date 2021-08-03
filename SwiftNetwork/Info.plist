@@ -58,5 +58,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Please allow access so l can see you.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Please allow access so l can location</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Please allow access so I can record you</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please allow access so I can record you</string>
 </dict>
 </plist>

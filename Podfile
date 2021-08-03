@@ -7,8 +7,13 @@ target 'SwiftNetwork' do
   
   pod 'FloatingPanel'
   pod 'SDWebImage'
-  pod 'SDWebImage'
   pod 'TransitionButton'
+  pod 'SPPermissions/Contacts'
+  pod 'SPPermissions/Camera'
+  pod 'SPPermissions/PhotoLibrary'
+  pod 'SPPermissions/Location'
+  pod 'SPPermissions/Microphone'
+  pod 'SPPermissions/Notification'
 
   post_install do |installer|
   installer.pods_project.targets.each do |target|

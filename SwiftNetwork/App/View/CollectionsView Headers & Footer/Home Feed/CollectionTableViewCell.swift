@@ -36,6 +36,7 @@ class CollectionTableViewCell: UITableViewCell {
     static let identifier = "CollectionTableViewCell"
     
     private var models = [CollectionTableCellModel]()
+    
     private var story = [CollectionTableCellModel]()
     
     private var renderModels = [StoriesRenderViewModel]()

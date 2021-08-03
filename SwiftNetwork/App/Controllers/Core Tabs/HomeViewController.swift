@@ -586,19 +586,19 @@ extension HomeViewController: CollectionTableViewCellDelegate {
     
     ///Create story and collections the images
     func didSelectItem(with model: CollectionTableCellModel, type: String ) {
-        //print("Selected \(model.title) y el tipo es::: \(type)")
         switch type {
         case Constants.storyCollections.createStory:
-            print("Createstory")
-        case Constants.storyCollections.collections:
-            //print("Collections: \(model)")
-             //let model = userPostViewModel[indexPath.row]
-            let vc = StoryViewController(model: model)
-            //let navVC = UINavigationController(rootViewController: vc)
+            let vc = CreateStoryViewController()
             let modalStyle: UIModalTransitionStyle = UIModalTransitionStyle.crossDissolve
             vc.modalTransitionStyle = modalStyle
             vc.modalPresentationStyle = .fullScreen
-            //navVC.navigationItem.largeTitleDisplayMode = .never
+            present(vc, animated: true)
+            
+        case Constants.storyCollections.collections:
+            let vc = StoryViewController(model: model)
+            let modalStyle: UIModalTransitionStyle = UIModalTransitionStyle.crossDissolve
+            vc.modalTransitionStyle = modalStyle
+            vc.modalPresentationStyle = .fullScreen
             present(vc, animated: true)
              
         default:

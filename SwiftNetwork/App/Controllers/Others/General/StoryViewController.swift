@@ -42,7 +42,6 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
     
     private let profilePhotoView: UIImageView = {
         let imageView = UIImageView()
-        //imageView.image = UIImage(systemName: "person.circle")
         imageView.image = UIImage(named: "eddy")
         imageView.tintColor = .white
         imageView.clipsToBounds = true
@@ -182,7 +181,6 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //progressView.startAnimation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -226,17 +224,8 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
             width:size/2,
             height:50)
         closeStoryButton.backgroundColor = .clear
-        
-        /*imageStoryView.frame = CGRect(
-            x: 0,
-            y: 0,
-            width: view.width,
-            height: view.height/1.2)
-        imageStoryView.layer.cornerRadius = 20
-        imageStoryView.layer.borderWidth = 1
-        imageStoryView.layer.borderColor = UIColor.white.cgColor*/
-        //let heightSize = view.frame.height/2
-        //view.frame = CGRect(x: 0, y: 0, width: view.width, height: 300)
+    
+        ///ImageStorie
         imageStoryView.frame = CGRect(x: 0, y: 0, width: view.width, height: view.height/1.2)
         
         ///Left
@@ -273,14 +262,11 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
         view.addSubview(closeStoryButton)
         view.addSubview(figureLeftView)
         view.addSubview(figureRightView)
-        
         view.addSubview(footerView)
         
         view.addConstraintWhithFormat(format:"H:|[v0]|",views: footerView)
         view.addConstraintWhithFormat(format:"V:[v0(125)]",views: footerView)
-        //view.addConstraintWhithFormat(format:"V:|[v0][v1(110)]|",views: imageStoryView, footerView)
         
-        //footerView.translatesAutoresizingMaskIntoConstraints = false
         bottomConstraint = NSLayoutConstraint(
             item: footerView,
             attribute: .bottom,
@@ -377,12 +363,13 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
         singleLeftTap.numberOfTapsRequired = 1
         singleLeftTap.numberOfTouchesRequired = 1
         figureLeftView.addGestureRecognizer(singleLeftTap)
-        
+
         ///Tap Left
         let singleRightTap = UITapGestureRecognizer(target: self, action: #selector(tapRightForSingleFigure))
         singleRightTap.numberOfTapsRequired = 1
         singleRightTap.numberOfTouchesRequired = 1
         figureRightView.addGestureRecognizer(singleRightTap)
+        
         
         /**var swipe = UISwipeGestureRecognizer(target: self, action: #selector(tapForSwipe))
         swipe.direction = .down
@@ -426,13 +413,7 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
     func segmentedProgressBarFinished() {
         print("Finished!")
     }
-    
-    @objc private func tappedView() {
-        //spb.isPaused = !spb.isPaused
-        progressView.skip()
-        inputTextfield.endEditing(true)
-    }
-    
+   
     private func updateImage(index: Int) {
         imageStoryView.image = images[index]
     }
@@ -440,6 +421,10 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
     @objc func handleDismiss() {
         dismiss(animated: true, completion: nil)
     }
+    
+    @objc private func tappedView() {
+        progressView.isPaused = !progressView.isPaused
+   }
     
     @objc private func tapLeftForSingleFigure() {
         print("Tap left For Single Figure")
@@ -478,599 +463,3 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
         }
     }
 }
-
-
-
-
-
-/*
-class StoryViewController: UIViewController {
-    
-    var progressView: SegmentedProgressBar!
-    
-    private let model: CollectionTableCellModel?
-    
-    private let images = ["eddy", "img1", "img2"]
-    
-    var bottomConstraint: NSLayoutConstraint?
-    
-    private let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
-        return tableView
-    }()
-    
-    let messageInputContainerView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
-    let storys : [Story] = {
-        return [
-            Story(imageName: "eddy", name: "image 1"),
-            Story(imageName: "img1", name: "imagw 2")
-        ]
-    }()
-    
-    private let figureLeftView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    private let figureRightView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
-    ///profilePhotoButton
-    private let profilePhotoView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "person.circle")
-        imageView.tintColor = .white
-        return imageView
-    }()
-    
-    ///usernameLabel
-    private let usernameLabel: UIButton = {
-        let button = UIButton()
-        button.setTitle("Eddy", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-        button.contentHorizontalAlignment = .left
-        let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .semibold)
-        button.setImage(UIImage(systemName: "checkmark.seal.fill", withConfiguration: config)?.withRenderingMode(.alwaysOriginal).withTintColor(.white), for: .normal)
-        button.semanticContentAttribute = .forceRightToLeft
-        return button
-    }()
-    
-    ///moreButton
-    private let moreButton: UIButton = {
-        let button = UIButton()
-        button.tintColor = .white
-        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .semibold)
-        button.setImage(UIImage(systemName: "xmark", withConfiguration: config)?.withRenderingMode(.alwaysOriginal).withTintColor(.white), for: .normal)
-        button.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
-        return button
-    }()
-    
-    
-    private let imageStoryView = UIImageView()
-    
-    
-     //MARK: Init Receive data from the ProfileViewcontroller
-    init(model: CollectionTableCellModel?) {
-        self.model = model
-        super.init(nibName: nil, bundle: nil)
-        //configureModels()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: ViewDidLoad
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupView()
-        configureTableView()
-        delegateTableView()
-        updateImage(index: 0)
-        gestureRecognizer()
-        configureFooter()
-        
-        ///view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedView)))
-        
-    }
-    
-    func  gestureRecognizer() {
-        view.isUserInteractionEnabled = true
-        ///Tap Right
-        let singleLeftTap = UITapGestureRecognizer(target: self, action: #selector(tapLeftForSingleFigure))
-        singleLeftTap.numberOfTapsRequired = 1
-        singleLeftTap.numberOfTouchesRequired = 1
-        figureLeftView.addGestureRecognizer(singleLeftTap)
-        
-        ///Tap Left
-        let singleRightTap = UITapGestureRecognizer(target: self, action: #selector(tapRightForSingleFigure))
-        singleRightTap.numberOfTapsRequired = 1
-        singleRightTap.numberOfTouchesRequired = 1
-        figureRightView.addGestureRecognizer(singleRightTap)
-        
-        /**var swipe = UISwipeGestureRecognizer(target: self, action: #selector(tapForSwipe))
-        swipe.direction = .down
-        swipe.numberOfTouchesRequired = 1
-        view.addGestureRecognizer(swipe)
-        
-        swipe = UISwipeGestureRecognizer(target: self, action: #selector(tapForSwipe))
-        swipe.direction = .up
-        swipe.numberOfTouchesRequired = 1
-        view.addGestureRecognizer(swipe)
-        
-        swipe = UISwipeGestureRecognizer(target: self, action: #selector(tapForSwipe))
-        swipe.direction = .left
-        swipe.numberOfTouchesRequired = 1
-        view.addGestureRecognizer(swipe)
-        
-        swipe = UISwipeGestureRecognizer(target: self, action: #selector(tapForSwipe))
-        swipe.direction = .right
-        swipe.numberOfTouchesRequired = 1
-        self.view.addGestureRecognizer(swipe)*/
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        progressView.startAnimation()
-        imageStoryView.frame = view.bounds
-        tableView.frame = view.bounds
-        
-        
-        figureLeftView.backgroundColor = .clear
-        figureLeftView.frame = CGRect(
-            x: 0,
-            y: view.height/6,
-            width: view.width/2,
-            height: view.height)
-        
-        figureRightView.backgroundColor = .clear
-        figureRightView.frame = CGRect(
-            x: figureLeftView.right,
-            y: view.height/6,
-            width: view.width/2,
-            height: view.height)
-        
-        imageStoryView.frame = CGRect(x: 0, y: 0, width: view.width, height: view.height/1.5)
-    }
-    
-    func setupView() {
-        imageStoryView.backgroundColor = UIColor(white: 1, alpha: 0.5)
-        //view.backgroundColor = .systemBackground
-        imageStoryView.contentMode = .scaleAspectFill
-        view.addSubview(imageStoryView)
-        view.addSubview(tableView)
-        view.addSubview(figureLeftView)
-        view.addSubview(figureRightView)
-    }
-    
-    override var prefersStatusBarHidden: Bool { return true }
-    
-    private func configureTableView() {
-        tableView.backgroundColor = .clear
-        tableView.register(IGFeedStoryTableViewCell.self, forCellReuseIdentifier: IGFeedStoryTableViewCell.identifier)
-        ///Add Header
-        tableView.tableHeaderView = createTableHeaderView()
-    }
-    
-    private func delegateTableView() {}
-
-    private func updateImage(index: Int) {
-        imageStoryView.image = UIImage(named: images[index])
-    }
-    
-    ///Header
-    private func createTableHeaderView() -> UIView {
-        ///Header
-        let header = UIView(
-            frame: CGRect(
-                x: 0,
-                y: 0,
-                width: view.width,
-                height: 100).integral)
-        header.backgroundColor = .clear
-        
-        ///ProgressView
-        progressView = SegmentedProgressBar(numberOfSegments: 3, duration: 5)
-        progressView.frame = CGRect(x: 10, y: 15, width: view.width - 20, height: 4)
-        progressView.delegate = self
-        progressView.topColor = .white
-        progressView.padding = 2
-        header.addSubview(progressView)
-        
-        
-        ///profilePhotoButton
-        profilePhotoView.frame = CGRect(
-                x: 5,
-                y: progressView.bottom+15,
-                width: 50,
-                height: 50)
-        profilePhotoView.layer.cornerRadius = profilePhotoView.height/2
-        header.addSubview(profilePhotoView)
-        
-        let size = header.height/1.5
-        
-        ///UserNameButton
-        usernameLabel.frame = CGRect(
-                x: profilePhotoView.right+5,
-                y: progressView.bottom+15,
-                width: view.width-(size*2),
-                height: 50)
-        header.addSubview(usernameLabel)
-        usernameLabel.backgroundColor = .clear
-        
-        ///More Button
-        moreButton.frame = CGRect(
-               x: usernameLabel.right+5,
-               y: progressView.bottom+15,
-               width:size-5,
-               height:50)
-        moreButton.backgroundColor = .clear
-        header.addSubview(moreButton)
-        
-        return  header
-    }
-    
-    ///Footer
-    private func configureFooter() {}
-
-    ///Taps buttons
-    @objc func handleDismiss() {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @objc private func tapForSingleFigure() {
-        print("Tap For Single Figure")
-        progressView.skip()
-    }
-    
-    @objc private func tapLeftForSingleFigure() {
-        print("Tap left For Single Figure")
-        progressView.rewind()
-    }
-    
-    @objc private func tapRightForSingleFigure() {
-        print("Tap right For Single Figure")
-        progressView.skip()
-    }
-    
-    
-    @objc private func tapForSwipe(sender: UISwipeGestureRecognizer) {
-        if sender.direction == .down {
-            print("down Tap")
-        } else if sender.direction == .up {
-            print("up Tap")
-        } else if sender.direction == .left {
-            print("left Tap")
-            progressView.skip()
-        } else if sender.direction == .right {
-            print("right Tap")
-            progressView.rewind()
-        }
-    }
-}
-
-//MARK: - SegmentedProgressBarDelegate
-extension StoryViewController: SegmentedProgressBarDelegate {
-    func segmentedProgressBarChangedIndex(index: Int) {
-       print("Now showing index: \(index)")
-        updateImage(index: index)
-    }
-    
-    func segmentedProgressBarFinished() {
-        print("Finished!")
-    }
-}
-
- 
- */
-
-
-
-
-
-
-
-
-
-
-
-// MARK: TableView
-//extension StoryViewController: UITableViewDelegate, UITableViewDataSource  {
-//
-//    private func createTableFooterView()  {
-//    }
-//
-//    private func createTableHeaderView() -> UIView {
-//        ///Header
-//        let header = UIView(
-//            frame: CGRect(
-//                x: 0,
-//                y: 0,
-//                width: view.width,
-//                height: view.height/4).integral)
-//        header.backgroundColor = .systemYellow
-//
-//        progressView = SegmentedProgressBar(numberOfSegments: 3, duration: 5)
-//        progressView.frame = CGRect(x: 10, y: 15, width: view.width - 20, height: 4)
-//        progressView.delegate = self
-//        progressView.topColor = Constants.Color.purple
-//        progressView.padding = 2
-//        header.addSubview(progressView)
-//
-//        ///ProfilePhotoButton
-//        let profilePhotoButton = UIButton(
-//            frame: CGRect(
-//                x: 5,
-//                y: progressView.bottom+15,
-//                width: 50,
-//                height: 50))
-//        profilePhotoButton.layer.cornerRadius = profilePhotoButton.height/2
-//        profilePhotoButton.backgroundColor = .systemRed
-//        header.addSubview(profilePhotoButton)
-//
-//        let size = header.height/1.5
-//        ///UserNameButton
-//        let usernameButton = UILabel(
-//            frame: CGRect(
-//                x: profilePhotoButton.right+5,
-//                y: progressView.bottom+15,
-//                width: view.width-(size),
-//                height: 50))
-//        header.addSubview(usernameButton)
-//        usernameButton.backgroundColor = .systemRed
-//
-//        ///More Button
-//        let moreButton = UIButton(
-//            frame: CGRect(
-//                x: usernameButton.right+5,
-//                y: progressView.bottom+15,
-//                width:size/2,
-//                height:50))
-//        moreButton.backgroundColor = .systemRed
-//        header.addSubview(moreButton)
-//        return header
-//    }
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return storys.count
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let model = storys[indexPath.row]
-//        let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedStoryTableViewCell.identifier, for: indexPath) as! IGFeedStoryTableViewCell
-//        cell.configure(model: model)
-//        return cell
-//    }
-//
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return tableView.width
-//    }
-//}
-
-
-
-
-
-
-
-//enum CreateStoryCollectionRenderType {}
-
-/// States of render cell
-//enum StoryCollectionRenderType {
-//    case header(header: CollectionTableCellModel)
-//    case primaryContent(content: String)
-//    case actions(actions: String)
-//    case footer(footer: String)
-//}
-
-/// Model of  renderd Post
-//struct StoryCollectionRenderViewModel {
-//    let renderType: StoryCollectionRenderType
-//}
-
-
-//class StoryViewController: UIViewController {
-//
-//    var bottomConstraint: NSLayoutConstraint?
-//
-//    private let model: CollectionTableCellModel?
-//
-//    private var renderModels = [StoryCollectionRenderViewModel]()
-//
-//    lazy var iGFeedStoryHeaderTableViewCell : IGFeedStoryHeaderTableViewCell = {
-//        let iGFeedStoryHeaderTableViewCell = IGFeedStoryHeaderTableViewCell()
-//        iGFeedStoryHeaderTableViewCell.storyViewController = self
-//        return iGFeedStoryHeaderTableViewCell
-//    }()
-//
-//
-//
-//    private let tableView: UITableView = {
-//        let tableView = UITableView()
-//        return tableView
-//    }()
-//
-//    let messageInputContainerView: UIView = {
-//        let view = UIView()
-//        view.backgroundColor = .systemPink
-//        return view
-//    }()
-//
-//    private let sendButton : UIButton = {
-//        let button = UIButton()
-//        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
-//        let image = UIImage(systemName: "paperplane.fill", withConfiguration: config)
-//        button.setImage(image, for: .normal)
-//        button.layer.masksToBounds = true
-//        button.contentMode = .scaleAspectFit
-//        button.tintColor = Constants.Color.dark
-//        ///button.isEnabled = false
-//        return button
-//    }()
-//
-//
-//    //MARK: viewDidLoad
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        setupView()
-//        confiureTableView()
-//        delegatesTableView()
-//        configureFooter()
-//    }
-//
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        tableView.frame = view.bounds
-//    }
-//
-//
-//    func setupView() {
-//        view.addSubview(tableView)
-//        view.backgroundColor = .systemBackground
-//        iGFeedStoryHeaderTableViewCell.usernameButton.setTitle("nkdnksadnkns", for: .normal)
-//    }
-//
-//    // MARK: Init Receive data from the ProfileViewcontroller
-//    init(model: CollectionTableCellModel?) {
-//        self.model = model
-//        super.init(nibName: nil, bundle: nil)
-//        configureModels()
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//
-//    private func configureModels() {
-//        guard let collectionTableCellModel = self.model else {
-//            return
-//        }
-//        renderModels.append(StoryCollectionRenderViewModel(renderType: .header(header: collectionTableCellModel)))
-//        renderModels.append(StoryCollectionRenderViewModel(renderType: .primaryContent(content: "")))
-//        renderModels.append(StoryCollectionRenderViewModel(renderType: .actions(actions: "")))
-//    }
-//
-//    func confiureTableView() {
-//        tableView.backgroundColor = .secondarySystemFill
-//        tableView.register(IGFeedStoryHeaderTableViewCell.self, forCellReuseIdentifier: IGFeedStoryHeaderTableViewCell.identifier)
-//        tableView.register(IGFeedStoryContentTableViewCell.self, forCellReuseIdentifier: IGFeedStoryContentTableViewCell.identifier)
-//        tableView.register(IGFeedStoryActionsTableViewCell.self, forCellReuseIdentifier: IGFeedStoryActionsTableViewCell.identifier)
-//        tableView.separatorStyle = .none
-//        tableView.isScrollEnabled = true
-//    }
-//
-//    func delegatesTableView() {
-//        tableView.delegate = self
-//        tableView.dataSource = self
-//    }
-//
-//    private func configureBarButton() {
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Listo", style: .done, target: self, action: #selector(didTapSave))
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(didTapCancel))
-//    }
-//
-//    func configureFooter() {
-//        view.addSubview(messageInputContainerView)
-//        view.addConstraintWhithFormat(format:"H:|[v0]|",views: messageInputContainerView)
-//        view.addConstraintWhithFormat(format:"V:[v0(120)]",views: messageInputContainerView)
-//
-//        bottomConstraint = NSLayoutConstraint(item: messageInputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -0)
-//        view.addConstraint(bottomConstraint!)
-//
-//        setupInputComponents()
-//    }
-//
-//    private func setupInputComponents() {
-//        messageInputContainerView.addSubview(sendButton)
-//        sendButton.addTarget(self, action: #selector(handleStartProgress), for: .touchUpInside)
-//
-//        let topBorderView = UIView()
-//        topBorderView.frame = CGRect(x: 0, y: 0,width: view.width, height: 0.5)
-//        sendButton.frame = CGRect(
-//            x: 5,
-//            y: 5,
-//            width: 30,
-//            height: 30)
-//        sendButton.layer.cornerRadius = sendButton.height/2
-//    }
-//
-//    @objc func handleStartProgress() {}
-//
-//    // MARK: Action
-//    @objc func didTapSave() {
-//        // Save info to database
-//        dismiss(animated: true, completion: nil)
-//    }
-//
-//    @objc func didTapCancel() {
-//        dismiss(animated: true, completion: nil)
-//    }
-//}
-
-
-//MARK: - UITableView
-//extension StoryViewController: UITableViewDelegate, UITableViewDataSource {
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return renderModels.count
-//    }
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        switch renderModels[section].renderType {
-//        case .header(_): return 1
-//        case .primaryContent(_): return 1
-//        case .actions(_):  return 1
-//        case .footer(_): return 1
-//        }
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let model = renderModels[indexPath.section]
-//        switch model.renderType {
-//        case .header(let header):
-//            let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedStoryHeaderTableViewCell.identifier, for: indexPath) as! IGFeedStoryHeaderTableViewCell
-//            cell.configure(with: header)
-//            cell.usernameButton.setTitle("xadakamdkmad", for: .normal)
-//
-//            cell.delegate = self
-//            handleStartProgress()
-//            return cell
-//        case .primaryContent(_):
-//            let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedStoryContentTableViewCell.identifier, for: indexPath) as! IGFeedStoryContentTableViewCell
-//            return cell
-//        case .actions(_):
-//            return UITableViewCell()
-//        case .footer(_):
-//            return UITableViewCell()
-//        }
-//    }
-//
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        let model = renderModels[indexPath.section]
-//        switch model.renderType {
-//        case .header(_): return 100 ///Header
-//        case .primaryContent(_): return view.bounds.height-200 //tableView.width
-//        case .actions(_): return 0 ///Actions
-//        case .footer(_): return 0 ///Footer
-//        }
-//    }
-//
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: true)
-//    }
-//
-//}
-
-
-//MARK: -Extension IGFeedStoryHeaderTableViewCellDelegate
-//extension StoryViewController: IGFeedStoryHeaderTableViewCellDelegate {
-//    func didTapDismissButton() {
-//        dismiss(animated: true, completion: nil)
-//    }
-//}
-
