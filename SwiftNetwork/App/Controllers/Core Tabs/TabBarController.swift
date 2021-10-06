@@ -17,9 +17,13 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
         UITabBar.appearance().backgroundColor = .systemBackground
         UITabBar.appearance().isTranslucent = false
        
-        let home = generateNavController(
+        /*let home = generateNavController(
             vc: HomeViewController(),
-//            title: "Online",
+            selected: (UIImage(systemName: "house")!),
+            unselected: (UIImage(systemName: "house")?.withTintColor(Constants.Color.black))!)*/
+        
+        let home = generateNavController(
+            vc: PruebaViewController(),
             selected: (UIImage(systemName: "house")!),
             unselected: (UIImage(systemName: "house")?.withTintColor(Constants.Color.black))!)
         
@@ -48,7 +52,8 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
             unselected: (UIImage(systemName: "line.horizontal.3.circle")?.withTintColor(Constants.Color.purple))!)*/
     
         //viewControllers = [ home, menu, profile, explorer, notification  ]
-        viewControllers = [ profile, home, explorer, notification ]
+//        viewControllers = [ profile, home, explorer, notification ]
+        viewControllers = [ home, profile, explorer, notification ]
     
         colorNavController()
     }
