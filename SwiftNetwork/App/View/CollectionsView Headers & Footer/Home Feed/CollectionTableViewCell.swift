@@ -47,7 +47,7 @@ class CollectionTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "Stories"
         label.font = .systemFont(ofSize: 22, weight: .bold)
-        label.backgroundColor = .systemBackground
+        label.tintColor = .black
         return label
     }()
     
@@ -55,12 +55,12 @@ class CollectionTableViewCell: UITableViewCell {
         let button = UIButton()
         button.setImage(UIImage(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"), for: .normal)
         button.contentMode = .scaleAspectFit
-        button.tintColor = Constants.Color.purple
         button.contentHorizontalAlignment = .right
         button.semanticContentAttribute = .forceRightToLeft
         button.tintColor = .black
         return button
     }()
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         let layout = UICollectionViewFlowLayout()
@@ -76,8 +76,8 @@ class CollectionTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         collectionView.backgroundColor = .systemBackground
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.showsVerticalScrollIndicator = false
+//        collectionView.showsHorizontalScrollIndicator = false
+//        collectionView.showsVerticalScrollIndicator = false
     
         collectionView.register(TableCollectionViewCell.self, forCellWithReuseIdentifier: TableCollectionViewCell.identifier)
         collectionView.register(TableCreateStorieViewCell.self, forCellWithReuseIdentifier: TableCreateStorieViewCell.identifier)
@@ -93,7 +93,6 @@ class CollectionTableViewCell: UITableViewCell {
         addSubview(titleLabel)
         addSubview(arrowUpImageButton)
         arrowUpImageButton.addTarget(self, action: #selector(didPushUpStoryButton), for: .touchUpInside)
-        
     }
     
     @objc private func didPushUpStoryButton() {
@@ -112,7 +111,7 @@ class CollectionTableViewCell: UITableViewCell {
             width: collectionView.width-8-buttonWidth,
             height: 30)
         
-        arrowUpImageButton.backgroundColor = .systemBackground
+        //arrowUpImageButton.backgroundColor = .systemBackground
         arrowUpImageButton.frame = CGRect(
             x: titleLabel.right,
              y: 5,
@@ -198,7 +197,5 @@ extension CollectionTableViewCell: UICollectionViewDelegate, UICollectionViewDat
             collectionView.deselectItem(at: indexPath, animated: true)
             delegate?.didSelectItem(with: model, type: Constants.storyCollections.collections)
         }
-        
-        
     }
 }

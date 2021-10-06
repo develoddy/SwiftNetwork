@@ -21,12 +21,14 @@ struct HomeFeedRenderViewModel {
 
 class HomeViewController: UIViewController {
     
+    let cellSpacingHeight: CGFloat = 5
+    
     //let settingsLauncher = SettingsLauncher()
     //let heigth: CGFloat = 250
     var model : HomeFeedRenderViewModel?
     
     private let tableMenuView: UITableView = {
-        let tableView = UITableView()///let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .grouped)// UITableView()
         return tableView
     }()
     
@@ -60,7 +62,7 @@ class HomeViewController: UIViewController {
     
     private let sendButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
-        button.tintColor = Constants.Color.blue
+//        button.tintColor = Constants.Color.blue
         let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold)
         let image = UIImage(systemName: "location.fill", withConfiguration: config)
         button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
@@ -79,7 +81,7 @@ class HomeViewController: UIViewController {
     
     private let headerView: UIView = {
         let headerView = UIView()
-        headerView.backgroundColor = .systemBackground
+//        headerView.backgroundColor = .systemBackground
         return headerView
     }()
     
@@ -94,7 +96,7 @@ class HomeViewController: UIViewController {
         let button = UIButton(frame: CGRect(x: 10, y: 10, width: 10, height: 0))
         button.setTitle("¡Eddy, dile al mundo lo que piensas!", for: .normal)
         button.contentHorizontalAlignment = .left
-        button.setTitleColor(Constants.Color.dark, for: .normal)
+        button.setTitleColor(Constants.Color.general, for: .normal)
         button.titleLabel?.font = Constants.fontSize.regular
         button.clipsToBounds = true
         button.layer.masksToBounds = true
@@ -106,7 +108,7 @@ class HomeViewController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(systemName: "photo.on.rectangle.angled"), for: .normal)
         button.contentMode = .scaleAspectFit
-        button.tintColor = Constants.Color.purple
+        button.tintColor = Constants.Color.whiteLight
         return button
     }()
     
@@ -153,6 +155,9 @@ class HomeViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
+        
+        tableView.frame = tableView.frame.inset(by: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
+        
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
         headerView.frame = CGRect(
@@ -200,6 +205,7 @@ class HomeViewController: UIViewController {
     }
     
     private func setup() {
+        view.backgroundColor = UIColor(red: 0.05, green: 0.05, blue: 0.07, alpha: 1.00)
         view.addSubview(tableView)
         tableView.tableHeaderView = createTableHeader()
     }
@@ -278,7 +284,7 @@ class HomeViewController: UIViewController {
     ///Collections
     func createArrayCollections() -> [CollectionTableCellModel] {
         var collections = [CollectionTableCellModel]()
-        let username = ["eddylujann", "jordann", "paola","rebeca", "jeremy", "lucas", "jean"]
+        let username = ["eddylujann", "jordann", "paola","rebeca", "jeremy", "lucas"]
         for i in 0..<username.count {
             let data = CollectionTableCellModel(title: username[i], imageName: "img\(i+1)")
             collections.append(data)
@@ -359,7 +365,7 @@ class HomeViewController: UIViewController {
             identifier: "post 2",
             postType: .photo,
             thumbnailImage: URL(
-                string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img9.jpeg")!,
+                string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/boy.jpeg")!,
             postURL: URL(string: "https://wwww.google.com")!,
             caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
             likeCount: likes,
@@ -444,6 +450,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                             withIdentifier: IGFeedPostHeaderTableViewCell.identifier,
                             for: indexPath) as! IGFeedPostHeaderTableViewCell
                             cell.configure(with: user)
+                        cell.frame = CGRect(x: 5, y: 5, width: tableView.width-10 , height: 70  )
                         return cell
                     case .comments, .actions, .primaryContent, .collections, .descriptions, .footer :
                         return UITableViewCell()
@@ -454,7 +461,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                         let cell = tableView.dequeueReusableCell(
                             withIdentifier: IGFeedPostTableViewCell.identifier,
                             for: indexPath) as! IGFeedPostTableViewCell
-                        cell.configure(with: post)
+                            cell.configure(with: post)
                         return cell
                     case .comments, .actions, .header, .collections, .descriptions, .footer :
                         return UITableViewCell()
@@ -465,8 +472,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                         let cell = tableView.dequeueReusableCell(
                             withIdentifier: IGFeedPostActionsTableViewCell.identifier,
                             for: indexPath) as! IGFeedPostActionsTableViewCell
-                        cell.configure(with: provider)
-                        cell.delegate = self
+                            cell.configure(with: provider)
+                            cell.delegate = self
                         return cell
                     case .comments, .header, .primaryContent, .collections, .descriptions, .footer :
                         return UITableViewCell()
@@ -477,7 +484,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                         let cell = tableView.dequeueReusableCell(
                             withIdentifier: IGFeedPostDescriptionTableViewCell.identifier,
                             for: indexPath) as! IGFeedPostDescriptionTableViewCell
-                        cell.configure(with: post)
+                            cell.configure(with: post)
                         return cell
                     case .comments, .header, .primaryContent, .collections, .actions, .footer:
                         return UITableViewCell()
@@ -490,7 +497,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                     let cell = tableView.dequeueReusableCell(
                         withIdentifier: IGFeedPostGeneralTableViewCell.identifier,
                         for: indexPath) as! IGFeedPostGeneralTableViewCell
-                    cell.configure(with: comment)
+                        cell.configure(with: comment)
                     return cell
                 case .header, .actions, .primaryContent, .collections, .descriptions, .footer :
                     return UITableViewCell()
@@ -512,7 +519,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                                 separatorView.trailingAnchor.constraint(equalTo:cell.contentView.trailingAnchor),
                                 separatorView.heightAnchor.constraint(equalToConstant:1),
                                 separatorView.topAnchor.constraint(equalTo:cell.contentView.topAnchor)])
-                        
+
                             let separatorView2 = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
                             separatorView2.backgroundColor = .systemGray5
                             separatorView2.translatesAutoresizingMaskIntoConstraints  = false
@@ -558,6 +565,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let subSection = section % 7
         return subSection == 6 ? 20 : 0
+    }
+    
+    // Set the spacing between sections
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return cellSpacingHeight
     }
 }
 
@@ -663,7 +675,7 @@ extension HomeViewController {
         //let titleImageView = UIImageView(image: UIImage(systemName: "bag"))
         let titleImageView = UIImageView(image: UIImage(named: "logo"))
         ///titleImageView.backgroundColor = .red
-        titleImageView.tintColor = Constants.Color.blue
+//        titleImageView.tintColor = Constants.Color.blue
         titleImageView.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
         titleImageView.contentMode = .scaleAspectFit
         navigationItem.titleView = titleImageView
@@ -677,7 +689,7 @@ extension HomeViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: followButton)*/
         
         let followButton = UIButton(type: .system)
-        followButton.setTitle("N O O R I", for: .normal)
+        followButton.setTitle("Timwider", for: .normal)
         followButton.titleLabel?.font = .systemFont(ofSize: 26, weight: .black )
         followButton.tintColor = Constants.Color.black
         followButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
@@ -698,7 +710,6 @@ extension HomeViewController {
         composeButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(customView: searchButton),
-            UIBarButtonItem(customView: composeButton)
-        ]
+            UIBarButtonItem(customView: composeButton)]
     }
 }

@@ -49,7 +49,7 @@ class IGFeedStoryHeaderTableViewCell: UITableViewCell {
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         button.contentHorizontalAlignment = .left
         let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .semibold)
-        button.setImage(UIImage(systemName: "checkmark.seal.fill", withConfiguration: config)?.withRenderingMode(.alwaysOriginal).withTintColor(Constants.Color.purple), for: .normal)
+        button.setImage(UIImage(systemName: "checkmark.seal.fill", withConfiguration: config)?.withRenderingMode(.alwaysOriginal).withTintColor(Constants.Color.black), for: .normal)
         button.semanticContentAttribute = .forceRightToLeft
         return button
     }()
@@ -58,7 +58,7 @@ class IGFeedStoryHeaderTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "44 min"
         label.font = .systemFont(ofSize: 12, weight: .regular)
-        label.textColor = Constants.Color.dark
+        label.textColor = Constants.Color.general
         return label
     }()
     
@@ -124,7 +124,7 @@ class IGFeedStoryHeaderTableViewCell: UITableViewCell {
         
         progressView = SegmentedProgressBar(numberOfSegments: 3, duration: 5)
         progressView.frame = CGRect(x: 10, y: 15, width: frame.width - 20, height: 4)
-        progressView.topColor = Constants.Color.purple
+        progressView.topColor = Constants.Color.whiteLight
         progressView.padding = 2
         addSubview(progressView)
         

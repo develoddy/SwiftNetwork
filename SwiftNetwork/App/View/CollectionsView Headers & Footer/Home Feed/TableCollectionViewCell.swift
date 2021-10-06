@@ -38,15 +38,15 @@ class TableCreateStorieViewCell: UICollectionViewCell {
     
     private let subView: UIView = {
         let label = UILabel()
-        label.backgroundColor = Constants.Color.light
+        label.backgroundColor = Constants.Color.whiteLight
         return label
     }()
     
     private let plusImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "plus.circle.fill")
-        imageView.tintColor = Constants.Color.purple
-        //imageView.backgroundColor = .systemGreen
+//        imageView.tintColor = Constants.Color.whiteLight
+//        imageView.backgroundColor = .systemGreen
         imageView.layer.masksToBounds = true
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
@@ -163,7 +163,7 @@ class TableCollectionViewCell: UICollectionViewCell {
         label.textColor = .black
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 16, weight: .regular)
-        //label.backgroundColor = .systemBlue
+        label.backgroundColor = .systemBlue
         return label
     }()
     

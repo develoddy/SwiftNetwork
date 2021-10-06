@@ -45,7 +45,7 @@ class CustomSharedHeaderCollectionViewCell:  UICollectionReusableView {
         //label.backgroundColor = .systemBlue
         label.text = "Friends"
         label.font = .systemFont(ofSize: 12, weight: .regular)
-        label.textColor = Constants.Color.dark
+        label.textColor = Constants.Color.general
         return label
     }()
     
@@ -60,7 +60,7 @@ class CustomSharedHeaderCollectionViewCell:  UICollectionReusableView {
     private let postTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .systemBackground
-        textField.attributedPlaceholder = NSAttributedString(string: "Eddy, dile al mundo lo que piensas", attributes: [NSAttributedString.Key.foregroundColor: Constants.Color.dark])
+        textField.attributedPlaceholder = NSAttributedString(string: "Eddy, dile al mundo lo que piensas", attributes: [NSAttributedString.Key.foregroundColor: Constants.Color.general])
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: textField.frame.height))
         textField.leftView = paddingView
         textField.leftViewMode = UITextField.ViewMode.always
@@ -73,7 +73,7 @@ class CustomSharedHeaderCollectionViewCell:  UICollectionReusableView {
         button.setTitle("Share", for: .normal)
         button.layer.masksToBounds = true
         button.clipsToBounds = true
-        button.backgroundColor = Constants.Color.purple
+//        button.backgroundColor = Constants.Color.purple
         return button
     }()
     

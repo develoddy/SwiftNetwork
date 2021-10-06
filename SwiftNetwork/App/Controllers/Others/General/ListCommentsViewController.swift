@@ -58,18 +58,18 @@ class ListCommentsViewController: UIViewController  {
         imageView.image = UIImage(named: "eddy")
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
-        imageView.backgroundColor = Constants.Color.darkLigth
+        imageView.backgroundColor = Constants.Color.whiteLight
         imageView.layer.borderWidth = 1
-        imageView.layer.borderColor = Constants.Color.dark.cgColor
+        imageView.layer.borderColor = Constants.Color.general.cgColor
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
     private let inputTextfield : UITextField = {
         let textfield = UITextField()
-        textfield.attributedPlaceholder = NSAttributedString(string: "Escribe un comentario...", attributes: [NSAttributedString.Key.foregroundColor: Constants.Color.dark])
+        textfield.attributedPlaceholder = NSAttributedString(string: "Escribe un comentario...", attributes: [NSAttributedString.Key.foregroundColor: Constants.Color.general])
         textfield.font = Constants.fontSize.regular
-        textfield.backgroundColor = Constants.Color.darkLigth
+        textfield.backgroundColor = Constants.Color.whiteLight
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: textfield.frame.height))
         textfield.leftView = paddingView
         textfield.leftViewMode = UITextField.ViewMode.always
@@ -84,7 +84,7 @@ class ListCommentsViewController: UIViewController  {
         button.setImage(image, for: .normal)
         button.layer.masksToBounds = true
         button.contentMode = .scaleAspectFit
-        button.tintColor = Constants.Color.dark
+        button.tintColor = Constants.Color.general
         button.isEnabled = false
         return button
     }()
@@ -97,7 +97,7 @@ class ListCommentsViewController: UIViewController  {
         button.setImage(image, for: .normal)
         button.clipsToBounds = true
         button.layer.masksToBounds = true
-        button.tintColor = Constants.Color.dark
+        button.tintColor = Constants.Color.general
         
         return button
     }()
@@ -109,7 +109,7 @@ class ListCommentsViewController: UIViewController  {
         button.setImage(image, for: .normal)
         button.clipsToBounds = true
         button.layer.masksToBounds = true
-        button.tintColor = Constants.Color.dark
+        button.tintColor = Constants.Color.general
         return button
     }()
     
@@ -120,7 +120,7 @@ class ListCommentsViewController: UIViewController  {
         button.setImage(image, for: .normal)
         button.clipsToBounds = true
         button.layer.masksToBounds = true
-        button.tintColor = Constants.Color.dark
+        button.tintColor = Constants.Color.general
         return button
     }()
     
@@ -179,11 +179,11 @@ class ListCommentsViewController: UIViewController  {
         ///sendButton.isEnabled = !inputTextfield.text!.isEmpty
         if !validateBool {
             sendButton.isEnabled = validateBool
-            sendButton.tintColor = Constants.Color.dark
+            sendButton.tintColor = Constants.Color.general
             
         } else {
             sendButton.isEnabled = validateBool
-            sendButton.tintColor = Constants.Color.purple
+            sendButton.tintColor = Constants.Color.whiteLight
         }
     }
     

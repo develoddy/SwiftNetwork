@@ -43,16 +43,19 @@ class PhotoCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupView()
+        //backgroundColor = .systemGreen
+    }
+    
+    func setupView() {
         contentView.backgroundColor = .secondarySystemBackground
         contentView.layer.cornerRadius = 0
         contentView.layer.masksToBounds = true
         
         contentView.addSubview(photoImageView)
         contentView.addSubview(label)
-        //contentView.clipsToBounds = true
         accessibilityLabel = ""
         accessibilityHint = "Double-tap to open post"
-        
     }
     
     required init?(coder: NSCoder) {

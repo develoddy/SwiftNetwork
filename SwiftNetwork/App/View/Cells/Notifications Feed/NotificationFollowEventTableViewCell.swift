@@ -86,7 +86,7 @@ class NotificationFollowEventTableViewCell: UITableViewCell {
             y: (contentView.height-buttonHeight)/2,
             width: size,
             height: buttonHeight)
-        followButton.backgroundColor = Constants.Color.purple
+        followButton.backgroundColor = Constants.Color.whiteLight
     }
     
     public func configure(with model: UserNotification) {

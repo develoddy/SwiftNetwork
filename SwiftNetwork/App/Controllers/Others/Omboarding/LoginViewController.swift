@@ -17,6 +17,8 @@ extension LoginViewController: SendEmailProtocol {
 }
 
 class LoginViewController: UIViewController {
+    
+    let gradientLayer = CAGradientLayer()
 
     var spinner = UIActivityIndicatorView()
     private let logoImageView = UIImageView()
@@ -158,9 +160,9 @@ class LoginViewController: UIViewController {
     }
     
     func setupView() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemBackground //UIColor(red: 0.05, green: 0.05, blue: 0.07, alpha: 1.00)
         view.addSubview(headerView)
-        view.addSubview(logoImageView)
+        //view.addSubview(logoImageView)
         ///TextFields
         view.addSubview(emailLabel)
         view.addSubview(emailText)
@@ -176,24 +178,42 @@ class LoginViewController: UIViewController {
     func configureHeaderView() {
         headerView.clipsToBounds = true
         //gradient.colors = [UIColor(red: 51/255, green: 51/255, blue: 153/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 0/255, blue: 204/255, alpha: 1.0).cgColor]
-        gradient.colors = [UIColor.systemBackground.cgColor,
+        gradient.colors = [UIColor.systemBlue.cgColor,
                            UIColor.systemBackground.cgColor]
         gradient.locations = [0.0, 0.6, 0.8]
         gradient.frame = view.bounds
         headerView.layer.insertSublayer(gradient, at: 0)
         
-        headerView.addSubview(logoImageView)
+        //headerView.addSubview(logoImageView)
         headerView.addSubview(titleLabel)
     }
     
+    ///LogIn
+    func configureLoginButton() {
+         ///Spinner //UIButton()
+        loginButton.clipsToBounds = true
+        loginButton.center = view.center
+        gradient.colors = [UIColor(red: 0.50, green: 0.00, blue: 1.00, alpha: 1.00).cgColor,
+                           UIColor(red: 0.88, green: 0.00, blue: 1.00, alpha: 1.00).cgColor]
+        gradient.startPoint = CGPoint(x: 0, y: 1)
+        gradient.endPoint = CGPoint(x: 1, y: 1)
+        loginButton.layer.insertSublayer(gradient, at: 0)
+        loginButton.setTitle("Log In", for: .normal)
+        loginButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+        loginButton.layer.masksToBounds = true
+        loginButton.layer.cornerRadius = Constants.Constants.cornerRadius
+        loginButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
+        loginButton.spinnerColor = .white
+    }
+    
     func configureLogoImageView() {
-        logoImageView.backgroundColor = Constants.Color.purple
+        logoImageView.backgroundColor = .systemBackground
         logoImageView.layer.masksToBounds = true
     }
     
     func configureTitleLabel() {
-        titleLabel.text = "Log in to Noori"
-        titleLabel.textColor = Constants.Color.black
+        titleLabel.text = "Timwider"
+        titleLabel.textColor = .black
         titleLabel.textAlignment = .center
         titleLabel.font = .systemFont(ofSize: 36, weight: .bold)
     }
@@ -201,7 +221,7 @@ class LoginViewController: UIViewController {
     private func configureEmailLabel() {
         emailLabel.text      = "EMAIL"
         emailLabel.font      = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
-        emailLabel.textColor = Constants.Color.purple
+        emailLabel.textColor = .black
     }
     
     private func configureEmailText() {
@@ -213,13 +233,14 @@ class LoginViewController: UIViewController {
         emailText.autocapitalizationType = .none
         emailText.autocorrectionType = .no
         emailText.layer.masksToBounds = true
-        emailText.backgroundColor = Constants.Color.darkLigth
+        emailText.textColor =  .black
+        emailText.backgroundColor = .systemBackground
     }
     
     private func configurePasswordLabel() {
         passwordLabel.text      = "PASSWORD"
         passwordLabel.font      = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
-        passwordLabel.textColor = Constants.Color.purple
+        passwordLabel.textColor =  .black
     }
     
     private func configurePasswordText() {
@@ -232,7 +253,8 @@ class LoginViewController: UIViewController {
         passwordText.autocapitalizationType = .none
         passwordText.autocorrectionType = .no
         passwordText.layer.masksToBounds = true
-        passwordText.backgroundColor = Constants.Color.darkLigth
+        passwordText.textColor =  .black
+        passwordText.backgroundColor = .systemBackground
     }
     
     ///Spinner
@@ -246,34 +268,24 @@ class LoginViewController: UIViewController {
         view.addSubview(button)
     }
     
-    ///LogIn
-    func configureLoginButton() {
-         ///Spinner //UIButton()
-        loginButton.center = view.center
-        loginButton.backgroundColor = Constants.Color.purple
-        loginButton.setTitle("Log In", for: .normal)
-        loginButton.layer.masksToBounds = true
-        loginButton.layer.cornerRadius = Constants.Constants.cornerRadius
-        loginButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
-        loginButton.spinnerColor = .white
-    }
+    
     
     func configureTermsButton() {
         termsButton.setTitle("Terms of Serviced", for: .normal)
-        termsButton.setTitleColor(Constants.Color.dark, for: .normal)
+        termsButton.setTitleColor(Constants.Color.general, for: .normal)
         termsButton.addTarget(self, action: #selector(didTapTermsButton), for: .touchUpInside)
     }
     
     func configurePrivacyButton() {
         privacyButton.setTitle("Privacy Polocy", for: .normal)
-        privacyButton.setTitleColor(Constants.Color.dark, for: .normal)
+        privacyButton.setTitleColor(Constants.Color.general, for: .normal)
         privacyButton.addTarget(self, action: #selector(didTapPrivacyButton), for: .touchUpInside)
     }
     
     func configureCreateAccountButton() {
         createAccountButton.setTitleColor(.label, for: .normal)
-        createAccountButton.setTitle("", for: .normal)
-        createAccountButton.setTitleColor(Constants.Color.black, for: .normal)
+        createAccountButton.setTitle("Create Account", for: .normal)
+        createAccountButton.setTitleColor(UIColor(red: 0.50, green: 0.00, blue: 1.00, alpha: 1.00), for: .normal)
         createAccountButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         createAccountButton.addTarget(self, action: #selector(didTapCreateAccountButton), for: .touchUpInside)
     }
@@ -361,7 +373,14 @@ class LoginViewController: UIViewController {
 
 
 extension LoginViewController: UITextFieldDelegate {
-    
+    /**
+     stop animating the button.
+     
+     - Parameter animationStyle: the style of the stop animation.
+     - Parameter revertAfterDelay: revert the button to the original state after a delay to give opportunity to custom transition.
+     - Parameter completion: a callback closure to be called once the animation finished, it may be useful to transit to another view controller, example transit to the home screen from the login screen.
+     
+     */
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailText {
             passwordText.becomeFirstResponder()

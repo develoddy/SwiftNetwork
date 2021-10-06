@@ -22,6 +22,7 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
     private let totalLikeLabel: UILabel = {
         let label = UILabel()
         //label.backgroundColor = .green
+        label.textColor = .black
         label.font = Constants.fontSize.regular //.systemFont(ofSize: 16, weight: .regular)
         
         return label
@@ -37,7 +38,7 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         let label = UILabel.init()
         label.textAlignment = .left
         //label.font = .systemFont(ofSize: 16, weight: .regular)
-        label.textColor = UIColor.black
+//        label.textColor = .white
         label.numberOfLines = 0
         return label
     }()
@@ -45,8 +46,8 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
     private let seeMoreCommentsLabel: UILabel = {
         let label = UILabel()
         label.font = Constants.fontSize.regular //.systemFont(ofSize: 14, weight: .regular)
-        //label.backgroundColor = .systemGray
-        label.textColor = Constants.Color.dark
+//        label.backgroundColor = .systemGray
+        label.textColor = .systemGray
         return label
     }()
     
@@ -125,14 +126,14 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
             width: contentView.width-20,
             height: 20)*/
         
-        descriptionLabel.backgroundColor = .systemBackground
+//        descriptionLabel.backgroundColor = .systemBackground
         descriptionLabel.frame = CGRect(
             x: 15,
             y: totalLikeLabel.bottom+5,
             width: contentView.width-20,
             height: 40)
         
-        seeMoreCommentsLabel.backgroundColor = .systemBackground
+//        seeMoreCommentsLabel.backgroundColor = .systemBackground
         seeMoreCommentsLabel.frame = CGRect(
             x: 15,
             y: descriptionLabel.bottom+5,

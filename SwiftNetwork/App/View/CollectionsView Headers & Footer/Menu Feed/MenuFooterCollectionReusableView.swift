@@ -14,7 +14,7 @@ class MenuFooterCollectionReusableView: UICollectionReusableView {
     private let iconConfigurationImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "gearshape.fill")
-        imageView.tintColor = Constants.Color.lightDark
+        imageView.tintColor = Constants.Color.whiteLight
         return imageView
     }()
     
@@ -38,7 +38,7 @@ class MenuFooterCollectionReusableView: UICollectionReusableView {
         let button = UIButton()
         //button.image(for: UIImage(systemName: "chevron.down"))
         button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
-        button.tintColor = Constants.Color.lightDark
+        button.tintColor = Constants.Color.whiteLight
         return button
     }()
     

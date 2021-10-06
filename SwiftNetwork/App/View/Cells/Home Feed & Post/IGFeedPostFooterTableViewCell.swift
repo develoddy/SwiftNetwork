@@ -43,7 +43,7 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
         let button = UIButton()
         button.setTitle("Add a comment...", for: .normal)
         button.contentHorizontalAlignment = .left
-        button.setTitleColor(Constants.Color.dark, for: .normal)
+        button.setTitleColor(Constants.Color.general, for: .normal)
         button.titleLabel?.font = Constants.fontSize.regular
         return button
     }()
@@ -60,7 +60,7 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .systemBackground
+//        contentView.backgroundColor = .systemBackground
         contentView.addSubview(profilePhotoImageView)
         contentView.addSubview(boxTextButton)
         contentView.addSubview(postButton)
@@ -83,14 +83,14 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
             height: 40)
         profilePhotoImageView.layer.cornerRadius = size/2
         
-        boxTextButton.backgroundColor = .systemBackground
+//        boxTextButton.backgroundColor = .systemBackground
         boxTextButton.frame = CGRect(
             x: profilePhotoImageView.right+5,
             y: 0,
             width: contentView.width-size-profilePhotoImageView.width-20,
             height: contentView.height)
         
-        postButton.backgroundColor = .systemBackground
+//        postButton.backgroundColor = .systemBackground
         postButton.frame = CGRect(
             x: contentView.width-5-size,
             y: 0,

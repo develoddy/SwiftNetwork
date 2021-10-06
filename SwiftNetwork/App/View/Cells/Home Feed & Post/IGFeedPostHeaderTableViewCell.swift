@@ -21,7 +21,7 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     private let profilePhotoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
-        imageView.tintColor = .label
+        imageView.tintColor = .black
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView
@@ -40,11 +40,11 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     
     private let usernameLabelButton: UIButton = {
         let button = UIButton()
-        button.setTitleColor(Constants.Color.black, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         button.contentHorizontalAlignment = .left
         let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .semibold)
-        button.setImage(UIImage(systemName: "checkmark.seal.fill", withConfiguration: config)?.withRenderingMode(.alwaysOriginal).withTintColor(Constants.Color.purple), for: .normal)
+        button.setImage(UIImage(systemName: "checkmark.seal.fill", withConfiguration: config)?.withRenderingMode(.alwaysOriginal).withTintColor(.white), for: .normal)
         button.semanticContentAttribute = .forceRightToLeft
         return button
     }()
@@ -53,13 +53,13 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "44 min"
         label.font = .systemFont(ofSize: 12, weight: .regular)
-        label.textColor = Constants.Color.dark
+        label.textColor = .black
         return label
     }()
     
     private let moreButton: UIButton = {
        let button = UIButton()
-        button.tintColor = .label
+        button.tintColor = .white
         button.tintColor = Constants.Color.black
         button.setImage(UIImage(systemName:"ellipsis"), for: .normal)
         return button
@@ -67,7 +67,7 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .systemBackground
+//        contentView.backgroundColor = .systemBackground
         contentView.addSubview(profilePhotoImageView)
         contentView.addSubview(usernameLabelButton)
         contentView.addSubview(postTimeLabel)

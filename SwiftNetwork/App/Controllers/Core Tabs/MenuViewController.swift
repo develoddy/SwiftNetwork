@@ -230,7 +230,7 @@ class MenuViewController: UIViewController {
          let followButton = UIButton(type: .system)
          followButton.setTitle("MENU", for: .normal)
          followButton.titleLabel?.font = .systemFont(ofSize: 26, weight: .black )
-         followButton.tintColor = Constants.Color.purple
+//         followButton.tintColor = Constants.Color.purple
          followButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
          navigationItem.leftBarButtonItem = UIBarButtonItem(customView: followButton)
          navigationController?.navigationBar.backgroundColor = .white
@@ -240,12 +240,12 @@ class MenuViewController: UIViewController {
      private func  setupRightNavItems() {
          let searchButton = UIButton(type: .system)
          searchButton.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
-         searchButton.tintColor =  Constants.Color.purple
+         searchButton.tintColor =  Constants.Color.whiteLight
          searchButton.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
          
          let composeButton = UIButton(type: .system)
          composeButton.setImage(UIImage(systemName: "plus"), for: .normal)
-         composeButton.tintColor = Constants.Color.purple
+         composeButton.tintColor = Constants.Color.whiteLight
          composeButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
          navigationItem.rightBarButtonItems = [
              UIBarButtonItem(customView: searchButton),

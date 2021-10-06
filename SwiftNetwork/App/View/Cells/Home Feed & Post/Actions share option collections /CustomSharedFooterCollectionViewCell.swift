@@ -25,7 +25,7 @@ class CustomSharedFooterCollectionViewCell:  UICollectionReusableView {
         button.setTitle("Cancel", for: .normal)
         button.layer.masksToBounds = true
         button.clipsToBounds = true
-        button.backgroundColor = Constants.Color.darkLigth
+        button.backgroundColor = Constants.Color.whiteLight
         button.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         
         //var border = UIView(frame: CGRectMake(0,0,self.view.bounds.width,1))

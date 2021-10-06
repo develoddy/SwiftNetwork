@@ -1,5 +1,4 @@
 ${PODS_ROOT}/Target Support Files/Pods-SwiftNetwork-SwiftNetworkUITests/Pods-SwiftNetwork-SwiftNetworkUITests-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/FloatingPanel/FloatingPanel.framework
 ${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework
-${BUILT_PRODUCTS_DIR}/SPPermissions/SPPermissions.framework
 ${BUILT_PRODUCTS_DIR}/TransitionButton/TransitionButton.framework

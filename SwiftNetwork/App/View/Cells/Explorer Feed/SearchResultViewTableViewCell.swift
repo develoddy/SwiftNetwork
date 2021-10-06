@@ -17,7 +17,7 @@ class SearchResultViewTableViewCell: UITableViewCell {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 1.7
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.borderColor = Constants.Color.blue.cgColor
+        imageView.layer.borderColor = Constants.Color.whiteLight.cgColor
         return imageView
     }()
     
@@ -54,7 +54,7 @@ class SearchResultViewTableViewCell: UITableViewCell {
         imageView.tintColor = .black
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
-        imageView.tintColor = Constants.Color.blue
+        imageView.tintColor = Constants.Color.whiteLight
         return imageView
     }()
     

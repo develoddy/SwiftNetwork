@@ -19,27 +19,27 @@ class Story: NSObject {
 
 
 class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
-    
+    ///Layout Constrain
     var bottomConstraint: NSLayoutConstraint?
-    
+    ///Progress View
     private var progressView: SegmentedProgressBar!
-    
+    ///Image View Story
     private let imageStoryView = UIImageView()
-    
+    ///Array Images
     private let images = [#imageLiteral(resourceName: "eddy"), #imageLiteral(resourceName: "img2"), #imageLiteral(resourceName: "img1")]
-    
+    ///Footer View
     private let footerView =  UIView()
-    
+    ///Figure Left
     private let figureLeftView: UIView = {
         let view = UIView()
         return view
     }()
-    
+    ///Figure Right
     private let figureRightView: UIView = {
         let view = UIView()
         return view
     }()
-    
+    ///Profile image View
     private let profilePhotoView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "eddy")
@@ -48,7 +48,7 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
         imageView.layer.masksToBounds = true
         return imageView
     }()
-    
+    ///Username Label
     private let usernameLabel: UIButton = {
         let button = UIButton()
         button.setTitle("eddylujann", for: .normal)
@@ -60,15 +60,15 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
         button.semanticContentAttribute = .forceRightToLeft
         return button
     }()
-    
-    private let timeLabel : UILabel = {
+    ///Time Label
+    private let timeLabel: UILabel = {
         let label = UILabel()
         label.text = "30 min"
         label.font = .systemFont(ofSize: 14, weight: .regular)
         label.textColor = .white
         return label
     }()
-    
+    ///Close Story Button
     private let closeStoryButton: UIButton = {
         let button = UIButton()
         button.tintColor = .white
@@ -77,25 +77,24 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
         button.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
         return button
     }()
-    
-    //Footer View Components
+    ///Footer View Components
     private let profilePhotoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "eddy")
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
-        imageView.backgroundColor = Constants.Color.darkLigth
+        imageView.backgroundColor = Constants.Color.whiteLight
         imageView.layer.borderWidth = 1
-        imageView.layer.borderColor = Constants.Color.dark.cgColor
+        imageView.layer.borderColor = Constants.Color.general.cgColor
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
     private let inputTextfield : UITextField = {
         let textfield = UITextField()
-        textfield.attributedPlaceholder = NSAttributedString(string: "Escribe un comentario...", attributes: [NSAttributedString.Key.foregroundColor: Constants.Color.dark])
+        textfield.attributedPlaceholder = NSAttributedString(string: "Escribe un comentario...", attributes: [NSAttributedString.Key.foregroundColor: Constants.Color.general])
         textfield.font = Constants.fontSize.regular
-        textfield.backgroundColor = Constants.Color.darkLigth
+//        textfield.backgroundColor = Constants.Color.darkLigth
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: textfield.frame.height))
         textfield.leftView = paddingView
         textfield.leftViewMode = UITextField.ViewMode.always
@@ -110,7 +109,7 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
         button.setImage(image, for: .normal)
         button.layer.masksToBounds = true
         button.contentMode = .scaleAspectFit
-        button.tintColor = Constants.Color.dark
+        button.tintColor = Constants.Color.general
         button.isEnabled = false
         return button
     }()
@@ -124,7 +123,6 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
         button.clipsToBounds = true
         button.layer.masksToBounds = true
         button.tintColor = Constants.Color.whiteLight
-        
         return button
     }()
     
@@ -455,11 +453,11 @@ class StoryViewController: UIViewController, SegmentedProgressBarDelegate {
         ///sendButton.isEnabled = !inputTextfield.text!.isEmpty
         if !validateBool {
             sendButton.isEnabled = validateBool
-            sendButton.tintColor = Constants.Color.dark
+            sendButton.tintColor = Constants.Color.general
             
         } else {
             sendButton.isEnabled = validateBool
-            sendButton.tintColor = Constants.Color.purple
+            sendButton.tintColor = Constants.Color.whiteLight
         }
     }
 }

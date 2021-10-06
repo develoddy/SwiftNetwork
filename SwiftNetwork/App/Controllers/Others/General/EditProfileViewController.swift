@@ -134,7 +134,7 @@ extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource 
         label.backgroundColor = .systemBackground
         label.text = "Change profile picture"
         label.font = .systemFont(ofSize: 14, weight: .bold)
-        label.textColor = Constants.Color.blue
+        label.textColor = Constants.Color.whiteLight
         label.textAlignment = .center
         header.addSubview(label)
         

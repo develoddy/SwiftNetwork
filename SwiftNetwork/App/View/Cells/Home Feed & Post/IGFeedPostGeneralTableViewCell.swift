@@ -17,13 +17,13 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
         let label = UILabel()
         ///label.backgroundColor = .systemYellow
         label.font = .systemFont(ofSize: 10, weight: .regular)
-        label.textColor = Constants.Color.dark
+        label.textColor = .black
         return label
     }()
     
     private let likeButton: UIButton = {
        let button = UIButton()
-        button.tintColor = .label
+        button.tintColor = .black
         let config = UIImage.SymbolConfiguration(pointSize: 16, weight: .thin) //semibold, regular, thin
         let image = UIImage(systemName: "suit.heart", withConfiguration: config)
         button.setImage(image, for: .normal)
@@ -32,7 +32,7 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .systemBackground
+//        contentView.backgroundColor = .systemBackground
         contentView.addSubview(labelTextComment)
         contentView.addSubview(likeButton)
     }

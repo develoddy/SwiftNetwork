@@ -26,7 +26,7 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
         let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
         let image = UIImage(systemName: "heart", withConfiguration: config)
         button.setImage(image, for: .normal)
-        button.tintColor = Constants.Color.black
+        button.tintColor = .black
         return button
     }()
     
@@ -35,7 +35,7 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
         let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
         let image = UIImage(systemName: "message", withConfiguration: config) ///message
         button.setImage(image, for: .normal)
-        button.tintColor = Constants.Color.black
+        button.tintColor = .black
         return button
     }()
     
@@ -45,7 +45,7 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
         let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
         let image = UIImage(systemName: "square.and.arrow.up", withConfiguration: config) ///paperplane
         button.setImage(image, for: .normal)
-        button.tintColor = Constants.Color.black
+        button.tintColor = .black
         return button
     }()
     
@@ -54,14 +54,14 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
         let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
         let image = UIImage(systemName: "bookmark", withConfiguration: config) ///paperplane
         button.setImage(image, for: .normal)
-        button.tintColor = Constants.Color.black
+        button.tintColor = .black
         return button
     }()
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .systemBackground
+//        contentView.backgroundColor = .systemBackground
         contentView.addSubview(likeButton)
         contentView.addSubview(commentButton)
         contentView.addSubview(sendButton)

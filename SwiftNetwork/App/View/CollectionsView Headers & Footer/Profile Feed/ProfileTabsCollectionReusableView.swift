@@ -21,7 +21,7 @@ class ProfileTabsCollectionReusableView:  UICollectionReusableView {
     private let gridButton: UIButton = {
         let button  = UIButton()
         button.clipsToBounds = true
-        button.tintColor = Constants.Color.purple
+        button.tintColor = Constants.Color.whiteLight
         button.setBackgroundImage(UIImage(systemName: "square.grid.2x2"), for: .normal)
         return button
     }()
@@ -62,13 +62,13 @@ class ProfileTabsCollectionReusableView:  UICollectionReusableView {
     }
     
     @objc private func didTapGridButton() {
-        gridButton.tintColor = Constants.Color.purple
+        gridButton.tintColor = Constants.Color.whiteLight
         taggedButton.tintColor = .lightGray
         delegate?.didTapGridButtonTab()
     }
     
     @objc private func didTapTaggedButton() {
-        taggedButton.tintColor = Constants.Color.purple
+        taggedButton.tintColor = Constants.Color.whiteLight
         gridButton.tintColor = .lightGray
         delegate?.didTapTaggedButtonTab()
     }

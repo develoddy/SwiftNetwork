@@ -79,7 +79,7 @@ class TextFieldWithPadding: UITextField {
             
         // 2
         let lineWidth: CGFloat = 1.0
-        underline.borderColor = Constants.Color.purple.cgColor
+        underline.borderColor = UIColor.systemGray4.cgColor //UIColor(red: 0.10, green: 0.11, blue: 0.16, alpha: 1.00).cgColor 
         underline.frame = CGRect(
             x: 0,
             y: frame.size.height - lineWidth,
