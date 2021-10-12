@@ -56,6 +56,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(label)
         accessibilityLabel = ""
         accessibilityHint = "Double-tap to open post"
+        
+        contentView.backgroundColor = colors.randomElement()
     }
     
     required init?(coder: NSCoder) {

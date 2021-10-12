@@ -17,15 +17,15 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
         UITabBar.appearance().backgroundColor = .systemBackground
         UITabBar.appearance().isTranslucent = false
        
-        /*let home = generateNavController(
+        let home = generateNavController(
             vc: HomeViewController(),
             selected: (UIImage(systemName: "house")!),
-            unselected: (UIImage(systemName: "house")?.withTintColor(Constants.Color.black))!)*/
-        
-        let home = generateNavController(
-            vc: PruebaViewController(),
-            selected: (UIImage(systemName: "house")!),
             unselected: (UIImage(systemName: "house")?.withTintColor(Constants.Color.black))!)
+        
+        let profile = generateNavController(
+            vc: PruebaViewController(),
+            selected: (UIImage(systemName: "person")!),
+            unselected: (UIImage(systemName: "person")?.withTintColor(Constants.Color.black))!)
         
         let explorer = generateNavController(
             vc: SearchViewController(), //ExplorerViewController(),
@@ -39,11 +39,11 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
             selected: UIImage(systemName: "bell")!,
             unselected: (UIImage(systemName: "bell.fill")?.withTintColor(Constants.Color.black))! )
         
-        let profile = generateNavController(
+        /*let profile = generateNavController(
             vc: ProfileViewController(),
 //            title: "Profile",
             selected: (UIImage(systemName: "person")!),
-            unselected: (UIImage(systemName: "person")?.withTintColor(Constants.Color.black))!)
+            unselected: (UIImage(systemName: "person")?.withTintColor(Constants.Color.black))!)*/
         
         /*let menu = generateNavController(
             vc: MenuViewController(),
@@ -53,7 +53,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
     
         //viewControllers = [ home, menu, profile, explorer, notification  ]
 //        viewControllers = [ profile, home, explorer, notification ]
-        viewControllers = [ home, profile, explorer, notification ]
+        viewControllers = [ profile, home,  explorer, notification ]
     
         colorNavController()
     }

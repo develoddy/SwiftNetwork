@@ -7,14 +7,14 @@
 
 import UIKit
 
-//MARK: - Images
-class StoryFeaturedCollectionTableViewCell: UITableViewCell {
+class StoryFeaturedCollectionTableViewCell: UICollectionReusableView {
     
     static  let identifier = "StoryFeaturedCollectionTableViewCell"
     
     private let collectionView: UICollectionView
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override init(frame: CGRect) {
+        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 0, height: 0)
@@ -24,28 +24,28 @@ class StoryFeaturedCollectionTableViewCell: UITableViewCell {
         collectionView.backgroundColor = .systemBackground
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(frame: frame)
         
         collectionView.register(StoryCollectionViewCell.self, forCellWithReuseIdentifier: StoryCollectionViewCell.identifier)
-        
         collectionView.delegate = self
         collectionView.dataSource = self
-        contentView.addSubview(collectionView)
+        addSubview(collectionView)
+       
     }
-    
     override func layoutSubviews() {
-        super.layoutSubviews()
         collectionView.frame = bounds
     }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
+
 extension StoryFeaturedCollectionTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -54,12 +54,10 @@ extension StoryFeaturedCollectionTableViewCell: UICollectionViewDelegate, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //return CGSize(width: 100, height: 200)
-        return CGSize(width: collectionView.frame.width/3, height: 90)
+        return CGSize(width: collectionView.frame.width/5, height: collectionView.frame.width/5)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-    }
-   
+    /*func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 2, bottom: 0, right: 2)
+    }*/
 }

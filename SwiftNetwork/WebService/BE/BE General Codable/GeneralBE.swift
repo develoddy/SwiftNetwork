@@ -83,7 +83,7 @@ struct UserClass: Codable {
     var imagenBin, valor: String?
     var id: Int?
 
-    enum CodingKeys: String, CodingKey {
+    /*enum CodingKeys: String, CodingKey {
         case name, last, username, bio, profilePicture, dayOfBirth, gender, publicEmail, counts, joinDate
         case countryID = "countryId"
         case image, imageHeader, title, likes, dislikes, address, phone
@@ -91,7 +91,7 @@ struct UserClass: Codable {
         case nivelID = "nivelId"
         case sentimentalID = "sentimentalId"
         case imagenBin, valor, id
-    }
+    }*/
 }
 
 

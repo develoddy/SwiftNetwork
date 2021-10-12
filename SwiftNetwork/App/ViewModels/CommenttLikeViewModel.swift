@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - CommenttLike
-struct CommenttLikeViewModel {
+/*struct CommenttLikeViewModel {
     let username: String
     let commentIdentifier: String
-}
+}*/

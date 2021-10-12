@@ -8,8 +8,8 @@
 import Foundation
 
 // MARK: - UserCount
-struct UserCountViewModel {
+/*struct UserCountViewModel {
     let followers: Int
     let following: Int
     let posts: Int
-}
+}*/

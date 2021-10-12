@@ -20,6 +20,18 @@ class PhotosCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    private var colors: [UIColor] = [
+        .systemPink,
+        .systemBlue,
+        .systemPurple,
+        .systemOrange,
+        .systemGreen,
+        .systemRed,
+        .systemYellow,
+        .darkGray,
+        .systemTeal
+    ]
+    
     let padding: CGFloat = 1
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -61,5 +73,11 @@ class PhotosCollectionViewCell: UICollectionViewCell {
         photoImageView.frame = contentView.bounds
         photoImageView.frame = CGRect(x: 1, y: 1, width: contentView.width-2, height: contentView.height)
         label.frame = CGRect(x: 10, y: contentView.height/2, width: contentView.width-20, height: contentView.height/1.5)
+    }
+    
+    public func configure(with model: UserPostViewModel) {
+        ///let url = model.thumbnailImage
+        ///photoImageView.sd_setImage(with: url, completed: nil)
+        ///contentView.backgroundColor = colors.randomElement()
     }
 }

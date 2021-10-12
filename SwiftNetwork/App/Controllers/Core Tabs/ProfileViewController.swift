@@ -82,7 +82,7 @@ final class ProfileViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        collectionView.register(TableStoryFeaturedViewCell.self, forCellWithReuseIdentifier: TableStoryFeaturedViewCell.identifier)
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "xx")
         collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
         
         ///Header collections
@@ -226,7 +226,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
             cell.configure(with: model)
             return cell
         }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TableStoryFeaturedViewCell.identifier, for: indexPath)  as! TableStoryFeaturedViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "xx", for: indexPath)
         cell.backgroundColor = .systemGreen
         return cell
     }

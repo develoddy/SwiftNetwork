@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Descriptions
-struct DescriptionsViewModel {
+/*struct DescriptionsViewModel {
     let text: String
     let likes: Int
-}
+}*/

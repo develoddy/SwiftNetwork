@@ -28,12 +28,15 @@ class StoryCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureStoryButtom() {
+        storybutton.setImage(UIImage(named: "eddy"), for: .normal)
         storybutton.backgroundColor = .systemYellow
+        storybutton.layer.masksToBounds = true
         storybutton.frame = storybutton.bounds
     }
     
     private func configureUsernameLabel() {
         usernameLabel.text = "eddylujann"
+        usernameLabel.font = .systemFont(ofSize: 12, weight: .regular)
         usernameLabel.backgroundColor = .systemBackground
         usernameLabel.textAlignment = .center
     }
@@ -41,15 +44,19 @@ class StoryCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let center = contentView.frame.size.width/3
-        storybutton.frame = CGRect(x: center, y:10, width:50, height: 50)
+        //let center = contentView.frame.size.width/5
+        storybutton.frame = CGRect(x: 10, y:5, width:60, height: 60)
         storybutton.layer.cornerRadius = storybutton.height/2
         
         let usernameLabelLabelSize = usernameLabel.sizeThatFits(frame.size)
-        usernameLabel.frame = CGRect(x: 5, y: storybutton.bottom+2, width: contentView.width-10, height: usernameLabelLabelSize.height).integral
+        usernameLabel.frame = CGRect(x: 0, y: storybutton.bottom+5, width:  contentView.width, height: usernameLabelLabelSize.height).integral
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    public func configure() {
+        ///Recive las images que iran pintadas en el sototy featured
     }
 }

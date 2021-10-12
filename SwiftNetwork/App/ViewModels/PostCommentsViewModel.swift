@@ -8,21 +8,8 @@
 import Foundation
 
 
-// MARK: - PostComments
-//struct PostCommentsViewModel {
-//    var id: Int
-//    var username: String
-//    var typeId: Int
-//    var refId: Int
-//    var userssId: Int
-//    var content: String
-//    var comentarioId: Int
-//    var createdAt: Date
-//    var likes: [CommenttLikeViewModel]
-//}
-
 // MARK: - PostCommentsViewModel
-struct IReqResPostCommentsViewModel {
+/*struct IReqResPostCommentsViewModel {
     var postComments: [PostComments]?
     var status: String?
 
@@ -30,10 +17,10 @@ struct IReqResPostCommentsViewModel {
         case postComments = "PostComments"
         case status
     }
-}
+}*/
 
 // MARK: - PostComments
-struct PostCommentsViewModel {
+/*struct PostCommentsViewModel {
     var id: Int?
     var username: String?
     var typeId, refId, userssId: Int?
@@ -51,10 +38,10 @@ struct PostCommentsViewModel {
         case comentarioId = "comentarioId"
         case createdAt, likes
     }
-}
+}*/
 
 // MARK: - Like
-struct LikeViewModel {
+/*struct LikeViewModel {
     var username, commentIdentifier: String?
-}
+}*/
 

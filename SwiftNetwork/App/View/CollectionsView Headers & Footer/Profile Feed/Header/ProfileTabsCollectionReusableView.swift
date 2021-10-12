@@ -21,7 +21,7 @@ class ProfileTabsCollectionReusableView:  UICollectionReusableView {
     private let gridButton: UIButton = {
         let button  = UIButton()
         button.clipsToBounds = true
-        button.tintColor = Constants.Color.whiteLight
+        button.tintColor = .darkGray
         button.setBackgroundImage(UIImage(systemName: "square.grid.2x2"), for: .normal)
         return button
     }()
@@ -35,10 +35,9 @@ class ProfileTabsCollectionReusableView:  UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = Constants.Color.whiteLight
+        backgroundColor = .systemBackground
         addSubview(gridButton)
         addSubview(taggedButton)
-        
         gridButton.addTarget(self, action: #selector(didTapGridButton), for: .touchUpInside)
         taggedButton.addTarget(self, action: #selector(didTapTaggedButton), for: .touchUpInside)
     }
@@ -62,20 +61,17 @@ class ProfileTabsCollectionReusableView:  UICollectionReusableView {
     }
     
     @objc private func didTapGridButton() {
-        gridButton.tintColor = Constants.Color.whiteLight
+        gridButton.tintColor = .black
         taggedButton.tintColor = .lightGray
         delegate?.didTapGridButtonTab()
     }
     
     @objc private func didTapTaggedButton() {
-        taggedButton.tintColor = Constants.Color.whiteLight
+        taggedButton.tintColor = .black
         gridButton.tintColor = .lightGray
         delegate?.didTapTaggedButtonTab()
     }
 }
-
-
-
 
 ///Simula la carga para mostrar datos en el profileViewcontroller
 class ProfileTabsCollectionReusableView2:  UICollectionReusableView {

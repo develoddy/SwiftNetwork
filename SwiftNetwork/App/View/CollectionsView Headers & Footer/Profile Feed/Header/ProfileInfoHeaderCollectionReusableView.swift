@@ -38,7 +38,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     private let usernameLabel : UIButton = { //checkmark.seal.fill
         let button = UIButton()
         button.setTitle("@eddylujann", for: .normal)
-        button.setTitleColor(.darkGray, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.contentHorizontalAlignment = .center
         button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
         button.semanticContentAttribute = .forceRightToLeft
@@ -99,13 +99,12 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     // MARK: -Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        addSubviews()
-//        addButtonActions()
-//        addTextOnPostButton()
-//        addTextOnFollowersButton()
-//        addTextOnFollowingButton()
-//        configureButtonEditProfile()
-        backgroundColor = .systemPink
+        addSubviews()
+        addButtonActions()
+        addTextOnPostButton()
+        addTextOnFollowersButton()
+        addTextOnFollowingButton()
+        configureButtonEditProfile()
     }
     
     
@@ -132,6 +131,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     
     
     private func configureButtonEditProfile() {
+        //gradient.colors = [UIColor(red: 0.50, green: 0.00, blue: 1.00, alpha: 1.00).cgColor, UIColor(red: 0.88, green: 0.00, blue: 1.00, alpha: 1.00).cgColor]
         gradient.colors = [UIColor(red: 0.50, green: 0.00, blue: 1.00, alpha: 1.00).cgColor, UIColor(red: 0.88, green: 0.00, blue: 1.00, alpha: 1.00).cgColor]
         gradient.startPoint = CGPoint(x: 0, y: 1)
         gradient.endPoint = CGPoint(x: 1, y: 1)
@@ -199,12 +199,12 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     }
     
     override func prepareForReuse() {
-        usernameLabel.setTitle(nil, for: .normal)
+        //usernameLabel.setTitle(nil, for: .normal)
     }
     
     
     public func configure(model: UserPostViewModel) {
-        usernameLabel.setTitle(model.owner.username, for: .normal)
+        //usernameLabel.setTitle(model.owner.username, for: .normal)
     }
     
     // MARK: - Actions
