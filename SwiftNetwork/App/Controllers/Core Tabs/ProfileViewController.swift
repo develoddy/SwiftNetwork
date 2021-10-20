@@ -223,7 +223,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
         if indexPath.section == 1 {
             let model = userPostViewModel[indexPath.row]
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier , for: indexPath) as!  PhotoCollectionViewCell
-            cell.configure(with: model)
+            //cell.configure(with: model)
             return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "xx", for: indexPath)

@@ -126,6 +126,7 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
         }
         delegate?.didTapCommentButton(model: model)
     }
+    
     @objc private func didTapSendButton() {
         delegate?.didTapSendButton()
     }

@@ -217,7 +217,7 @@ extension ExplorerViewController: UICollectionViewDelegate, UICollectionViewData
             return UICollectionViewCell()
         }
     
-        cell.configure(with: model)
+        //cell.configure(with: model)
         return cell
     }
     

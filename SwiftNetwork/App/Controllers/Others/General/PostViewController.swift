@@ -48,7 +48,7 @@ struct PostRenderViewModel {
 
 class PostViewController: UIViewController {
     
-    private let model: UserPostViewModel?
+    private let model: Userpost?
     
     private var renderModels = [PostRenderViewModel]()
     
@@ -59,11 +59,15 @@ class PostViewController: UIViewController {
     }()
     
     // MARK: Init Receive data from the ProfileViewcontroller
-    //init(model: UserpostViewModel?) {
-        //self.model = model
-        //super.init(nibName: nil, bundle: nil)
-        //configureModels()
-    //}
+    init(model: Userpost?) {
+        self.model = model
+        super.init(nibName: nil, bundle: nil)
+        
+        guard let model = model else {
+            return
+        }
+        self.setupModel(with: model)
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -81,59 +85,17 @@ class PostViewController: UIViewController {
         tableView.frame = view.bounds
     }
     
-    private func configureModels() {
-        /*
-        var comments = [PostComments]()
-        for x in 0..<4 {
-            comments.append(
-                PostComments(
-                    identifier: "123\(x)",
-                    username: "@save",
-                    text: "Great post!",
-                    createDate: Date(),
-                    likes: []
-                )
-            )
-        }
-        
-        let user = User(
-            name: (first: "", last: ""),
-            username: "@kanye_west",
-            bio: "",
-            profilePicture: URL(string: "https://wwww.google.com")!,
-            birthDate: Date(),
-            gender: .male,
-            email: "",
-            counts: UserCount(followers: 1, following: 1, posts: 1),
-            joinDate: Date())
-        
-        
-        let post = UserPostViewModel(
-            identifier: "",
-            postType: .photo,
-            thumbnailImage: URL(string: "https://wwww.google.com")!,
-            postURL: URL(string: "https://wwww.google.com")!,
-            caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
-            likeCount: [],
-            comments: comments,
-            createDate: Date(),
-            taggedUsers: [],
-            owner:  user)*/
-        
-        guard let UserPostViewModelModel = self.model else {
-            return
-        }
-        
-        /// Header
-        //renderModels.append(PostRenderViewModel(renderType: .header(provider: UserPostViewModelModel.owner )))
-        ///Post
-        //renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: UserPostViewModelModel)))
-        ///Actions
-        //renderModels.append(PostRenderViewModel(renderType: .actions(provider: UserPostViewModelModel))) //post
-        ////Description
-        //renderModels.append(PostRenderViewModel(renderType: .descriptions(post: UserPostViewModelModel))) //post
-        ///comment
-        //renderModels.append(PostRenderViewModel(renderType: .comments(comments: UserPostViewModelModel.comments))) //comments
+    ///Models
+    ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
+    private func setupModel(with model: Userpost ) {
+        guard let ownew = model.userAuthor else { return }
+        guard let comments = model.comments else { return }
+        renderModels.append(PostRenderViewModel(renderType: .header(provider: ownew)))
+        renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: model)))
+        renderModels.append(PostRenderViewModel(renderType: .actions(provider: model)))
+        renderModels.append(PostRenderViewModel(renderType: .descriptions(post: model)))
+        renderModels.append(PostRenderViewModel(renderType: .comments(comments: comments)))
+        renderModels.append(PostRenderViewModel(renderType: .footer(footer: model)))
     }
     
     private func setupView() {
@@ -166,14 +128,13 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch renderModels[section].renderType {
         case .actions(_):  return 1
-        case .comments(let comments): return comments.count > 0 ? comments.count : comments.count
+        case .comments(_/*comments*/): return 1 //return comments.count > 0 ? comments.count : comments.count
         case .primaryContent(_):  return 1
         case .header(_):  return 1
         case .descriptions(_):  return 1
         case .footer(_): return 1
         case .collections(_,_): return 1
         }
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -184,26 +145,28 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostActionsTableViewCell.identifier, for: indexPath) as! IGFeedPostActionsTableViewCell
             return cell
         case .comments(let comments):
-            let comment = comments[indexPath.row] ///Se obtiene cada fila del array de comments
+            //let comment = comments[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier, for: indexPath) as! IGFeedPostGeneralTableViewCell
-            //cell.configure(with: comment)
+            let count = comments.count
+            cell.configure(with: count)
             return cell
         case .primaryContent(let post):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostTableViewCell.identifier, for: indexPath) as! IGFeedPostTableViewCell
-            //cell.configure(with: post)
+            cell.configure(with: post)
             return cell
         case .header(let user):
               let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier,for: indexPath) as! IGFeedPostHeaderTableViewCell
-            //cell.configure(with: user)
-            cell.backgroundColor = .red
+            cell.configure(with: user)
             return cell
         case .descriptions(let post):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
-            print(post)
-            //cell.configure(with: post)
+            cell.configure(with: post)
+            cell.delegate = self
             return cell
-        case .footer(_/**let footer**/):
+        case .footer(let footer):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostFooterTableViewCell.identifier, for: indexPath) as! IGFeedPostFooterTableViewCell
+            cell.configure(with: footer)
+            //cell.delegate = self
             return cell
         case .collections(_,_):
             return UITableViewCell()
@@ -214,10 +177,10 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         let model = renderModels[indexPath.section]
         switch model.renderType {
         case .actions(_): return 60 ///Actions
-        case .comments(_): return 30 ///Comments
+        case .comments(_): return 25 ///Comments
         case .primaryContent(_): return tableView.width ///Post
         case .header(_): return 70 ///Hader
-        case .descriptions(_): return 90 ///Descriptions
+        case .descriptions(_): return 85 ///Descriptions
         case .collections(_,_): return 50 ///Collections
         case .footer(_): return 50 ///Footer
         }
@@ -228,3 +191,20 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+
+extension PostViewController: IGFeedPostDescriptionTableViewCellDelegate {
+    func didTapLikeButton() {
+        print("didTapLikeButton")
+    }
+    
+     func didTapCommentButton(model: Userpost) {
+         let vc = ListCommentsViewController(model: model)
+         vc.title = "Coments"
+         vc.navigationItem.largeTitleDisplayMode = .never
+         navigationController?.pushViewController(vc, animated: true)
+     }
+    
+    func didTapSendButton() {
+        print("didTapLikeButton")
+    }
+}

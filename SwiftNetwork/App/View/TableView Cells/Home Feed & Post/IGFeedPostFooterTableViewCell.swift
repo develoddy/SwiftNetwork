@@ -83,14 +83,12 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
             height: 40)
         profilePhotoImageView.layer.cornerRadius = size/2.5
         
-//        boxTextButton.backgroundColor = .systemBackground
         boxTextButton.frame = CGRect(
             x: profilePhotoImageView.right+5,
             y: 0,
             width: contentView.width-size-profilePhotoImageView.width-20,
             height: contentView.height)
         
-//        postButton.backgroundColor = .systemBackground
         postButton.frame = CGRect(
             x: contentView.width-5-size,
             y: 0,

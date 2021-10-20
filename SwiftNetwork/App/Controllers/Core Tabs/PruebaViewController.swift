@@ -14,7 +14,7 @@ class PruebaViewController: UIViewController {
     
     let collectionViewTwoIdentifier = "collectionViewTwoIdentifier"
     
-    private var models = [UserpostViewModel]()
+    private var models = [Userpost]()
     
     private let grid = "grid"
     private let tagged = "tagged"
@@ -27,8 +27,10 @@ class PruebaViewController: UIViewController {
         configureCollectionViewTwo()
         setupRemaningNavItems()
         configureNavigationBar()
-        fetchUserPost(tabs: grid)
+        //fetchUserPost(tabs: grid)
         ///doTestUserPost()
+        
+        fetchUserPost()
     }
     
     override func viewDidLayoutSubviews() {
@@ -40,16 +42,9 @@ class PruebaViewController: UIViewController {
         view.backgroundColor = .systemBackground
     }
     
-    /// Test api rest
-    private func doTestUserPost() {
-        /*APIServiceLocal.shared.parseUserPostJSON { (model) in
-            self.updateUI(with: model.userpost ?? [])
-            self.collectionViewTwo.reloadData()
-        }*/
-    }
     
     /// Aall the api rest
-    private func fetchUserPost(tabs: String) {
+    ///private func fetchUserPost(tabs: String) {
         /*APIService.shared.apiToGetUserPostViewModelData(token: handleNotAuthenticated(), tabs: tabs) { (result) in
             switch result {
             case .success(let model):
@@ -60,7 +55,7 @@ class PruebaViewController: UIViewController {
             }
         }*/
         ///Lllamar a los otros metodos que faltan...
-    }
+    ///}
     
    /* private func updateUI(with model: [Userpost]) {
         for items in model {
@@ -71,6 +66,27 @@ class PruebaViewController: UIViewController {
         collectionViewTwo.reloadData()
     }
     */
+    
+    private func fetchUserPost() {
+        APIService.shared.apiUserPost(token: handleNotAuthenticated()) {(result) in
+            switch result {
+            case .success(let model):
+                self.setupModel(with: model.userpost ?? [])
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    ///Models
+    ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
+    private func setupModel(with model: [Userpost] ) {
+        for items in model {
+            let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType)
+            models.append(userpost)
+        }
+        DispatchQueue.main.async{ self.collectionViewTwo.reloadData() }
+    }
     
     private func failedToGeProfile() {
         let label = UILabel(frame: .zero)
@@ -143,8 +159,10 @@ extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        ///let model = models[indexPath.row]
         let model = models[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
+        
         cell.configure(with: model)
         return cell
     }
@@ -196,9 +214,12 @@ extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSo
         ///get the model and open post controller
         let model = models[indexPath.row]
         //let vc = PostViewController(model: model)
-        //vc.navigationItem.largeTitleDisplayMode = .never
-        //navigationController?.pushViewController(vc, animated: true)
-        //vc.title = "Posts" ///model.postType.rawValue
+        let vc = PostViewController(model: model)
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
+        vc.title = "Posts" ///model.postType.rawValue
+        
+        
     }
 }
 
@@ -250,16 +271,16 @@ extension PruebaViewController: ProfileTabsCollectionReusableViewDelegate {
     func didTapGridButtonTab() {
         print("didTapGridButtonTab")
         // Reload collection view with data
-        self.fetchUserPost(tabs: self.grid)
-        models = [UserpostViewModel]()
+        //self.fetchUserPost(tabs: self.grid)
+        //models = [UserpostViewModel]()
         collectionViewTwo.reloadData()
     }
     
     func didTapTaggedButtonTab() {
         print("didTapTaggedButtonTab")
         //Reload collection view with data
-        self.fetchUserPost(tabs: self.tagged)
-        models = [UserpostViewModel]()
+        //self.fetchUserPost(tabs: self.tagged)
+        //models = [UserpostViewModel]()
         collectionViewTwo.reloadData()
     }
 }

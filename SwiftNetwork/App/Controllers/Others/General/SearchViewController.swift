@@ -156,7 +156,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         let model = models[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
         cell.backgroundColor = .systemBackground
-        cell.configure(with: model)
+        //cell.configure(with: model)
         return cell
     }
     

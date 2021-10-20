@@ -7,9 +7,19 @@
 
 import UIKit
 
+protocol IGFeedPostDescriptionTableViewCellDelegate: AnyObject {
+    func didTapLikeButton()
+    func didTapCommentButton(model: Userpost)
+    func didTapSendButton()
+}
+
 class IGFeedPostDescriptionTableViewCell: UITableViewCell {
     
     static let identifier = "IGFeedPostDescriptionTableViewCell"
+    
+    private var model: Userpost?
+    
+    public var delegate: IGFeedPostDescriptionTableViewCellDelegate?
     
     private let profileImagesLikes: UIImageView = {
         let imageView = UIImageView()
@@ -21,34 +31,30 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
     
     private let totalLikeLabel: UILabel = {
         let label = UILabel()
-        //label.backgroundColor = .green
         label.textColor = .black
-        label.font = Constants.fontSize.regular //.systemFont(ofSize: 16, weight: .regular)
-        
+        label.font = Constants.fontSize.regular
         return label
     }()
     
     private let usernameLabel: UILabel = {
         let label = UILabel()
-        label.font = Constants.fontSize.semibold //.systemFont(ofSize: 16, weight: .semibold)
+        label.font = Constants.fontSize.semibold
         return label
     }()
    
     private let descriptionLabel: UILabel = {
         let label = UILabel.init()
         label.textAlignment = .left
-        //label.font = .systemFont(ofSize: 16, weight: .regular)
-//        label.textColor = .white
         label.numberOfLines = 0
         return label
     }()
     
-    private let seeMoreCommentsLabel: UILabel = {
-        let label = UILabel()
-        label.font = Constants.fontSize.regular //.systemFont(ofSize: 14, weight: .regular)
-//        label.backgroundColor = .systemGray
-        label.textColor = .systemGray
-        return label
+    private let seeMoreCommentsButton: UIButton = {
+        let button = UIButton()
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
+        button.setTitleColor(UIColor.systemGray, for: .normal)
+        button.contentHorizontalAlignment = .left
+        return button
     }()
     
     private let labelTextComment: UILabel = {
@@ -62,17 +68,23 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         return view
     }()
     
-    ///init
+    ///Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(profileImagesLikes)
         contentView.addSubview(totalLikeLabel)
         contentView.addSubview(descriptionLabel)
-        contentView.addSubview(seeMoreCommentsLabel)
+        contentView.addSubview(seeMoreCommentsButton)
         contentView.addSubview(labelTextComment)
-        ///contentView.backgroundColor = .blue
-        
         contentView.addSubview(viewImage)
+        seeMoreCommentsButton.addTarget(self, action: #selector(didTapCommetnButton), for: .touchUpInside)
+    }
+    
+    @objc private func didTapCommetnButton() {
+        guard let model = model else {
+            return
+        }
+        delegate?.didTapCommentButton(model: model)
     }
     
     required init?(coder: NSCoder) {
@@ -81,14 +93,12 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        ///let viewImageSize = viewImage.sizeThatFits(frame.size)
         let imageSize = 60
         viewImage.frame = CGRect(
             x: 15,
-            y: 2,
+            y: 0,
             width: imageSize,
-            height: 25).integral
+            height: 30).integral
         
         let buttonSize = contentView.height
         for x in 0..<3 {
@@ -106,8 +116,8 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
             image.frame = CGRect(
                 x: (15*CGFloat(x)),
                 y: 0,
-                width: buttonSize/4,
-                height: buttonSize/4)
+                width: buttonSize/3,
+                height: buttonSize/3)
             image.layer.cornerRadius = image.height/2
         }
     
@@ -115,31 +125,20 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         totalLikeLabel.frame = CGRect(
             x: viewImage.right+5,
             y: 2,
-            width: totalLikeLabellSize.width,//contentView.width/2,
+            width: totalLikeLabellSize.width,
             height: 25)
         
-        
-        /*totalLikeLabel.backgroundColor = .blue
-        totalLikeLabel.frame = CGRect(
-            x: 15,
-            y: viewImage.bottom+5 ,//5,
-            width: contentView.width-20,
-            height: 20)*/
-        
-//        descriptionLabel.backgroundColor = .systemBackground
         descriptionLabel.frame = CGRect(
             x: 15,
-            y: totalLikeLabel.bottom+5,
+            y: totalLikeLabel.bottom,
             width: contentView.width-20,
             height: 40)
         
-//        seeMoreCommentsLabel.backgroundColor = .systemBackground
-        seeMoreCommentsLabel.frame = CGRect(
+        seeMoreCommentsButton.frame = CGRect(
             x: 15,
             y: descriptionLabel.bottom+5,
             width: contentView.width-20,
             height: 10)
-
     }
     
     override func prepareForReuse() {
@@ -147,35 +146,32 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
     }
     
     public func configure(with model: Userpost) {
+        ///Models
+        self.model = model
+        
         ///Caption de post
-        guard let username = model.userAuthor?.username,
-              let caption = model.content else {
-            return
+        guard let author = model.userAuthor?.username, let caption = model.content else { return }
+        let authorName = joinText(username: author, description: caption)
+        descriptionLabel.attributedText = authorName
+        
+        ///Likes
+        guard let likes = model.likes?.count else { return }
+        guard let username = model.likes?[0].userlike?.username  else { return }
+        var text = ""
+        var textLikes = ""
+        if (likes-1) != 0 {
+            text = "Les gusta a"
+            textLikes = "\(username) y a \(likes-1) personas más"
+        } else {
+            text = "Les gusta a"
+            textLikes = "\(username)"
         }
+        let likesUsername = joinTextLike(text: text, description: textLikes)
+        totalLikeLabel.attributedText = likesUsername
         
-        let attributedString = joinText(username: username, description: caption)
-        descriptionLabel.attributedText = attributedString
-        
-        //let usernameText =  model.owner.username
-        //guard let description = model.caption else { return  }
-    
-//        let attributedString = joinText(username: usernameText ?? "", description: description)
-//        descriptionLabel.attributedText = attributedString
-//
-//        ///Total Likes
-//        let countLikes = model.likeCount.count+1
-//        var likes : Int = 0
-//        for i in 0..<countLikes {
-//            likes = i
-//        }
-//        let text = "Les gusta a "
-//        let textLike = "rebeca y a \(likes) personas más"
-//        let attributedString2 = joinTextLike(text: text, description: textLike)
-//        totalLikeLabel.attributedText = attributedString2
-//
-//        ///Ver mas comentarios
-//        let countComment = model.comments.count
-//        seeMoreCommentsLabel.text = "Ver los \(countComment) comentarios"
+        ///Comments
+        guard let comments = model.comments?.count else { return }
+        seeMoreCommentsButton.setTitle("Ver los \(comments) comentarios", for: .normal)
     }
     
     private func joinTextLike(text:String, description:String) -> NSMutableAttributedString {
@@ -192,11 +188,11 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
     
     private func joinText(username:String, description:String) -> NSMutableAttributedString {
         let boldText  = username + " "
-        let attrs = [NSAttributedString.Key.font : Constants.fontSize.semibold ] //UIFont.systemFont(ofSize: 16, weight: .bold) ]
+        let attrs = [NSAttributedString.Key.font : Constants.fontSize.semibold ]
         let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
         
         let normalText = description
-        let attrs2 = [NSAttributedString.Key.font : Constants.fontSize.regular ] //UIFont.systemFont(ofSize: 16, weight: .regular) ]
+        let attrs2 = [NSAttributedString.Key.font : Constants.fontSize.regular ]
         let normalString = NSMutableAttributedString(string:normalText, attributes:attrs2)
         attributedString.append(normalString)
         return attributedString
