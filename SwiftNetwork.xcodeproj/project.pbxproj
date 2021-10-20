@@ -27,6 +27,7 @@
 		B34F43AD26A8D7ED0076766C /* IGFeedStoryActionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34F43AC26A8D7ED0076766C /* IGFeedStoryActionsTableViewCell.swift */; };
 		B35A1C5F270DA0FB00F7667F /* StoryFeaturedCollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A1C5E270DA0FB00F7667F /* StoryFeaturedCollectionTableViewCell.swift */; };
 		B35A1C77270DA41700F7667F /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A1C76270DA41700F7667F /* StoryCollectionViewCell.swift */; };
+		B35E004A271D9FCF00F2A7FD /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35E0049271D9FCF00F2A7FD /* DataModels.swift */; };
 		B362D15D263561840086F777 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D15C263561840086F777 /* HomeViewController.swift */; };
 		B362D165263605630086F777 /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D164263605630086F777 /* CollectionTableViewCell.swift */; };
 		B362D16D263607940086F777 /* TableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B362D16C263607940086F777 /* TableCollectionViewCell.swift */; };
@@ -164,6 +165,7 @@
 		B34F43AC26A8D7ED0076766C /* IGFeedStoryActionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGFeedStoryActionsTableViewCell.swift; sourceTree = "<group>"; };
 		B35A1C5E270DA0FB00F7667F /* StoryFeaturedCollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryFeaturedCollectionTableViewCell.swift; sourceTree = "<group>"; };
 		B35A1C76270DA41700F7667F /* StoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		B35E0049271D9FCF00F2A7FD /* DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
 		B362D15C263561840086F777 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B362D164263605630086F777 /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
 		B362D16C263607940086F777 /* TableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -363,6 +365,7 @@
 			isa = PBXGroup;
 			children = (
 				B39A4A692628777D00BE80DF /* Models.swift */,
+				B35E0049271D9FCF00F2A7FD /* DataModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1157,6 +1160,7 @@
 				B3B89106264690C3003AE17A /* HeaderCollectionReusableView.swift in Sources */,
 				B35A1C5F270DA0FB00F7667F /* StoryFeaturedCollectionTableViewCell.swift in Sources */,
 				B39A49B92626236E00BE80DF /* NotificationsViewController.swift in Sources */,
+				B35E004A271D9FCF00F2A7FD /* DataModels.swift in Sources */,
 				B39A49D5262623A400BE80DF /* RegistrationViewController.swift in Sources */,
 				B39A49F02626242600BE80DF /* WebTranslatorLoginViewController.swift in Sources */,
 				B39A49EF2626242600BE80DF /* WebModelLoginViewController.swift in Sources */,

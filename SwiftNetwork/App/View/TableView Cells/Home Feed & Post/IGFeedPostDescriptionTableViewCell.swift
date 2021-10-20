@@ -146,28 +146,36 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         super.prepareForReuse()
     }
     
-    public func configure(with model: UserPostViewModel) {
+    public func configure(with model: Userpost) {
         ///Caption de post
-        let usernameText = model.owner.username
-        guard let description = model.caption else { return  }
-    
-        let attributedString = joinText(username: usernameText ?? "", description: description)
+        guard let username = model.userAuthor?.username,
+              let caption = model.content else {
+            return
+        }
+        
+        let attributedString = joinText(username: username, description: caption)
         descriptionLabel.attributedText = attributedString
         
-        ///Total Likes
-        let countLikes = model.likeCount.count+1
-        var likes : Int = 0
-        for i in 0..<countLikes {
-            likes = i
-        }
-        let text = "Les gusta a "
-        let textLike = "rebeca y a \(likes) personas más"
-        let attributedString2 = joinTextLike(text: text, description: textLike)
-        totalLikeLabel.attributedText = attributedString2
-        
-        ///Ver mas comentarios
-        let countComment = model.comments.count
-        seeMoreCommentsLabel.text = "Ver los \(countComment) comentarios"
+        //let usernameText =  model.owner.username
+        //guard let description = model.caption else { return  }
+    
+//        let attributedString = joinText(username: usernameText ?? "", description: description)
+//        descriptionLabel.attributedText = attributedString
+//
+//        ///Total Likes
+//        let countLikes = model.likeCount.count+1
+//        var likes : Int = 0
+//        for i in 0..<countLikes {
+//            likes = i
+//        }
+//        let text = "Les gusta a "
+//        let textLike = "rebeca y a \(likes) personas más"
+//        let attributedString2 = joinTextLike(text: text, description: textLike)
+//        totalLikeLabel.attributedText = attributedString2
+//
+//        ///Ver mas comentarios
+//        let countComment = model.comments.count
+//        seeMoreCommentsLabel.text = "Ver los \(countComment) comentarios"
     }
     
     private func joinTextLike(text:String, description:String) -> NSMutableAttributedString {

@@ -14,7 +14,7 @@ enum Searchçresult {
 
 class SearchViewController: UIViewController {
     
-    private var models = [UserPostViewModel]()
+    private var models = [UserpostViewModel]()
     
     private let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: SearchResultViewController())
@@ -64,7 +64,7 @@ class SearchViewController: UIViewController {
         configureCollectionViewCell()
         delegateCollections()
         configureSearchBar()
-        setupModel()
+        //setupModel()
     }
     
     override func viewDidLayoutSubviews() {
@@ -164,14 +164,15 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         let model = models[indexPath.row]
-        let vc = PostViewController(model: model)
-        vc.title = model.postType.rawValue
-        navigationController?.pushViewController(vc, animated: true)
+        //let vc = PostViewController(model: model)
+        //vc.title = model.postType.rawValue
+        //navigationController?.pushViewController(vc, animated: true)
     }
 }
 
 
 //MARK: Mocks
+/*
 extension SearchViewController {
     private func setupModel() {
         
@@ -185,7 +186,7 @@ extension SearchViewController {
                 dayOfBirth: Date(),
                 gender: GenderViewModel(gender: "male"),//.male,
                 publicEmail: "",
-                counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
+                counts: CountViewModel(followers: 1, following: 1, posts: 1),
                 joinDate: Date(),
                 countryId: 0,
                 image: "",
@@ -201,19 +202,9 @@ extension SearchViewController {
                 imagenBin: "",
                 valor: "",
                 id: 0
-                /**name: (first: "", last: ""),
-                username: "joe",
-                bio: "",
-                profilePicture: URL(
-                    string: "https://wwww.google.com")!,
-                birthDate: Date(),
-                gender: .male,
-                email: "",
-                counts: UserCount(followers: 1, following: 1, posts: 1),
-                joinDate: Date()**/
             )
             
-            let post = UserPostViewModel(
+            let post = UserpostViewModel(
                 identifier: "",
                 postType: .photo,
                 thumbnailImage: URL(
@@ -230,3 +221,4 @@ extension SearchViewController {
         }
     }
 }
+*/

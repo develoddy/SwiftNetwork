@@ -19,109 +19,25 @@ struct HomeFeedRenderViewModel {
 }
 
 
+///HomeViewController
 class HomeViewController: UIViewController {
     
+    ///let settingsLauncher = SettingsLauncher()
+    ///let heigth: CGFloat = 250
     let cellSpacingHeight: CGFloat = 5
-    
-    //let settingsLauncher = SettingsLauncher()
-    //let heigth: CGFloat = 250
+
     var model : HomeFeedRenderViewModel?
     
-    private let tableMenuView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)// UITableView()
-        return tableView
-    }()
-    
-    private let likeButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
-        button.tintColor = .systemRed
-        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold) //semibold, regular, thin
-        let image = UIImage(systemName: "video.fill", withConfiguration: config)
-        button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
-        button.setImage(image, for: UIControl.State.normal)
-        button.setTitle("Directo", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
-        button.setTitleColor(.black, for: .normal)
-        button.layer.cornerRadius = 10
-        return button
-    }()
-    
-    private let commentButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
-        button.tintColor = .systemGreen
-        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold) //semibold, regular, thin
-        let image = UIImage(systemName: "photo.on.rectangle", withConfiguration: config)
-        button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
-        button.setImage(image, for: UIControl.State.normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
-        button.setTitle("Foto", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.layer.cornerRadius = 10
-        return button
-    }()
-    
-    private let sendButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
-//        button.tintColor = Constants.Color.blue
-        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold)
-        let image = UIImage(systemName: "location.fill", withConfiguration: config)
-        button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
-        button.setImage(image, for: UIControl.State.normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
-        button.setTitle("Ubicación", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.layer.cornerRadius = 10
-        return button
-    }()
+    private var models = [HomeFeedRenderViewModel]()
     
     private let tableView: UITableView = {
         let tableView = UITableView()
         return tableView
     }()
     
-    private let headerView: UIView = {
-        let headerView = UIView()
-//        headerView.backgroundColor = .systemBackground
-        return headerView
-    }()
-    
-    private let imageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "person.circle"))
-        imageView.tintColor = Constants.Color.black
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-        
-    private let writePostButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 10, y: 10, width: 10, height: 0))
-        button.setTitle("¡Eddy, dile al mundo lo que piensas!", for: .normal)
-        button.contentHorizontalAlignment = .left
-        button.setTitleColor(Constants.Color.general, for: .normal)
-        button.titleLabel?.font = Constants.fontSize.regular
-        button.clipsToBounds = true
-        button.layer.masksToBounds = true
-        button.titleEdgeInsets = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: 0.0)
-        return button
-    }()
-    
-    private let uploadImageButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "photo.on.rectangle.angled"), for: .normal)
-        button.contentMode = .scaleAspectFit
-        button.tintColor = Constants.Color.whiteLight
-        return button
-    }()
-    
-    private let separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemGray5
-        view.translatesAutoresizingMaskIntoConstraints  = false
-        return view
-    }()
-
-    private let buttonVideo: UIButton = {
-        let button = UIButton()
-        return button
+    private let tableMenuView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)// UITableView()
+        return tableView
     }()
     
     lazy var settingLauncher: SettingsLauncher = {
@@ -129,24 +45,26 @@ class HomeViewController: UIViewController {
         launcher.homeController = self
         return launcher
     }()
+    
+    
 
-    private var models = [HomeFeedRenderViewModel]()
-    private var story : [CollectionTableCellModel] = []
-    private var collections : [CollectionTableCellModel] = []
-    private var comments    : [PostCommentsViewModel] = []
-    private var likes       : [PostLikeViewModel] = []
-    private var users       : UserViewModel?
-    private var posts       : UserPostViewModel?
-
+   
+    // MARK: - viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        //handleNotAuthenticated()
-        setupModels()
+        fetchUserPost()
         configureTableView()
         delegateTableView()
         setupNavigationBarItems()
-        addButtonActions()
+        headerTableView()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = tableView.frame.inset(by: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
+        tableView.frame = view.bounds
+        ///separatorView.frame = CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -154,84 +72,64 @@ class HomeViewController: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
-    override func viewDidLayoutSubviews() {
-        
-        tableView.frame = tableView.frame.inset(by: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
-        
-        super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
-        headerView.frame = CGRect(
-            x: 0,
-            y: 0,
-            width: view.width,
-            height: 65)
-        
-        imageView.contentMode = .scaleAspectFit
-        imageView.frame = CGRect(
-            x: 5,
-            y: 10,
-            width:40,
-            height: 40)
-        imageView.layer.cornerRadius = imageView.height/2
-        
-        let buttonWidth = view.width > 500 ? 220.0 : view.width/6
-        let labelHeight = headerView.height/2
-        
-        writePostButton.frame = CGRect(
-            x: imageView.right+10,
-            y: 12,
-            width: headerView.width-8-imageView.width-buttonWidth,
-            height: labelHeight)
-        writePostButton.layer.cornerRadius = writePostButton.height/2
-        
-        uploadImageButton.frame = CGRect(
-            x: writePostButton.right+5,
-            y: 12,
-            width: buttonWidth-10,
-            height: labelHeight)
-        
-        separatorView.frame = CGRect(
-            x: tableView.separatorInset.left,
-            y: 0  ,
-            width: 20,
-            height: 1)
-        
-        headerView.addSubview(separatorView)
-        NSLayoutConstraint.activate([
-            separatorView.leadingAnchor.constraint(equalTo:headerView.leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo:headerView.trailingAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant:5),
-            separatorView.bottomAnchor.constraint(equalTo:headerView.bottomAnchor)])
-    }
-    
     private func setup() {
         view.backgroundColor = UIColor(red: 0.05, green: 0.05, blue: 0.07, alpha: 1.00)
         view.addSubview(tableView)
-        tableView.tableHeaderView = createTableHeader()
+        ///tableView.tableHeaderView = createTableHeader()
     }
     
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
-    /**private func handleNotAuthenticated() {
+    private func handleNotAuthenticated() -> String {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let token = appDelegate.objUsuarioSesion?.token
-        
         if token == nil {
             let vc = LoginViewController()
             vc.modalPresentationStyle = .fullScreen
             self.present(vc, animated: false)
         }
-    }*/
- 
-    private func setupNavigationBarItems() {
-        setupLeftNavItems()
-        setupRightNavItems()
-        //setupRemaningNavItems()
+        return token ?? "nil"
+    }
+
+    ///Aall the api rest
+    private func fetchUserPost() {
+        APIService.shared.apiUserPost(token: handleNotAuthenticated()) { (result) in
+            switch result {
+            case .success(let model): 
+                /*DataModels.shared.updateUI(with: model.userpost ?? []) { (result) in
+                    self.setupModel(with: result)
+                }*/
+                self.setupModel(with: model.userpost ?? [])
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
+    ///Models
+    private func setupModel(with model: [Userpost] ) {
+        let story = createStoryCollections()
+        let collections = createArrayCollections()
+
+        for items in model {
+            guard let user = items.userAuthor else { return }
+            guard let comments = items.comments else { return }
+            
+            let viewModel = HomeFeedRenderViewModel(
+                collections: PostRenderViewModel(renderType: .collections(collections: collections, createStory: story)),
+                header: PostRenderViewModel(renderType: .header(provider: user)),
+                post: PostRenderViewModel(renderType: .primaryContent(provider: items)),
+                actions: PostRenderViewModel(renderType: .actions(provider: items)),
+                descriptions: PostRenderViewModel(renderType: .descriptions(post: items)),
+                comments: PostRenderViewModel(renderType: .comments(comments: comments)),
+                footer: PostRenderViewModel(renderType: .footer(footer: items)))
+            models.append(viewModel)
+        }
+        DispatchQueue.main.async{ self.tableView.reloadData() }
+    }
+    
+    private func headerTableView() {
+        tableView.tableHeaderView = createTableHeaderView()
+    }
+
     private func configureTableView() {
         tableView.register(CollectionTableViewCell.self, forCellReuseIdentifier: CollectionTableViewCell.identifier)
         tableView.register(IGFeedPostTableViewCell.self, forCellReuseIdentifier: IGFeedPostTableViewCell.identifier)
@@ -246,30 +144,8 @@ class HomeViewController: UIViewController {
     private func delegateTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        
         tableMenuView.delegate = self
         tableMenuView.delegate = self
-    }
-    
-    private func addButtonActions() {
-        writePostButton.addTarget(self, action: #selector(didTapWritePostButton), for: .touchUpInside)
-    }
-    
-    @objc private func didTapWritePostButton() {
-        let vc = PublishPostViewController()
-        vc.title = "Create Post"
-        vc.modalPresentationStyle = .fullScreen
-        vc.navigationItem.largeTitleDisplayMode = .never
-        present(UINavigationController(rootViewController: vc), animated: true)
-    }
-    
-    ///Header
-    private func createTableHeader() -> UIView? {
-        view.addSubview(headerView)
-        headerView.addSubview(imageView)
-        headerView.addSubview(writePostButton)
-        headerView.addSubview(uploadImageButton)
-        return headerView
     }
     
     ///Create Story Collections
@@ -277,7 +153,6 @@ class HomeViewController: UIViewController {
         var collections = [CollectionTableCellModel]()
         let data = CollectionTableCellModel(title: "eddy", imageName: "eddy")
         collections.append(data)
-
         return collections
     }
     
@@ -292,118 +167,131 @@ class HomeViewController: UIViewController {
         return collections
     }
     
-    ///Comments
-    func createArrayComments() -> [PostCommentsViewModel] {
-        var tempComments: [PostCommentsViewModel] = []
-        for i in 0..<5 {
-            let comments = PostCommentsViewModel(
-                id: i+1,
-                username: "@save",
-                typeId: 0,
-                refId: 0,
-                userssId: 0,
-                content: "Great post!",
-                comentarioId: 0,
-                createdAt: "",// Date(),
-                likes: []
-                /*identifier: "id-\(i)", username: "\(i) Username", text: "commentario \(i)", createDate: Date(), likes: []*/)
-            tempComments.append(comments)
-        }
-        return tempComments
+    private func setupNavigationBarItems() {
+        setupLeftNavItems()
+        setupRightNavItems()
+        ///setupRemaningNavItems()
     }
     
-    ///Likes
-    func createArrayLikes() -> [PostLikeViewModel] {
-        let likes = [PostLikeViewModel]()
-        /*for i in 0..<5 {
-            let data = PostLikeViewModel(
-                username: "jor \(i)",
-                postIdentifier: "",
-                text: "Mi primera publicacion para el test de la App.",
-                likes: i)
-            likes.append(data)
-        }*/
-        return likes
+    private func separator(cell: IGFeedPostFooterTableViewCell) {
+        /*let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
+            separatorView.backgroundColor = .systemGray5
+            separatorView.translatesAutoresizingMaskIntoConstraints  = false
+            cell.contentView.addSubview(separatorView)
+            NSLayoutConstraint.activate([
+                separatorView.leadingAnchor.constraint(equalTo:cell.contentView.leadingAnchor),
+                separatorView.trailingAnchor.constraint(equalTo:cell.contentView.trailingAnchor),
+                separatorView.heightAnchor.constraint(equalToConstant:1),
+                separatorView.topAnchor.constraint(equalTo:cell.contentView.topAnchor)])
+
+            let separatorView2 = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 5, width: 20, height: 1))
+            separatorView2.backgroundColor = .systemGray5
+            separatorView2.translatesAutoresizingMaskIntoConstraints  = false
+            cell.contentView.addSubview(separatorView2)
+            NSLayoutConstraint.activate([
+                separatorView2.leadingAnchor.constraint(equalTo:cell.contentView.leadingAnchor),
+                separatorView2.trailingAnchor.constraint(equalTo:cell.contentView.trailingAnchor),
+                separatorView2.heightAnchor.constraint(equalToConstant:1),
+                separatorView2.bottomAnchor.constraint(equalTo:cell.contentView.bottomAnchor)])*/
+        
+        let separatorView: UIView = {
+            let view = UIView()
+            view.backgroundColor = .systemGray5
+            view.translatesAutoresizingMaskIntoConstraints  = false
+            return view
+        }()
+        
+        separatorView.frame = CGRect(x: 0, y: 10, width: view.width, height: view.height)
+        
+        cell.addSubview(separatorView)
+        NSLayoutConstraint.activate([
+            separatorView.leadingAnchor.constraint(equalTo:cell.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo:cell.trailingAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant:5),
+            separatorView.bottomAnchor.constraint(equalTo:cell.bottomAnchor)])
     }
     
-    ///User
-    func createArrayUser() -> UserViewModel {
-        let user = UserViewModel(
-            name: "",
-            last: "",//(first: "", last: ""),
-            username: "eddylujann",
-            bio: "",
-            profilePicture: URL(string: "https://wwww.google.com")!,
-            dayOfBirth: Date(),
-            gender: GenderViewModel(gender: "male"),//.male,
-            publicEmail: "",
-            counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
-            joinDate: Date(),
-            countryId: 0,
-            image: "",
-            imageHeader: "",
-            title: "",
-            likes: "",
-            dislikes: "",
-            address: "",
-            phone: "",
-            userssId: 0,
-            nivelId: 0,
-            sentimentalId: 0,
-            imagenBin: "",
-            valor: "",
-            id: 0
-        )
-        return user
-      
-    }
-    
-    ///UserPostViewModel
-    func createArrayUserPostViewModel() -> UserPostViewModel {
-        likes = createArrayLikes() ///Se obtiene el array de likes
-        let post = UserPostViewModel(
-            identifier: "post 2",
-            postType: .photo,
-            thumbnailImage: URL(
-                string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/boy.jpeg")!,
-            postURL: URL(string: "https://wwww.google.com")!,
-            caption: "Esto es un titlo del post para un ejemplo en el Iphone de hacer proueba y test",
-            likeCount: likes,
-            comments: comments,
-            createDate: Date(),
-            taggedUsers: [],
-            owner: users!)
-        return post
-    }
-    
-    private func setupModels() {
-        story       = createStoryCollections()
-        collections = createArrayCollections()
-        comments    = createArrayComments()
-        users       = createArrayUser()
-        posts       = createArrayUserPostViewModel()
-        for _ in 0..<2 {
-            let viewModel = HomeFeedRenderViewModel(
-                collections : PostRenderViewModel(renderType: .collections(collections  : collections, createStory: story )),
-                header      : PostRenderViewModel(renderType: .header(provider          : users!        )),
-                post        : PostRenderViewModel(renderType: .primaryContent(provider  : posts!        )),
-                actions     : PostRenderViewModel(renderType: .actions(provider         : posts!        )),
-                descriptions: PostRenderViewModel(renderType: .descriptions(post        : posts!        )),
-                comments    : PostRenderViewModel(renderType: .comments(comments        : comments      )),
-                footer      : PostRenderViewModel(renderType: .footer(footer            : posts!        ))
-            )
-            models.append(viewModel)
-        }
+    @objc private func didTapWritePostButton() {
+        let vc = PublishPostViewController()
+        vc.title = "Create Post"
+        vc.modalPresentationStyle = .fullScreen
+        vc.navigationItem.largeTitleDisplayMode = .never
+        present(UINavigationController(rootViewController: vc), animated: true)
     }
 }
 
 //MARK:- TableView
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
+    ///Header
+    private func createTableHeaderView() -> UIView {
+        let imageView: UIImageView = {
+            let imageView = UIImageView(image: UIImage(systemName: "person.circle"))
+            imageView.tintColor = Constants.Color.black
+            imageView.contentMode = .scaleAspectFit
+            return imageView
+        }()
+            
+        let writePostButton: UIButton = {
+            let button = UIButton(frame: CGRect(x: 10, y: 10, width: 10, height: 0))
+            button.setTitle("¡Eddy, dile al mundo lo que piensas!", for: .normal)
+            button.contentHorizontalAlignment = .left
+            button.setTitleColor(Constants.Color.general, for: .normal)
+            button.titleLabel?.font = Constants.fontSize.regular
+            button.clipsToBounds = true
+            button.layer.masksToBounds = true
+            button.titleEdgeInsets = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: 0.0)
+            return button
+        }()
+        
+        let uploadImageButton: UIButton = {
+            let button = UIButton()
+            button.setImage(UIImage(systemName: "photo.on.rectangle.angled"), for: .normal)
+            button.contentMode = .scaleAspectFit
+            button.tintColor = Constants.Color.whiteLight
+            return button
+        }()
+        
+        let separatorView: UIView = {
+            let view = UIView()
+            view.backgroundColor = .systemGray5
+            view.translatesAutoresizingMaskIntoConstraints  = false
+            return view
+        }()
+        
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 60))
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = CGRect(x: 5, y: 10, width:40, height: 40)
+        imageView.layer.cornerRadius = imageView.height/2
+        
+        let buttonWidth = view.width > 500 ? 220.0 : view.width/6
+        let labelHeight = headerView.height/2
+        
+        writePostButton.frame = CGRect(x: imageView.right+10, y: 12, width: headerView.width-8-imageView.width-buttonWidth,height: labelHeight)
+        writePostButton.layer.cornerRadius = writePostButton.height/2
+        uploadImageButton.frame = CGRect(x: writePostButton.right+5,y: 12,width: buttonWidth-10,height: labelHeight)
+        
+        writePostButton.addTarget(self, action: #selector(didTapWritePostButton), for: .touchUpInside)
+        
+        headerView.addSubview(separatorView)
+        NSLayoutConstraint.activate([
+            separatorView.leadingAnchor.constraint(equalTo:headerView.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo:headerView.trailingAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant:5),
+            separatorView.bottomAnchor.constraint(equalTo:headerView.bottomAnchor)])
+        
+        headerView.addSubview(imageView)
+        headerView.addSubview(writePostButton)
+        headerView.addSubview(uploadImageButton)
+        return headerView
+    }
+    
+    ///Count models
     func numberOfSections(in tableView: UITableView) -> Int {
         return models.count * 7
     }
     
+    ///Sections
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = section
         if count == 0 { ///Pinta el collection de imagenes
@@ -423,32 +311,29 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    ///Collections
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model: HomeFeedRenderViewModel
         let count = indexPath.section
-        if count == 0 { ///Pinta el collection de imagenes
+        if count == 0 { /// Collections
             model = models[0]
             switch model.collections.renderType {
             case .collections(let collections, let createStory):
-                    let cell = tableView.dequeueReusableCell(
-                        withIdentifier: CollectionTableViewCell.identifier,
-                        for: indexPath) as! CollectionTableViewCell
-                        cell.configure(with: collections, with: createStory)
-                        cell.delegate = self
-                    return cell
+                let cell = tableView.dequeueReusableCell(withIdentifier: CollectionTableViewCell.identifier, for: indexPath) as! CollectionTableViewCell
+                    cell.configure(with: collections, with: createStory)
+                    cell.delegate = self
+                return cell
             case .comments, .actions, .primaryContent, .header, .descriptions, .footer :
                     return UITableViewCell()
                 }
-        } else { /// Pinta el resto de contenido del post (hader, posts, actions, comments)
+        } else { ///  Tables
             let position = count % 7 == 7 ? count/7 : ((count - (count % 7)) / 7)
             model = models[position]
             let subSection = count % 7
             if subSection == 1 { /// Header
                 switch model.header.renderType {
                     case .header(let user):
-                        let cell = tableView.dequeueReusableCell(
-                            withIdentifier: IGFeedPostHeaderTableViewCell.identifier,
-                            for: indexPath) as! IGFeedPostHeaderTableViewCell
+                        let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier, for: indexPath) as! IGFeedPostHeaderTableViewCell
                             cell.configure(with: user)
                         cell.frame = CGRect(x: 5, y: 5, width: tableView.width-10 , height: 70  )
                         return cell
@@ -458,10 +343,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             } else if subSection == 2 { /// Post
                 switch model.post.renderType {
                     case .primaryContent(let post):
-                        let cell = tableView.dequeueReusableCell(
-                            withIdentifier: IGFeedPostTableViewCell.identifier,
-                            for: indexPath) as! IGFeedPostTableViewCell
-                            cell.configure(with: post)
+                        let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostTableViewCell.identifier,for: indexPath) as! IGFeedPostTableViewCell
+                        cell.configure(with: post)
                         return cell
                     case .comments, .actions, .header, .collections, .descriptions, .footer :
                         return UITableViewCell()
@@ -469,9 +352,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             } else if subSection == 3 { /// Actions
                 switch model.actions.renderType {
                     case .actions(let provider):
-                        let cell = tableView.dequeueReusableCell(
-                            withIdentifier: IGFeedPostActionsTableViewCell.identifier,
-                            for: indexPath) as! IGFeedPostActionsTableViewCell
+                        let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostActionsTableViewCell.identifier, for: indexPath) as! IGFeedPostActionsTableViewCell
                             cell.configure(with: provider)
                             cell.delegate = self
                         return cell
@@ -481,9 +362,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             } else if subSection == 4 { /// Descriptions
                 switch model.descriptions.renderType {
                     case .descriptions(let post):
-                        let cell = tableView.dequeueReusableCell(
-                            withIdentifier: IGFeedPostDescriptionTableViewCell.identifier,
-                            for: indexPath) as! IGFeedPostDescriptionTableViewCell
+                        let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
                             cell.configure(with: post)
                         return cell
                     case .comments, .header, .primaryContent, .collections, .actions, .footer:
@@ -493,11 +372,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             else if subSection == 5 { /// comments
                 switch model.comments.renderType {
                 case .comments(let comments):
-                    let comment = comments[indexPath.row] ///Se obtiene cada fila del array de comments
-                    let cell = tableView.dequeueReusableCell(
-                        withIdentifier: IGFeedPostGeneralTableViewCell.identifier,
-                        for: indexPath) as! IGFeedPostGeneralTableViewCell
+                    let comment = comments[indexPath.row]
+                    let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier, for: indexPath) as! IGFeedPostGeneralTableViewCell
                         cell.configure(with: comment)
+                        
                     return cell
                 case .header, .actions, .primaryContent, .collections, .descriptions, .footer :
                     return UITableViewCell()
@@ -505,30 +383,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             } else if subSection == 6 { /// Footer
                 switch model.footer.renderType {
                     case .footer(let footer):
-                        let cell = tableView.dequeueReusableCell(
-                            withIdentifier: IGFeedPostFooterTableViewCell.identifier,
-                            for: indexPath) as! IGFeedPostFooterTableViewCell
+                        let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostFooterTableViewCell.identifier, for: indexPath) as! IGFeedPostFooterTableViewCell
                             cell.configure(with: footer)
                             cell.delegate = self
-                            let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
-                            separatorView.backgroundColor = .systemGray5
-                            separatorView.translatesAutoresizingMaskIntoConstraints  = false
-                            cell.contentView.addSubview(separatorView)
-                            NSLayoutConstraint.activate([
-                                separatorView.leadingAnchor.constraint(equalTo:cell.contentView.leadingAnchor),
-                                separatorView.trailingAnchor.constraint(equalTo:cell.contentView.trailingAnchor),
-                                separatorView.heightAnchor.constraint(equalToConstant:1),
-                                separatorView.topAnchor.constraint(equalTo:cell.contentView.topAnchor)])
-
-                            let separatorView2 = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
-                            separatorView2.backgroundColor = .systemGray5
-                            separatorView2.translatesAutoresizingMaskIntoConstraints  = false
-                            cell.contentView.addSubview(separatorView2)
-                            NSLayoutConstraint.activate([
-                                separatorView2.leadingAnchor.constraint(equalTo:cell.contentView.leadingAnchor),
-                                separatorView2.trailingAnchor.constraint(equalTo:cell.contentView.trailingAnchor),
-                                separatorView2.heightAnchor.constraint(equalToConstant:1),
-                                separatorView2.bottomAnchor.constraint(equalTo:cell.contentView.bottomAnchor)])
+                        self.separator(cell: cell)
                         return cell
                 case .comments, .header, .primaryContent, .collections, .actions, .descriptions:
                         return UITableViewCell()
@@ -551,9 +409,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             if subSection        == 1 { return 70 } /// Header
             else if subSection   == 2 { return tableView.width } /// Post
             else if subSection   == 3 { return 50 }  /// Actions
-            else if subSection   == 4 { return 100 } /// Description
+            else if subSection   == 4 { return 80 } /// Description
             else if subSection   == 5 { return 25  } /// Comment 30
-            else if subSection   == 6 { return 50  } /// Footer
+            else if subSection   == 6 { return 60  } /// Footer
             return 0
         }
     }
@@ -577,11 +435,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 //MARK: - Keyborad
 extension HomeViewController: IGFeedPostFooterTableViewCellDelegate {
     
-    func didTapComment(model: UserPostViewModel) {
-        let vc = ListCommentsViewController(model: model)
+    func didTapComment(model: Userpost) {
+        /*let vc = ListCommentsViewController(model: model)
         vc.title = "Coments"
         vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)*/
     }
 }
 
@@ -629,7 +487,8 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
         print("like")
     }
 
-    func didTapCommentButton(model: UserPostViewModel) {
+    //func didTapCommentButton(model: UserpostViewModel) {
+    func didTapCommentButton(model: Userpost) {
         let vc = ListCommentsViewController(model: model)
         vc.title = "Coments"
         vc.navigationItem.largeTitleDisplayMode = .never
@@ -638,17 +497,17 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
     
     func didTapSendButton() {
         self.settingLauncher.showSettings()
-        ///self.settingLauncher.homeController = self
+        self.settingLauncher.homeController = self
     }
     
     public func showControllerForSetting(index:Int, setting: Setting) {
         switch index {
             case 0: //Share in your story
-//                let vc = StoryViewController()
-//                vc.navigationItem.title = setting.name
-//                vc.modalPresentationStyle = .fullScreen
-//                vc.navigationItem.largeTitleDisplayMode = .never
-//                present(UINavigationController(rootViewController: vc), animated: true)
+                /**let vc = StoryViewController()
+                vc.navigationItem.title = setting.name
+                vc.modalPresentationStyle = .fullScreen
+                vc.navigationItem.largeTitleDisplayMode = .never
+                present(UINavigationController(rootViewController: vc), animated: true)*/
                 break
             case 1: //Send by menssenger ListContactMessenger
                 let vc = ContactsMessengerViewController()

@@ -65,11 +65,12 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
     }
     
     
-    public func configure(with model: PostCommentsViewModel) {
-        /*let username = model.username
-        let comment = model.content
-        let attributedString = joinText(username: username!, description: comment!)
-        labelTextComment.attributedText = attributedString*/
+    public func configure(with model: Comment) {
+        ///guard let username = model.user?.username, let comment = model.content  else {
+            ///return
+        ///}
+        ///let attributedString = joinText(username: username, description: comment)
+        ///labelTextComment.attributedText = attributedString
         labelTextComment.text = "HACE 12 HORAS"
     }
     

@@ -86,6 +86,7 @@ class NotificationLikeEventTableViewCell: UITableViewCell {
         //label.text = model.user.username
         //label.text = model.text
         
+        /*
         let username = model.user.username
         let description = model.text
         
@@ -109,6 +110,7 @@ class NotificationLikeEventTableViewCell: UITableViewCell {
         
         
         profileImageView.sd_setImage(with: model.user.profilePicture, completed: nil)
+        */
     }
     
     private func joinText(username:String, description:String) -> NSMutableAttributedString {

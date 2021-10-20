@@ -10,7 +10,8 @@ import UIKit
 
 /// States of render cell
 enum UserPostViewModelRenderType {
-    case primaryContent(posts: UserPostViewModel) //Post
+    ///case primaryContent(posts: UserpostViewModel) //Post
+    case primaryContent(posts: Userpost)
 }
 
 /// Model of  renderd Post
@@ -35,7 +36,8 @@ extension ListCommentsViewController: UITextFieldDelegate {
 
 class ListCommentsViewController: UIViewController  {
     
-    private let model: UserPostViewModel?
+    ///private let model: UserpostViewModel?
+    private let model: Userpost?
     
     private var renderModels = [UserPostViewModelRenderViewModel]()
     
@@ -125,7 +127,8 @@ class ListCommentsViewController: UIViewController  {
     }()
     
     // MARK: Init
-    init(model: UserPostViewModel?) {
+    //init(model: UserpostViewModel?) {
+    init(model: Userpost?) {
         self.model = model
         super.init(nibName: nil, bundle: nil)
         configureModels()
@@ -313,7 +316,11 @@ extension ListCommentsViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch renderModels[section].renderType {
             case .primaryContent(let posts):
-                return posts.comments.count > 0 ? posts.comments.count : posts.comments.count /// Retorna el total de comentarios
+                ///return posts.comments.count > 0 ? posts.comments.count : posts.comments.count /// Retorna el total de comentarios
+                guard let comments = posts.comments else {
+                    return 0
+                }
+                return comments.count > 0 ? comments.count : comments.count
         }
     }
     
@@ -321,20 +328,30 @@ extension ListCommentsViewController: UITableViewDelegate, UITableViewDataSource
         let model = renderModels[indexPath.section]
         switch model.renderType {
             case .primaryContent(let posts):
-                let comment = posts.comments[indexPath.row]
+                //let comment = posts.comments[indexPath.row]
+                guard let comments = posts.comments else {
+                    return UITableViewCell()
+                }
+                let comment = comments[indexPath.row]
                 let cell = tableView.dequeueReusableCell(withIdentifier: PostCommentsListTableViewCell.identifier, for: indexPath) as! PostCommentsListTableViewCell
-                cell.configure(with: comment.username!, with: comment.content!)
+                ///cell.configure(with: comment.username!, with: comment.content!)
+                cell.configure(with: comment.user?.name ?? "", with: comment.content ?? "")
                 return cell
         }
+        //return UITableViewCell()
     }
  
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let model = renderModels[section]
         switch model.renderType {
             case .primaryContent(let posts):
-                let post = posts
+                //let post = posts
                 let cell = tableView.dequeueReusableCell(withIdentifier: CustomHeaderTableViewCell.identifier) as! CustomHeaderTableViewCell
-                cell.configure(with: post.owner.username!, with: post.caption!)
+                //cell.configure(with: post.owner.username!, with: post.caption!)
+                guard let username = posts.userAuthor?.username, let caption = posts.content else {
+                    return UIView()
+                }
+                cell.configure(with: username, with: caption)
             
                 let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
                 separatorView.backgroundColor = .secondarySystemFill
@@ -348,6 +365,7 @@ extension ListCommentsViewController: UITableViewDelegate, UITableViewDataSource
                     separatorView.bottomAnchor.constraint(equalTo:cell.contentView.bottomAnchor)])
                 return cell
         }
+        return UIView()
     }
     
     

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol IGFeedPostFooterTableViewCellDelegate: AnyObject {
-    func didTapComment(model: UserPostViewModel)
+    func didTapComment(model: Userpost)
 }
 
 
@@ -19,7 +19,7 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
     
     public var delegate: IGFeedPostFooterTableViewCellDelegate?
     
-    private var model: UserPostViewModel?
+    private var model: Userpost?
     
     private let profilePhotoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -77,11 +77,11 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
         
         let size = contentView.height
         profilePhotoImageView.frame = CGRect(
-            x: 10,
+            x: 5,
             y: 5,
             width: 40,
             height: 40)
-        profilePhotoImageView.layer.cornerRadius = size/2
+        profilePhotoImageView.layer.cornerRadius = size/2.5
         
 //        boxTextButton.backgroundColor = .systemBackground
         boxTextButton.frame = CGRect(
@@ -98,7 +98,7 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
             height: size)
     }
     
-    public func configure(with post: UserPostViewModel) {
+    public func configure(with post: Userpost) {
         profilePhotoImageView.image = UIImage(systemName: "person.circle")
         model = post
     }

@@ -45,10 +45,11 @@ final class IGFeedPostTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configure(with post: UserPostViewModel) {
-        //postImageView.image = UIImage(named: "test")
-        //return
-        switch post.postType {
+    ///Obtenemos la primera foto del array postImage[0]
+    public func configure(with post: Userpost) {
+        postImageView.sd_setImage(with: URL(string: post.postImage![0].image?.src ?? ""), completed: nil)
+    
+        /**switch post.postType {
         case .photo:
             let url = post.thumbnailImage
             postImageView.sd_setImage(with: url, completed: nil)
@@ -60,7 +61,7 @@ final class IGFeedPostTableViewCell: UITableViewCell {
             playerLayer.player = player
             playerLayer.player?.volume = 0
             playerLayer.player?.play()
-        }
+        }*/
     }
     
     override func prepareForReuse() {

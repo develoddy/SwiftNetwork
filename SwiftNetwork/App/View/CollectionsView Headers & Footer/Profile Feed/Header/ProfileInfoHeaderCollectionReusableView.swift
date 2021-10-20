@@ -203,7 +203,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     }
     
     
-    public func configure(model: UserPostViewModel) {
+    public func configure(model: UserpostViewModel) {
         //usernameLabel.setTitle(model.owner.username, for: .normal)
     }
     

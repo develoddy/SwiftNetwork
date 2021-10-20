@@ -120,14 +120,10 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         
     }
     
-    public func configure(with model: UserViewModel) {
-        //usernameLabel.text = model.username
+    public func configure(with model: User) {
         usernameLabelButton.setTitle(model.username, for: .normal)
         profilePhotoImageView.image = UIImage(systemName: "person.circle")
     }
-    
-    
-    
     
     @objc private func didTapButton() {
         delegate?.didTapMoreButton()

@@ -14,7 +14,7 @@ class PruebaViewController: UIViewController {
     
     let collectionViewTwoIdentifier = "collectionViewTwoIdentifier"
     
-    private var models = [UserPostViewModel]()
+    private var models = [UserpostViewModel]()
     
     private let grid = "grid"
     private let tagged = "tagged"
@@ -42,15 +42,15 @@ class PruebaViewController: UIViewController {
     
     /// Test api rest
     private func doTestUserPost() {
-        APIServiceLocal.shared.parseUserPostJSON { (model) in
+        /*APIServiceLocal.shared.parseUserPostJSON { (model) in
             self.updateUI(with: model.userpost ?? [])
             self.collectionViewTwo.reloadData()
-        }
+        }*/
     }
     
     /// Aall the api rest
     private func fetchUserPost(tabs: String) {
-        APIService.shared.apiToGetUserPostViewModelData(token: handleNotAuthenticated(), tabs: tabs) { (result) in
+        /*APIService.shared.apiToGetUserPostViewModelData(token: handleNotAuthenticated(), tabs: tabs) { (result) in
             switch result {
             case .success(let model):
                 self.updateUI(with: model.userpost ?? [])
@@ -58,11 +58,11 @@ class PruebaViewController: UIViewController {
                 print(error.localizedDescription)
                 self.failedToGeProfile()
             }
-        }
+        }*/
         ///Lllamar a los otros metodos que faltan...
     }
     
-    private func updateUI(with model: [Userpost]) {
+   /* private func updateUI(with model: [Userpost]) {
         for items in model {
             let userViewModel = UserViewModel(name: items.owner?.user?.name, last: items.owner?.user?.last, username: items.owner?.user?.username, bio: items.owner?.user?.bio, profilePicture: URL(string:  items.owner?.user?.profilePicture ?? ""), dayOfBirth: Date(), gender:  GenderViewModel(gender: "male"), publicEmail: items.owner?.user?.publicEmail, counts: UserCountViewModel(followers: 1, following: 1, posts: 1), joinDate: Date(), countryId: 0, image: items.owner?.user?.image, imageHeader: items.owner?.user?.imageHeader, title: items.owner?.user?.title, likes: items.owner?.user?.likes, dislikes: items.owner?.user?.dislikes, address: items.owner?.user?.address, phone: items.owner?.user?.phone, userssId: 0, nivelId: 0, sentimentalId: 0, imagenBin: items.owner?.user?.imagenBin, valor: items.owner?.user?.valor, id: 0)
             
@@ -70,6 +70,7 @@ class PruebaViewController: UIViewController {
         }
         collectionViewTwo.reloadData()
     }
+    */
     
     private func failedToGeProfile() {
         let label = UILabel(frame: .zero)
@@ -194,10 +195,10 @@ extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSo
         collectionView.deselectItem(at: indexPath, animated: true)
         ///get the model and open post controller
         let model = models[indexPath.row]
-        let vc = PostViewController(model: model)
-        vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
-        vc.title = "Posts" ///model.postType.rawValue
+        //let vc = PostViewController(model: model)
+        //vc.navigationItem.largeTitleDisplayMode = .never
+        //navigationController?.pushViewController(vc, animated: true)
+        //vc.title = "Posts" ///model.postType.rawValue
     }
 }
 
@@ -250,7 +251,7 @@ extension PruebaViewController: ProfileTabsCollectionReusableViewDelegate {
         print("didTapGridButtonTab")
         // Reload collection view with data
         self.fetchUserPost(tabs: self.grid)
-        models = [UserPostViewModel]()
+        models = [UserpostViewModel]()
         collectionViewTwo.reloadData()
     }
     
@@ -258,7 +259,7 @@ extension PruebaViewController: ProfileTabsCollectionReusableViewDelegate {
         print("didTapTaggedButtonTab")
         //Reload collection view with data
         self.fetchUserPost(tabs: self.tagged)
-        models = [UserPostViewModel]()
+        models = [UserpostViewModel]()
         collectionViewTwo.reloadData()
     }
 }

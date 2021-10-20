@@ -25,13 +25,13 @@ final class ProfileViewController: UIViewController {
         return cv
     }()
     
-    private var postLikeViewModel = [PostLikeViewModel]()
+    private var postLikeViewModel = [LikeViewModel]()
     
-    private var postCommentsViewModel = [PostCommentsViewModel]()
+    private var postCommentsViewModel = [CommentViewModel]()
     
-    private var userViewModel = UserViewModel()
+    //private var userViewModel = UserViewModel()
     
-    private var userPostViewModel = [UserPostViewModel]()
+    private var userPostViewModel = [UserpostViewModel]()
     
     var spinner = UIActivityIndicatorView()
     
@@ -55,7 +55,7 @@ final class ProfileViewController: UIViewController {
         //configureCollectionView()
         setupLayouts()
         setupRemaningNavItems()
-        setupModel(tabs: "grid")
+        //setupModel(tabs: "grid")
         setupSpinner()
         ///Spinner
         //VW_overlay = UIView(frame: UIScreen.main.bounds)
@@ -359,18 +359,20 @@ extension ProfileViewController: ProfileInfoHeaderCollectionReusableViewDelegate
 extension ProfileViewController: ProfileTabsCollectionReusableViewDelegate {
     func didTapGridButtonTab() {
         // Reload collection view with data
-        userPostViewModel = [UserPostViewModel]()
-        self.setupModel(tabs: "grid")
+        userPostViewModel = [UserpostViewModel]()
+        //self.setupModel(tabs: "grid")
     }
     
     func didTapTaggedButtonTab() {
         //Reload collection view with data
-        userPostViewModel = [UserPostViewModel]()
-        setupModel(tabs: "tagged")
+        userPostViewModel = [UserpostViewModel]()
+        //setupModel(tabs: "tagged")
     }
 }
 
 // MARK: - ProfileViewController
+
+/*
 extension ProfileViewController {
     ///Call APIService
     ///Loop through the data and save it to the Model object //fetchUserPostData
@@ -535,6 +537,7 @@ extension ProfileViewController {
         }
     }
 }
+*/
 
 extension ProfileViewController {
     private func setupRemaningNavItems() {

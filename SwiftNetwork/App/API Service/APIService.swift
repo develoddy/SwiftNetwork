@@ -16,7 +16,7 @@ class APIServiceLocal: NSObject {
     /// Read file json
     /// - Parameter
     /// - Return
-    public func parseUserPostJSON( completion: @escaping (IReqResponseUserPost) -> Void ) {
+    /*public func parseUserPostJSON( completion: @escaping (IReqResponseUserPost) -> Void ) {
         let file = "userPostJson"
         ///Valdate if exists file or not
         guard let path = Bundle.main.path(forResource: file, ofType: "json") else { return }
@@ -33,7 +33,7 @@ class APIServiceLocal: NSObject {
         } catch {
             print("Error: \(error)")
         }
-    }
+    }*/
 }
 
 
@@ -47,7 +47,7 @@ class APIService: NSObject {
     ///Send Token
     ///Return Oject codable IReqResponsePostLike to ProfileViewcontroller
     //public func apiToGetPostLikeData(token: String, tabs: String, completion: @escaping (IReqResponsePostLike) -> Void) {
-    public func apiToGetPostLikeData(token: String, tabs: String, completion: @escaping ((Result<IReqResponseFeaturePosLike, Error>)) -> Void) {
+    /*public func apiToGetPostLikeData(token: String, tabs: String, completion: @escaping ((Result<IReqResponseFeaturePosLike, Error>)) -> Void) {
         ///Calla API Grid
         GeneralBC.apiToGetPostLikeDataBC(token, tabs) { (objPostLike) in
             completion(.success(objPostLike))
@@ -56,14 +56,14 @@ class APIService: NSObject {
             print(mensajeError)
             //completion(.failure(mensajeError))
         }
-    }
+    }*/
     
     ///PostComments
     ///Llamar a Web Service API
     ///Send Token
     ///Return Oject codable IReqResponsePostComments to ProfileViewcontroller
     ///func apiToGetPostCommentsData(token: String, completion : @escaping (IReqResponsePostComments) -> ()) {
-    func apiToGetPostCommentsData(token: String, tabs: String, completion : @escaping ((Result<IReqResponsePostComments, Error>)) -> ()) {
+    /*func apiToGetPostCommentsData(token: String, tabs: String, completion : @escaping ((Result<IReqResponsePostComments, Error>)) -> ()) {
         ///Call API
         GeneralBC.apiToGetPostCommentsDataBC(token, tabs) { (object) in
             completion(.success(object))
@@ -72,14 +72,14 @@ class APIService: NSObject {
             print(mensajeError)
         }
         
-    }
+    }*/
     
     ///User
     ///Llamar a Web Service API
     ///Send Token
     ///Return Oject codable IReqResponsePostComments to ProfileViewcontroller
     ///func apiToGetUsersData(token: String, completion : @escaping (IReqResponseUser) -> ()) {
-    func apiToGetUsersData(token: String, tabs: String, completion : @escaping ((Result<IReqResponseUser, Error>)) -> ()) {
+    /*func apiToGetUsersData(token: String, tabs: String, completion : @escaping ((Result<IReqResponseUser, Error>)) -> ()) {
         ///Call API
         GeneralBC.apiToGetUsersDataBC(token, tabs) { (object) in
             completion(.success(object))
@@ -87,19 +87,28 @@ class APIService: NSObject {
             completion(.failure(mensajeError as! Error))
         }
         
-    }
+    }*/
     
     ///Llamar a Web Service API
     ///Send Token
     ///Return Oject codable IReqResponsePostComments to ProfileViewcontroller
     ///func apiToGetUserPostViewModelData(token: String, completion : @escaping (IReqResponseUserPost) -> ()) {
-    func apiToGetUserPostViewModelData(token: String, tabs: String, completion : @escaping ((Result<IReqResponseUserPost, Error>)) -> ()) {
+    /*func apiToGetUserPostViewModelData(token: String, tabs: String, completion : @escaping ((Result<IReqResponseUserPost, Error>)) -> ()) {
        
         GeneralBC.apiToGetUserPostDataBC(token, tabs) { (object) in
             completion(.success(object))
         } conCompletionIncorrecto: { (mensajeError) in
             completion(.failure(mensajeError as! Error))
         }
-      
+    }*/
+    
+    func apiUserPost(token: String, completion : @escaping ((Result<UserPost, Error>)) -> ()) {
+        GeneralBC.apiUserPostBC(token) { (object) in
+            completion(.success(object))
+        } conCompletionIncorrecto: { (messageError) in
+            completion(.failure(messageError as! Error))
+        }
+
     }
+    
 }

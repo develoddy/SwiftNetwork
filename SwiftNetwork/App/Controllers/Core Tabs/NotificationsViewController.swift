@@ -7,7 +7,7 @@
 
 import UIKit
 enum UserNotificationType {
-    case like(post: UserPostViewModel)
+    case like(post: UserpostViewModel)
     case follow(state: FollowState)
 }
 
@@ -42,7 +42,7 @@ final class NotificationsViewController: UIViewController {
     // MARK: LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchNotifications()
+        //fetchNotifications()
         setupView()
         configureTableView()
         //addNoNotificationsView()
@@ -56,6 +56,7 @@ final class NotificationsViewController: UIViewController {
         spinner.center = view.center
     }
     
+    /*
     private func fetchNotifications() {
         
         for i in 0..<10 {
@@ -107,7 +108,7 @@ final class NotificationsViewController: UIViewController {
             self.models.append(model)
             
         }
-    }
+    }*/
     
     private func addNoNotificationsView() {
         tableView.isHidden = true
@@ -138,22 +139,21 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let model = models[indexPath.row]
+        /*let model = models[indexPath.row]
         switch model.type {
         case .like(_):
-            //like cell
             let cell = tableView.dequeueReusableCell(withIdentifier: NotificationLikeEventTableViewCell.identifier, for: indexPath) as! NotificationLikeEventTableViewCell
             cell.configure(with: model)
             cell.delgate = self
             return cell
         
         case .follow:
-            //follow cel
             let cell = tableView.dequeueReusableCell(withIdentifier: NotificationFollowEventTableViewCell.identifier, for: indexPath) as! NotificationFollowEventTableViewCell
-            //cell.configure(with: model)
+                //cell.configure(with: model)
             cell.delgate = self
             return cell
-        }
+        }*/
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -163,7 +163,7 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
 
 extension NotificationsViewController: NotificationLikeEventTableViewCellDelegate {
     func didTapRelatedPostButton(model: UserNotification) {
-        switch model.type {
+        /*switch model.type {
         case .like(let post):
             let vc = PostViewController(model: post)
             vc.title = post.postType.rawValue
@@ -171,7 +171,7 @@ extension NotificationsViewController: NotificationLikeEventTableViewCellDelegat
             navigationController?.pushViewController(vc, animated: true)
         case .follow(_):
             fatalError("Dev Issue: Should never get called")
-        }
+        }*/
     }
 }
 

@@ -21,15 +21,24 @@ import UIKit
  */
 
 /// States of render cell
-enum PostRenderType {
+/*enum PostRenderType {
     case collections(collections: [CollectionTableCellModel], createStory: [CollectionTableCellModel])
     case header(provider: UserViewModel)
-    case primaryContent(provider: UserPostViewModel) //Post
-    case actions(provider: UserPostViewModel) // Like, comment, share
-    case descriptions(post: UserPostViewModel)
-    case comments(comments: [PostCommentsViewModel])
-    //case footer(footer: String)
-    case footer(footer: UserPostViewModel) 
+    case primaryContent(provider: UserpostViewModel)
+    case actions(provider: UserpostViewModel)
+    case descriptions(post: UserpostViewModel)
+    case comments(comments: [CommentViewModel])
+    case footer(footer: UserpostViewModel)
+}*/
+
+enum PostRenderType {
+    case collections(collections: [CollectionTableCellModel], createStory: [CollectionTableCellModel])
+    case header(provider: User)
+    case primaryContent(provider: Userpost)
+    case actions(provider: Userpost)
+    case descriptions(post: Userpost)
+    case comments(comments: [Comment])
+    case footer(footer: Userpost)
 }
 
 /// Model of  renderd Post
@@ -50,11 +59,11 @@ class PostViewController: UIViewController {
     }()
     
     // MARK: Init Receive data from the ProfileViewcontroller
-    init(model: UserPostViewModel?) {
-        self.model = model
-        super.init(nibName: nil, bundle: nil)
-        configureModels()
-    }
+    //init(model: UserpostViewModel?) {
+        //self.model = model
+        //super.init(nibName: nil, bundle: nil)
+        //configureModels()
+    //}
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -116,15 +125,15 @@ class PostViewController: UIViewController {
         }
         
         /// Header
-        renderModels.append(PostRenderViewModel(renderType: .header(provider: UserPostViewModelModel.owner )))
+        //renderModels.append(PostRenderViewModel(renderType: .header(provider: UserPostViewModelModel.owner )))
         ///Post
-        renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: UserPostViewModelModel)))
+        //renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: UserPostViewModelModel)))
         ///Actions
-        renderModels.append(PostRenderViewModel(renderType: .actions(provider: UserPostViewModelModel))) //post
-        ///Description
-        renderModels.append(PostRenderViewModel(renderType: .descriptions(post: UserPostViewModelModel))) //post
+        //renderModels.append(PostRenderViewModel(renderType: .actions(provider: UserPostViewModelModel))) //post
+        ////Description
+        //renderModels.append(PostRenderViewModel(renderType: .descriptions(post: UserPostViewModelModel))) //post
         ///comment
-        renderModels.append(PostRenderViewModel(renderType: .comments(comments: UserPostViewModelModel.comments))) //comments
+        //renderModels.append(PostRenderViewModel(renderType: .comments(comments: UserPostViewModelModel.comments))) //comments
     }
     
     private func setupView() {
@@ -177,21 +186,21 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         case .comments(let comments):
             let comment = comments[indexPath.row] ///Se obtiene cada fila del array de comments
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier, for: indexPath) as! IGFeedPostGeneralTableViewCell
-            cell.configure(with: comment)
+            //cell.configure(with: comment)
             return cell
         case .primaryContent(let post):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostTableViewCell.identifier, for: indexPath) as! IGFeedPostTableViewCell
-            cell.configure(with: post)
+            //cell.configure(with: post)
             return cell
         case .header(let user):
               let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier,for: indexPath) as! IGFeedPostHeaderTableViewCell
-            cell.configure(with: user)
+            //cell.configure(with: user)
             cell.backgroundColor = .red
             return cell
         case .descriptions(let post):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
             print(post)
-            cell.configure(with: post)
+            //cell.configure(with: post)
             return cell
         case .footer(_/**let footer**/):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostFooterTableViewCell.identifier, for: indexPath) as! IGFeedPostFooterTableViewCell

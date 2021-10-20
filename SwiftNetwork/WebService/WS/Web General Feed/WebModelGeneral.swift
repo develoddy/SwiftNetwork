@@ -8,9 +8,78 @@
 import Foundation
 
 class WebModelGeneral: NSObject {
-
+    
+    //static let shared = WebModelGeneral()
+    
     static let CDMWebModelURLBase : NSString = Constants.ApiRoutes.login as NSString
-
+    
+    @discardableResult class
+    func startApiUserPost(_ token: String?,
+                                 conCompletionCorrecto completionCorrecto : @escaping Closures.userPost ,
+                                 error procesoIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        let dic : [Any]? = nil
+        //let dic : [String : Any] = [ "tabs": tabs as Any ]
+        let result = WebSender.doGETTokenToURL(conURL: WebModelGeneral.CDMWebModelURLBase,
+                                                conPath: "api/auth/home/userpost" as NSString,
+                                                conParametros: dic,
+                                                conToken: token! as NSString) { (objRespuesta) in
+            
+            let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
+            let arrayRespuesta       = diccionarioRespuesta?["error"]
+            let mensajeError         = WebModelGeneral.obtenerMensajeDeError(paraData: diccionarioRespuesta)
+            if arrayRespuesta == nil {
+                if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
+                    //let objUsuario = WebTranslatorGeneral.translateResponseUserPostBE(diccionarioRespuesta!)
+                    //completionCorrecto(objUsuario)
+                    guard let diccionarioRespuesta = diccionarioRespuesta else {
+                        return
+                    }
+                    WebTranslatorGeneral.shared.translateResponseUserPostBE(diccionarioRespuesta) { (result) in
+                        switch result {
+                        case .success(let userPost):
+                            completionCorrecto(userPost)
+                        case .failure(let error):
+                            print(error.localizedDescription)
+                        }
+                    }
+                }
+            } else {
+                if  arrayRespuesta as! String == Constants.Error.unauthorized {
+                    let mensajeErrorFinal = (diccionarioRespuesta != nil && diccionarioRespuesta?.count == 0) ? Constants.LogInError.logInInvalidte: mensajeError
+                    procesoIncorrecto(mensajeErrorFinal)
+               }
+            }
+        }
+        return result
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
     //MARK:  A call is made to the backend
     
     ///This functions receives by parameter the token
@@ -151,7 +220,7 @@ class WebModelGeneral: NSObject {
         }
         return result
     }
-    
+     */
     
     
     
@@ -168,4 +237,6 @@ class WebModelGeneral: NSObject {
         }
         return mensajeError
     }
+ 
+     
 }

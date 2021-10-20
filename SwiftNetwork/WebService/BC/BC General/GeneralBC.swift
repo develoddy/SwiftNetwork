@@ -9,6 +9,45 @@ import UIKit
 
 class GeneralBC: NSObject {
     
+    ///static let shared = GeneralBC()
+    
+    ///VAMOS A LLAMAR A LA BASE DE DATOS PARA OBTENER EL OBJETO USERPOST
+    ///ESTA FUNCION RECIBE POR PARAMETRO EL TOKEN
+    ///RETURN OBJETO USERPOST O DE LO CONTRARIO UN MENSAJE DE ERROR.
+    
+    @discardableResult class
+    public func apiUserPostBC(_ token: String?,
+                              conCompletionCorrecto completioCorrecto:  @escaping Closures.userPost,
+                              conCompletionIncorrecto completionIncorrecto: @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        
+        let result = WebModelGeneral.startApiUserPost(token, conCompletionCorrecto: { (data) in
+            completioCorrecto(data)
+        }, error: { (messageError) in
+            completionIncorrecto(messageError)
+        })
+        return result
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
     ///This functions receives by parameter the token
     ///Call to WebModel - startApiToGetPostLikeData
     ///Return object codable iReqResponsePostLike, On the contrary mensajeError
@@ -75,4 +114,6 @@ class GeneralBC: NSObject {
         })
         return result
     }
+ 
+     */
 }

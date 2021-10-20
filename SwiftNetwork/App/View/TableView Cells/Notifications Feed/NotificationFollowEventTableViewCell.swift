@@ -110,7 +110,7 @@ class NotificationFollowEventTableViewCell: UITableViewCell {
             break
         }
         label.text = model.text
-        profileImageView.sd_setImage(with: model.user.profilePicture, completed: nil)
+        //profileImageView.sd_setImage(with: model.user.profilePicture, completed: nil)
     }
     
     private func configureForFollow() {

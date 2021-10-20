@@ -74,11 +74,12 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         label.text = nil
     }
     
-    public func configure(with model: UserPostViewModel) {
-        let url = model.thumbnailImage
-        photoImageView.sd_setImage(with: url, completed: nil)
+    public func configure(with model: UserpostViewModel) {
+        //let url = model.thumbnailImage
+        //photoImageView.sd_setImage(with: url, completed: nil)
+        //contentView.backgroundColor = colors.randomElement()
         
-        contentView.backgroundColor = colors.randomElement()
+        
         /*let task = URLSession.shared.dataTask(with: url, completionHandler: { data, _, _ in
             self.photoImageView.image = UIImage(data: data!)
             

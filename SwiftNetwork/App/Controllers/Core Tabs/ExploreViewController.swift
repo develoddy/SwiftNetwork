@@ -16,7 +16,7 @@ class ExplorerViewController: UIViewController {
         return searchBar
     }()
     
-    private var models = [UserPostViewModel]()
+    private var models = [UserpostViewModel]()
     
     private var collectionView: UICollectionView?
     
@@ -37,7 +37,7 @@ class ExplorerViewController: UIViewController {
         configureExploreCollection()
         configureDimmedView()
         configureTabbedSearch()
-        setupModel()
+        //setupModel()
     }
     
     override func viewDidLayoutSubviews() {
@@ -256,68 +256,68 @@ extension ExplorerViewController: UICollectionViewDelegate, UICollectionViewData
         
         let model = models[indexPath.row]
         
-        let vc = PostViewController(model: model)
-        vc.title = model.postType.rawValue
-        navigationController?.pushViewController(vc, animated: true)
+        //let vc = PostViewController(model: model)
+        ///vc.title = model.postType.rawValue
+        //navigationController?.pushViewController(vc, animated: true)
     }
 }
 
 
 //MARK: MOCKS
-extension ExplorerViewController {
-    private func setupModel() {
-        
-        for i in 0..<10 {
-            let user = UserViewModel(
-                name: "",
-                last: "",//(first: "", last: ""),
-                username: "@username",
-                bio: "",
-                profilePicture: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
-                dayOfBirth: Date(),
-                gender: GenderViewModel(gender: "male"),//.male,
-                publicEmail: "",
-                counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
-                joinDate: Date(),
-                countryId: 0,
-                image: "",
-                imageHeader: "",
-                title: "",
-                likes: "",
-                dislikes: "",
-                address: "",
-                phone: "",
-                userssId: 0,
-                nivelId: 0,
-                sentimentalId: 0,
-                imagenBin: "",
-                valor: "",
-                id: 0
-                /**name: (first: "", last: ""),
-                username: "joe",
-                bio: "",
-                profilePicture: URL(string: "https://wwww.google.com")!,
-                birthDate: Date(),
-                gender: .male,
-                email: "",
-                counts: UserCount(followers: 1, following: 1, posts: 1),
-                joinDate: Date()**/
-            )
-            
-            let post = UserPostViewModel(
-                identifier: "",
-                postType: .photo,
-                thumbnailImage: URL(
-                    string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
-                postURL: URL(string: "https://wwww.google.com")!,
-                caption: nil,
-                likeCount: [],
-                comments: [],
-                createDate: Date(),
-                taggedUsers: [],
-                owner: user)
-            
-            models.append(post)
-        }
-    }
-}
+//extension ExplorerViewController {
+//    private func setupModel() {
+//        
+//        for i in 0..<10 {
+//            let user = UserViewModel(
+//                name: "",
+//                last: "",//(first: "", last: ""),
+//                username: "@username",
+//                bio: "",
+//                profilePicture: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
+//                dayOfBirth: Date(),
+//                gender: GenderViewModel(gender: "male"),//.male,
+//                publicEmail: "",
+//                counts: UserCountViewModel(followers: 1, following: 1, posts: 1),
+//                joinDate: Date(),
+//                countryId: 0,
+//                image: "",
+//                imageHeader: "",
+//                title: "",
+//                likes: "",
+//                dislikes: "",
+//                address: "",
+//                phone: "",
+//                userssId: 0,
+//                nivelId: 0,
+//                sentimentalId: 0,
+//                imagenBin: "",
+//                valor: "",
+//                id: 0
+//                /**name: (first: "", last: ""),
+//                username: "joe",
+//                bio: "",
+//                profilePicture: URL(string: "https://wwww.google.com")!,
+//                birthDate: Date(),
+//                gender: .male,
+//                email: "",
+//                counts: UserCount(followers: 1, following: 1, posts: 1),
+//                joinDate: Date()**/
+//            )
+//            
+//            let post = UserPostViewModel(
+//                identifier: "",
+//                postType: .photo,
+//                thumbnailImage: URL(
+//                    string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
+//                postURL: URL(string: "https://wwww.google.com")!,
+//                caption: nil,
+//                likeCount: [],
+//                comments: [],
+//                createDate: Date(),
+//                taggedUsers: [],
+//                owner: user)
+//            
+//            models.append(post)
+//        }
+//    }
+//}

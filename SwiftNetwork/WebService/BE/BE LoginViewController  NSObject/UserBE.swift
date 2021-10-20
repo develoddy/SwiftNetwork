@@ -72,3 +72,29 @@ class UserBE: NSObject, NSCoding {
         aCoder.encode(self.password, forKey: "password")
     }
 }
+
+
+/*
+ 
+ En su caso, utilice el siguiente código.
+
+ class Blog: Codable {
+    var blogName: String?
+ }
+ Ahora crea su objeto. Por ejemplo:
+
+ var blog = Blog()
+ blog.blogName = "My Blog"
+ Ahora codifíquelo así:
+
+ if let encoded = try? JSONEncoder().encode(blog) {
+     UserDefaults.standard.set(encoded, forKey: "blog")
+ }
+ y decodificarlo así:
+
+ if let blogData = UserDefaults.standard.data(forKey: "blog"),
+     let blog = try? JSONDecoder().decode(Blog.self, from: blogData) {
+ }
+ 
+ 
+ */
