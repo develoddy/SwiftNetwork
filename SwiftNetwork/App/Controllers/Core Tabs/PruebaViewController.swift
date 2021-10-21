@@ -14,6 +14,10 @@ class PruebaViewController: UIViewController {
     
     let collectionViewTwoIdentifier = "collectionViewTwoIdentifier"
     
+    var data: [String] = ["a", "b"]
+    
+    var email: String = ""
+    
     private var models = [Userpost]()
     
     private let grid = "grid"
@@ -31,6 +35,18 @@ class PruebaViewController: UIViewController {
         ///doTestUserPost()
         
         fetchUserPost()
+    }
+    
+    // MARK: Init
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        guard let email = getUserToken()?.usertoken?.email else { return }
+        self.email = email
+        print(self.email)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLayoutSubviews() {
@@ -82,10 +98,14 @@ class PruebaViewController: UIViewController {
     ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
     private func setupModel(with model: [Userpost] ) {
         for items in model {
-            let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType)
-            models.append(userpost)
+            if items.userAuthor?.email == self.email {
+                let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType)
+                models.append(userpost)
+            }
+            
+            
         }
-        DispatchQueue.main.async{ self.collectionViewTwo.reloadData() }
+        DispatchQueue.main.async{ self.collectionViewTwo.reloadData()}
     }
     
     private func failedToGeProfile() {
@@ -124,6 +144,15 @@ class PruebaViewController: UIViewController {
         view.addSubview(collectionViewTwo)
     }
     
+    public func getUserToken() -> ResponseTokenBE? {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        //let user = appDelegate.objUsuarioSesion?.user
+        guard let token = appDelegate.objUsuarioSesion else { // appDelegate.objUsuarioSesion?.user else {
+            return getUserToken()
+        }
+        return token
+    }
+    
     private func handleNotAuthenticated() -> String {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let token = appDelegate.objUsuarioSesion?.token
@@ -145,24 +174,27 @@ class PruebaViewController: UIViewController {
 
 extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        return 2
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 { ///Header
-            return 0
-        }
-        if section == 1 {
-            return 0
+        //if section == 0 { ///Header
+          //  return 0
+            //return data.count
+        //}
+        //if section == 1 {
+            //return 0
+        //}
+        
+        if section == 0 {
+            return 0 ///Header
         }
         return  models.count ///Collections photos
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        ///let model = models[indexPath.row]
         let model = models[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
-        
         cell.configure(with: model)
         return cell
     }
@@ -178,22 +210,28 @@ extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard kind == UICollectionView.elementKindSectionHeader else { return UICollectionReusableView() }
         
-        if indexPath.section == 1 {
-            let storyHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: StoryFeaturedCollectionTableViewCell.identifier,for: indexPath) as! StoryFeaturedCollectionTableViewCell
-            return storyHeader
+        ///Procesar datos dle usuario Profile
+        ///let model = data[indexPath.row]
+        ///print("aux: \(data.count)")
+        switch indexPath.section {
+            case 0:
+                let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,for: indexPath) as! ProfileInfoHeaderCollectionReusableView
+                    //header.configure(with: model)
+                    //header.delegate = self
+                return header
+            case 1:
+                let storyHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: StoryFeaturedCollectionTableViewCell.identifier,for: indexPath) as! StoryFeaturedCollectionTableViewCell
+                return storyHeader
+            case 2:
+                let tabsHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileTabsCollectionReusableView.identifier,for: indexPath) as! ProfileTabsCollectionReusableView
+                tabsHeader.delegate = self
+                return tabsHeader
+            default: fatalError()
         }
         
-        if indexPath.section == 2 {
-            let tabsHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileTabsCollectionReusableView.identifier,for: indexPath) as! ProfileTabsCollectionReusableView
-            tabsHeader.delegate = self
-            return tabsHeader
-        }
         
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,for: indexPath) as! ProfileInfoHeaderCollectionReusableView
-        ///let model = models[indexPath.row]
-        ///header.configure(model: model)
-        header.delegate = self
-        return header
+        //return header
+        //return UICollectionReusableView()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {

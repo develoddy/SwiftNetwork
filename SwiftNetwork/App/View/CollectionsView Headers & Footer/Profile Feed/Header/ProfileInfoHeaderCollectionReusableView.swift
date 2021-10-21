@@ -199,12 +199,15 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     }
     
     override func prepareForReuse() {
-        //usernameLabel.setTitle(nil, for: .normal)
+        usernameLabel.setTitle(nil, for: .normal)
     }
     
     
-    public func configure(model: UserpostViewModel) {
-        //usernameLabel.setTitle(model.owner.username, for: .normal)
+    public func configure(with model: Userpost) {
+        guard let username = model.userAuthor?.username else {
+            return
+        }
+        usernameLabel.setTitle(username, for: .normal)
     }
     
     // MARK: - Actions

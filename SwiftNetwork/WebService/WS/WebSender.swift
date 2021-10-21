@@ -375,7 +375,9 @@ class WebSender: NSObject {
             respuesta = self.detResponseInJSONWithData(data!)
         }
         
-        //print("---- Respuesta GetServiceResponse  \(respuesta)")
+        //print("======== Respuesta DB ========")
+        //print(respuesta)
+        //print("======== / END Respuesta DB ========")
         let urlResponse = response as? HTTPURLResponse
         let headerFields : NSDictionary? = urlResponse?.allHeaderFields as NSDictionary?
         let objResponse = WebResponse()

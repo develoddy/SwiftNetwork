@@ -69,7 +69,7 @@ class HomeViewController: UIViewController {
     ///Inicio del programa.
     ///Setupview
     private func setupView() {
-        view.backgroundColor = UIColor(red: 0.05, green: 0.05, blue: 0.07, alpha: 1.00)
+        view.backgroundColor = .clear //UIColor(red: 0.05, green: 0.05, blue: 0.07, alpha: 1.00)
         view.addSubview(tableView)
     }
     
@@ -91,6 +91,8 @@ class HomeViewController: UIViewController {
         APIService.shared.apiUserPost(token: handleNotAuthenticated()) {(result) in
             switch result {
             case .success(let model):
+                print("-------- model home-----")
+                print(model)
                 self.setupModel(with: model.userpost ?? [])
             case .failure(let error):
                 print(error.localizedDescription)
@@ -101,13 +103,11 @@ class HomeViewController: UIViewController {
     ///Models
     ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
     private func setupModel(with model: [Userpost] ) {
-        let story = createStoryCollections()
-        let collections = createArrayCollections()
         for items in model {
             guard let user = items.userAuthor else { return }
             guard let comments = items.comments else { return }
             let viewModel = HomeFeedRenderViewModel(
-                collections : PostRenderViewModel(renderType: .collections(collections: collections, createStory: story)),
+                collections : PostRenderViewModel(renderType: .collections(collections:  createStoryCollections(), createStory: createArrayCollections())),
                 header      : PostRenderViewModel(renderType: .header(provider: user)),
                 post        : PostRenderViewModel(renderType: .primaryContent(provider: items)),
                 actions     : PostRenderViewModel(renderType: .actions(provider: items)),

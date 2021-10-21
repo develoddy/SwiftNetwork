@@ -7,6 +7,69 @@
 
 import UIKit
 
+
+// MARK: - ResponseTokenBE
+struct ResponseTokenBE: Codable {
+    let token, tokenType: String?
+    let expiresIn: Int?
+    let usertoken: Usertoken?
+
+    enum CodingKeys: String, CodingKey {
+        case token
+        case tokenType = "token_type"
+        case expiresIn = "expires_in"
+        case usertoken
+    }
+}
+
+// MARK: - User
+struct Usertoken: Codable {
+    let id: Int?
+    let name, username, email: String?
+    let emailVerifiedAt: String?
+    let idCount: Int?
+    let createdAt, updatedAt: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id, name, username, email
+        case emailVerifiedAt = "email_verified_at"
+        case idCount = "id_count"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+}
+
+class UserBE: NSObject, NSCoding {
+    var name                : String?
+    var username            : String?
+    var email               : String?
+    var password            : String?
+    
+    override init() {
+        super.init()
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        self.name      = aDecoder.decodeObject(forKey: "name")     as? String
+        self.username  = aDecoder.decodeObject(forKey: "username") as? String
+        self.email     = aDecoder.decodeObject(forKey: "email")    as? String
+        self.password  = aDecoder.decodeObject(forKey: "password") as? String
+    }
+
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.name,     forKey: "name")
+        aCoder.encode(self.username, forKey: "username")
+        aCoder.encode(self.email,    forKey: "email")
+        aCoder.encode(self.password, forKey: "password")
+    }
+}
+
+
+
+
+
+// MARK: - LogOut
+
 class ResponseLogOutBE: NSObject, NSCoding {
     var message : String?
     
@@ -23,6 +86,7 @@ class ResponseLogOutBE: NSObject, NSCoding {
     }
 }
 
+/*
 class ResponseTokenBE: NSObject, NSCoding {
     var token       : String?
     var tokenType   : String?
@@ -71,30 +135,7 @@ class UserBE: NSObject, NSCoding {
         aCoder.encode(self.email,    forKey: "email")
         aCoder.encode(self.password, forKey: "password")
     }
-}
+}*/
 
 
-/*
- 
- En su caso, utilice el siguiente código.
 
- class Blog: Codable {
-    var blogName: String?
- }
- Ahora crea su objeto. Por ejemplo:
-
- var blog = Blog()
- blog.blogName = "My Blog"
- Ahora codifíquelo así:
-
- if let encoded = try? JSONEncoder().encode(blog) {
-     UserDefaults.standard.set(encoded, forKey: "blog")
- }
- y decodificarlo así:
-
- if let blogData = UserDefaults.standard.data(forKey: "blog"),
-     let blog = try? JSONDecoder().decode(Blog.self, from: blogData) {
- }
- 
- 
- */

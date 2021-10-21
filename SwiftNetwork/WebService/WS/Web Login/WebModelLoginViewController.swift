@@ -54,8 +54,20 @@ class WebModelLoginViewController: NSObject {
             
             if arrayRespuesta == nil {
                 if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
-                    let objUsuario = WebTranslatorLoginViewController.translateResponseTokenBE(diccionarioRespuesta!)
-                    completionCorrecto(objUsuario)
+                    ///let objUsuario = WebTranslatorLoginViewController.translateResponseTokenBE(diccionarioRespuesta!)
+                    ///completionCorrecto(objUsuario)
+                    
+                    guard let diccionarioRespuesta = diccionarioRespuesta else {
+                        return
+                    }
+                    WebTranslatorLoginViewController.shared.translateResponseTokenBE(diccionarioRespuesta) { (result) in
+                        switch result {
+                        case .success(let userPost):
+                            completionCorrecto(userPost)
+                        case .failure(let error):
+                            print(error.localizedDescription)
+                        }
+                    }
                 }
             } else {
                 if  arrayRespuesta as! String == Constants.Error.unauthorized {
@@ -88,8 +100,19 @@ class WebModelLoginViewController: NSObject {
             
             if arrayRespuesta == nil {
                 if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
-                    let objUsuario = WebTranslatorLoginViewController.translateResponseTokenBE(diccionarioRespuesta!)
-                    completionCorrecto(objUsuario)
+                    guard let diccionarioRespuesta = diccionarioRespuesta else {
+                        return
+                    }
+                    WebTranslatorLoginViewController.shared.translateResponseTokenBE(diccionarioRespuesta) { (result) in
+                        switch result {
+                            case .success(let userPost):
+                                completionCorrecto(userPost)
+                            case .failure(let error):
+                                print(error.localizedDescription)
+                        }
+                    }
+                    ///let objUsuario =  WebTranslatorLoginViewController.shared.translateResponseTokenBE(diccionarioRespuesta)
+                    ///completionCorrecto(objUsuario)
                 }
             } else {
                 if  arrayRespuesta as! String == Constants.Error.unauthorized {
@@ -99,7 +122,6 @@ class WebModelLoginViewController: NSObject {
             }
         }
     }
-    
     
     
     //MARK: - manejo de mensajes de error y status
