@@ -8,6 +8,10 @@
 import Foundation
 
 
+/* ============================================ */
+/* ==          [ U S E R  -  P O S T ]       == */
+/* ============================================ */
+
 // MARK: - UserPost
 struct UserPost: Codable {
     let status: Bool?
@@ -74,7 +78,6 @@ struct Comment: Codable {
 }
 
 // MARK: - User
-
  struct User: Codable {
     let id: Int?
     let name: String?
@@ -95,7 +98,6 @@ struct Comment: Codable {
         case count, profile
     }
 }
-
 
 // MARK: - Count
 struct Count: Codable {
@@ -137,7 +139,6 @@ struct Profile: Codable {
         case updatedAt = "updated_at"
     }
 }
-
 
 // MARK: - Like
 struct Like: Codable {
@@ -255,7 +256,6 @@ struct Gender: Codable {
     }
 }
 
-
 // MARK: - Storyfeatured
 struct Storyfeatured: Codable {
     let id: Int?
@@ -270,4 +270,146 @@ struct Storyfeatured: Codable {
         case createdAt = "created_at"
         case updatedAt = "updated_at"
     }
+}
+
+
+
+
+/* ============================================ */
+/* ==               [ T O K E N ]            == */
+/* ============================================ */
+
+// MARK: - ResponseTokenBE
+struct ResponseTokenBE: Codable {
+    let token, tokenType: String?
+    let expiresIn: Int?
+    let usertoken: Usertoken?
+
+    enum CodingKeys: String, CodingKey {
+        case token
+        case tokenType = "token_type"
+        case expiresIn = "expires_in"
+        case usertoken
+    }
+}
+
+// MARK: - User
+struct Usertoken: Codable {
+    let id: Int?
+    let name, username, email: String?
+    let emailVerifiedAt: String?
+    let idCount: Int?
+    let createdAt, updatedAt: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id, name, username, email
+        case emailVerifiedAt = "email_verified_at"
+        case idCount = "id_count"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+}
+
+// MARK: - UserBE
+class UserBE: NSObject, NSCoding {
+    var name                : String?
+    var username            : String?
+    var email               : String?
+    var password            : String?
+    
+    override init() {
+        super.init()
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        self.name      = aDecoder.decodeObject(forKey: "name")     as? String
+        self.username  = aDecoder.decodeObject(forKey: "username") as? String
+        self.email     = aDecoder.decodeObject(forKey: "email")    as? String
+        self.password  = aDecoder.decodeObject(forKey: "password") as? String
+    }
+
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.name,     forKey: "name")
+        aCoder.encode(self.username, forKey: "username")
+        aCoder.encode(self.email,    forKey: "email")
+        aCoder.encode(self.password, forKey: "password")
+    }
+}
+
+// MARK: - LogOut
+class ResponseLogOutBE: NSObject, NSCoding {
+    var message : String?
+    
+    override init() {
+        super.init()
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        self.message = aDecoder.decodeObject(forKey: "message") as? String
+    }
+
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.message, forKey: "message")
+    }
+}
+
+
+
+/* ============================================ */
+/* ==           [ E X P L O R E ]            == */
+/* ============================================ */
+
+// MARK:  - UserSearchBE
+class UserSearchBE: NSObject, NSCoding {
+    var name: String?
+
+    override init() {
+        super.init()
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        self.name = aDecoder.decodeObject(forKey: "name") as? String
+    }
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.name, forKey: "name")
+    }
+}
+
+// MARK:  - WebUserSearchData
+struct WebUserSearchData: Codable {
+    var user: [UserDecodable]
+}
+
+// MARK:  - UserDecodable
+struct UserDecodable: Codable {
+    var username: String?
+    var name: String?
+}
+
+// MARK:  - WebUserModel
+struct WebUserModel {
+    var user: [Search]
+}
+
+// MARK:  - Search
+struct Search {
+    var username: String?
+    var name: String?
+}
+
+
+
+/* ============================================ */
+/* ==     [ W E B  -  R E S P O N S E ]      == */
+/* ============================================ */
+
+// MARK: - Web Response
+class WebResponse: NSObject {
+    var respuestaJSON   : Any?
+    var statusCode      : NSInteger?
+    var respuestaNSData : Data?
+    var error           : NSError?
+    var datosCabecera   : NSDictionary?
+    var token           : NSString?
+    var cookie          : NSString?
 }

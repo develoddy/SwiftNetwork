@@ -71,8 +71,6 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
         let result = results[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultViewTableViewCell.identifier, for: indexPath) as! SearchResultViewTableViewCell
         cell.configure(with: result)
-        
-        //}
         return cell
     }
     

@@ -8,11 +8,6 @@
 import UIKit
 import SDWebImage
 
-struct Person {
-    var name: String?
-    var email: String?
-}
-
 class PruebaViewController: UIViewController {
     
     let collectionViewTwo = ProfileCollectionsViews.collectionViewTwo()

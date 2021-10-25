@@ -103,7 +103,7 @@ class APIService: NSObject {
     }*/
     
     func apiUserPost(token: String, completion : @escaping ((Result<UserPost, Error>)) -> ()) {
-        GeneralBC.apiUserPostBC(token) { (object) in
+        BCApiRest.apiUserPostBC(token) { (object) in
             completion(.success(object))
         } conCompletionIncorrecto: { (messageError) in
             completion(.failure(messageError as! Error))

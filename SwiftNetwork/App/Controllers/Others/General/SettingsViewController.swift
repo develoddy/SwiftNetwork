@@ -123,7 +123,7 @@ class SettingsViewController: UIViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let token = appDelegate.objUsuarioSesion?.token
         
-        UserLoginBC.logOut(token, conCompletionCorrecto: { (objUsuario) in
+        BCApiRest.logOut(token, conCompletionCorrecto: { (objUsuario) in
             
             let actionSheet = UIAlertController(
                 title           : Constants.SignUp.titleAlert    ,

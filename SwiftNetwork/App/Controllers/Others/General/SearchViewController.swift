@@ -14,7 +14,9 @@ enum Searchçresult {
 
 class SearchViewController: UIViewController {
     
-    private var models = [UserpostViewModel]()
+    //private var models = [UserpostViewModel]()
+    
+    private var models = [Userpost]()
     
     private let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: SearchResultViewController())
@@ -61,10 +63,11 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setupSpinner()
         configureCollectionViewCell()
         delegateCollections()
         configureSearchBar()
-        //setupModel()
+        fetchUserPost()
     }
     
     override func viewDidLayoutSubviews() {
@@ -78,17 +81,62 @@ class SearchViewController: UIViewController {
         view.addSubview(dismmeView)
     }
     
+    ///Spinner
+    ///Muestra el spiner mientras los datos de van cargando...
+    private func setupSpinner()  {
+        let spinerView = SpinnerView.shared.setupSpinner()
+        spinerView.center = view.center
+        SpinnerView.shared.VW_overlay = UIView(frame: UIScreen.main.bounds)
+        SpinnerView.shared.VW_overlay.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        view.addSubview(spinerView)
+    }
+    
+    ///Api Rest.
+    ///Hacemos una llamada al Api rest.
+    ///Una vez obtenido los datos que queremos, se lo enviamos a la funcion setuModel.
+    private func fetchUserPost() {
+        APIService.shared.apiUserPost(token: handleNotAuthenticated()) {(result) in
+            switch result {
+            case .success(let model):
+                model.userpost?.count != 0 ? self.setupModel(with: model.userpost ?? []) : print("Array Userpost está vacio...")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    ///Models
+    ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
+    private func setupModel(with model: [Userpost] ) {
+        for items in model {
+            let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType, storyfeatured: items.storyfeatured )
+            models.append(userpost)
+        }
+        ///Carga el spiner y recarga el collectionViewTwo con los datos.
+        DispatchQueue.main.async {
+            SpinnerView.shared.spinner.stopAnimating()
+            SpinnerView.shared.VW_overlay.isHidden = false
+            self.collectionView.reloadData()
+        }
+    }
+    
+    ///Autenticated & validate del Token de la sesión del aplicativo.
+    private func handleNotAuthenticated() -> String {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let token = appDelegate.objUsuarioSesion?.token
+        if token == nil {
+            let vc = LoginViewController()
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc, animated: false)
+        }
+        return token ?? "nil"
+    }
+    
     private func configureDisnmeView() {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(didCancelSearch))
         gesture.numberOfTouchesRequired = 1
         gesture.numberOfTapsRequired = 1
         dismmeView.addGestureRecognizer(gesture)
-    }
-    
-    private func getTokenLocal() -> String {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let token = appDelegate.objUsuarioSesion?.token
-        return token!
     }
     
     private func configureCollectionViewCell() {
@@ -123,7 +171,7 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
         
         let filter = UserSearchBE()
         filter.name = query
-        SearchBC.search(filter, getTokenLocal(), conCompletionCorrecto: { (obj) in
+        BCApiRest.search(filter, handleNotAuthenticated(), conCompletionCorrecto: { (obj) in
             DispatchQueue.main.async {
                 resultsComtroller.update(with: obj)
             }
@@ -141,7 +189,7 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
 
 //MARK: Collections
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    ///
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -156,7 +204,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         let model = models[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
         cell.backgroundColor = .systemBackground
-        //cell.configure(with: model)
+        cell.configure(with: model)
         return cell
     }
     
@@ -164,9 +212,9 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         let model = models[indexPath.row]
-        //let vc = PostViewController(model: model)
-        //vc.title = model.postType.rawValue
-        //navigationController?.pushViewController(vc, animated: true)
+        let vc = PostViewController(model: model)
+        vc.title = "Search"//model.postType.rawValue
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -31,7 +31,7 @@ class AuthManager {
                 objUser.email = email
                 objUser.password = password
                 
-                UserLoginBC.signIn(objUser) { (objUsuario) in
+                BCApiRest.signIn(objUser) { (objUsuario) in
                     completion(true)
                 } conCompletionIncorrecto: { (mensajeError) in
                     completion(false)
@@ -50,7 +50,7 @@ class AuthManager {
             objUser.password = password
             
             ///Call to API
-            UserLoginBC.logIn(objUser) { (objUsuario) in
+            BCApiRest.logIn(objUser) { (objUsuario) in
                 completion(true)
             } conCompletionIncorrecto: { (mensajeError) in
                 completion(false)
