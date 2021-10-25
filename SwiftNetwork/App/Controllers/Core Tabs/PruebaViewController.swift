@@ -8,20 +8,31 @@
 import UIKit
 import SDWebImage
 
+struct Person {
+    var name: String?
+    var email: String?
+}
+
 class PruebaViewController: UIViewController {
     
     let collectionViewTwo = ProfileCollectionsViews.collectionViewTwo()
     
     let collectionViewTwoIdentifier = "collectionViewTwoIdentifier"
     
-    var data: [String] = ["a", "b"]
-    
     var email: String = ""
     
     private var models = [Userpost]()
     
+    private var user: User?
+    
+    private var story = [Storyfeatured]()
+    
     private let grid = "grid"
     private let tagged = "tagged"
+    
+    var spinner = UIActivityIndicatorView()
+    
+    var VW_overlay: UIView = UIView()
     
     //MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -33,8 +44,8 @@ class PruebaViewController: UIViewController {
         configureNavigationBar()
         //fetchUserPost(tabs: grid)
         ///doTestUserPost()
-        
         fetchUserPost()
+        setupSpinner()
     }
     
     // MARK: Init
@@ -42,52 +53,41 @@ class PruebaViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         guard let email = getUserToken()?.usertoken?.email else { return }
         self.email = email
-        print(self.email)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    ///viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.collectionViewTwo.frame = view.bounds
     }
     
+    ///SetupView
     private func setupView() {
         view.backgroundColor = .systemBackground
     }
     
-    
-    /// Aall the api rest
-    ///private func fetchUserPost(tabs: String) {
-        /*APIService.shared.apiToGetUserPostViewModelData(token: handleNotAuthenticated(), tabs: tabs) { (result) in
-            switch result {
-            case .success(let model):
-                self.updateUI(with: model.userpost ?? [])
-            case .failure(let error):
-                print(error.localizedDescription)
-                self.failedToGeProfile()
-            }
-        }*/
-        ///Lllamar a los otros metodos que faltan...
-    ///}
-    
-   /* private func updateUI(with model: [Userpost]) {
-        for items in model {
-            let userViewModel = UserViewModel(name: items.owner?.user?.name, last: items.owner?.user?.last, username: items.owner?.user?.username, bio: items.owner?.user?.bio, profilePicture: URL(string:  items.owner?.user?.profilePicture ?? ""), dayOfBirth: Date(), gender:  GenderViewModel(gender: "male"), publicEmail: items.owner?.user?.publicEmail, counts: UserCountViewModel(followers: 1, following: 1, posts: 1), joinDate: Date(), countryId: 0, image: items.owner?.user?.image, imageHeader: items.owner?.user?.imageHeader, title: items.owner?.user?.title, likes: items.owner?.user?.likes, dislikes: items.owner?.user?.dislikes, address: items.owner?.user?.address, phone: items.owner?.user?.phone, userssId: 0, nivelId: 0, sentimentalId: 0, imagenBin: items.owner?.user?.imagenBin, valor: items.owner?.user?.valor, id: 0)
-            
-            models.append(UserPostViewModel(identifier: items.identifier ?? "", postType: .photo, thumbnailImage: URL(string: items.thumbnailImage!)!, postURL: URL(string: items.thumbnailImage!)!, caption: items.caption, likeCount: [], comments: [], createDate: Date(), taggedUsers: [], owner: userViewModel))
-        }
-        collectionViewTwo.reloadData()
+    ///Spinner
+    ///Muestra el spiner mientras los datos de van cargando...
+    private func setupSpinner()  {
+        let spinerView = SpinnerView.shared.setupSpinner()
+        spinerView.center = view.center
+        SpinnerView.shared.VW_overlay = UIView(frame: UIScreen.main.bounds)
+        SpinnerView.shared.VW_overlay.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        view.addSubview(spinerView)
     }
-    */
     
+    ///Api Rest.
+    ///En esta función llamamos al Api rest para traes los datos de la DataBase,
     private func fetchUserPost() {
         APIService.shared.apiUserPost(token: handleNotAuthenticated()) {(result) in
             switch result {
             case .success(let model):
-                self.setupModel(with: model.userpost ?? [])
+                ///self.setupModel(with: model.userpost ?? [])
+                model.userpost?.count != 0 ? self.setupModel(with: model.userpost ?? []) : print("Array Userpost está vacio...")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -99,13 +99,24 @@ class PruebaViewController: UIViewController {
     private func setupModel(with model: [Userpost] ) {
         for items in model {
             if items.userAuthor?.email == self.email {
-                let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType)
+                let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType, storyfeatured: items.storyfeatured )
                 models.append(userpost)
+                
+                ///User
+                guard let user = items.userAuthor else { return }
+                self.user = user
+                
+                ///Story Featured
+                guard let story = items.storyfeatured else { return }
+                self.story.append(contentsOf: story)
             }
-            
-            
         }
-        DispatchQueue.main.async{ self.collectionViewTwo.reloadData()}
+        ///Carga el spiner y recarga el collectionViewTwo con los datos.
+        DispatchQueue.main.async {
+            SpinnerView.shared.spinner.stopAnimating()
+            SpinnerView.shared.VW_overlay.isHidden = false
+            self.collectionViewTwo.reloadData()
+        }
     }
     
     private func failedToGeProfile() {
@@ -146,8 +157,7 @@ class PruebaViewController: UIViewController {
     
     public func getUserToken() -> ResponseTokenBE? {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        //let user = appDelegate.objUsuarioSesion?.user
-        guard let token = appDelegate.objUsuarioSesion else { // appDelegate.objUsuarioSesion?.user else {
+        guard let token = appDelegate.objUsuarioSesion else {
             return getUserToken()
         }
         return token
@@ -174,20 +184,15 @@ class PruebaViewController: UIViewController {
 
 extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 3
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //if section == 0 { ///Header
-          //  return 0
-            //return data.count
-        //}
-        //if section == 1 {
-            //return 0
-        //}
-        
         if section == 0 {
-            return 0 ///Header
+            return 0 ///Heade
+        }
+        if section == 1 {
+            return 0 ///Heade
         }
         return  models.count ///Collections photos
     }
@@ -209,18 +214,20 @@ extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard kind == UICollectionView.elementKindSectionHeader else { return UICollectionReusableView() }
-        
-        ///Procesar datos dle usuario Profile
-        ///let model = data[indexPath.row]
-        ///print("aux: \(data.count)")
         switch indexPath.section {
             case 0:
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,for: indexPath) as! ProfileInfoHeaderCollectionReusableView
-                    //header.configure(with: model)
-                    //header.delegate = self
+                if self.user != nil {
+                    guard let user = self.user else { return UICollectionReusableView() }
+                    header.configure(with: user)
+                    header.delegate = self
+                }
                 return header
             case 1:
                 let storyHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: StoryFeaturedCollectionTableViewCell.identifier,for: indexPath) as! StoryFeaturedCollectionTableViewCell
+                if self.story.count > 0 {
+                    storyHeader.configure(model: self.story)
+                }
                 return storyHeader
             case 2:
                 let tabsHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileTabsCollectionReusableView.identifier,for: indexPath) as! ProfileTabsCollectionReusableView
@@ -228,22 +235,16 @@ extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 return tabsHeader
             default: fatalError()
         }
-        
-        
-        //return header
-        //return UICollectionReusableView()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if section == 0 { ///Header
             return CGSize(width: collectionView.width, height: collectionView.height/2.5)
         }
-        
         if section == 1 { ///Story
             return CGSize(width: collectionView.width, height: 90)
         }
-        ///Tabs
-        return CGSize(width: collectionView.width, height: 50)
+        return CGSize(width: collectionView.width, height: 50) ///Tabs
     }
     
     ///Select o click on photo
@@ -256,16 +257,13 @@ extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSo
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
         vc.title = "Posts" ///model.postType.rawValue
-        
-        
     }
 }
 
 // MARK: - ProfileInfoHeaderCollectionReusableViewDelegate
 extension PruebaViewController: ProfileInfoHeaderCollectionReusableViewDelegate {
     func profileHeaderDidTapPostButton(_header: ProfileInfoHeaderCollectionReusableView) {
-        ///Scroll to the posts
-        self.collectionViewTwo.scrollToItem(at: IndexPath(row: 0, section: 1), at: .top, animated: true)
+        self.collectionViewTwo.scrollToItem(at: IndexPath(row: 0, section: 1), at: .top, animated: true) ///Scroll to the posts
     }
     
     func profileHeaderDidTapFollowersButton(_header: ProfileInfoHeaderCollectionReusableView) {

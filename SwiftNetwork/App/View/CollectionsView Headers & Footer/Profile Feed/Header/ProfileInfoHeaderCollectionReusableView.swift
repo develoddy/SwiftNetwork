@@ -27,7 +27,8 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     
     ///Profile image
     private let profilePhotoImageView : UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "eddy"))
+        //let imageView = UIImageView(image: UIImage(named: "eddy"))
+        let imageView = UIImageView()
         imageView.tintColor = .black
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 2.5
@@ -101,10 +102,10 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         super.init(frame: frame)
         addSubviews()
         addButtonActions()
-        addTextOnPostButton()
-        addTextOnFollowersButton()
-        addTextOnFollowingButton()
-        configureButtonEditProfile()
+        //addTextOnPostButton()
+        //addTextOnFollowersButton()
+        //addTextOnFollowingButton()
+        //configureButtonEditProfile()
     }
     
     
@@ -200,18 +201,34 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     
     override func prepareForReuse() {
         usernameLabel.setTitle(nil, for: .normal)
+        profilePhotoImageView.sd_setImage(with: URL(string: ""), completed: nil)
     }
     
     
-    public func configure(with model: Userpost) {
-        guard let username = model.userAuthor?.username else {
-            return
-        }
+    public func configure(with model: User) {
+        
+        //let imageView = UIImageView(image: UIImage(named: "eddy"))
+        //photoImageView.sd_setImage(with: URL(string: url), completed: nil)
+        
+        guard let image = model.profile?.imageHeader else { return }
+        profilePhotoImageView.sd_setImage(with: URL(string: image), completed: nil)
+        
+        ///Username
+        guard let username = model.username else { return }
         usernameLabel.setTitle(username, for: .normal)
+        
+        guard let posts = model.count?.posts else { return }
+        guard let follower = model.count?.followers else { return }
+        guard let following = model.count?.following else { return }
+        
+        addTextOnPostButton(posts: posts)
+        addTextOnFollowersButton(follower: follower)
+        addTextOnFollowingButton(following: following)
     }
+    
+    
     
     // MARK: - Actions
-    
     @objc private func didTapFollowerButton() {
         delegate?.profileHeaderDidTapFollowersButton(_header: self)
     }
@@ -232,9 +249,9 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
 
 //MARK: Add text on buttons
 extension ProfileInfoHeaderCollectionReusableView {
-    private func addTextOnPostButton() {
+    private func addTextOnPostButton(posts: Int) {
         postButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
-        let buttonText: NSString = "10\nPublicaciones"
+        let buttonText: NSString = "\(posts)\nPublicaciones" as NSString
         let newlineRange: NSRange = buttonText.range(of: "\n")
         
         //getting both substrings
@@ -260,9 +277,9 @@ extension ProfileInfoHeaderCollectionReusableView {
         postButton.setAttributedTitle(attrString1, for: [])
     }
     
-    private func addTextOnFollowersButton() {
+    private func addTextOnFollowersButton(follower: Int) {
         followersButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
-        let buttonText: NSString = "105 mil\nSeguidor"
+        let buttonText: NSString = "\(follower) mil\nSeguidor" as NSString
         let newlineRange: NSRange = buttonText.range(of: "\n")
         
         //getting both substrings
@@ -288,9 +305,9 @@ extension ProfileInfoHeaderCollectionReusableView {
         followersButton.setAttributedTitle(attrString1, for: [])
     }
     
-    private func addTextOnFollowingButton() {
+    private func addTextOnFollowingButton(following: Int) {
         followingButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
-        let buttonText: NSString = "78\nSiguiendo"
+        let buttonText: NSString = "\(following)\nSiguiendo" as NSString
         let newlineRange: NSRange = buttonText.range(of: "\n")
         
         //getting both substrings

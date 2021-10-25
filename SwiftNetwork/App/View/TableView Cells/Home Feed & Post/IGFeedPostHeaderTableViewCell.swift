@@ -26,19 +26,8 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
-    
-    /*
-     private let likeButton: UIButton = {
-         let button = UIButton()
-         let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
-         let image = UIImage(systemName: "heart", withConfiguration: config)
-         button.setImage(image, for: .normal)
-         button.tintColor = Constants.Color.black
-         return button
-     }()
-     */
-    
-    private let usernameLabelButton: UIButton = {
+   
+    /*private let usernameLabelButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
@@ -47,6 +36,13 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         button.setImage(UIImage(systemName: "checkmark.seal.fill", withConfiguration: config)?.withRenderingMode(.alwaysOriginal).withTintColor(.white), for: .normal)
         button.semanticContentAttribute = .forceRightToLeft
         return button
+    }()*/
+    
+    private let usernameLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 14, weight: .semibold)
+        return label
     }()
     
     private let postTimeLabel: UILabel = {
@@ -69,7 +65,7 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 //        contentView.backgroundColor = .systemBackground
         contentView.addSubview(profilePhotoImageView)
-        contentView.addSubview(usernameLabelButton)
+        contentView.addSubview(usernameLabel)
         contentView.addSubview(postTimeLabel)
         contentView.addSubview(moreButton)
         moreButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
@@ -92,7 +88,7 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         
         
         let labelHeight = contentView.height/3
-        usernameLabelButton.frame = CGRect(
+        usernameLabel.frame = CGRect(
             x: profilePhotoImageView.right+10,
             y: 15,
             width: contentView.width-(size*2)-15,
@@ -102,7 +98,7 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         let postTimeLabelSize = postTimeLabel.sizeThatFits(frame.size)
         postTimeLabel.frame = CGRect(
             x: profilePhotoImageView.right+10,
-            y: usernameLabelButton.bottom-2,
+            y: usernameLabel.bottom-2,
             width: contentView.width-(size*2)-15,
             height: postTimeLabelSize.height).integral
         
@@ -115,13 +111,15 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        usernameLabelButton.setTitle(nil, for: .normal)
+        ///usernameLabelButton.setTitle(nil, for: .normal)
+        usernameLabel.text = nil
         profilePhotoImageView.image = nil
         
     }
     
     public func configure(with model: User) {
-        usernameLabelButton.setTitle(model.username, for: .normal)
+        //usernameLabelButton.setTitle(model.username, for: .normal)
+        usernameLabel.text = model.username
         profilePhotoImageView.image = UIImage(systemName: "person.circle")
     }
     

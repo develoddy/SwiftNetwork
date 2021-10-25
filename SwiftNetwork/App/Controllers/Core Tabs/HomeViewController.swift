@@ -69,8 +69,19 @@ class HomeViewController: UIViewController {
     ///Inicio del programa.
     ///Setupview
     private func setupView() {
-        view.backgroundColor = .clear //UIColor(red: 0.05, green: 0.05, blue: 0.07, alpha: 1.00)
+        view.backgroundColor = .systemBackground
         view.addSubview(tableView)
+        view.addSubview(setupSpinner())
+    }
+
+    ///Spinner
+    ///Muestra el spiner mientras los datos de van cargando...
+    private func setupSpinner() -> UIActivityIndicatorView {
+        let spinerView = SpinnerView.shared.setupSpinner()
+        spinerView.center = view.center
+        SpinnerView.shared.VW_overlay = UIView(frame: UIScreen.main.bounds)
+        SpinnerView.shared.VW_overlay.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        return spinerView
     }
     
     ///Autenticated & validate del Token de la sesión del aplicativo.
@@ -85,15 +96,14 @@ class HomeViewController: UIViewController {
         return token ?? "nil"
     }
 
+    ///Api Rest.
     ///Hacemos una llamada al Api rest.
     ///Una vez obtenido los datos que queremos, se lo enviamos a la funcion setuModel.
     private func fetchUserPost() {
         APIService.shared.apiUserPost(token: handleNotAuthenticated()) {(result) in
             switch result {
             case .success(let model):
-                print("-------- model home-----")
-                print(model)
-                self.setupModel(with: model.userpost ?? [])
+                model.userpost?.count != 0 ? self.setupModel(with: model.userpost ?? []) : print("Array Userpost está vacio...")
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -116,7 +126,12 @@ class HomeViewController: UIViewController {
                 footer      : PostRenderViewModel(renderType: .footer(footer: items)))
             models.append(viewModel)
         }
-        DispatchQueue.main.async{ self.tableView.reloadData() }
+        ///Carga el spiner y recarga el tableview con los datos.
+        DispatchQueue.main.async {
+            SpinnerView.shared.spinner.stopAnimating()
+            SpinnerView.shared.VW_overlay.isHidden = true
+            self.tableView.reloadData()
+        }
     }
     
     ///Creamos el Header en el ViewController.
@@ -318,6 +333,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 case .header(let user):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier, for: indexPath) as! IGFeedPostHeaderTableViewCell
                     cell.configure(with: user)
+                    cell.delegate = self
                     return cell
                 case .comments, .actions, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
                 }
@@ -381,7 +397,48 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     ///Did select
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        print("Did select normal list item")
+        let boxes = 7
+        let count = indexPath.section
+        let position = count % boxes == boxes ? count/boxes : ((count - (count % boxes)) / boxes)
+        let model = models[position]
+        let render = model.post.renderType
+        
+        let subSection = count % boxes
+        switch subSection {
+        ///Sub section header
+        case 1:
+            switch render {
+            case .primaryContent(let post):
+                let vc = PostViewController(model: post)
+                vc.navigationItem.largeTitleDisplayMode = .never
+                navigationController?.pushViewController(vc, animated: true)
+                vc.title = "Posts"
+            default:
+                print("Error...")
+            }
+        ///Sub section post image.
+        case 2:
+            print("image")
+            
+        ///Sub section actions.
+        case 3:
+            print("actions")
+            
+        ///Sub section post description.
+        case 4:
+            print("description")
+            
+        ///Sub section general.
+        case 5:
+            print("general")
+            
+        ///Sub section footer.
+        case 6:
+            print("footer")
+            
+        default:
+            print("error...")
+        }
     }
     
     ///Height de Cell
@@ -557,3 +614,12 @@ extension HomeViewController {
             UIBarButtonItem(customView: composeButton)]
     }
 }
+
+extension HomeViewController: IGFeedPostHeaderTableViewCellDelegate {
+    func didTapMoreButton() {
+        print("clispp")
+    }
+    
+    
+}
+ 

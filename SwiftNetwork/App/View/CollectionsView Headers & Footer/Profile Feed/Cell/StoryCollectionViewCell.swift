@@ -28,14 +28,14 @@ class StoryCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureStoryButtom() {
-        storybutton.setImage(UIImage(named: "eddy"), for: .normal)
+        //storybutton.setImage(UIImage(named: "eddy"), for: .normal)
         storybutton.backgroundColor = .systemYellow
         storybutton.layer.masksToBounds = true
         storybutton.frame = storybutton.bounds
     }
     
     private func configureUsernameLabel() {
-        usernameLabel.text = "eddylujann"
+        //usernameLabel.text = "eddylujann"
         usernameLabel.font = .systemFont(ofSize: 12, weight: .regular)
         usernameLabel.backgroundColor = .systemBackground
         usernameLabel.textAlignment = .center
@@ -56,7 +56,15 @@ class StoryCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configure() {
+    public func configure(model: Storyfeatured) {
         ///Recive las images que iran pintadas en el sototy featured
+        guard let image = model.src else {
+            return
+        }
+        guard let title = model.title else {
+            return
+        }
+        storybutton.sd_setImage(with: URL(string: image), for: .normal, completed: nil)
+        usernameLabel.text = title
     }
 }

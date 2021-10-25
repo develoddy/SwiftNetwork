@@ -156,18 +156,30 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         
         ///Likes
         guard let likes = model.likes?.count else { return }
-        guard let username = model.likes?[0].userlike?.username  else { return }
-        var text = ""
-        var textLikes = ""
-        if (likes-1) != 0 {
-            text = "Les gusta a"
-            textLikes = "\(username) y a \(likes-1) personas más"
+        
+        
+        ///Hay que coprobar si el array de likes está vacio o no.
+        if likes == 0 {
+            print("array vacio...")
+            let likesUsername = joinTextLike(text: "A nadie", description: "le gusta")
+            totalLikeLabel.attributedText = likesUsername
         } else {
-            text = "Les gusta a"
-            textLikes = "\(username)"
+            guard let username = model.likes?[0].userlike?.username  else { return }
+            var text = ""
+            var textLikes = ""
+            if (likes-1) != 0 {
+                text = "Les gusta a"
+                textLikes = "\(username) y a \(likes-1) personas más"
+            } else {
+                text = "Les gusta a"
+                textLikes = "\(username)"
+            }
+            let likesUsername = joinTextLike(text: text, description: textLikes)
+            totalLikeLabel.attributedText = likesUsername
         }
-        let likesUsername = joinTextLike(text: text, description: textLikes)
-        totalLikeLabel.attributedText = likesUsername
+        
+        
+        
         
         ///Comments
         guard let comments = model.comments?.count else { return }

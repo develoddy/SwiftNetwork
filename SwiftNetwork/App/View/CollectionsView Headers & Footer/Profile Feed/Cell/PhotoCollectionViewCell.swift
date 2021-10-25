@@ -75,25 +75,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     }
     
     public func configure(with model: Userpost) {
-    //public func configure(with model: PostImage) {
-        //let url = model.thumbnailImage
-        //photoImageView.sd_setImage(with: url, completed: nil)
-        //contentView.backgroundColor = colors.randomElement()
-        
-        guard let url = model.postImage?[0].image?.src else {
-            return
-        }
+        guard let url = model.postImage?[0].image?.src else { return }
         photoImageView.sd_setImage(with: URL(string: url), completed: nil)
-        
-        
-        /*let task = URLSession.shared.dataTask(with: url, completionHandler: { data, _, _ in
-            self.photoImageView.image = UIImage(data: data!)
-            
-        })*/
     }
-    
-    //public func configure(debug imageName: /*String*/) {
-      //  photoImageView.image = UIImage(named: imageName)
-    //}
 }
 

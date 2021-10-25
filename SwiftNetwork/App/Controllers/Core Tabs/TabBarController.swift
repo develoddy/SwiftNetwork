@@ -53,8 +53,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
     
         //viewControllers = [ home, menu, profile, explorer, notification  ]
 //        viewControllers = [ profile, home, explorer, notification ]
-        viewControllers = [profile, home, explorer, notification ]
-    
+        viewControllers = [home, profile, explorer, notification ]
         colorNavController()
     }
     
@@ -74,11 +73,11 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
         case 0:
             print("Online")
         case 1:
-            print("explorer")
+            print("profile")
         case 2:
             print("notification")
         case 3:
-            print("profile")
+            print("explorer")
         default:
             break
         }
