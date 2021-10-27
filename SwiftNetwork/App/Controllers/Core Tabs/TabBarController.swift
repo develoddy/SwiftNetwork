@@ -23,7 +23,8 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
             unselected: (UIImage(systemName: "house")?.withTintColor(Constants.Color.black))!)
         
         let profile = generateNavController(
-            vc: PruebaViewController(),
+            //vc: PruebaViewController(),
+            vc: PruebaViewController(with: getUserToken()?.usertoken?.email ?? ""),
             selected: (UIImage(systemName: "person")!),
             unselected: (UIImage(systemName: "person")?.withTintColor(Constants.Color.black))!)
         
@@ -53,7 +54,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
     
         //viewControllers = [ home, menu, profile, explorer, notification  ]
 //        viewControllers = [ profile, home, explorer, notification ]
-        viewControllers = [explorer, home, profile, notification ]
+        viewControllers = [profile, home, explorer, notification ]
         colorNavController()
     }
     
@@ -94,5 +95,16 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
             item.setTitleTextAttributes(selectedItem, for: .selected)
         }
     }
+    
+    
+    public func getUserToken() -> ResponseTokenBE? {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        guard let token = appDelegate.objUsuarioSesion else {
+            return getUserToken()
+        }
+        return token
+    }
+    
+    
 }
 

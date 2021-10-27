@@ -29,7 +29,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private var colors: [UIColor] = [
+    /*private var colors: [UIColor] = [
         .systemPink,
         .systemBlue,
         .systemPurple,
@@ -39,7 +39,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         .systemYellow,
         .darkGray,
         .systemTeal
-    ]
+    ]*/
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -57,7 +57,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         accessibilityLabel = ""
         accessibilityHint = "Double-tap to open post"
         
-        contentView.backgroundColor = colors.randomElement()
+        //contentView.backgroundColor = colors.randomElement()
     }
     
     required init?(coder: NSCoder) {

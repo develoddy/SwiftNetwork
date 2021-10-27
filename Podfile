@@ -8,6 +8,7 @@ target 'SwiftNetwork' do
   pod 'FloatingPanel'
   pod 'SDWebImage'
   pod 'TransitionButton'
+  pod 'SkeletonView' 
 
   #pod 'SPPermissions/Contacts'
   #pod 'SPPermissions/Camera'

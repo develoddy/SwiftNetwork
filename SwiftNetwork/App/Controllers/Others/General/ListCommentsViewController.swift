@@ -168,7 +168,6 @@ class ListCommentsViewController: UIViewController  {
         
         bottomConstraint = NSLayoutConstraint(item: messageInputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -0)
         view.addConstraint(bottomConstraint!)
-        
         setupInputComponents()
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -179,11 +178,9 @@ class ListCommentsViewController: UIViewController  {
     ///Paint bottom depending if it is empty or not.
     @objc func textDidChange(textField: UITextField) {
         let validateBool = !inputTextfield.text!.isEmpty
-        ///sendButton.isEnabled = !inputTextfield.text!.isEmpty
         if !validateBool {
             sendButton.isEnabled = validateBool
             sendButton.tintColor = Constants.Color.general
-            
         } else {
             sendButton.isEnabled = validateBool
             sendButton.tintColor = Constants.Color.whiteLight
@@ -207,7 +204,6 @@ class ListCommentsViewController: UIViewController  {
     private func setupInputComponents() {
         let topBorderView = UIView()
         topBorderView.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
-        
         messageInputContainerView.addSubview(profilePhotoImageView)
         messageInputContainerView.addSubview(inputTextfield)
         messageInputContainerView.addSubview(topBorderView)
@@ -224,7 +220,6 @@ class ListCommentsViewController: UIViewController  {
             width: view.width,
             height: 0.5)
         
-        //let size = messageInputContainerView.height
         profilePhotoImageView.frame = CGRect(
             x: 10,
             y: 15,
@@ -236,7 +231,7 @@ class ListCommentsViewController: UIViewController  {
         inputTextfield.frame = CGRect(
             x: profilePhotoImageView.right+5,
             y: 15,
-            width: view.width-profilePhotoImageView.width-30, //view.width-size-profilePhotoImageView.width-25,
+            width: view.width-profilePhotoImageView.width-30,
             height: 50)
         inputTextfield.layer.cornerRadius = inputTextfield.height/2
         
@@ -277,7 +272,6 @@ class ListCommentsViewController: UIViewController  {
         tableView.backgroundColor = .systemBackground
         tableView.register(PostCommentsListTableViewCell.self, forCellReuseIdentifier: PostCommentsListTableViewCell.identifier)
         tableView.register(CustomHeaderTableViewCell.self, forCellReuseIdentifier: CustomHeaderTableViewCell.identifier)
-        
         tableView.separatorStyle = .none
     }
     
@@ -290,7 +284,6 @@ class ListCommentsViewController: UIViewController  {
         let boldText  = username + " "
         let attrs = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)]
         let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
-        
         let normalText = description
         let attrs2 = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(14))]
         let normalString = NSMutableAttributedString(string:normalText, attributes:attrs2)
@@ -299,13 +292,22 @@ class ListCommentsViewController: UIViewController  {
     }
     
     private func configureModels() {
-        guard let UserPostViewModelModel = self.model else {
-            return
-        }
+        guard let UserPostViewModelModel = self.model else { return }
         renderModels.append(UserPostViewModelRenderViewModel(renderType: .primaryContent(posts: UserPostViewModelModel)))
     }
+    
+    public func separator(cell:  CustomHeaderTableViewCell) {
+        let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
+        separatorView.backgroundColor = .secondarySystemFill
+        separatorView.translatesAutoresizingMaskIntoConstraints  = false
+        cell.contentView.addSubview(separatorView)
+        NSLayoutConstraint.activate([
+            separatorView.leadingAnchor.constraint(equalTo:cell.contentView.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo:cell.contentView.trailingAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant:1),
+            separatorView.bottomAnchor.constraint(equalTo:cell.contentView.bottomAnchor)])
+    }
 }
-
 
 // MARK: TableView
 extension ListCommentsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -315,12 +317,10 @@ extension ListCommentsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch renderModels[section].renderType {
-            case .primaryContent(let posts):
-                ///return posts.comments.count > 0 ? posts.comments.count : posts.comments.count /// Retorna el total de comentarios
-                guard let comments = posts.comments else {
-                    return 0
-                }
-                return comments.count > 0 ? comments.count : comments.count
+        case .primaryContent(let posts):
+            ///return posts.comments.count > 0 ? posts.comments.count : posts.comments.count /// Retorna el total de comentarios
+            guard let comments = posts.comments else { return 0 }
+            return comments.count > 0 ? comments.count : comments.count
         }
     }
     
@@ -328,48 +328,26 @@ extension ListCommentsViewController: UITableViewDelegate, UITableViewDataSource
         let model = renderModels[indexPath.section]
         switch model.renderType {
             case .primaryContent(let posts):
-                //let comment = posts.comments[indexPath.row]
-                guard let comments = posts.comments else {
-                    return UITableViewCell()
-                }
+                guard let comments = posts.comments else { return UITableViewCell() }
                 let comment = comments[indexPath.row]
                 let cell = tableView.dequeueReusableCell(withIdentifier: PostCommentsListTableViewCell.identifier, for: indexPath) as! PostCommentsListTableViewCell
-                ///cell.configure(with: comment.username!, with: comment.content!)
                 cell.configure(with: comment.user?.name ?? "", with: comment.content ?? "")
                 return cell
         }
-        //return UITableViewCell()
     }
  
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let model = renderModels[section]
         switch model.renderType {
-            case .primaryContent(let posts):
-                //let post = posts
-                let cell = tableView.dequeueReusableCell(withIdentifier: CustomHeaderTableViewCell.identifier) as! CustomHeaderTableViewCell
-                //cell.configure(with: post.owner.username!, with: post.caption!)
-                guard let username = posts.userAuthor?.username, let caption = posts.content else {
-                    return UIView()
-                }
-                cell.configure(with: username, with: caption)
-            
-                let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0, width: 20, height: 1))
-                separatorView.backgroundColor = .secondarySystemFill
-                
-                separatorView.translatesAutoresizingMaskIntoConstraints  = false
-                cell.contentView.addSubview(separatorView)
-                NSLayoutConstraint.activate([
-                    separatorView.leadingAnchor.constraint(equalTo:cell.contentView.leadingAnchor),
-                    separatorView.trailingAnchor.constraint(equalTo:cell.contentView.trailingAnchor),
-                    separatorView.heightAnchor.constraint(equalToConstant:1),
-                    separatorView.bottomAnchor.constraint(equalTo:cell.contentView.bottomAnchor)])
-                return cell
+        case .primaryContent(let posts):
+            let cell = tableView.dequeueReusableCell(withIdentifier: CustomHeaderTableViewCell.identifier) as! CustomHeaderTableViewCell
+            guard let username = posts.userAuthor?.username, let caption = posts.content else { return UIView() }
+            cell.configure(with: username, with: caption)
+            separator(cell: cell)
+            return cell
         }
-        return UIView()
     }
-    
-    
-    
+
     ///Height de Cell (List Comments
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 65.0

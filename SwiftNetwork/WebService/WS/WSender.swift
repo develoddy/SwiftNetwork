@@ -14,8 +14,10 @@ import UIKit
 
 class WSender: NSObject {
     
-    // MARK: - CONSUMPTION OF SERVICE WITH COOKIE.
-
+    /* ============================================================================== */
+    // MARK: -               CONSUMPTION OF SERVICE WITH COOKIE.
+    /* ============================================================================== */
+     
     ///POST
     @discardableResult class func doPOSTCookieToURL(conURL url                  : NSString                              ,
                                                     conPath path                : NSString                              ,
@@ -105,7 +107,9 @@ class WSender: NSObject {
     
     
     
-    // MARK: - CONSUMPTION OF SERVICE WITH TOKKEN.
+    /* ============================================================================== */
+    // MARK: -              CONSUMPTION OF SERVICE WITH TOKKEN.
+    /* ============================================================================== */
     
     ///POST
     @discardableResult class func doPOSTTokenToURL(conURL url: NSString,
@@ -196,8 +200,9 @@ class WSender: NSObject {
     }
     
     
-    
-    // MARK: - CONSUMPTION SERVICE SIMPLE
+    /* ============================================================================== */
+    // MARK: -              CONSUMPTION SERVICE SIMPLE.
+    /* ============================================================================== */
 
     ///POST
     @discardableResult class func doPOSTToURL(conURL url                : NSString                               ,
@@ -286,7 +291,9 @@ class WSender: NSObject {
     }
     
     
-    //MARK: - CONFIGURATIONS HEADERS.
+    /* ============================================================================== */
+    // MARK: -           CONFIGURATIONS HEADERS.
+    /* ============================================================================== */
     class func createHeaderRequest() -> NSDictionary {
         let diccionarioHeader = NSMutableDictionary()
         diccionarioHeader.setObject("application/json", forKey: "Content-Type" as NSCopying)

@@ -108,7 +108,14 @@ class APIService: NSObject {
         } conCompletionIncorrecto: { (messageError) in
             completion(.failure(messageError as! Error))
         }
-
+    }
+    
+    func apiProfile(email: String, token: String, completion : @escaping ((Result<UserPost, Error>)) -> ()) {
+        BCApiRest.profile(email, token) { (object) in
+            completion(.success(object))
+        } conCompletionIncorrecto: { (messageError) in
+            completion(.failure(messageError as! Error))
+        }
     }
     
 }

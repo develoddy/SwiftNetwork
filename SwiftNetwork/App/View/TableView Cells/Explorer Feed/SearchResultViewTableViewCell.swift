@@ -23,8 +23,8 @@ class SearchResultViewTableViewCell: UITableViewCell {
     
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "user4")
-        imageView.backgroundColor = .red
+        //imageView.image = UIImage(named: "user4")
+        imageView.backgroundColor = .systemGray4
         imageView.layer.masksToBounds = true
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
@@ -120,8 +120,19 @@ class SearchResultViewTableViewCell: UITableViewCell {
         arrowImage.layer.cornerRadius = superView.height/5
     }
     
-    public func configure(with results: Search ) {
-        usernameLabel.text = results.username
-        fullNameLabel.text = results.name
+    public func configure(with model: Userpost ) {
+        
+        /*guard let image = model.profile?.imageHeader else { return }
+        profileImageView.sd_setImage(with: URL(string: image), completed: nil)
+        usernameLabel.text = model.username
+        fullNameLabel.text = model.name*/
+        
+        guard let image = model.userAuthor?.profile?.imageHeader else { return}
+        guard let username = model.userAuthor?.username else { return }
+        guard let name = model.userAuthor?.name else { return }
+        
+        profileImageView.sd_setImage(with: URL(string: image), completed: nil)
+        usernameLabel.text = username
+        fullNameLabel.text = name
     }
 }

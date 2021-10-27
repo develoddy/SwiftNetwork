@@ -12,7 +12,7 @@ class Closures: NSObject {
     typealias MensajeErrorStatus = (_ mensajeError : String, _ expiroSesion : Bool  ) -> Void
     typealias Login              = (_ usuario      : ResponseTokenBE                ) -> Void
     typealias LogOut             = (_ usuario      : ResponseLogOutBE               ) -> Void
-    typealias SearchUser         = (_ usuario      : [Search]                       ) -> Void
+    //typealias SearchUser         = (_ usuario      : [Search]                       ) -> Void
     
     ///ProfileViewcontroller
     /*
@@ -24,5 +24,6 @@ class Closures: NSObject {
     */
     
     typealias userPost = (_ user: UserPost) -> Void
+    //typealias explore = (_ explore: Explore) -> Void
 }
 

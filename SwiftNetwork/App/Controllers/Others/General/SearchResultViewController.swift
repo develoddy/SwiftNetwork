@@ -17,8 +17,9 @@ enum SearchResult {
 
 class SearchResultViewController: UIViewController {
     
-    //private var results: [SearchResult] = []
-    private var results: [Search] = []
+    static weak var shared: SearchResultViewController?
+    
+    private var models = [Userpost]()
     
     private let tableView: UITableView = {
         let tableView = UITableView()
@@ -54,23 +55,23 @@ class SearchResultViewController: UIViewController {
         tableView.dataSource = self
     }
     
-    ///Receive data from the SearchViewController
-    func update(with results: [Search]) {
-        self.results = results
+    ///Update
+    func update(with results: [Userpost]) {
+        self.models = results
         tableView.reloadData()
-        tableView.isHidden = results.isEmpty
+        tableView.isHidden = models.isEmpty
     }
 }
 
 extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return results.count
+        return models.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let result = results[indexPath.row]
+        let model = models[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultViewTableViewCell.identifier, for: indexPath) as! SearchResultViewTableViewCell
-        cell.configure(with: result)
+        cell.configure(with: model)
         return cell
     }
     
@@ -80,6 +81,12 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        print("Did select normal list item")
+        let model = models[indexPath.row]
+        let vc =  PruebaViewController(with: model.userAuthor?.email ?? "")///PostViewController(model: model)
+        vc.title = "Posts"
+        vc.navigationItem.largeTitleDisplayMode = .never
+        ////self.navigationController?.pushViewController(vc, animated: true)
+        presentingViewController?.navigationController?.pushViewController(vc, animated: true)
+        
     }
 }

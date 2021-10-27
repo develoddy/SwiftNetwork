@@ -6,8 +6,10 @@
 //
 
 import UIKit
+import SkeletonView
 
 class ListViewController: UIViewController {
+    
     
     private let data: [UserRelationship]
     //private var data = [UserRelationship]()
@@ -24,6 +26,11 @@ class ListViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -31,6 +38,7 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setupSkeleton()
         configureTableView()
         delegateTableView()
     }
@@ -45,6 +53,13 @@ class ListViewController: UIViewController {
         view.addSubview(tableView)
     }
     
+    private func setupSkeleton() {
+        //Header
+        print("Eskeletonnnnnn....")
+        //tableView.isSkeletonable = true
+        //tableView.showSkeleton(usingColor: .blue, transition: .crossDissolve(0.25))
+    }
+    
     private func configureTableView() {
         tableView.backgroundColor = .secondarySystemFill
     }
@@ -55,8 +70,13 @@ class ListViewController: UIViewController {
     }
 }
 
+
+
+
 // MARK: TableView
-extension ListViewController: UITableViewDelegate, UITableViewDataSource {
+extension ListViewController: UITableViewDelegate, UITableViewDataSource  {
+  
+    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -66,10 +86,12 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
         return data.count
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UserFollowTableViewCell.identifier, for: indexPath) as! UserFollowTableViewCell
         //cell.textLabel?.text = data[indexPath.row]
         cell.configure(with: data[indexPath.row])
+        
         cell.delegate = self
         return cell
     }

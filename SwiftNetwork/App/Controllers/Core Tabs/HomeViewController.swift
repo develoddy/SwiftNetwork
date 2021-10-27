@@ -44,6 +44,8 @@ class HomeViewController: UIViewController {
     
     private var models = [HomeFeedRenderViewModel]()
     
+    private var userpost = [Userpost]()
+    
     // MARK: - viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,6 +105,7 @@ class HomeViewController: UIViewController {
         APIService.shared.apiUserPost(token: handleNotAuthenticated()) {(result) in
             switch result {
             case .success(let model):
+                
                 model.userpost?.count != 0 ? self.setupModel(with: model.userpost ?? []) : print("Array Userpost está vacio...")
             case .failure(let error):
                 print(error.localizedDescription)
@@ -408,11 +411,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         ///Sub section header
         case 1:
             switch render {
-            case .primaryContent(let post):
-                let vc = PostViewController(model: post)
+            case .primaryContent(let userpost):
+                let vc = PruebaViewController(with: userpost.userAuthor?.email ?? "")
                 vc.navigationItem.largeTitleDisplayMode = .never
-                navigationController?.pushViewController(vc, animated: true)
                 vc.title = "Posts"
+                navigationController?.pushViewController(vc, animated: true)
+                
             default:
                 print("Error...")
             }

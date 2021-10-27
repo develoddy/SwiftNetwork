@@ -94,7 +94,7 @@ class BCApiRest: NSObject {
     
 
     
-    //MARK: User Post
+    //MARK: USERPOST.
     /// Vamos a llamar al backend para traer los datos de la base de datos.
     /// Esta funcion recibe por parametros el token
     /// Return object userpost o de lo contrario un mensaje de error.
@@ -111,21 +111,47 @@ class BCApiRest: NSObject {
         return result
     }
     
-    //MARK: Explore
+    //MARK: PROFILE.
+    /// Vamos a llamar al backend para traer los datos de la base de datos.
+    /// Esta funcion recibe por parametros el objeto userSearch y el token
+    /// Return object userpost o de lo contrario un mensaje de error.
+    @discardableResult class func profile(_ email: String,
+                                         _ token: String?,
+                                         conCompletionCorrecto completioCorrecto: @escaping Closures.userPost,
+                                         conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        if email.count == 0 {
+            completionIncorrecto("You need enter your name")
+            return nil
+        }
+        
+        let resultSearch = WSApiRest.startSearch(email, token!, conCompletionCorrecto: { (objExplore) in
+            completioCorrecto(objExplore)
+        }, error: { (mensajeError) in
+            print("mensajeError")
+            completionIncorrecto(mensajeError)
+        })
+        
+        return resultSearch
+    }
+    
+    
+    
+    
+    //MARK: EXPLORE.
     /// Vamos a llamar al backend para traer los datos de la base de datos.
     /// Esta funcion recibe por parametros el objeto userSearch y el token
     /// Return object userpost o de lo contrario un mensaje de error.
     @discardableResult class func search(_ objSearch: UserSearchBE,
                                          _ token: String?,
-                                         conCompletionCorrecto completioCorrecto: @escaping Closures.SearchUser,
+                                         conCompletionCorrecto completioCorrecto: @escaping Closures.userPost,
                                          conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
         if objSearch.name?.count == 0 {
             completionIncorrecto("You need enter your name")
             return nil
         }
         
-        let resultSearch = WSApiRest.startSearch(objSearch, token!, conCompletionCorrecto: { (objSearch) in
-            completioCorrecto(objSearch)
+        let resultSearch = WSApiRest.startSearch(objSearch, token!, conCompletionCorrecto: { (objExplore) in
+            completioCorrecto(objExplore)
         }, error: { (mensajeError) in
             print("mensajeError")
             completionIncorrecto(mensajeError)

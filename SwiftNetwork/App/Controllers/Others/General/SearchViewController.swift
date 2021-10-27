@@ -14,8 +14,6 @@ enum Searchçresult {
 
 class SearchViewController: UIViewController {
     
-    //private var models = [UserpostViewModel]()
-    
     private var models = [Userpost]()
     
     private let searchController: UISearchController = {
@@ -30,24 +28,12 @@ class SearchViewController: UIViewController {
         frame: .zero,
         collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { (_, _) -> NSCollectionLayoutSection? in
             let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
-            item.contentInsets = NSDirectionalEdgeInsets(
-                top: 2,
-                leading: 5,
-                bottom: 2,
-                trailing: 5)
-            
-            let group = NSCollectionLayoutGroup.horizontal(
-                layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1),
-                    heightDimension: .absolute(150)),
-                subitem: item,
-                count: 3)
-            
-            group.contentInsets = NSDirectionalEdgeInsets(
-                top: 10,
-                leading: 0,
-                bottom: 10,
-                trailing: 0)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 5, bottom: 2, trailing: 5)
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
+                                                            widthDimension: .fractionalWidth(1),heightDimension: .absolute(150)),
+                                                           subitem: item,
+                                                           count: 3)
+            group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0)
             return NSCollectionLayoutSection(group: group)
     }))
     
@@ -59,7 +45,7 @@ class SearchViewController: UIViewController {
         return view
     }()
     
-    
+    //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -70,6 +56,7 @@ class SearchViewController: UIViewController {
         fetchUserPost()
     }
     
+    //MARK: viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         collectionView.frame = view.bounds
@@ -151,39 +138,40 @@ class SearchViewController: UIViewController {
     
     private func configureSearchBar() {
         searchController.searchResultsUpdater = self
+        //searchController.delegate = self
         navigationItem.searchController = searchController
     }
 }
 
 //MARK: UISearchResultsUpdating
+///Se hace la busqueda por nombre de usuarioi.
+///La bsuqueda es online.
 extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
-   
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         print("xxxxxx")
     }
     
     func updateSearchResults(for searchController: UISearchController) {
         guard let resultsComtroller = searchController.searchResultsController as? SearchResultViewController,
-              let query = searchController.searchBar.text,
-              !query.trimmingCharacters(in: .whitespaces).isEmpty else {
+              let query = searchController.searchBar.text, !query.trimmingCharacters(in: .whitespaces).isEmpty else {
             return
         }
         
         let filter = UserSearchBE()
         filter.name = query
-        BCApiRest.search(filter, handleNotAuthenticated(), conCompletionCorrecto: { (obj) in
+        BCApiRest.search(filter, handleNotAuthenticated(), conCompletionCorrecto: { ( objExplore ) in
+            guard let userpost = objExplore.userpost else { return }
             DispatchQueue.main.async {
-                resultsComtroller.update(with: obj)
+                resultsComtroller.update(with: userpost)
             }
-        } , conCompletionIncorrecto: {(mensajeError) in
+        }, conCompletionIncorrecto: {(mensajeError) in
             print("mensajeError:\(mensajeError)")
         })
     }
     
     @objc private func didCancelSearch() {
-        print("cancel")
         self.dismmeView.isHidden = true
-       
+        print("cancel")
     }
 }
 
@@ -217,56 +205,3 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         navigationController?.pushViewController(vc, animated: true)
     }
 }
-
-
-//MARK: Mocks
-/*
-extension SearchViewController {
-    private func setupModel() {
-        
-        for i in 0..<10 {
-            let user = UserViewModel(
-                name: "",
-                last: "",//(first: "", last: ""),
-                username: "@username",
-                bio: "",
-                profilePicture: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
-                dayOfBirth: Date(),
-                gender: GenderViewModel(gender: "male"),//.male,
-                publicEmail: "",
-                counts: CountViewModel(followers: 1, following: 1, posts: 1),
-                joinDate: Date(),
-                countryId: 0,
-                image: "",
-                imageHeader: "",
-                title: "",
-                likes: "",
-                dislikes: "",
-                address: "",
-                phone: "",
-                userssId: 0,
-                nivelId: 0,
-                sentimentalId: 0,
-                imagenBin: "",
-                valor: "",
-                id: 0
-            )
-            
-            let post = UserpostViewModel(
-                identifier: "",
-                postType: .photo,
-                thumbnailImage: URL(
-                    string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
-                postURL: URL(string: "https://wwww.google.com")!,
-                caption: nil,
-                likeCount: [],
-                comments: [],
-                createDate: Date(),
-                taggedUsers: [],
-                owner: user)
-            
-            models.append(post)
-        }
-    }
-}
-*/

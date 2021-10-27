@@ -18,6 +18,12 @@ struct UserPost: Codable {
     let userpost: [Userpost]?
 }
 
+// MARK: - User
+//struct Explore: Codable {
+  //  let status: Bool?
+   // let user: [User]?
+//}
+
 // MARK: - Userpost
 struct Userpost: Codable {
     let id: Int?

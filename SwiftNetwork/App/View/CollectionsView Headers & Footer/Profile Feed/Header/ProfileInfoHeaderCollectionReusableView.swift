@@ -38,7 +38,6 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     ///Username
     private let usernameLabel : UIButton = { //checkmark.seal.fill
         let button = UIButton()
-        button.setTitle("@eddylujann", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.contentHorizontalAlignment = .center
         button.setImage(UIImage(systemName: "checkmark.seal.fill"), for: .normal)
@@ -73,16 +72,20 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         button.setTitleColor(.label, for: .normal)
         return button
     }()
-    ///Bio
-    private let bioLabel : UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .systemBackground
-        label.font = .systemFont(ofSize: 14, weight: .regular)
-        label.text = "Life style is muy one bio \n#madrid"
-        label.lineBreakMode = .byWordWrapping
-        label.numberOfLines = 3
-        return label
+    
+    private let biographyLabel : UIButton = { //checkmark.seal.fill
+        let button = UIButton()
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .systemBackground
+        button.titleLabel?.textColor = .black
+        button.titleLabel?.textAlignment = .center
+        button.semanticContentAttribute = .forceRightToLeft
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
+        button.titleLabel?.lineBreakMode = .byWordWrapping
+        button.titleLabel?.numberOfLines = 3
+        return button
     }()
+    
     ///Edit profile
     private let editProfileButton : UIButton = {
         let button = UIButton()
@@ -102,10 +105,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         super.init(frame: frame)
         addSubviews()
         addButtonActions()
-        //addTextOnPostButton()
-        //addTextOnFollowersButton()
-        //addTextOnFollowingButton()
-        //configureButtonEditProfile()
+        configureButtonEditProfile()
     }
     
     
@@ -119,7 +119,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         addSubview(postButton)
         addSubview(followersButton)
         addSubview(followingButton)
-        addSubview(bioLabel)
+        addSubview(biographyLabel)
         addSubview(editProfileButton)
     }
     
@@ -183,44 +183,45 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         ).integral
         
         ///Bio
-        let bioLabelSizeWidth = (width-10)/1
-        let bioLabelSize = bioLabel.sizeThatFits(frame.size)
-        bioLabel.frame = CGRect(
+        //let bioLabelSizeWidth = (width-10)/1
+        let bioLabelSize = biographyLabel.sizeThatFits(frame.size)
+        biographyLabel.frame = CGRect(
             x: 10,
-            y: followingButton.bottom+5,
-            width: bioLabelSizeWidth ,
-            height: bioLabelSize.height)
+            y: followingButton.bottom+10,
+            width: width-20, //bioLabelSizeWidth ,
+            height: bioLabelSize.height).integral
         
         ///Edit Profile
         editProfileButton.frame = CGRect(
             x: 10,
-            y: bioLabel.bottom+10,
+            y: biographyLabel.bottom+10,
             width: (countButtonWidth*3)-20,
             height: buttonHeight).integral
     }
     
     override func prepareForReuse() {
         usernameLabel.setTitle(nil, for: .normal)
+        biographyLabel.setTitle(nil, for: .normal)
         profilePhotoImageView.sd_setImage(with: URL(string: ""), completed: nil)
     }
     
-    
+    ///Configure
     public func configure(with model: User) {
-        
-        //let imageView = UIImageView(image: UIImage(named: "eddy"))
-        //photoImageView.sd_setImage(with: URL(string: url), completed: nil)
-        
-        guard let image = model.profile?.imageHeader else { return }
+        guard let image = model.profile?.imageHeader,
+              let username = model.username,
+              let bio = model.profile?.bio else {
+            return
+        }
         profilePhotoImageView.sd_setImage(with: URL(string: image), completed: nil)
-        
-        ///Username
-        guard let username = model.username else { return }
         usernameLabel.setTitle(username, for: .normal)
+        biographyLabel.setTitle(bio, for: .normal)
         
-        guard let posts = model.count?.posts else { return }
-        guard let follower = model.count?.followers else { return }
-        guard let following = model.count?.following else { return }
-        
+        ///Buttons Post - Follower - Following.
+        guard let posts = model.count?.posts,
+              let follower = model.count?.followers,
+              let following = model.count?.following else {
+            return
+        }
         addTextOnPostButton(posts: posts)
         addTextOnFollowersButton(follower: follower)
         addTextOnFollowingButton(following: following)
@@ -279,7 +280,7 @@ extension ProfileInfoHeaderCollectionReusableView {
     
     private func addTextOnFollowersButton(follower: Int) {
         followersButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
-        let buttonText: NSString = "\(follower) mil\nSeguidor" as NSString
+        let buttonText: NSString = "\(follower) mil\nSeguidores" as NSString
         let newlineRange: NSRange = buttonText.range(of: "\n")
         
         //getting both substrings
