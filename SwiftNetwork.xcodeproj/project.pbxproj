@@ -50,6 +50,8 @@
 		B36D60142657A1F000B9584A /* PostCommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36D60132657A1F000B9584A /* PostCommentsViewModel.swift */; };
 		B36D60192657A1FA00B9584A /* CommenttLikeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36D60182657A1FA00B9584A /* CommenttLikeViewModel.swift */; };
 		B36D601E2657A22100B9584A /* DescriptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36D601D2657A22100B9584A /* DescriptionsViewModel.swift */; };
+		B3939B20272AB91700D83C0B /* UserPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3939B1F272AB91700D83C0B /* UserPostViewController.swift */; };
+		B3939B25272ABC1B00D83C0B /* MAanageApiRest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3939B24272ABC1B00D83C0B /* MAanageApiRest.swift */; };
 		B39A49A52626232500BE80DF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49A12626232400BE80DF /* Extensions.swift */; };
 		B39A49A62626232500BE80DF /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49A22626232500BE80DF /* AuthManager.swift */; };
 		B39A49A72626232500BE80DF /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39A49A32626232500BE80DF /* DatabaseManager.swift */; };
@@ -178,6 +180,8 @@
 		B36D60132657A1F000B9584A /* PostCommentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentsViewModel.swift; sourceTree = "<group>"; };
 		B36D60182657A1FA00B9584A /* CommenttLikeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommenttLikeViewModel.swift; sourceTree = "<group>"; };
 		B36D601D2657A22100B9584A /* DescriptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionsViewModel.swift; sourceTree = "<group>"; };
+		B3939B1F272AB91700D83C0B /* UserPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostViewController.swift; sourceTree = "<group>"; };
+		B3939B24272ABC1B00D83C0B /* MAanageApiRest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MAanageApiRest.swift; sourceTree = "<group>"; };
 		B39A49A12626232400BE80DF /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B39A49A22626232500BE80DF /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		B39A49A32626232500BE80DF /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
@@ -439,6 +443,7 @@
 				B3F57BD22668DD1300496B54 /* TextFieldWithPadding.swift */,
 				B3F57BD72668DDC900496B54 /* PaddingLabel.swift */,
 				B33A2E8A272693BA00F14147 /* SpinnerView.swift */,
+				B3939B24272ABC1B00D83C0B /* MAanageApiRest.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -485,6 +490,7 @@
 				B34F439526A5B2F60076766C /* SettingLikeViewController.swift */,
 				B34F439A26A6E6770076766C /* SettingStoryViewController.swift */,
 				B36ACA1D26B301F700E084E1 /* CreateStoryViewController.swift */,
+				B3939B1F272AB91700D83C0B /* UserPostViewController.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -1039,10 +1045,12 @@
 				B39A4A472628372A00BE80DF /* PhotoCollectionViewCell.swift in Sources */,
 				B39A49A52626232500BE80DF /* Extensions.swift in Sources */,
 				B36D60192657A1FA00B9584A /* CommenttLikeViewModel.swift in Sources */,
+				B3939B25272ABC1B00D83C0B /* MAanageApiRest.swift in Sources */,
 				B3B89106264690C3003AE17A /* HeaderCollectionReusableView.swift in Sources */,
 				B35A1C5F270DA0FB00F7667F /* StoryFeaturedCollectionTableViewCell.swift in Sources */,
 				B39A49B92626236E00BE80DF /* NotificationsViewController.swift in Sources */,
 				B35E004A271D9FCF00F2A7FD /* DataModels.swift in Sources */,
+				B3939B20272AB91700D83C0B /* UserPostViewController.swift in Sources */,
 				B39A49D5262623A400BE80DF /* RegistrationViewController.swift in Sources */,
 				B36D601E2657A22100B9584A /* DescriptionsViewModel.swift in Sources */,
 				B3C243A3266655C200C2C866 /* MenuHeaderCollectionReusableView.swift in Sources */,

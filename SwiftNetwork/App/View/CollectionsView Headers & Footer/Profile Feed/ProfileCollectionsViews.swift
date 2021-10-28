@@ -36,7 +36,7 @@ class ProfileCollectionsViews: NSObject {
         layout.itemSize = CGSize(width: size, height: size)
         //let collectionViewTwo = UICollectionView(frame: CGRect(x: 0, y: 10, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), collectionViewLayout: layout)
         let collectionViewTwo = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionViewTwo.backgroundColor = .systemBackground
+        collectionViewTwo.backgroundColor = .clear
         return collectionViewTwo
     }
 }

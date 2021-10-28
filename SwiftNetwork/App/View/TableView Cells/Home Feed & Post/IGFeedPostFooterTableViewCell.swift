@@ -81,7 +81,7 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
             y: 5,
             width: 40,
             height: 40)
-        profilePhotoImageView.layer.cornerRadius = size/2.5
+        profilePhotoImageView.layer.cornerRadius = size/3
         
         boxTextButton.frame = CGRect(
             x: profilePhotoImageView.right+5,
@@ -97,7 +97,7 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
     }
     
     public func configure(with post: Userpost) {
-        profilePhotoImageView.image = UIImage(systemName: "person.circle")
+        profilePhotoImageView.sd_setImage(with: URL(string: post.userAuthor?.profile?.imageHeader ?? ""), completed: nil)
         model = post
     }
     

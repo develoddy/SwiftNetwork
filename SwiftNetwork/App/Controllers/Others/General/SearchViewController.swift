@@ -49,7 +49,7 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        setupSpinner()
+        configureSpinner()
         configureCollectionViewCell()
         delegateCollections()
         configureSearchBar()
@@ -70,12 +70,17 @@ class SearchViewController: UIViewController {
     
     ///Spinner
     ///Muestra el spiner mientras los datos de van cargando...
-    private func setupSpinner()  {
-        let spinerView = SpinnerView.shared.setupSpinner()
-        spinerView.center = view.center
-        SpinnerView.shared.VW_overlay = UIView(frame: UIScreen.main.bounds)
-        SpinnerView.shared.VW_overlay.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        view.addSubview(spinerView)
+    private func configureSpinner() {
+        CustomLoader.instance.viewColor = UIColor.systemBackground
+        CustomLoader.instance.setAlpha = 0.8
+        CustomLoader.instance.gifName = Constants.Spinner.spinner
+        showSpinner()
+    }
+    
+    ///Spinner
+    ///Muestra el spiner mientras los datos de van cargando...
+    private func showSpinner() {
+        CustomLoader.instance.showLoader()
     }
     
     ///Api Rest.
@@ -101,8 +106,7 @@ class SearchViewController: UIViewController {
         }
         ///Carga el spiner y recarga el collectionViewTwo con los datos.
         DispatchQueue.main.async {
-            SpinnerView.shared.spinner.stopAnimating()
-            SpinnerView.shared.VW_overlay.isHidden = false
+            CustomLoader.instance.hideLoader()
             self.collectionView.reloadData()
         }
     }

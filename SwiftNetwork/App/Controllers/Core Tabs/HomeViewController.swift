@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//import FloatingPanel
 
 struct HomeFeedRenderViewModel {
     let collections: PostRenderViewModel
@@ -18,9 +17,8 @@ struct HomeFeedRenderViewModel {
     let footer: PostRenderViewModel
 }
 
-///HomeViewController
+//MARK: HomeViewController
 class HomeViewController: UIViewController {
-    ///let settingsLauncher = SettingsLauncher() ///let heigth: CGFloat = 250
     
     let cellSpacingHeight: CGFloat = 5
     
@@ -30,7 +28,7 @@ class HomeViewController: UIViewController {
     }()
     
     private let tableMenuView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)// UITableView()
+        let tableView = UITableView(frame: .zero, style: .grouped)
         return tableView
     }()
     
@@ -55,6 +53,7 @@ class HomeViewController: UIViewController {
         delegateTableView()
         setupNavigationBarItems()
         headerTableView()
+        configureSpinner()
     }
     
     override func viewDidLayoutSubviews() {
@@ -73,7 +72,7 @@ class HomeViewController: UIViewController {
     private func setupView() {
         view.backgroundColor = .systemBackground
         view.addSubview(tableView)
-        view.addSubview(setupSpinner())
+        //view.addSubview(setupSpinner())
     }
 
     ///Spinner
@@ -86,23 +85,32 @@ class HomeViewController: UIViewController {
         return spinerView
     }
     
-    ///Autenticated & validate del Token de la sesión del aplicativo.
-    private func handleNotAuthenticated() -> String {
+    private func configureSpinner() {
+        CustomLoader.instance.viewColor = UIColor.systemBackground
+        CustomLoader.instance.setAlpha = 0.8
+        CustomLoader.instance.gifName = Constants.Spinner.spinner
+        showSpinner()
+    }
+    
+    ///Spinner
+    ///Muestra el spiner mientras los datos de van cargando...
+    private func showSpinner() {
+        CustomLoader.instance.showLoader()
+    }
+    
+    public func getUserToken() -> ResponseTokenBE? {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let token = appDelegate.objUsuarioSesion?.token
-        if token == nil {
-            let vc = LoginViewController()
-            vc.modalPresentationStyle = .fullScreen
-            self.present(vc, animated: false)
+        guard let token = appDelegate.objUsuarioSesion else {
+            return getUserToken()
         }
-        return token ?? "nil"
+        return token
     }
 
     ///Api Rest.
     ///Hacemos una llamada al Api rest.
     ///Una vez obtenido los datos que queremos, se lo enviamos a la funcion setuModel.
     private func fetchUserPost() {
-        APIService.shared.apiUserPost(token: handleNotAuthenticated()) {(result) in
+        APIService.shared.apiUserPost(token: getUserToken()?.token ?? "" ) {(result) in
             switch result {
             case .success(let model):
                 
@@ -131,8 +139,9 @@ class HomeViewController: UIViewController {
         }
         ///Carga el spiner y recarga el tableview con los datos.
         DispatchQueue.main.async {
-            SpinnerView.shared.spinner.stopAnimating()
-            SpinnerView.shared.VW_overlay.isHidden = true
+            ///SpinnerView.shared.spinner.stopAnimating()
+            ///SpinnerView.shared.VW_overlay.isHidden = true
+            CustomLoader.instance.hideLoader()
             self.tableView.reloadData()
         }
     }
@@ -412,11 +421,13 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         case 1:
             switch render {
             case .primaryContent(let userpost):
-                let vc = PruebaViewController(with: userpost.userAuthor?.email ?? "")
-                vc.navigationItem.largeTitleDisplayMode = .never
-                vc.title = "Posts"
+                guard let email = userpost.userAuthor?.email,
+                      let name = userpost.userAuthor?.name else {
+                    return
+                }
+                let vc = UserPostViewController(email: email, token: getUserToken()?.token ?? "")
+                vc.title = name
                 navigationController?.pushViewController(vc, animated: true)
-                
             default:
                 print("Error...")
             }

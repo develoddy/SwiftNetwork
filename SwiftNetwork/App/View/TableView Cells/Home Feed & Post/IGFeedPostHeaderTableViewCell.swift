@@ -111,16 +111,14 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        ///usernameLabelButton.setTitle(nil, for: .normal)
         usernameLabel.text = nil
         profilePhotoImageView.image = nil
         
     }
     
     public func configure(with model: User) {
-        //usernameLabelButton.setTitle(model.username, for: .normal)
         usernameLabel.text = model.username
-        profilePhotoImageView.image = UIImage(systemName: "person.circle")
+        profilePhotoImageView.sd_setImage(with: URL(string: model.profile?.imageHeader ?? ""), completed: nil)
     }
     
     @objc private func didTapButton() {

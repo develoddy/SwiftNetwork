@@ -1,77 +1,55 @@
 //
-//  PruebaCollectionViewController.swift
+//  UserPostViewController.swift
 //  SwiftNetwork
 //
-//  Created by Eddy Donald Chinchay Lujan on 30/9/21.
+//  Created by Eddy Donald Chinchay Lujan on 28/10/21.
 //
 
 import UIKit
 
-//MARK: PruebaViewController
-class PruebaViewController: UIViewController {
+class UserPostViewController: UIViewController {
     
     let collectionViewTwo = ProfileCollectionsViews.collectionViewTwo()
     
-    var email: String = ""
-    
-    private var models = [Userpost]()
+    var models = [Userpost]()
     
     private var user: User?
     
     private var story = [Storyfeatured]()
     
-    private let grid = "grid"
-    private let tagged = "tagged"
-    
-    ///var spinner = UIActivityIndicatorView()var VW_overlay: UIView = UIView()
-    //MARK: - viewDidLoad
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupView()
-        setupRemaningNavItems()
-        configureHeader()
-        configureCollectionViewTwo()
-        configureNavigationBar()
-        fetchUserPost()
-        configureSpinner()
-    }
-    
-    // MARK: Init
-    init(with email: String) {
+    //MARK: Init
+    init(email: String, token: String) {
         super.init(nibName: nil, bundle: nil)
-        self.email = email
+        fetchUserPost(email: email, token: token)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    ///viewDidLayoutSubviews
+    //MARK: viewDidLoad
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
+        configureHeader()
+        configureCollectionViewTwo()
+        configureSpinner()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.collectionViewTwo.frame = view.bounds
-        
     }
     
-    ///SetupView
     private func setupView() {
         view.backgroundColor = .systemBackground
     }
     
-    ///Spinner
-    ///Muestra el spiner mientras los datos de van cargando...
-    private func setupSpinner()  {
-        let spinerView = SpinnerView.shared.setupSpinner()
-        spinerView.center = view.center
-        SpinnerView.shared.VW_overlay = UIView(frame: UIScreen.main.bounds)
-        SpinnerView.shared.VW_overlay.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
-        view.addSubview(spinerView)
-    }
-    
+    ///Configure spinner
     private func configureSpinner() {
         CustomLoader.instance.viewColor = UIColor.systemBackground
         CustomLoader.instance.setAlpha = 0.8
-        CustomLoader.instance.gifName = Constants.Spinner.spinner 
+        CustomLoader.instance.gifName = Constants.Spinner.spinner
         showSpinner()
     }
     
@@ -81,12 +59,11 @@ class PruebaViewController: UIViewController {
         CustomLoader.instance.showLoader()
     }
     
-    
     ///Api Rest.
     ///En esta función llamamos al Api rest para traes los datos de la DataBase,
     ///Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
-    private func fetchUserPost() {
-        APIService.shared.apiProfile(email: self.email, token: getUserToken()?.token ?? "" ) {(result) in
+    private func fetchUserPost(email: String, token: String) {
+        APIService.shared.apiProfile(email: email, token: token ) {(result) in
             switch result {
             case .success(let model):
                 model.userpost?.count != 0 ? self.setupModel(with: model.userpost ?? []) : print("Array Userpost está vacio...")
@@ -99,51 +76,21 @@ class PruebaViewController: UIViewController {
     ///Models
     ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
     ///Recorremos el array del modelo userpost.
-    //////El modelo pintara los datos del user post acorde al email.
+    ///El modelo pintara los datos del user post acorde al email.
     private func setupModel(with model: [Userpost] ) {
         for items in model {
             let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType, storyfeatured: items.storyfeatured )
             models.append(userpost)
             
-            ///User
-            guard let user = items.userAuthor else { return }
+            guard let user = items.userAuthor, let story = items.storyfeatured else { return }
             self.user = user
-            
-            ///Story Featured
-            guard let story = items.storyfeatured else { return }
             self.story.append(contentsOf: story)
         }
         
         DispatchQueue.main.async {
-        ///DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            ///SpinnerView.shared.spinner.stopAnimating()
-            ///SpinnerView.shared.VW_overlay.isHidden = false
             CustomLoader.instance.hideLoader()
             self.collectionViewTwo.reloadData()
         }
-    }
-    
-    private func failedToGeProfile() {
-        let label = UILabel(frame: .zero)
-        label.text = "Failed to load profile."
-        label.sizeToFit()
-        label.textColor = .secondaryLabel
-        view.addSubview(label)
-        label.center = view.center
-    }
-    
-    private func setupRemaningNavItems() {
-        let followButton = UIButton(type: .system)
-        followButton.setTitle("eddylujann", for: .normal)
-        followButton.titleLabel?.font = .systemFont(ofSize: 26, weight: .black)
-        followButton.tintColor = Constants.Color.black
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: followButton)
-        navigationController?.navigationBar.backgroundColor = .white
-        navigationController?.navigationBar.isTranslucent = false
-    }
-    
-    private func configureNavigationBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "LogOut",style: .done,target: self,action: #selector(didTapSettingsButton))
     }
     
     private func configureHeader() {
@@ -157,28 +104,12 @@ class PruebaViewController: UIViewController {
         collectionViewTwo.dataSource = self
         collectionViewTwo.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
         view.addSubview(collectionViewTwo)
-    }
-    
-    public func getUserToken() -> ResponseTokenBE? {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        guard let token = appDelegate.objUsuarioSesion else {
-            return getUserToken()
-        }
-        return token
-    }
-    
-    ///LogOut
-    @objc func didTapSettingsButton() {
-        let vc = SettingsViewController()
-        vc.title = "Setting"
-        navigationController?.pushViewController(vc, animated: true)
+        DispatchQueue.main.async { self.collectionViewTwo.reloadData() }
     }
 }
 
 
-
-
-extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension UserPostViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 3
@@ -258,8 +189,10 @@ extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
 }
 
+
+
 // MARK: - ProfileInfoHeaderCollectionReusableViewDelegate
-extension PruebaViewController: ProfileInfoHeaderCollectionReusableViewDelegate {
+extension UserPostViewController: ProfileInfoHeaderCollectionReusableViewDelegate {
     func profileHeaderDidTapPostButton(_header: ProfileInfoHeaderCollectionReusableView) {
         self.collectionViewTwo.scrollToItem(at: IndexPath(row: 0, section: 1), at: .top, animated: true) ///Scroll to the posts
     }
@@ -300,8 +233,9 @@ extension PruebaViewController: ProfileInfoHeaderCollectionReusableViewDelegate 
     }
 }
 
+
 // MARK: - ProfileTabsCollectionReusableViewDelegate
-extension PruebaViewController: ProfileTabsCollectionReusableViewDelegate {
+extension UserPostViewController: ProfileTabsCollectionReusableViewDelegate {
     func didTapGridButtonTab() {
         print("didTapGridButtonTab")
         // Reload collection view with data
@@ -318,86 +252,3 @@ extension PruebaViewController: ProfileTabsCollectionReusableViewDelegate {
         collectionViewTwo.reloadData()
     }
 }
-
-
-
-
-
-/*
-protocol SkeletonDisplayable {
-    func showSkeleton()
-    func hideSkeleton()
-}
-
-extension SkeletonDisplayable where Self: UIViewController {
-    var skeletonLayerName: String {
-        return "skeletonLayerName"
-    }
-
-    var skeletonGradientName: String {
-        return "skeletonGradientName"
-    }
-
-    private func skeletonViews(in view: UIView) -> [UIView] {
-        var results = [UIView]()
-        for subview in view.subviews as [UIView] {
-            switch subview {
-            case _ where subview.isKind(of: UILabel.self):
-                results += [subview]
-            case _ where subview.isKind(of: UIImageView.self):
-                results += [subview]
-            case _ where subview.isKind(of: UIButton.self):
-                results += [subview]
-            default: results += skeletonViews(in: subview)
-            }
-
-        }
-        return results
-    }
-
-    func showSkeleton() {
-        let skeletons = skeletonViews(in: view)
-        let backgroundColor = UIColor(red: 210.0/255.0, green: 210.0/255.0, blue: 210.0/255.0, alpha: 1.0).cgColor
-        let highlightColor = UIColor(red: 235.0/255.0, green: 235.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
-
-        let skeletonLayer = CALayer()
-        skeletonLayer.backgroundColor = backgroundColor
-        skeletonLayer.name = skeletonLayerName
-        skeletonLayer.anchorPoint = .zero
-        skeletonLayer.frame.size = UIScreen.main.bounds.size
-
-        skeletons.forEach {
-            let gradientLayer = CAGradientLayer()
-            gradientLayer.colors = [backgroundColor, highlightColor, backgroundColor]
-            gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
-            gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
-            gradientLayer.frame = UIScreen.main.bounds
-            gradientLayer.name = skeletonGradientName
-
-            $0.layer.mask = skeletonLayer
-            $0.layer.addSublayer(skeletonLayer)
-            $0.layer.addSublayer(gradientLayer)
-            $0.clipsToBounds = true
-            let widht = UIScreen.main.bounds.width
-
-            let animation = CABasicAnimation(keyPath: "transform.translation.x")
-            animation.duration = 3
-            animation.fromValue = -widht
-            animation.toValue = widht
-            animation.repeatCount = .infinity
-            animation.autoreverses = false
-            animation.fillMode = CAMediaTimingFillMode.forwards
-
-            gradientLayer.add(animation, forKey: "gradientLayerShimmerAnimation")
-        }
-    }
-
-    func hideSkeleton() {
-        skeletonViews(in: view).forEach {
-            $0.layer.sublayers?.removeAll {
-                $0.name == skeletonLayerName || $0.name == skeletonGradientName
-            }
-        }
-    }
-}
-*/
