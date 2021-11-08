@@ -83,8 +83,22 @@ class NotificationLikeEventTableViewCell: UITableViewCell {
     
     public func configure(with model: UserNotification) {
         
-        //label.text = model.user.username
-        //label.text = model.text
+        let attributedString = joinText(username: model.user.username ?? "",
+                                        description: model.text)
+        label.attributedText = attributedString
+        
+        self.model = model
+        switch model.type {
+        case .like(let post):
+            let thumbnail = post.postImage?[0].image?.src
+            postButton.sd_setBackgroundImage(with: URL(string: thumbnail ?? ""), for: .normal, completed: nil)
+            break
+            
+        case .follow:
+            break
+        }
+        
+        profileImageView.sd_setImage(with: URL(string: model.user.profile?.imageHeader ?? ""), completed: nil)
         
         /*
         let username = model.user.username

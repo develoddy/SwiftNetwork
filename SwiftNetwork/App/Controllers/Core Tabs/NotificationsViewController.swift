@@ -7,14 +7,14 @@
 
 import UIKit
 enum UserNotificationType {
-    case like(post: UserpostViewModel)
+    case like(post: Userpost)
     case follow(state: FollowState)
 }
 
 struct UserNotification {
     let type: UserNotificationType
     let text: String
-    let user: UserViewModel
+    let user: User
 }
 
 final class NotificationsViewController: UIViewController {
@@ -38,7 +38,6 @@ final class NotificationsViewController: UIViewController {
     
     private var models = [UserNotification]()
     
-
     // MARK: LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +46,8 @@ final class NotificationsViewController: UIViewController {
         configureTableView()
         //addNoNotificationsView()
         //spinner.startAnimating()
+        
+        fetchUserPost()
     }
 
     override func viewDidLayoutSubviews() {
@@ -56,9 +57,49 @@ final class NotificationsViewController: UIViewController {
         spinner.center = view.center
     }
     
+    ///Token
+    public func getUserToken() -> ResponseTokenBE? {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        guard let token = appDelegate.objUsuarioSesion else {
+            return getUserToken()
+        }
+        return token
+    }
+    
+    ///Api Rest.
+    ///Hacemos una llamada al Api rest.
+    ///Una vez obtenido los datos que queremos, se lo enviamos a la funcion setuModel.
+    private func fetchUserPost() {
+        APIService.shared.apiUserPost(token: getUserToken()?.token ?? "" ) {(result) in
+            switch result {
+            case .success(let model):
+                model.userpost?.count != 0 ? self.setupModel(with: model.userpost ?? []) : print("Array Userpost está vacio...")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    ///Models
+    ///Está función recibe  los datos para tratarlos y guardalos en el array Modelo.
+    private func setupModel(with model: [Userpost] ) {
+        for items in model {
+            guard let user = items.userAuthor else { return }
+            
+            let model = UserNotification(
+                type: .like(post: items),
+                text: "Te mencionó en sus comentarios.",
+                user: user)
+            
+            models.append(model)
+        }
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
     /*
     private func fetchNotifications() {
-        
         for i in 0..<10 {
             let user = UserViewModel(
                 name: "",
@@ -87,7 +128,6 @@ final class NotificationsViewController: UIViewController {
                 id: 0
             )
             
-            
             let post = UserPostViewModel(identifier: "",
                                 postType: .photo,
                                 thumbnailImage: URL(string: "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/img\(i+1).jpeg")!,
@@ -100,9 +140,7 @@ final class NotificationsViewController: UIViewController {
                                 owner: user)
             
             let model = UserNotification(
-                type: i % 2 == 0 ?
-                    .like(post: post):
-                    .follow(state: .not_following),
+                type: i % 2 == 0 ? .like(post: post): .follow(state: .not_following),
                 text: "He mentioned you in his comments.", user: user)
             
             self.models.append(model)
@@ -139,7 +177,7 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        /*let model = models[indexPath.row]
+        let model = models[indexPath.row]
         switch model.type {
         case .like(_):
             let cell = tableView.dequeueReusableCell(withIdentifier: NotificationLikeEventTableViewCell.identifier, for: indexPath) as! NotificationLikeEventTableViewCell
@@ -149,11 +187,11 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
         
         case .follow:
             let cell = tableView.dequeueReusableCell(withIdentifier: NotificationFollowEventTableViewCell.identifier, for: indexPath) as! NotificationFollowEventTableViewCell
-                //cell.configure(with: model)
+                cell.configure(with: model)
             cell.delgate = self
             return cell
-        }*/
-        return UITableViewCell()
+        }
+        //return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -163,15 +201,15 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
 
 extension NotificationsViewController: NotificationLikeEventTableViewCellDelegate {
     func didTapRelatedPostButton(model: UserNotification) {
-        /*switch model.type {
+        switch model.type {
         case .like(let post):
             let vc = PostViewController(model: post)
-            vc.title = post.postType.rawValue
+            vc.title = "Notificaciones"
             vc.navigationItem.largeTitleDisplayMode = .never
             navigationController?.pushViewController(vc, animated: true)
         case .follow(_):
             fatalError("Dev Issue: Should never get called")
-        }*/
+        }
     }
 }
 

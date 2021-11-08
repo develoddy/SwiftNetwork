@@ -98,6 +98,7 @@ class HomeViewController: UIViewController {
         CustomLoader.instance.showLoader()
     }
     
+    ///Token
     public func getUserToken() -> ResponseTokenBE? {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         guard let token = appDelegate.objUsuarioSesion else {
