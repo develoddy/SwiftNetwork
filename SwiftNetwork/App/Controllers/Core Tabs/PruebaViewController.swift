@@ -81,10 +81,12 @@ class PruebaViewController: UIViewController {
         CustomLoader.instance.showLoader()
     }
     
-    
-    ///Api Rest.
-    ///En esta función llamamos al Api rest para traes los datos de la DataBase,
-    ///Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
+    /**
+     Api Rest.
+     En esta función llamamos al Api rest para traes los datos de la DataBase,
+     Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
+     - Parameter
+     */
     private func fetchUserPost() {
         APIService.shared.apiProfile(email: self.email, token: getUserToken()?.token ?? "" ) {(result) in
             switch result {
@@ -95,29 +97,26 @@ class PruebaViewController: UIViewController {
             }
         }
     }
-    
-    ///Models
-    ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
-    ///Recorremos el array del modelo userpost.
-    //////El modelo pintara los datos del user post acorde al email.
-    private func setupModel(with model: [Userpost] ) {
+
+    /**
+     Models
+     Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
+     Recorremos el array del modelo userpost.
+     El modelo pintara los datos del user post acorde al email.
+     - Parameter model: Recibe el ojeto userpost
+     */
+    private func setupModel(with model: [Userpost]) {
         for items in model {
             let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType, storyfeatured: items.storyfeatured )
             models.append(userpost)
             
-            ///User
-            guard let user = items.userAuthor else { return }
+            ///User & Story Featured
+            guard let user = items.userAuthor, let story = items.storyfeatured else { return }
             self.user = user
-            
-            ///Story Featured
-            guard let story = items.storyfeatured else { return }
             self.story.append(contentsOf: story)
         }
         
         DispatchQueue.main.async {
-        ///DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            ///SpinnerView.shared.spinner.stopAnimating()
-            ///SpinnerView.shared.VW_overlay.isHidden = false
             CustomLoader.instance.hideLoader()
             self.collectionViewTwo.reloadData()
         }
@@ -177,7 +176,7 @@ class PruebaViewController: UIViewController {
 
 
 
-
+//MARK: Extensión.
 extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -217,7 +216,7 @@ extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,for: indexPath) as! ProfileInfoHeaderCollectionReusableView
                 if self.user != nil {
                     guard let user = self.user else { return UICollectionReusableView() }
-                    header.configure(with: user)
+                    header.configureProfile(with: user)
                     header.delegate = self
                 }
                 return header

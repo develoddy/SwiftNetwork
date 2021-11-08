@@ -11,6 +11,8 @@ class UserPostViewController: UIViewController {
     
     let collectionViewTwo = ProfileCollectionsViews.collectionViewTwo()
     
+    var cellHeader : UICollectionReusableView?
+    
     var models = [Userpost]()
     
     private var user: User?
@@ -21,6 +23,7 @@ class UserPostViewController: UIViewController {
     init(email: String, token: String) {
         super.init(nibName: nil, bundle: nil)
         fetchUserPost(email: email, token: token)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -94,9 +97,13 @@ class UserPostViewController: UIViewController {
     }
     
     private func configureHeader() {
+        
         collectionViewTwo.register(StoryFeaturedCollectionTableViewCell.self,forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,withReuseIdentifier: StoryFeaturedCollectionTableViewCell.identifier)
+        
         collectionViewTwo.register(ProfileInfoHeaderCollectionReusableView.self,forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier)
+        
         collectionViewTwo.register(ProfileTabsCollectionReusableView.self,forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,withReuseIdentifier: ProfileTabsCollectionReusableView.identifier)
+        
     }
     
     private func configureCollectionViewTwo() {
@@ -104,7 +111,15 @@ class UserPostViewController: UIViewController {
         collectionViewTwo.dataSource = self
         collectionViewTwo.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
         view.addSubview(collectionViewTwo)
-        DispatchQueue.main.async { self.collectionViewTwo.reloadData() }
+        collectionViewTwo.reloadData()
+    }
+    
+    public func getUserToken() -> ResponseTokenBE? {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        guard let token = appDelegate.objUsuarioSesion else {
+            return getUserToken()
+        }
+        return token
     }
 }
 
@@ -142,14 +157,18 @@ extension UserPostViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard kind == UICollectionView.elementKindSectionHeader else { return UICollectionReusableView() }
-        
         switch indexPath.section {
             case 0:
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,for: indexPath) as! ProfileInfoHeaderCollectionReusableView
                 if self.user != nil {
                     guard let user = self.user else { return UICollectionReusableView() }
-                    header.configure(with: user)
-                    header.delegate = self
+                    if self.user?.email == self.getUserToken()?.usertoken?.email {
+                        header.configureProfile(with: user)
+                        header.delegate = self
+                    } else {
+                        header.configureUser(with: user)
+                        header.delegate = self
+                    }
                 }
                 return header
             case 1:
@@ -159,7 +178,6 @@ extension UserPostViewController: UICollectionViewDelegate, UICollectionViewData
                 }
                 return storyHeader
             case 2:
-                
                 let tabsHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileTabsCollectionReusableView.identifier,for: indexPath) as! ProfileTabsCollectionReusableView
                     tabsHeader.delegate = self
                 return tabsHeader

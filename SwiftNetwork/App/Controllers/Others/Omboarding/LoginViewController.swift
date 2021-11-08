@@ -20,14 +20,14 @@ class LoginViewController: UIViewController {
     
     let gradientLayer = CAGradientLayer()
 
-    var spinner = UIActivityIndicatorView()
     private let logoImageView = UIImageView()
     private let titleLabel = UILabel()
     private let headerView = UIView()
     private let usernameEmailField = UITextField()
     private let passwordField = UITextField()
-    private let button =  TransitionButton(frame: CGRect(x: 0, y: 0, width: 250, height: 50)) ///Spinner
-    private let loginButton = TransitionButton(frame: CGRect(x: 0, y: 0, width: 250, height: 50)) ///Spinner //UIButton()
+    //private let button =  TransitionButton(frame: CGRect(x: 0, y: 0, width: 250, height: 50)) ///Spinner
+    //private let loginButton = TransitionButton(frame: CGRect(x: 0, y: passwordField.bottom+5, width: 250, height: 50))
+    private let loginButton = TransitionButton()
     private let termsButton = UIButton()
     private let privacyButton = UIButton()
     private let createAccountButton = UIButton()
@@ -39,6 +39,7 @@ class LoginViewController: UIViewController {
     private let passwordText = TextFieldWithPadding()
     
     let gradient = CAGradientLayer()
+    
     
     //MARK: viewDidLoad
     override func viewDidLoad() {
@@ -63,6 +64,16 @@ class LoginViewController: UIViewController {
         configurePasswordLabel()
         configurePasswordText()
        
+    }
+    
+    ///Spinner
+    ///Muestra el spiner mientras los datos de van cargando...
+    private func setupSpinner()  {
+        let spinerView = SpinnerView.shared.setupSpinner()
+        spinerView.center = view.center
+        SpinnerView.shared.VW_overlay = UIView(frame: UIScreen.main.bounds)
+        SpinnerView.shared.VW_overlay.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
+        view.addSubview(spinerView)
     }
     
 
@@ -129,7 +140,7 @@ class LoginViewController: UIViewController {
             height: passwordTextlSize.height).integral
         
         ///Button Login
-        loginButton.layer.masksToBounds = true
+        
         loginButton.frame = CGRect(
             x: 25,
             y: passwordText.bottom + 20,
@@ -178,8 +189,7 @@ class LoginViewController: UIViewController {
     func configureHeaderView() {
         headerView.clipsToBounds = true
         //gradient.colors = [UIColor(red: 51/255, green: 51/255, blue: 153/255, alpha: 1.0).cgColor, UIColor(red: 255/255, green: 0/255, blue: 204/255, alpha: 1.0).cgColor]
-        gradient.colors = [UIColor.systemBlue.cgColor,
-                           UIColor.systemBackground.cgColor]
+        gradient.colors = [UIColor.systemBlue.cgColor,UIColor.systemBackground.cgColor]
         gradient.locations = [0.0, 0.6, 0.8]
         gradient.frame = view.bounds
         headerView.layer.insertSublayer(gradient, at: 0)
@@ -190,18 +200,19 @@ class LoginViewController: UIViewController {
     
     ///LogIn
     func configureLoginButton() {
-         ///Spinner //UIButton()
+        //loginButton = TransitionButton(frame: CGRect(x: 0, y: passwordField.bottom+5, width: 250, height: 50))
         loginButton.clipsToBounds = true
+        loginButton.layer.masksToBounds = true
         loginButton.center = view.center
-        gradient.colors = [UIColor(red: 0.50, green: 0.00, blue: 1.00, alpha: 1.00).cgColor,
-                           UIColor(red: 0.88, green: 0.00, blue: 1.00, alpha: 1.00).cgColor]
+        gradient.colors = [UIColor(red: 0.50, green: 0.00, blue: 1.00, alpha: 1.00).cgColor,UIColor(red: 0.88, green: 0.00, blue: 1.00, alpha: 1.00).cgColor]
         gradient.startPoint = CGPoint(x: 0, y: 1)
         gradient.endPoint = CGPoint(x: 1, y: 1)
         loginButton.layer.insertSublayer(gradient, at: 0)
-        loginButton.setTitle("Log In", for: .normal)
+        loginButton.setTitle("Iniciar sesión", for: .normal)
         loginButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         loginButton.layer.masksToBounds = true
-        loginButton.layer.cornerRadius = Constants.Constants.cornerRadius
+        //loginButton.layer.cornerRadius = Constants.Constants.cornerRadius
+        loginButton.layer.cornerRadius = loginButton.height/2
         loginButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
         loginButton.spinnerColor = .white
     }
@@ -258,7 +269,7 @@ class LoginViewController: UIViewController {
     }
     
     ///Spinner
-    func configureSpinnerButton() {
+    /*func configureSpinnerButton() {
         button.center = view.center
         button.backgroundColor = .systemPink
         button.setTitle("Continue", for: .normal)
@@ -266,19 +277,19 @@ class LoginViewController: UIViewController {
         button.addTarget(self, action: #selector(runSpinnerValidationLogin), for: .touchUpInside)
         button.spinnerColor = .white
         view.addSubview(button)
-    }
+    }*/
     
     
     
     func configureTermsButton() {
         termsButton.setTitle("Terms of Serviced", for: .normal)
-        termsButton.setTitleColor(Constants.Color.general, for: .normal)
+        termsButton.setTitleColor(UIColor.black, for: .normal)
         termsButton.addTarget(self, action: #selector(didTapTermsButton), for: .touchUpInside)
     }
     
     func configurePrivacyButton() {
         privacyButton.setTitle("Privacy Polocy", for: .normal)
-        privacyButton.setTitleColor(Constants.Color.general, for: .normal)
+        privacyButton.setTitleColor(UIColor.black, for: .normal)
         privacyButton.addTarget(self, action: #selector(didTapPrivacyButton), for: .touchUpInside)
     }
     
@@ -295,13 +306,24 @@ class LoginViewController: UIViewController {
         passwordText.delegate = self
     }
     
+    private func loginRadius() {
+        self.loginButton.frame = CGRect(
+            x: 25,
+            y: self.passwordText.bottom + 20,
+            width: self.view.width - 50,
+            height: 52.0)
+        self.loginButton.layer.cornerRadius = self.loginButton.height/2
+    }
+    
     @objc private func runSpinnerValidationLogin(validate: Bool) {
         if validate {
-            DispatchQueue.main.asyncAfter(deadline: .now()+4) {
-                self.loginButton.stopAnimation(animationStyle: .expand, revertAfterDelay: 1) {
+            ///DispatchQueue.main.asyncAfter(deadline: .now()+4) {
+            DispatchQueue.main.async {
+                self.loginButton.stopAnimation(animationStyle: .expand, revertAfterDelay: 0) {
                     let vc = TabBarController()
                     vc.modalPresentationStyle = .fullScreen
                     self.present(vc, animated: true)
+                    self.loginRadius()
                 }
             }
         } else {
@@ -313,50 +335,30 @@ class LoginViewController: UIViewController {
                     conNombreDeBotonCancelar: "Aceptar",
                     enControlador: self,
                     conCompletion: nil)
+                self.loginRadius()
             }
         }
     }
     
     @objc private func didTapLoginButton() {
-        
         passwordText.resignFirstResponder()
         emailText.resignFirstResponder()
-
         guard let usernameEmail = emailText.text, let password = passwordText.text else {
             return
         }
-        
-        ///Hacer todar el spinner y opacar el view
         loginButton.startAnimation()
-        ///view.layer.opacity = 0.5
-        
         AuthManager.shared.login(email: usernameEmail, password: password) { success in
             DispatchQueue.main.async {
-                if success {
-                    ///Success login
-                    self.runSpinnerValidationLogin(validate: true)
-                } else {
-                    ///Error ocurred
-                    self.runSpinnerValidationLogin(validate: false)
-                }
+                success ? self.runSpinnerValidationLogin(validate: true) : self.runSpinnerValidationLogin(validate: false) ///Success / Error.
             }
         }
-        /*spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        spinner.center = view.center
-        spinner.style = UIActivityIndicatorView.Style.large
-        spinner.color = .red
-        spinner.hidesWhenStopped = true
-        
-        view.addSubview(spinner)
-        spinner.startAnimating()*/
     }
     @objc private func didTapTermsButton() {}
     @objc private func didTapPrivacyButton() {}
     @objc private func didTapCreateAccountButton() {
-        spinner.stopAnimating()
         let vc = RegistrationViewController()
         vc.delegateEmail = self
-        vc.title = "Create Account"
+        vc.title = "Crear nueva cuenta"
         present(UINavigationController(rootViewController: vc), animated: true)
     }
     
@@ -375,11 +377,9 @@ class LoginViewController: UIViewController {
 extension LoginViewController: UITextFieldDelegate {
     /**
      stop animating the button.
-     
      - Parameter animationStyle: the style of the stop animation.
      - Parameter revertAfterDelay: revert the button to the original state after a delay to give opportunity to custom transition.
      - Parameter completion: a callback closure to be called once the animation finished, it may be useful to transit to another view controller, example transit to the home screen from the login screen.
-     
      */
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailText {

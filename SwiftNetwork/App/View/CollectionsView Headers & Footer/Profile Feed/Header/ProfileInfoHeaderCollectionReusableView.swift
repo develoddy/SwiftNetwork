@@ -55,7 +55,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         return button
     }()
     ///Followers
-    private let followersButton : UIButton = {
+    private let followersCountButton : UIButton = {
         let button = UIButton()
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .thin)
         button.titleLabel?.textAlignment = .center
@@ -64,7 +64,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         return button
     }()
     ///Following
-    private let followingButton : UIButton = {
+    private let followingCountButton : UIButton = {
         let button = UIButton()
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .thin)
         button.titleLabel?.textAlignment = .center
@@ -98,6 +98,23 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         return button
     }()
     
+    private let followingButton: UIButton = {
+        let followingButton = UIButton()
+        followingButton.setTitle("Seguir", for: .normal)
+        followingButton.backgroundColor = .systemBlue
+        followingButton.layer.cornerRadius = 26
+        return followingButton
+    }()
+    
+    private let sendMessageButton: UIButton = {
+        let sendMessageButton = UIButton()
+        sendMessageButton.setTitle("Enviar mensaje", for: .normal)
+        sendMessageButton.backgroundColor = .systemBlue
+        sendMessageButton
+              .layer.cornerRadius = 26
+        return sendMessageButton
+    }()
+    
     
     
     // MARK: -Init
@@ -117,15 +134,18 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         addSubview(profilePhotoImageView)
         addSubview(usernameLabel)
         addSubview(postButton)
-        addSubview(followersButton)
-        addSubview(followingButton)
+        addSubview(followersCountButton)
+        addSubview(followingCountButton)
         addSubview(biographyLabel)
         addSubview(editProfileButton)
+        
+        addSubview(followingButton)
+        addSubview(sendMessageButton)
     }
     
     private func addButtonActions() {
-        followersButton.addTarget(self, action: #selector(didTapFollowerButton), for: .touchUpInside)
-        followingButton.addTarget(self, action: #selector(didTapFollowingButton), for: .touchUpInside)
+        followersCountButton.addTarget(self, action: #selector(didTapFollowerButton), for: .touchUpInside)
+        followingCountButton.addTarget(self, action: #selector(didTapFollowingButton), for: .touchUpInside)
         postButton.addTarget(self, action: #selector(didTapPostsButton), for: .touchUpInside)
         editProfileButton.addTarget(self, action: #selector(didTapEditProfileButton), for: .touchUpInside)
     }
@@ -140,10 +160,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         editProfileButton.layer.masksToBounds = true
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        gradient.frame = bounds
-
+    func layoutsProfile() {
         let profilePhotoSize = width/4
         profilePhotoImageView.frame = CGRect(x: width/2.7,y: 10,width: profilePhotoSize,height: profilePhotoSize).integral
         profilePhotoImageView.layer.cornerRadius = profilePhotoSize/2.0
@@ -167,7 +184,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         ).integral
         
         ///Followers
-        followersButton.frame = CGRect(
+        followersCountButton.frame = CGRect(
             x: postButton.right,
             y: usernameLabel.bottom+5,
             width: countButtonWidth,
@@ -175,8 +192,8 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         ).integral
         
         ///Following
-        followingButton.frame = CGRect(
-            x: followersButton.right,
+        followingCountButton.frame = CGRect(
+            x: followersCountButton.right,
             y: usernameLabel.bottom+5,
             width: countButtonWidth,
             height: buttonHeight
@@ -187,7 +204,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         let bioLabelSize = biographyLabel.sizeThatFits(frame.size)
         biographyLabel.frame = CGRect(
             x: 10,
-            y: followingButton.bottom+10,
+            y: followingCountButton.bottom+10,
             width: width-20, //bioLabelSizeWidth ,
             height: bioLabelSize.height).integral
         
@@ -199,6 +216,73 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
             height: buttonHeight).integral
     }
     
+    func layoutsUser() {
+        let profilePhotoSize = width/4
+        profilePhotoImageView.frame = CGRect(x: width/2.7,y: 10,width: profilePhotoSize,height: profilePhotoSize).integral
+        profilePhotoImageView.layer.cornerRadius = profilePhotoSize/2.0
+        
+        let usernameLabelSize = usernameLabel.sizeThatFits(frame.size)
+        usernameLabel.frame = CGRect(
+            x: 5,
+            y: profilePhotoImageView.bottom+5,
+            width: width-10,
+            height: usernameLabelSize.height).integral
+        
+        let buttonHeight = profilePhotoSize/2
+        let countButtonWidth = (width)/2
+        
+        ///Post
+        postButton.frame = CGRect(
+            x: 5,
+            y: usernameLabel.bottom+5,
+            width: countButtonWidth,
+            height: buttonHeight
+        ).integral
+        
+        ///Followers
+        followersCountButton.frame = CGRect(
+            x: postButton.right,
+            y: usernameLabel.bottom+5,
+            width: countButtonWidth,
+            height: buttonHeight
+        ).integral
+        
+        ///Following
+        followingCountButton.frame = CGRect(
+            x: followersCountButton.right,
+            y: usernameLabel.bottom+5,
+            width: countButtonWidth,
+            height: buttonHeight
+        ).integral
+        
+        ///Bio
+        //let bioLabelSizeWidth = (width-10)/1
+        let bioLabelSize = biographyLabel.sizeThatFits(frame.size)
+        biographyLabel.frame = CGRect(
+            x: 10,
+            y: followingCountButton.bottom+10,
+            width: width-20,
+            height: bioLabelSize.height).integral
+        
+        followingButton.frame = CGRect(
+            x: 10,
+            y: biographyLabel.bottom+10,
+            width: countButtonWidth-10,
+            height: buttonHeight).integral
+        
+        sendMessageButton.frame = CGRect(
+            x: followingButton.right+5,
+            y: biographyLabel.bottom+10,
+            width: countButtonWidth-15,
+            height: buttonHeight).integral
+        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradient.frame = bounds
+    }
+    
     override func prepareForReuse() {
         usernameLabel.setTitle(nil, for: .normal)
         biographyLabel.setTitle(nil, for: .normal)
@@ -206,7 +290,7 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     }
     
     ///Configure
-    public func configure(with model: User) {
+    public func configureProfile(with model: User) {
         guard let image = model.profile?.imageHeader,
               let username = model.username,
               let bio = model.profile?.bio else {
@@ -225,6 +309,32 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         addTextOnPostButton(posts: posts)
         addTextOnFollowersButton(follower: follower)
         addTextOnFollowingButton(following: following)
+        
+        layoutsProfile()
+    }
+    
+    ///Configure
+    public func configureUser(with model: User) {
+        guard let image = model.profile?.imageHeader,
+              let username = model.username,
+              let bio = model.profile?.bio else {
+            return
+        }
+        profilePhotoImageView.sd_setImage(with: URL(string: image), completed: nil)
+        usernameLabel.setTitle(username, for: .normal)
+        biographyLabel.setTitle(bio, for: .normal)
+        
+        ///Buttons Post - Follower - Following.
+        guard let posts = model.count?.posts,
+              let follower = model.count?.followers,
+              let following = model.count?.following else {
+            return
+        }
+        addTextOnPostButton(posts: posts)
+        addTextOnFollowersButton(follower: follower)
+        addTextOnFollowingButton(following: following)
+        
+        layoutsUser()
     }
     
     
@@ -279,7 +389,7 @@ extension ProfileInfoHeaderCollectionReusableView {
     }
     
     private func addTextOnFollowersButton(follower: Int) {
-        followersButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+        followersCountButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
         let buttonText: NSString = "\(follower) mil\nSeguidores" as NSString
         let newlineRange: NSRange = buttonText.range(of: "\n")
         
@@ -303,11 +413,11 @@ extension ProfileInfoHeaderCollectionReusableView {
         
         //appending both attributed strings
         attrString1.append(attrString2)
-        followersButton.setAttributedTitle(attrString1, for: [])
+        followersCountButton.setAttributedTitle(attrString1, for: [])
     }
     
     private func addTextOnFollowingButton(following: Int) {
-        followingButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+        followingCountButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
         let buttonText: NSString = "\(following)\nSiguiendo" as NSString
         let newlineRange: NSRange = buttonText.range(of: "\n")
         
@@ -330,6 +440,6 @@ extension ProfileInfoHeaderCollectionReusableView {
         
         //appending both attributed strings
         attrString1.append(attrString2)
-        followingButton.setAttributedTitle(attrString1, for: [])
+        followingCountButton.setAttributedTitle(attrString1, for: [])
     }
 }

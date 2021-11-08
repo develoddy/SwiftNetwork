@@ -45,6 +45,14 @@ class SearchResultViewController: UIViewController {
         view.addSubview(tableView)
     }
     
+    public func getUserToken() -> ResponseTokenBE? {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        guard let token = appDelegate.objUsuarioSesion else {
+            return getUserToken()
+        }
+        return token
+    }
+    
     private func configureTableView() {
         tableView.register(SearchResultViewTableViewCell.self, forCellReuseIdentifier: SearchResultViewTableViewCell.identifier)
         tableView.separatorStyle = .none
@@ -81,11 +89,19 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let model = models[indexPath.row]
+        
+        /**let model = models[indexPath.row]
         let vc =  PruebaViewController(with: model.userAuthor?.email ?? "")///PostViewController(model: model)
         vc.title = "Posts"
         vc.navigationItem.largeTitleDisplayMode = .never
-        ////self.navigationController?.pushViewController(vc, animated: true)
+        presentingViewController?.navigationController?.pushViewController(vc, animated: true)*/
+        let model = models[indexPath.row]
+        guard let email = model.userAuthor?.email,
+              let name = model.userAuthor?.name else {
+            return
+        }
+        let vc = UserPostViewController(email: email, token: getUserToken()?.token ?? "")
+        vc.title = name
         presentingViewController?.navigationController?.pushViewController(vc, animated: true)
         
     }

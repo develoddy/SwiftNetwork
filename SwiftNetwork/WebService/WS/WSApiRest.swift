@@ -54,7 +54,7 @@ class WSApiRest: NSObject {
         let dic : [String : Any] = ["email"         : objUser.email!                                ,
                                     "password"      : objUser.password!                             ,
                                     "typedevice"    : 1                                             ,
-                                    "tokendevice"   : "Se debe enviar el token push del dispositivo"]
+                                    "tokendevice"   : "Se debe enviar el token push del dispositivo"	]
         return WSender.doPOSTToURL(conURL: self.CDMWebModelURLBase, conPath: _URL_login as NSString, conParametros: dic) { (objRespuesta) in
             let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
             let arrayRespuesta = diccionarioRespuesta!["error"]
@@ -66,7 +66,7 @@ class WSApiRest: NSObject {
                         switch result {
                         case .success(let userPost): completionCorrecto(userPost)
                         case .failure(let error): print(error.localizedDescription)
-                        }
+                        }		
                     }
                 }
             } else if arrayRespuesta as! String == Constants.Error.unauthorized {
