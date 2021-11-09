@@ -20,6 +20,8 @@ struct HomeFeedRenderViewModel {
 //MARK: HomeViewController
 class HomeViewController: UIViewController {
     
+    private var isLiked = false
+    
     let cellSpacingHeight: CGFloat = 5
     
     private let tableView: UITableView = {
@@ -542,9 +544,8 @@ extension HomeViewController: CollectionTableViewCellDelegate {
 
 //MARK: - Actions buttons
 extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
-  
+    
     func didTapLikeButton() {
-        print("like")
     }
 
     //func didTapCommentButton(model: UserpostViewModel) {
@@ -635,7 +636,4 @@ extension HomeViewController: IGFeedPostHeaderTableViewCellDelegate {
     func didTapMoreButton() {
         print("clispp")
     }
-    
-    
 }
- 

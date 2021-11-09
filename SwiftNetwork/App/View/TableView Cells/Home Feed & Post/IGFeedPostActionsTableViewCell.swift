@@ -7,6 +7,48 @@
 
 import UIKit
 
+
+class HeartButton: UIButton {
+    
+    private var isLiked = false
+    ///private let unlikedImage = UIImage(systemName: "heart")
+    private let unlikedImage = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold))
+    private let likedImage = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold))
+    
+  
+    private let unlikedScale: CGFloat = 0.7
+    private let likedScale: CGFloat = 1.3
+
+    override public init(frame: CGRect) {
+        super.init(frame: frame)
+        setImage(unlikedImage, for: .normal)
+    }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  public func flipLikedState() {
+    isLiked = !isLiked
+    animate()
+  }
+
+  private func animate() {
+    UIView.animate(withDuration: 0.1, animations: {
+        let newImage = self.isLiked ? self.likedImage : self.unlikedImage
+      let newScale = self.isLiked ? self.likedScale : self.unlikedScale
+      self.transform = self.transform.scaledBy(x: newScale, y: newScale)
+      self.setImage(newImage, for: .normal)
+    }, completion: { _ in
+      UIView.animate(withDuration: 0.1, animations: {
+        self.transform = CGAffineTransform.identity
+      })
+    })
+  }
+}
+
+
+//MARK: POST ACTION
 protocol IGFeedPostActionsTableViewCellDelegate: AnyObject {
     func didTapLikeButton()
     //func didTapCommentButton(model: UserpostViewModel)
@@ -22,10 +64,25 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     
     private var model: Userpost?
     
-    private let likeButton: UIButton = {
+    /*private let likeButton: UIButton = {
         let button = UIButton()
         let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
         let image = UIImage(systemName: "heart", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        button.tintColor = .systemRed
+        return button
+    }()*/
+    
+    private let likeButton: HeartButton = {
+        let likeButton = HeartButton()
+        likeButton.tintColor = .black
+        return likeButton
+    }()
+    
+    private let likeFillButton: UIButton = {
+        let button = UIButton()
+        let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
+        let image = UIImage(systemName: "heart.fill", withConfiguration: config)
         button.setImage(image, for: .normal)
         button.tintColor = .black
         return button
@@ -39,7 +96,6 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
         button.tintColor = .black
         return button
     }()
-    
     
     private let sendButton: UIButton = {
         let button = UIButton()
@@ -62,21 +118,16 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        contentView.backgroundColor = .systemBackground
         contentView.addSubview(likeButton)
         contentView.addSubview(commentButton)
         contentView.addSubview(sendButton)
-        
         contentView.addSubview(bookmarkButton)
         
-        likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
+        //likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(handleHeartButtonTap(_:)), for: .touchUpInside)
         commentButton.addTarget(self, action: #selector(didTapCommetnButton), for: .touchUpInside)
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
         
-        //addTextOnLikeButton()
-        //addTextOnCommentButton()
-        //addTextOnShareButton()
-        //addTextOnSendButton()
     }
     
     required init?(coder: NSCoder) {
@@ -92,7 +143,9 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
         
         ///Like, comment, send, shared, send
         let buttonSize = contentView.height-10
-        let buttons = [likeButton, commentButton, sendButton ]
+        //let buttons = [likeButton, commentButton, sendButton ]
+        
+        let buttons = [likeButton,commentButton, sendButton ]
     
         for x in 0..<buttons.count {
             let button = buttons[x]
@@ -110,7 +163,16 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
             y: 5,
             width: buttonSize,
             height: buttonSize)
+        
+        
+        
     }
+    
+    @objc private func handleHeartButtonTap(_ sender: UIButton) {
+        guard let button = sender as? HeartButton else { return }
+        button.tintColor = .systemRed
+        button.flipLikedState()
+      }
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -135,12 +197,11 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
 
 //MARK: BUTTONS
 extension IGFeedPostActionsTableViewCell {
-    private func addTextOnLikeButton() {
+    /*private func addTextOnLikeButton() {
         likeButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
         let buttonText: NSString = "\n3" // 10\nPost
         let newlineRange: NSRange = buttonText.range(of: "\n")
         
-        //getting both substrings
         var substring1 = ""
         var substring2 = ""
         
@@ -150,7 +211,6 @@ extension IGFeedPostActionsTableViewCell {
         }
         
         let font1: UIFont = UIFont(name: "HelveticaNeue-Bold", size: 17.0)!
-        ///label.font = UIFont.boldSystemFont(ofSize: 16.0)
         let attributes1 = [NSMutableAttributedString.Key.font: font1]
         let attrString1 = NSMutableAttributedString(string: substring1, attributes: attributes1)
         
@@ -158,10 +218,9 @@ extension IGFeedPostActionsTableViewCell {
         let attributes2 = [NSMutableAttributedString.Key.font: font2]
         let attrString2 = NSMutableAttributedString(string: substring2, attributes: attributes2)
         
-        //appending both attributed strings
         attrString1.append(attrString2)
         likeButton.setAttributedTitle(attrString1, for: [])
-    }
+    }*/
     
     private func addTextOnCommentButton() {
         commentButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
