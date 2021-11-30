@@ -91,9 +91,6 @@ class BCApiRest: NSObject {
         }
     }
     
-    
-
-    
     //MARK: USERPOST.
     /// Vamos a llamar al backend para traer los datos de la base de datos.
     /// Esta funcion recibe por parametros el token
@@ -116,9 +113,9 @@ class BCApiRest: NSObject {
     /// Esta funcion recibe por parametros el objeto userSearch y el token
     /// Return object userpost o de lo contrario un mensaje de error.
     @discardableResult class func profile(_ email: String,
-                                         _ token: String?,
-                                         conCompletionCorrecto completioCorrecto: @escaping Closures.userPost,
-                                         conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+                                          _ token: String?,
+                                          conCompletionCorrecto completioCorrecto: @escaping Closures.userPost,
+                                          conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
         if email.count == 0 {
             completionIncorrecto("You need enter your name")
             return nil
@@ -127,7 +124,6 @@ class BCApiRest: NSObject {
         let resultSearch = WSApiRest.startSearch(email, token!, conCompletionCorrecto: { (objExplore) in
             completioCorrecto(objExplore)
         }, error: { (mensajeError) in
-            print("mensajeError")
             completionIncorrecto(mensajeError)
         })
         
@@ -135,7 +131,29 @@ class BCApiRest: NSObject {
     }
     
     
-    
+    //MARK: LIKE.
+    /// Vamos a llamar al backend para insertar o eliminar un like..
+    /// Esta funcion recibe por parametros idpost, idUser
+    /// Return messager.
+    @discardableResult class func like(_ type_id: Int,
+                                       _ ref_id: Int,
+                                       _ users_id: Int,
+                                       _ isLiked: Bool,
+                                       _ token: String?,
+                                       conCompletionCorrecto completioCorrecto: @escaping Closures.message,
+                                       conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        let resultSearch = WSApiRest.startLike(type_id,
+                                               ref_id,
+                                               users_id,
+                                               isLiked,
+                                               token!,
+                                               conCompletionCorrecto: { ( objLike ) in
+            completioCorrecto( objLike )
+        }, error: { ( mensajeError ) in
+            completionIncorrecto(mensajeError)
+        })
+        return resultSearch
+    }
     
     //MARK: EXPLORE.
     /// Vamos a llamar al backend para traer los datos de la base de datos.
@@ -150,13 +168,34 @@ class BCApiRest: NSObject {
             return nil
         }
         
-        let resultSearch = WSApiRest.startSearch(objSearch, token!, conCompletionCorrecto: { (objExplore) in
+        let resultSearch = WSApiRest.startSearch(objSearch, token!, conCompletionCorrecto: { ( objExplore ) in
             completioCorrecto(objExplore)
         }, error: { (mensajeError) in
             print("mensajeError")
             completionIncorrecto(mensajeError)
         })
         
+        return resultSearch
+    }
+    
+    
+    //MARK: LIKED.
+    /// Vamos a llamar al backend para insertar o eliminar un like..
+    /// Esta funcion recibe por parametros idpost, idUser
+    /// Return messager.
+    @discardableResult class func liked(_ ref_id: Int,
+                                        _ users_id: Int,
+                                        _ token: String?,
+                                       conCompletionCorrecto completioCorrecto: @escaping Closures.message,
+                                       conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        let resultSearch = WSApiRest.startLiked(ref_id,
+                                               users_id,
+                                               token!,
+                                               conCompletionCorrecto: { ( objLike ) in
+            completioCorrecto( objLike )
+        }, error: { ( mensajeError ) in
+            completionIncorrecto(mensajeError)
+        })
         return resultSearch
     }
 }

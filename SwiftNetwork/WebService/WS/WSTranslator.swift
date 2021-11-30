@@ -51,6 +51,28 @@ class WSTranslator: NSObject {
         }
     }
     
+    //MARK: PROFILE TRANSLATOR RESPONSE.
+    ///Convert Object dicctionary a Json Codable Explore
+    ///Return Object Codable
+    class func translateResponseLikeBE(_ objDic: NSDictionary, completion: @escaping ((Result<Operation, Error>)) -> Void) {
+        var operation: Operation?
+        do {
+            let jsonData:NSData = try JSONSerialization.data(withJSONObject: objDic, options: JSONSerialization.WritingOptions.prettyPrinted) as NSData
+            guard let jsonString = String(data: jsonData as Data, encoding: String.Encoding.utf8) else { return }
+            guard let json = jsonString.data(using: .utf8) else { return }
+            operation = try JSONDecoder().decode(Operation.self, from: json)
+            if let operation = operation {
+                completion(.success(operation))
+            } else {
+                completion(.failure(Error.self as! Error) )
+                print("Failed to pase")
+            }
+        } catch {
+            print("--- translateResponseExploreBE ::::: error")
+            completion(.failure(Error.self as! Error) )
+        }
+    }
+    
     //MARK: EXPLORE TRANSLATOR RESPONSE.
     ///Convert Object dicctionary a Json Codable Explore
     ///Return Object Codable
@@ -61,6 +83,7 @@ class WSTranslator: NSObject {
             guard let jsonString = String(data: jsonData as Data, encoding: String.Encoding.utf8) else { return }
             guard let json = jsonString.data(using: .utf8) else { return }
             userPost = try JSONDecoder().decode(UserPost.self, from: json)
+            
             if let userPost = userPost {
                 completion(.success(userPost))
             } else {
@@ -88,6 +111,28 @@ class WSTranslator: NSObject {
             }
         } catch {
             print("--- translateResponseTokenBE ::::: error")
+        }
+    }
+    
+    //MARK: LIKED TRANSLATOR RESPONSE.
+    ///Convert Object dicctionary a Json Codable Explore
+    ///Return Object Codable
+    class func translateResponseLikedBE(_ objDic: NSDictionary, completion: @escaping ((Result<Operation, Error>)) -> Void) {
+        var operation: Operation?
+        do {
+            let jsonData:NSData = try JSONSerialization.data(withJSONObject: objDic, options: JSONSerialization.WritingOptions.prettyPrinted) as NSData
+            guard let jsonString = String(data: jsonData as Data, encoding: String.Encoding.utf8) else { return }
+            guard let json = jsonString.data(using: .utf8) else { return }
+            operation = try JSONDecoder().decode(Operation.self, from: json)
+            if let operation = operation {
+                completion(.success(operation))
+            } else {
+                completion(.failure(Error.self as! Error) )
+                print("Failed to pase")
+            }
+        } catch {
+            print("--- translateResponseExploreBE ::::: error")
+            completion(.failure(Error.self as! Error) )
         }
     }
     

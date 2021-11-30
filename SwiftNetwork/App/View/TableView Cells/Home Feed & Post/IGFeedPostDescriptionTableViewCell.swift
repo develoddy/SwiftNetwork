@@ -157,10 +157,10 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         ///Likes
         guard let likes = model.likes?.count else { return }
         
+        //print("Total Likes ::::::: \(likes)")
         
         ///Hay que coprobar si el array de likes está vacio o no.
         if likes == 0 {
-            print("array vacio...")
             let likesUsername = joinTextLike(text: "A nadie", description: "le gusta")
             totalLikeLabel.attributedText = likesUsername
         } else {

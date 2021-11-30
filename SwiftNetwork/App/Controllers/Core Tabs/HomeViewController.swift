@@ -20,7 +20,14 @@ struct HomeFeedRenderViewModel {
 //MARK: HomeViewController
 class HomeViewController: UIViewController {
     
-    private var isLiked = false
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        self.fetchUserPost()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     let cellSpacingHeight: CGFloat = 5
     
@@ -50,11 +57,12 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        fetchUserPost()
-        configureTableView()
-        delegateTableView()
+        self.delegateTableView()
+        self.configureTableView()
+        self.headerTableView()
+        
         setupNavigationBarItems()
-        headerTableView()
+        
         configureSpinner()
     }
     
@@ -73,8 +81,8 @@ class HomeViewController: UIViewController {
     ///Setupview
     private func setupView() {
         view.backgroundColor = .systemBackground
+        tableView.backgroundColor = .systemBackground
         view.addSubview(tableView)
-        //view.addSubview(setupSpinner())
     }
 
     ///Spinner
@@ -116,7 +124,6 @@ class HomeViewController: UIViewController {
         APIService.shared.apiUserPost(token: getUserToken()?.token ?? "" ) {(result) in
             switch result {
             case .success(let model):
-                
                 model.userpost?.count != 0 ? self.setupModel(with: model.userpost ?? []) : print("Array Userpost está vacio...")
             case .failure(let error):
                 print(error.localizedDescription)
@@ -127,20 +134,21 @@ class HomeViewController: UIViewController {
     ///Models
     ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
     private func setupModel(with model: [Userpost] ) {
+        
         for items in model {
             guard let user = items.userAuthor else { return }
             guard let comments = items.comments else { return }
             let viewModel = HomeFeedRenderViewModel(
-                collections : PostRenderViewModel(renderType: .collections(collections:  createStoryCollections(), createStory: createArrayCollections())),
+                collections : PostRenderViewModel(renderType: .collections(collections:  self.createStoryCollections(), createStory: self.createArrayCollections())),
                 header      : PostRenderViewModel(renderType: .header(provider: user)),
                 post        : PostRenderViewModel(renderType: .primaryContent(provider: items)),
                 actions     : PostRenderViewModel(renderType: .actions(provider: items)),
                 descriptions: PostRenderViewModel(renderType: .descriptions(post: items)),
                 comments    : PostRenderViewModel(renderType: .comments(comments: comments)),
                 footer      : PostRenderViewModel(renderType: .footer(footer: items)))
-            models.append(viewModel)
+            self.models.append(viewModel)
         }
-        ///Carga el spiner y recarga el tableview con los datos.
+        
         DispatchQueue.main.async {
             ///SpinnerView.shared.spinner.stopAnimating()
             ///SpinnerView.shared.VW_overlay.isHidden = true
@@ -306,7 +314,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let count = section
         let boxes = 7
         if count == 0 { ///Pinta el collection de imagenes
-            model = models[0]
+            model = models[count]
             return 1
         } else { /// Pinta el resto de contenido del post (hader, posts, actions, comments y footer)
             let position = count % boxes == 0 ? count / boxes : ((count - (count % boxes)) / boxes)
@@ -342,6 +350,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             let position = count % boxes == boxes ? count/boxes : ((count - (count % boxes)) / boxes)
             model = models[position]
             let subSection = count % boxes
+            
             switch subSection {
             case 1:
                 switch model.header.renderType {
@@ -352,6 +361,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                     return cell
                 case .comments, .actions, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
                 }
+                
             case 2:
                 switch model.post.renderType {
                 case .primaryContent(let post):
@@ -361,11 +371,21 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 case .comments, .actions, .header, .collections, .descriptions, .footer : return UITableViewCell()
                 }
                 
+            ///Actions
             case 3:
                 switch model.actions.renderType {
                 case .actions(let provider):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostActionsTableViewCell.identifier, for: indexPath) as! IGFeedPostActionsTableViewCell
-                    cell.configure(with: provider)
+                    var liked = false
+                    APIService.shared.apiLiked(ref_id: provider.id ?? 0, users_id:getUserToken()?.usertoken?.id ?? 0, token: getUserToken()?.token ?? "" ) {( result ) in
+                        switch result {
+                        case .success(let message):
+                            liked = message.store == "true" ? true : false
+                            cell.configure(with: provider, liked: liked)
+                        case .failure(let error):
+                            print(error.localizedDescription)
+                        }
+                    }
                     cell.delegate = self
                     return cell
                 case .comments, .header, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
@@ -402,14 +422,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 case .comments, .header, .primaryContent, .collections, .actions, .descriptions: return UITableViewCell()
                 }
                 
-            default:
-                print("error en subSection")
+            default: print("error en subSection")
             }
             return UITableViewCell()
         }
     }
     
     ///Did select
+    
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let boxes = 7
@@ -441,6 +462,13 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         ///Sub section actions.
         case 3:
             print("actions")
+            //guard let btn = (tableView.cellForItem(at: indexPath) as! yourCellName).button else {
+              //  return
+            //}
+        
+            ///let btn = (tableView.cellForRow(at: indexPath) as! IGFeedPostActionsTableViewCell).likeButton
+            ///btn.setImage(UIImage(named: "yourSelectedImage name"), for: .normal)
+            ///btn.tintColor = .systemGreen
             
         ///Sub section post description.
         case 4:
@@ -545,10 +573,61 @@ extension HomeViewController: CollectionTableViewCellDelegate {
 //MARK: - Actions buttons
 extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
     
-    func didTapLikeButton() {
+    /**
+     Tap like.
+     Verificamos si el usuario conectado ha dado like a los post que está viendo en el momento.
+     - Parameter sender: event button
+     - Parameter model: Userpost
+     */
+    func didTapLikeButton(_ sender: UIButton, model: Userpost) {
+        guard let button = sender as? HeartButton else { return }
+        guard let type_id = model.posttTypeID,
+              let ref_id = model.id,
+              let users_id = getUserToken()?.usertoken?.id,
+              let token = getUserToken()?.token else {
+            return
+        }
+        APIService.shared.apiLiked(ref_id: ref_id, users_id:users_id, token: token ) {( result ) in
+            switch result {
+            case .success(let message):
+                if message.store == "true" {
+                    button.flipDisLikedState()
+                    self.liked(type_id: type_id, ref_id: ref_id, users_id: users_id, isLiked: false, token: token)
+                } else {
+                    button.flipLikedState()
+                    self.liked(type_id: type_id, ref_id: ref_id, users_id: users_id, isLiked: true, token: token)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
-
-    //func didTapCommentButton(model: UserpostViewModel) {
+    
+    
+    /**
+     Insertamos o eliminamos el liked.
+     - Parameter type_id: Int
+     - Parameter ref_id: Int
+     - Parameter users_id: Int
+     - Parameter isLiked: Bool
+     - Parameter token: String
+     */
+    private func liked(type_id:Int, ref_id: Int, users_id:Int, isLiked:Bool, token: String) {
+        APIService.shared.apiLike(type_id:type_id, ref_id: ref_id, users_id:users_id, isLiked:isLiked, token: token) {( result ) in
+            switch result {
+            case .success(let message):
+               print(message)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    /**
+     Tap Comment
+     Insertamos o eliminamos el liked.
+     - Parameter model: Userpost
+     */
     func didTapCommentButton(model: Userpost) {
         let vc = ListCommentsViewController(model: model)
         vc.title = "Coments"
@@ -556,6 +635,10 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    /**
+     Insertamos o eliminamos el liked.
+     - Parameter model: Userpost
+     */
     func didTapSendButton() {
         self.settingLauncher.showSettings()
         self.settingLauncher.homeController = self

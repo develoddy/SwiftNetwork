@@ -11,46 +11,53 @@ import UIKit
 class HeartButton: UIButton {
     
     private var isLiked = false
-    ///private let unlikedImage = UIImage(systemName: "heart")
     private let unlikedImage = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold))
     private let likedImage = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold))
-    
-  
     private let unlikedScale: CGFloat = 0.7
     private let likedScale: CGFloat = 1.3
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
         setImage(unlikedImage, for: .normal)
+        tintColor = .black
     }
   
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
-  public func flipLikedState() {
-    isLiked = !isLiked
-    animate()
-  }
+    ///Despintar like
+    public func flipDisLikedState() {
+        isLiked = false
+        animate()
+        ///return isLiked
+    }
+    
+    ///Pintar Like
+    public func flipLikedState() {
+        isLiked = true ///!isLiked
+        animate()
+        ///return isLiked
+    }
 
-  private func animate() {
-    UIView.animate(withDuration: 0.1, animations: {
-        let newImage = self.isLiked ? self.likedImage : self.unlikedImage
-      let newScale = self.isLiked ? self.likedScale : self.unlikedScale
-      self.transform = self.transform.scaledBy(x: newScale, y: newScale)
-      self.setImage(newImage, for: .normal)
-    }, completion: { _ in
-      UIView.animate(withDuration: 0.1, animations: {
-        self.transform = CGAffineTransform.identity
-      })
-    })
-  }
+    private func animate() {
+        UIView.animate(withDuration: 0.1, animations: {
+            let newImage = self.isLiked ? self.likedImage : self.unlikedImage
+            let newScale = self.isLiked ? self.likedScale : self.unlikedScale
+            self.transform = self.transform.scaledBy(x: newScale, y: newScale)
+            self.setImage(newImage, for: .normal)
+        }, completion: { _ in
+            UIView.animate(withDuration: 0.1, animations: {
+                self.transform = CGAffineTransform.identity
+            })
+        })
+    }
 }
 
 
 //MARK: POST ACTION
 protocol IGFeedPostActionsTableViewCellDelegate: AnyObject {
-    func didTapLikeButton()
+    func didTapLikeButton(_ sender: UIButton, model: Userpost)
     //func didTapCommentButton(model: UserpostViewModel)
     func didTapCommentButton(model: Userpost)
     func didTapSendButton()
@@ -64,30 +71,28 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     
     private var model: Userpost?
     
-    /*private let likeButton: UIButton = {
-        let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
-        let image = UIImage(systemName: "heart", withConfiguration: config)
-        button.setImage(image, for: .normal)
-        button.tintColor = .systemRed
-        return button
-    }()*/
+    private var isLiked = false
+    
+    private var idUser = 0
+    
+//    private let likeButton: UIButton = {
+//        let button = UIButton()
+//        let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
+//        let image = UIImage(systemName: "heart", withConfiguration: config)
+//        button.setImage(image, for: .normal)
+//        button.layer.masksToBounds = true
+//        button.contentMode = .scaleAspectFit
+//        button.tintColor = .black
+//
+//        return button
+//    }()
     
     private let likeButton: HeartButton = {
         let likeButton = HeartButton()
-        likeButton.tintColor = .black
+        likeButton.layer.masksToBounds = true
         return likeButton
     }()
-    
-    private let likeFillButton: UIButton = {
-        let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
-        let image = UIImage(systemName: "heart.fill", withConfiguration: config)
-        button.setImage(image, for: .normal)
-        button.tintColor = .black
-        return button
-    }()
-    
+ 
     private let commentButton: UIButton = {
         let button = UIButton()
         let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold)
@@ -118,24 +123,23 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.backgroundColor = .systemBackground
+        setupView()
+    }
+    
+    private func setupView() {
         contentView.addSubview(likeButton)
         contentView.addSubview(commentButton)
         contentView.addSubview(sendButton)
         contentView.addSubview(bookmarkButton)
         
-        //likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
-        likeButton.addTarget(self, action: #selector(handleHeartButtonTap(_:)), for: .touchUpInside)
         commentButton.addTarget(self, action: #selector(didTapCommetnButton), for: .touchUpInside)
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
-        
+        likeButton.addTarget(self, action: #selector(handleHeartButtonTap(_:)), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    public func configure(with post: Userpost) {
-        model = post
     }
     
     override func layoutSubviews() {
@@ -143,13 +147,12 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
         
         ///Like, comment, send, shared, send
         let buttonSize = contentView.height-10
-        //let buttons = [likeButton, commentButton, sendButton ]
-        
-        let buttons = [likeButton,commentButton, sendButton ]
+        let buttons = [likeButton, commentButton, sendButton ]
     
         for x in 0..<buttons.count {
             let button = buttons[x]
             button.contentHorizontalAlignment = .left
+            
             button.frame = CGRect(
                 x: (CGFloat(x)*buttonSize)+(10*CGFloat(x+1)),
                 y: 5,
@@ -163,23 +166,33 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
             y: 5,
             width: buttonSize,
             height: buttonSize)
-        
-        
-        
     }
-    
-    @objc private func handleHeartButtonTap(_ sender: UIButton) {
-        guard let button = sender as? HeartButton else { return }
-        button.tintColor = .systemRed
-        button.flipLikedState()
-      }
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        likeButton.setImage(nil, for: .normal)
     }
     
-    @objc private func didTapLikeButton() {
-        delegate?.didTapLikeButton()
+    public func configure(with post: Userpost, liked: Bool) {
+        model = post
+        if liked {
+            let likedImage = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold))
+            likeButton.setImage(likedImage, for: .normal)
+            ///likeButton.tintColor = .red
+        } else {
+            let unlikedImage = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold))
+            likeButton.setImage(unlikedImage, for: .normal)
+            ///likeButton.tintColor = .black
+        }
+        
+    }
+    
+    //Click button like
+    @objc private func handleHeartButtonTap(_ sender: UIButton) {
+        guard let model = model else {
+            return
+        }
+        delegate?.didTapLikeButton(sender, model: model)
     }
     
     @objc private func didTapCommetnButton() {
@@ -193,6 +206,26 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
         delegate?.didTapSendButton()
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //MARK: BUTTONS

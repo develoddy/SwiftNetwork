@@ -419,3 +419,9 @@ class WebResponse: NSObject {
     var token           : NSString?
     var cookie          : NSString?
 }
+
+
+
+struct Operation: Codable {
+    let store: String
+}
