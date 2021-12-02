@@ -235,7 +235,7 @@ class LoginViewController: UIViewController {
     
     private func configureEmailText() {
         emailText.placeholder = "Username or Email"
-        emailText.text = "jordan@gmail.com"
+        emailText.text = "eddylujann@gmail.com"
         emailText.returnKeyType = .next
         emailText.leftViewMode = .always
         emailText.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))

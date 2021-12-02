@@ -29,7 +29,8 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    private let totalLikeLabel: UILabel = {
+    ///private let totalLikeLabel: UILabel = {
+    private let likeCount: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.font = Constants.fontSize.regular
@@ -49,7 +50,8 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let seeMoreCommentsButton: UIButton = {
+    ///private let seeMoreCommentsButton: UIButton = {
+    private let commentCount: UIButton = {
         let button = UIButton()
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
         button.setTitleColor(UIColor.systemGray, for: .normal)
@@ -72,12 +74,12 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(profileImagesLikes)
-        contentView.addSubview(totalLikeLabel)
+        contentView.addSubview(likeCount)
         contentView.addSubview(descriptionLabel)
-        contentView.addSubview(seeMoreCommentsButton)
+        contentView.addSubview(commentCount)
         contentView.addSubview(labelTextComment)
         contentView.addSubview(viewImage)
-        seeMoreCommentsButton.addTarget(self, action: #selector(didTapCommetnButton), for: .touchUpInside)
+        commentCount.addTarget(self, action: #selector(didTapCommetnButton), for: .touchUpInside)
     }
     
     @objc private func didTapCommetnButton() {
@@ -99,30 +101,9 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
             y: 0,
             width: imageSize,
             height: 30).integral
-        
-        let buttonSize = contentView.height
-        for x in 0..<3 {
-            let image = UIImageView()
-            image.image = UIImage(named: "eddy")
-            image.backgroundColor = .systemPink
-            image.tintColor = Constants.Color.black
-            image.layer.borderWidth = 2
-            image.layer.borderColor = UIColor.white.cgColor
-            image.clipsToBounds = true
-            image.layer.masksToBounds = true
-            image.contentMode = .scaleAspectFill
-            viewImage.addSubview(image)
-            
-            image.frame = CGRect(
-                x: (15*CGFloat(x)),
-                y: 0,
-                width: buttonSize/3,
-                height: buttonSize/3)
-            image.layer.cornerRadius = image.height/2
-        }
     
-        let totalLikeLabellSize = totalLikeLabel.sizeThatFits(frame.size)
-        totalLikeLabel.frame = CGRect(
+        let totalLikeLabellSize = likeCount.sizeThatFits(frame.size)
+        likeCount.frame = CGRect(
             x: viewImage.right+5,
             y: 2,
             width: totalLikeLabellSize.width,
@@ -130,11 +111,11 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         
         descriptionLabel.frame = CGRect(
             x: 15,
-            y: totalLikeLabel.bottom,
+            y: likeCount.bottom,
             width: contentView.width-20,
             height: 40)
         
-        seeMoreCommentsButton.frame = CGRect(
+        commentCount.frame = CGRect(
             x: 15,
             y: descriptionLabel.bottom+5,
             width: contentView.width-20,
@@ -145,47 +126,100 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         super.prepareForReuse()
     }
     
-    public func configure(with model: Userpost) {
-        ///Models
-        self.model = model
-        
-        ///Caption de post
-        guard let author = model.userAuthor?.username, let caption = model.content else { return }
-        let authorName = joinText(username: author, description: caption)
+    // Setup userpost values
+    public func setCellWithValuesOf(_ model: Userpost) {
+        updateUI(like: model.likes, comment: model.comments, username: model.userAuthor?.username, caption: model.content, image: model.userAuthor?.profile?.imageHeader)
+    }
+    
+    // Update the UI Views
+    private func updateUI(like: [Like]?, comment: [Comment]?, username: String?, caption: String?, image: String? ) {
+        let countLike = countLikes(like: like)
+        let countComment = countComments(comment: comment)
+        likeCount.text = "\(countLike) Me gusta"
+        commentCount.setTitle("Ver los \(countComment) comentarios", for: .normal)
+        guard let username = username, let caption = caption else { return }
+        let authorName = joinTextCaption(username: username, description: caption)
         descriptionLabel.attributedText = authorName
+        guard let image = image else { return }
+        imagesLikes(imageName: image)
+    }
+    
+    // Likes count
+    func countLikes(like: [Like]?) -> Int {
+        guard let countLikes = like?.count else {
+            return 0
+        }
+        return countLikes
+    }
+    
+    // Comment count
+    func countComments(comment: [Comment]?) -> Int {
+        guard let countComment = comment?.count else {
+            return 0
+        }
+        return countComment
+    }
+    
+    // Images likes
+    func imagesLikes(imageName: String) {
+        let buttonSize = contentView.height
+        for x in 0..<3 {
+            let image = UIImageView()
+            image.backgroundColor = .systemPink
+            image.tintColor = Constants.Color.black
+            image.layer.borderWidth = 2
+            image.layer.borderColor = UIColor.white.cgColor
+            image.clipsToBounds = true
+            image.layer.masksToBounds = true
+            image.contentMode = .scaleAspectFill
+            image.sd_setImage(with: URL(string: imageName), completed: nil)
+            viewImage.addSubview(image)
+            
+            image.frame = CGRect(
+                x: (15*CGFloat(x)),
+                y: 0,
+                width: buttonSize/3,
+                height: buttonSize/3)
+            image.layer.cornerRadius = image.height/2
+        }
+    }
+    
+ 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public func configure(with model: Userpost) {
+        self.model = model
         
         ///Likes
         guard let likes = model.likes?.count else { return }
-        
-        //print("Total Likes ::::::: \(likes)")
-        
-        ///Hay que coprobar si el array de likes está vacio o no.
-        if likes == 0 {
-            let likesUsername = joinTextLike(text: "A nadie", description: "le gusta")
-            totalLikeLabel.attributedText = likesUsername
-        } else {
-            guard let username = model.likes?[0].userlike?.username  else { return }
-            var text = ""
-            var textLikes = ""
-            if (likes-1) != 0 {
-                text = "Les gusta a"
-                textLikes = "\(username) y a \(likes-1) personas más"
-            } else {
-                text = "Les gusta a"
-                textLikes = "\(username)"
-            }
-            let likesUsername = joinTextLike(text: text, description: textLikes)
-            totalLikeLabel.attributedText = likesUsername
+        if likes > 0 {
+            let textLikes = String(likes)
+            let likesUsername = joinTextLike(text: textLikes, description: "Me gusta")
+            likeCount.attributedText = likesUsername
         }
         
-        
-        
+        ///Caption
+        guard let author = model.userAuthor?.username, let caption = model.content else { return }
+        let authorName = joinTextCaption(username: author, description: caption)
+        descriptionLabel.attributedText = authorName
         
         ///Comments
         guard let comments = model.comments?.count else { return }
-        seeMoreCommentsButton.setTitle("Ver los \(comments) comentarios", for: .normal)
+        commentCount.setTitle("Ver los \(comments) comentarios", for: .normal)
     }
     
+    ///joinTextLike
     private func joinTextLike(text:String, description:String) -> NSMutableAttributedString {
         let boldText  = text + " "
         let attrs = [NSAttributedString.Key.font : Constants.fontSize.regular ]
@@ -198,7 +232,7 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         return attributedString
     }
     
-    private func joinText(username:String, description:String) -> NSMutableAttributedString {
+    private func joinTextCaption(username:String, description:String) -> NSMutableAttributedString {
         let boldText  = username + " "
         let attrs = [NSAttributedString.Key.font : Constants.fontSize.semibold ]
         let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)

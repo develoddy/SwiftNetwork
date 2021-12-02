@@ -173,21 +173,25 @@ class IGFeedPostActionsTableViewCell: UITableViewCell {
         likeButton.setImage(nil, for: .normal)
     }
     
-    public func configure(with post: Userpost, liked: Bool) {
-        model = post
+    
+    // Setup userpost values
+    public func setCellWithValuesOf(_ model: Userpost, liked: Bool) {
+        updateUI(post: model, liked: liked)
+    }
+    
+    // Update the UI Views
+    private func updateUI(post: Userpost, liked: Bool) {
+        self.model = post
         if liked {
             let likedImage = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold))
             likeButton.setImage(likedImage, for: .normal)
-            ///likeButton.tintColor = .red
         } else {
             let unlikedImage = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize: 25, weight: .semibold))
             likeButton.setImage(unlikedImage, for: .normal)
-            ///likeButton.tintColor = .black
         }
-        
     }
     
-    //Click button like
+    // Click button like
     @objc private func handleHeartButtonTap(_ sender: UIButton) {
         guard let model = model else {
             return
