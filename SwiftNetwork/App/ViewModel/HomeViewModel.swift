@@ -8,21 +8,26 @@
 import Foundation
 
 //MARK: - UserpostViewModel
-class UserpostViewModel {
+//class UserpostViewModel {
+class HomeViewModel {
     
     private var apiService = APIService()
     
     public var models = [HomeFeedRenderViewModel]()
     
-    func fetchUserPostData(token: String, completion: @escaping () -> ()) {
+    ///Api Rest.
+    ///En esta función llamamos al Api rest para traes los datos de la DataBase,
+    ///Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
+    func fetchUserpostData(token: String, completion: @escaping () -> ()) {
         apiService.apiUserPost(token: token) {(result) in
             switch result {
             case .success(let model):
-                for items in model.userpost ?? [] {
-                    guard let user = items.userAuthor else { return }
+                guard let userpost = model.userpost else { return }
+                for items in userpost {
+                    //guard let user = items.userAuthor else { return }
                     guard let comments = items.comments else { return }
                     let viewModel = HomeFeedRenderViewModel(
-                        header      : PostRenderViewModel(renderType: .header(provider: user)),
+                        header      : PostRenderViewModel(renderType: .header(provider: items)),
                         post        : PostRenderViewModel(renderType: .primaryContent(provider: items)),
                         actions     : PostRenderViewModel(renderType: .actions(provider: items)),
                         descriptions: PostRenderViewModel(renderType: .descriptions(post: items)),
@@ -50,24 +55,5 @@ class UserpostViewModel {
     
     func cellForRowAt(indexPath: IndexPath) -> HomeFeedRenderViewModel {
         return models[indexPath.row]
-    }
-}
-
-
-//MARK: - UserpostViewModel
-class LikeViewModel {
-    
-    private var apiService = APIService()
-
-    func liked(ref_id: Int, users_id: Int, token: String, completion: @escaping ((Result<Bool, Error>)) -> ()) {
-        APIService.shared.apiLiked(ref_id: ref_id, users_id: users_id, token: token ) {( result ) in
-            switch result {
-            case .success(let message):
-                let liked = message.store == "true" ? true : false
-                completion(.success(liked))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
     }
 }

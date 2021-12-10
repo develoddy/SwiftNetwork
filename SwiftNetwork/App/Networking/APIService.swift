@@ -77,4 +77,15 @@ class APIService: NSObject {
             completion(.failure(messageError as! Error))
         }
     }
+    
+    //MARK: POST VIEW CONTROLLER
+    ///Operaciones
+    /// - Update caption or content from post.
+    func apiPostCaptionUpdate(caption: Caption, idpost: Int, token:String, completion : @escaping ((Result<Operation, Error>)) -> ()) {
+        BCApiRest.postCaptionUpdate(caption, idpost, token) { ( object ) in
+            completion(.success(object))
+        } conCompletionIncorrecto: { (messageError) in
+            completion(.failure(messageError as! Error))
+        }
+    }
 }

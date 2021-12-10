@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 struct HomeFeedRenderViewModel {
     //let collections: PostRenderViewModel
@@ -16,49 +17,6 @@ struct HomeFeedRenderViewModel {
     let comments: PostRenderViewModel
     let footer: PostRenderViewModel
 }
-
-//MARK: -  FETCHING CORE DATA
-//extension HomeViewController {
-//    ///Api Rest.
-//    ///Hacemos una llamada al Api rest.
-//    ///Una vez obtenido los datos que queremos, se lo enviamos a la funcion setuModel.
-//    private func fetchUserPost() {
-//        APIService.shared.apiUserPost(token: getUserToken()?.token ?? "" ) {(result) in
-//            switch result {
-//            case .success(let model):
-//                model.userpost?.count != 0 ? self.setupModel(with: model.userpost ?? []) : print("Array Userpost está vacio...")
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
-//
-//    ///Models
-//    ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
-//    private func setupModel(with model: [Userpost] ) {
-//
-//        for items in model {
-//            guard let user = items.userAuthor else { return }
-//            guard let comments = items.comments else { return }
-//            let viewModel = HomeFeedRenderViewModel(
-//                //collections : PostRenderViewModel(renderType: .collections(collections:  self.createStoryCollections(), createStory: self.createArrayCollections())),
-//                header      : PostRenderViewModel(renderType: .header(provider: user)),
-//                post        : PostRenderViewModel(renderType: .primaryContent(provider: items)),
-//                actions     : PostRenderViewModel(renderType: .actions(provider: items)),
-//                descriptions: PostRenderViewModel(renderType: .descriptions(post: items)),
-//                comments    : PostRenderViewModel(renderType: .comments(comments: comments)),
-//                footer      : PostRenderViewModel(renderType: .footer(footer: items)))
-//            self.models.append(viewModel)
-//        }
-//
-//        DispatchQueue.main.async {
-//            ///SpinnerView.shared.spinner.stopAnimating()
-//            ///SpinnerView.shared.VW_overlay.isHidden = true
-//            CustomLoader.instance.hideLoader()
-//            self.tableView.reloadData()
-//        }
-//    }
-//}
 
 
 //MARK: HomeViewController
@@ -84,13 +42,9 @@ class HomeViewController: UIViewController {
     
     var model : HomeFeedRenderViewModel?
     
-    //private var models = [HomeFeedRenderViewModel]()
+    private var viewModel = HomeViewModel()
     
-    //private var userpost = [Userpost]()
-    
-    
-    private var viewModel = UserpostViewModel()
-    private var likeViewModel = LikeViewModel()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     // MARK: - viewDidLoad()
     override func viewDidLoad() {
@@ -104,11 +58,11 @@ class HomeViewController: UIViewController {
         loadUserpostData()
     }
     
+    ///Load data.
+    ///Llamamos al viewModel para traer los datos.
     private func loadUserpostData() {
-        guard let token = getUserToken()?.token else {
-            return
-        }
-        viewModel.fetchUserPostData(token: token) {
+        guard let token = getUserToken()?.token else { return }
+        viewModel.fetchUserpostData(token: token) {
             self.tableView.dataSource = self
             self.tableView.delegate = self
             DispatchQueue.main.async {
@@ -118,13 +72,14 @@ class HomeViewController: UIViewController {
         }
     }
     
-    
+    ///viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = tableView.frame.inset(by: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
         tableView.frame = view.bounds
     }
     
+    ///viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = false
@@ -169,8 +124,6 @@ class HomeViewController: UIViewController {
         }
         return token
     }
-
-    
     
     ///Creamos el Header en el ViewController.
     private func headerTableView() {
@@ -179,8 +132,7 @@ class HomeViewController: UIViewController {
     
     ///Configuramos y registramos los TableViews
     private func configureTableView() {
-        //tableView.register(CollectionTableViewCell.self, forCellReuseIdentifier: CollectionTableViewCell.identifier)
-        
+        ///tableView.register(CollectionTableViewCell.self, forCellReuseIdentifier: CollectionTableViewCell.identifier)
         tableView.register(IGFeedPostTableViewCell.self, forCellReuseIdentifier: IGFeedPostTableViewCell.identifier)
         tableView.register(IGFeedPostHeaderTableViewCell.self, forCellReuseIdentifier: IGFeedPostHeaderTableViewCell.identifier)
         tableView.register(IGFeedPostActionsTableViewCell.self, forCellReuseIdentifier: IGFeedPostActionsTableViewCell.identifier)
@@ -392,20 +344,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 switch model.actions.renderType {
                 case .actions(let provider):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostActionsTableViewCell.identifier, for: indexPath) as! IGFeedPostActionsTableViewCell
-                    guard let ref_id = provider.id,
-                          let users_id = getUserToken()?.usertoken?.id,
-                          let token = getUserToken()?.token else {
-                        return UITableViewCell()
-                    }
-                    
-                    self.likeViewModel.liked(ref_id: ref_id, users_id: users_id, token: token) {(result) in
-                        switch result {
-                        case .success(let liked):
-                            cell.setCellWithValuesOf(provider, liked: liked)
-                        case .failure(let error):
-                            print(error.localizedDescription)
-                        }
-                    }
                     cell.delegate = self
                     return cell
                 case .comments, .header, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
@@ -416,7 +354,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 switch model.descriptions.renderType {
                 case .descriptions(let post):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
-                    //cell.configure(with: post)
                     cell.setCellWithValuesOf(post)
                     return cell
                 case .comments, .header, .primaryContent, .collections, .actions, .footer: return UITableViewCell()
@@ -425,7 +362,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             case 5:
                 switch model.comments.renderType {
                 case .comments(let comments):
-                    //let comment = comments[indexPath.row]
                     let count = comments.count
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier, for: indexPath) as! IGFeedPostGeneralTableViewCell
                     cell.configure(with: count)
@@ -448,7 +384,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             }
             return UITableViewCell()
         //}
-        
         
     }
     
@@ -604,7 +539,7 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
      - Parameter model: Userpost
      */
     func didTapLikeButton(_ sender: UIButton, model: Userpost) {
-        guard let button = sender as? HeartButton else { return }
+        /**guard let button = sender as? HeartButton else { return }
         guard let type_id = model.posttTypeID,
               let ref_id = model.id,
               let users_id = getUserToken()?.usertoken?.id,
@@ -624,10 +559,8 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
             case .failure(let error):
                 print(error.localizedDescription)
             }
-        }
+        }*/
     }
-    
-    
     /**
      Insertamos o eliminamos el liked.
      - Parameter type_id: Int
@@ -641,16 +574,6 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
             switch result {
             case .success(let message):
                 print(message)
-                /**cuando el usuario desliza el dedo elimina una fila de vista de tabla, entonces
-                debería eliminar los datos de la base de datos, la matriz del modelo de datos y actualizar la interfaz de usuario de la vista de tabla.*/
-                /**
-                let tasktoDelete = tasks[indexPath.row]
-                try! realmDB.write({
-                    realmDB.delete(tasktoDelete)
-                    self.tasks.remove(at: indexPath.row)
-                    self.tasktv.deleteRows(at: [indexPath], with: .fade)
-                })
-                */
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -659,7 +582,6 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
     
     /**
      Tap Comment
-     Insertamos o eliminamos el liked.
      - Parameter model: Userpost
      */
     func didTapCommentButton(model: Userpost) {
@@ -670,7 +592,7 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
     }
     
     /**
-     Insertamos o eliminamos el liked.
+     Tap Send
      - Parameter model: Userpost
      */
     func didTapSendButton() {
@@ -750,7 +672,7 @@ extension HomeViewController {
 }
 
 extension HomeViewController: IGFeedPostHeaderTableViewCellDelegate {
-    func didTapMoreButton() {
+    func didTapMoreButton(post: Userpost) {
         print("clispp")
     }
 }

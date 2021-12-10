@@ -7,22 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F0264B59-32E8-4B35-93DC-4026782947BF"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SwiftNetwork/App/Controllers/Core Tabs/HomeViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "606"
-            endingLineNumber = "606"
-            landmarkName = "didTapLikeButton(_:model:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "D7844A7E-D9FF-42A4-9DA6-4EAE2070D510"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -39,32 +23,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A46E3AC2-4944-405F-894D-1F99F9096709"
+            uuid = "B321EC26-A9DF-484C-AD95-139B5CD7F78F"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SwiftNetwork/App/Controllers/Core Tabs/HomeViewController.swift"
+            filePath = "SwiftNetwork/WebService/BC/BCApiRest.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "414"
-            endingLineNumber = "414"
-            landmarkName = "tableView(_:cellForRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "25283207-16F0-4113-9C60-2549D9CF6930"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SwiftNetwork/App/Controllers/Core Tabs/HomeViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "639"
-            endingLineNumber = "639"
-            landmarkName = "liked(type_id:ref_id:users_id:isLiked:token:)"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "logIn(_:conCompletionCorrecto:conCompletionIncorrecto:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

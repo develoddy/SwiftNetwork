@@ -75,6 +75,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     }
     
     public func configure(with model: Userpost) {
+        /* http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/eddy01.jpeg */
         guard let url = model.postImage?[0].image?.src else { return }
         photoImageView.sd_setImage(with: URL(string: url), completed: nil)
     }
