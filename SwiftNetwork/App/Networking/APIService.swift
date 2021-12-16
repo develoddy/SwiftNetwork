@@ -6,41 +6,20 @@
 //
 
 import Foundation
-
-
-class APIServiceLocal: NSObject {
-    
-    static let shared = APIServiceLocal()
-    
-    // MARK: UerPost
-    /// Read file json
-    /// - Parameter
-    /// - Return
-    /*public func parseUserPostJSON( completion: @escaping (IReqResponseUserPost) -> Void ) {
-        let file = "userPostJson"
-        ///Valdate if exists file or not
-        guard let path = Bundle.main.path(forResource: file, ofType: "json") else { return }
-        let url = URL(fileURLWithPath: path) ///Get url json
-        var userPostViewModel: IReqResponseUserPost? ////Instancia el modelo codable
-        do {
-            let jsonData = try Data(contentsOf: url)
-            userPostViewModel = try JSONDecoder().decode(IReqResponseUserPost.self, from: jsonData)
-            if let userPostViewModel = userPostViewModel {
-                completion(userPostViewModel)
-            } else {
-                print("Failed to pase")
-            }
-        } catch {
-            print("Error: \(error)")
-        }
-    }*/
-}
-
-
+import CoreData
 
 class APIService: NSObject {
     
     static let shared = APIService()
+    
+    //MARK: Sync UserPost
+    func syncUsersPost(token: String, completion : @escaping ((Result<[UserpostServerModel], Error>)) -> ()) {
+        BCApiRest.apiSyncUserPostBC(token) { ( object ) in
+            completion(.success(object))
+        } conCompletionIncorrecto: { (messageError) in
+            completion(.failure(messageError as! Error))
+        }
+    }
     
     //MARK: UserPost
     func apiUserPost(token: String, completion : @escaping ((Result<UserPost, Error>)) -> ()) {

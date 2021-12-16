@@ -6,8 +6,12 @@
 //
 
 import UIKit
+import CoreData
 
 class UserPostViewController: UIViewController {
+    
+    
+    
     
     let collectionViewTwo = ProfileCollectionsViews.collectionViewTwo()
     
@@ -15,7 +19,10 @@ class UserPostViewController: UIViewController {
     
     private var viewModel = UserPostViewModel()
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    //let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    //Core data
+    var managedObjects = [NSManagedObject]()
     
     //MARK: - Init
     init(email: String, token: String) {
@@ -39,6 +46,8 @@ class UserPostViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.collectionViewTwo.frame = view.bounds
+        
+        
     }
     
     private func setupView() {
@@ -62,18 +71,23 @@ class UserPostViewController: UIViewController {
     ///Load data.
     ///Llamamos al viewModel para traer los datos.
     private func loadUserpostData(email:String, token: String) {
-        viewModel.fetchUserpostData(email:email, token: token) {
-            self.collectionViewTwo.delegate = self
-            self.collectionViewTwo.dataSource = self
-            DispatchQueue.main.async {
-                CustomLoader.instance.hideLoader()
-                self.collectionViewTwo.reloadData()
+        viewModel.fetchUserpostData(email: email, token: token) { ( result ) in
+            switch result {
+            case .success(_/*let model*/):
+                self.collectionViewTwo.delegate = self
+                self.collectionViewTwo.dataSource = self
+                DispatchQueue.main.async {
+                    CustomLoader.instance.hideLoader()
+                    self.collectionViewTwo.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }
     
+    
     private func configureHeader() {
-        
         collectionViewTwo.register(StoryFeaturedCollectionTableViewCell.self,forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,withReuseIdentifier: StoryFeaturedCollectionTableViewCell.identifier)
         
         collectionViewTwo.register(ProfileInfoHeaderCollectionReusableView.self,forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier)
@@ -100,7 +114,8 @@ class UserPostViewController: UIViewController {
 extension UserPostViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return viewModel.numberOfSections()
+        //return viewModel.numberOfSections()
+        return 3
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -110,13 +125,16 @@ extension UserPostViewController: UICollectionViewDelegate, UICollectionViewData
         if section == 1 {
             return 0 ///Heade
         }
-        return viewModel.numberOfRowsInSection(section: section) //models.count ///Collections photos
+        //return viewModel.numberOfRowsInSection(section: section) //models.count ///Collections photos
+        return managedObjects.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let model = viewModel.cellForRowAt(indexPath: indexPath) //models[indexPath.row]
-        print(model)
+        //let model = viewModel.cellForRowAt(indexPath: indexPath) //models[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
+        
+        ///let userpost = model.value(forKey: "id") as? Int
+        let model = managedObjects[indexPath.row]
         cell.configure(with: model)
         return cell
     }

@@ -44,7 +44,21 @@ class HomeViewController: UIViewController {
     
     private var viewModel = HomeViewModel()
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    //Core data
+    var cd0011_posts: [CD0011_posts]? {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    
+    
+    let database = DatabaseHandler.shared
+    
     
     // MARK: - viewDidLoad()
     override func viewDidLoad() {
@@ -56,8 +70,39 @@ class HomeViewController: UIViewController {
         setupNavigationBarItems()
         configureSpinner()
         loadUserpostData()
+        
+        pruebaApiRest()
     }
     
+  
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = false
+        //Esto se ejecuta despues de pruebaApiRest()
+        //print(">_ viewWillAppear")
+        
+    }
+    
+    
+    func pruebaApiRest()  {
+        print(">_ pruebaApiRest")
+        database.deleteAllRecords(object: cd0011_posts ?? [])
+        
+        //let comments = [CD0014_comments]()
+        //database.deleteAllRecords(object: comments)
+        
+        print(">_ despues del borrado")
+        guard let token = getUserToken()?.token else { return }
+        viewModel.syncUsersPost(token: token) {
+            let results = self.database.fetch(CD0011_posts.self)
+            for item in results {
+                print("------------------------------  [ USERPOT : \(item.id) ]  ------------------------------ ")
+                print("Post Title => \(item.title ?? "")")
+                print(item.comments!)
+            }
+        }
+    }
+
     ///Load data.
     ///Llamamos al viewModel para traer los datos.
     private func loadUserpostData() {
@@ -71,7 +116,7 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    
+        
     ///viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -79,12 +124,7 @@ class HomeViewController: UIViewController {
         tableView.frame = view.bounds
     }
     
-    ///viewWillAppear
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = false
-    }
-    
+
     ///Inicio del programa.
     ///Setupview
     private func setupView() {
@@ -342,7 +382,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             ///Actions
             case 3:
                 switch model.actions.renderType {
-                case .actions(let provider):
+                case .actions(_/*let provider*/):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostActionsTableViewCell.identifier, for: indexPath) as! IGFeedPostActionsTableViewCell
                     cell.delegate = self
                     return cell

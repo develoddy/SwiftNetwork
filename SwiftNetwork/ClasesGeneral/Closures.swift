@@ -8,6 +8,9 @@
 import UIKit
 
 class Closures: NSObject {
+    //PRUEBA
+    typealias userpostServerModel = (_ user: [UserpostServerModel]) -> Void
+    
     typealias userPost = (_ user: UserPost) -> Void
     typealias message = (_ message: Operation) -> Void
     typealias MensajeError       = (_ mensajeError : String                         ) -> Void

@@ -32,8 +32,8 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate  {
                                                  selected: UIImage(systemName: "bell")!,
                                                  unselected: (UIImage(systemName: "bell.fill")?.withTintColor(Constants.Color.black))! )
         
-        viewControllers = [profile      ,
-                           home         ,
+        viewControllers = [home         ,
+                           profile      ,
                            explorer     ,
                            notification ]
         colorNavController()

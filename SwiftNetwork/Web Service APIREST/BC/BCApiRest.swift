@@ -91,6 +91,26 @@ class BCApiRest: NSObject {
         }
     }
     
+    
+    
+    
+    //MARK: Sync UserPost.
+    /// Vamos a llamar al backend para traer los datos de User Post para sicronoziarl con core data.
+    /// Esta funcion recibe por parametros el token
+    /// Return object userpost o de lo contrario un mensaje de error.
+    @discardableResult class
+    public func apiSyncUserPostBC(_ token                                     : String?,
+                                  conCompletionCorrecto completioCorrecto     : @escaping Closures.userpostServerModel,
+                                  conCompletionIncorrecto completionIncorrecto: @escaping Closures.MensajeError ) -> URLSessionDataTask? {
+        let result = WSApiRest.startSyncUserPost(token, conCompletionCorrecto: { ( data ) in
+            completioCorrecto(data)
+        }, error: { (messageError) in
+            completionIncorrecto(messageError)
+        })
+        return result
+    }
+    
+    
     //MARK: USERPOST.
     /// Vamos a llamar al backend para traer los datos de la base de datos.
     /// Esta funcion recibe por parametros el token
@@ -210,7 +230,7 @@ class BCApiRest: NSObject {
                                                    conCompletionCorrecto completioCorrecto: @escaping Closures.message,
                                                    conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
         
-        print(caption.content)
+        //print(caption.content)
         print(idpost)
         let resultSearch = WSApiRest.startPostCaptionUpdate(caption,
                                                             idpost,

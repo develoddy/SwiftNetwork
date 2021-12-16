@@ -19,10 +19,22 @@ class UserPostViewModel {
     
     public var story = [Storyfeatured]()
     
+    
+    //MARK: Profile
+    func apiProfile(email: String, token: String, completion : @escaping ((Result<UserPost, Error>)) -> ()) {
+        BCApiRest.profile(email, token) { ( object ) in
+            completion(.success(object))
+        } conCompletionIncorrecto: { (messageError) in
+            completion(.failure(messageError as! Error))
+        }
+    }
+    
+    
     ///Api Rest.
     ///En esta función llamamos al Api rest para traes los datos de la DataBase,
     ///Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
-    func fetchUserpostData(email: String,token: String, completion: @escaping () -> ()) {
+    //func fetchUserpostData(email: String,token: String, completion: @escaping () -> ()) {
+    func fetchUserpostData(email: String, token: String, completion : @escaping ((Result<[Userpost], Error>)) -> ()) {
         APIService.shared.apiProfile(email: email, token: token ) {(result) in
             switch result {
             case .success(let model):
@@ -34,7 +46,8 @@ class UserPostViewModel {
                     self.user = user
                     self.story.append(contentsOf: story)
                 }
-                completion()
+                //completion()
+                completion(.success(self.models))
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -54,6 +67,10 @@ class UserPostViewModel {
     
     func cellForRowAt(indexPath: IndexPath) -> Userpost {
         return models[indexPath.row]
+    }
+    
+    func getAllUserpostData() -> [Userpost] {
+        return models
     }
     
 }

@@ -1,8 +1,8 @@
 //
-//  WebModel.swift
-//  Blubinn
+//  WSApiRest.swift
+//  SwiftNetwork
 //
-//  Created by Eddy Donald Chinchay Lujan on 6/4/21.
+//  Created by Eddy Donald Chinchay Lujan on 13/12/21.
 //
 
 
@@ -57,7 +57,7 @@ class WSApiRest: NSObject {
         let dic : [String : Any] = ["email"         : objUser.email!                                ,
                                     "password"      : objUser.password!                             ,
                                     "typedevice"    : 1                                             ,
-                                    "tokendevice"   : "Se debe enviar el token push del dispositivo"	]
+                                    "tokendevice"   : "Se debe enviar el token push del dispositivo"    ]
         return WSender.doPOSTToURL(conURL: self.CDMWebModelURLBase, conPath: _URL_login as NSString, conParametros: dic) { (objRespuesta) in
             let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
             let arrayRespuesta = diccionarioRespuesta!["error"]
@@ -69,7 +69,7 @@ class WSApiRest: NSObject {
                         switch result {
                         case .success(let userPost): completionCorrecto(userPost)
                         case .failure(let error): print(error.localizedDescription)
-                        }		
+                        }
                     }
                 }
             } else if arrayRespuesta as! String == Constants.Error.unauthorized {
@@ -113,6 +113,43 @@ class WSApiRest: NSObject {
             }
         }
     }
+    
+    
+
+    //MARK: Sync UserPost.
+    /// Vamos a llamar al backend para traer los datos de User Post para sicronoziarl con core data.
+    @discardableResult class
+    func startSyncUserPost(_ token                           : String?                        ,
+                          conCompletionCorrecto completionCorrecto: @escaping Closures.userpostServerModel    ,
+                          error procesoIncorrecto                 : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        let dic : [Any]? = nil
+        let result = WSender.doGETTokenToURL(conURL       : WSApiRest.CDMWebModelURLBase ,
+                                             conPath      : _URL_userpost as NSString    ,
+                                             conParametros: dic                          ,
+                                             conToken     : token ?? ""                  ) { (objRespuesta) in
+            let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
+            let arrayRespuesta       = diccionarioRespuesta?["error"]
+            let mensajeError         = WSApiRest.obtenerMensajeDeError(paraData: diccionarioRespuesta)
+            if arrayRespuesta == nil {
+                if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
+                    guard let diccionarioRespuesta = diccionarioRespuesta else { return }
+                    WSTranslator.translateResponseSyncUserPostBE(diccionarioRespuesta) { ( result ) in
+                        switch result {
+                        case .success(let userpostServerModel): completionCorrecto(userpostServerModel)
+                        case .failure(let error): print(error.localizedDescription)
+                        }
+                    }
+                }
+            } else if  arrayRespuesta as! String == Constants.Error.unauthorized {
+                let mensajeErrorFinal = (diccionarioRespuesta != nil && diccionarioRespuesta?.count == 0) ? Constants.LogInError.logInInvalidte: mensajeError
+                procesoIncorrecto(mensajeErrorFinal)
+            }
+        }
+        return result
+    }
+    
+    
+    
 
     //MARK: USERPOST A CALL IS MDADE TO THE BACKEND.
     ///Parametros Token & UserPost

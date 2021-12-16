@@ -193,10 +193,10 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     ///We indicate the collections of photo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let model = models[indexPath.row]
+        //let model = models[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
         cell.backgroundColor = .systemBackground
-        cell.configure(with: model)
+        //cell.configure(with: model)
         return cell
     }
     

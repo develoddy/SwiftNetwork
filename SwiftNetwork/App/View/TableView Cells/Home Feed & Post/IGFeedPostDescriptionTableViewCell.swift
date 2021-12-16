@@ -210,9 +210,9 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         }
         
         ///Caption
-        guard let author = model.userAuthor?.username, let caption = model.content else { return }
-        let authorName = joinTextCaption(username: author, description: caption)
-        descriptionLabel.attributedText = authorName
+        //guard let author = model.userAuthor?.username, let caption = model.content else { return }
+        //let authorName = joinTextCaption(username: author, description: caption)
+        //descriptionLabel.attributedText = authorName
         
         ///Comments
         guard let comments = model.comments?.count else { return }

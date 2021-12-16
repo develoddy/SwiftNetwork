@@ -1,3 +1,4 @@
+
 //
 //  WebTranslator.swift
 //  Blubinn
@@ -8,6 +9,27 @@
 import UIKit
 
 class WSTranslator: NSObject {
+    
+    //MARK: SYNC USER POST TRANSLATOR RESPONSE.
+    /// Vamos a llamar al backend para traer los datos de User Post para sicronoziarl con core data.
+    class func translateResponseSyncUserPostBE(_ objDic: NSDictionary, completion: @escaping ((Result<[UserpostServerModel], Error>)) -> Void) {
+        do {
+            let jsonData:NSData = try JSONSerialization.data(withJSONObject: objDic, options: JSONSerialization.WritingOptions.prettyPrinted) as NSData
+            guard let jsonString = String(data: jsonData as Data, encoding: String.Encoding.utf8) else { return }
+            guard let json = jsonString.data(using: .utf8) else { return }
+            let model = try JSONDecoder().decode(APIResponse<[UserpostServerModel]>.self, from: json)
+            
+            /*print("--------------------- translateResponseSyncUserPostBE ----------------")
+            for item in model.userpost {
+                print(item.id)
+            }
+            print("--------------------- translateResponseSyncUserPostBE ----------------")*/
+            completion(.success(model.userpost))
+        } catch {
+            print("--- Coding Error o discrepancia entre propiedades de Lravel y Swift ==> translateResponseSyncUserPostBE ==> error")
+        }
+    }
+    
     
     //MARK: USERPOST TRANSLATOR RESPONSE.
     ///Convert Object dicctionary a Json Codable UserPost

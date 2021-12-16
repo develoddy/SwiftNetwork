@@ -38,9 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.saveContext()
     }
     
-    
-    
-    
     //MARK: Initialize a Persistent Container
     lazy var persistentContainer: NSPersistentContainer = {
         /*
@@ -51,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          */
         let container = NSPersistentContainer(name: "CoreData")
         container.loadPersistentStores { description, error in
-            if let error = error {
+            if let error = error as NSError? {
                 //Replace this implementation with code to handle the error appropriately.
                 //fatalError() causes the application to generate a crash log and terminate. You should not use this functions in a shipping aplication, although it may be useful during development.
                 
@@ -63,6 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                  * The store could not be migrated to the current model version.
                  Check the error message to determine what the actual problem was.
                  */
+                //fatalError("Unable to load persistent stores: \(error), \(error.userInfo)")
                 fatalError("Unable to load persistent stores: \(error)")
             }
         }
@@ -83,6 +81,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
 }
-

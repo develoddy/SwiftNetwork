@@ -339,10 +339,10 @@ extension ListCommentsViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let model = renderModels[section]
         switch model.renderType {
-        case .primaryContent(let posts):
+        case .primaryContent(_/*let posts*/):
             let cell = tableView.dequeueReusableCell(withIdentifier: CustomHeaderTableViewCell.identifier) as! CustomHeaderTableViewCell
-            guard let username = posts.userAuthor?.username, let caption = posts.content else { return UIView() }
-            cell.configure(with: username, with: caption)
+            //guard let username = posts.userAuthor?.username, let caption = posts.content else { return UIView() }
+            //cell.configure(with: username, with: caption)
             separator(cell: cell)
             return cell
         }

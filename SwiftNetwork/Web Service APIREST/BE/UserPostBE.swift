@@ -12,17 +12,379 @@ import Foundation
 /* ==          [ U S E R  -  P O S T ]       == */
 /* ============================================ */
 
+
+public struct APIResponse<T: Codable>: Codable {
+    public let userpost: T
+}
+
+struct UserpostServerModel: Codable {
+    let id              : Int?
+    let title           : String?
+    let content         : String?
+    let lat             : Int?
+    let lng             : Int?
+    let startAt         : String?
+    let finishAt        : String?
+    let receptorTypeID  : Int?
+    let authorRefID     : Int?
+    let receptorRefID   : Int?
+    let posttTypeID     : Int?
+    let nivelID         : Int?
+    let createdAt       : String?
+    let updatedAt       : String?
+    let idPostType      : Int?
+    let comments        : [CommentServerModel]?
+    var likes           : [LikeServerModel]?
+    let taggeds         : [TaggedServerModel]?
+    let userAuthor      : UserServerModel?
+    let postImage       : [PostImageServerModel]?
+    let postType        : PostTypeServerModel?
+    
+    enum CodingKeys: String, CodingKey {
+        case id, title, content, lat, lng
+        case startAt        = "start_at"
+        case finishAt       = "finish_at"
+        case receptorTypeID = "receptor_type_id"
+        case authorRefID    = "author_ref_id"
+        case receptorRefID  = "receptor_ref_id"
+        case posttTypeID    = "postt_type_id"
+        case nivelID        = "nivel_id"
+        case createdAt      = "created_at"
+        case updatedAt      = "updated_at"
+        case idPostType     = "id_post_type"
+        case comments, likes, taggeds
+        case userAuthor     = "user_author"
+        case postImage      = "post_image"
+        case postType       = "post_type"
+    }
+    
+    
+    static let database = DatabaseHandler.shared
+    
+    
+    
+    
+    
+    
+    
+    func store()  {
+        
+        
+        
+        
+        
+        
+        /*
+        guard let userpostEntity = UserpostServerModel.database.add(CD0011_posts.self) else { return }
+        
+        guard let id                = id,
+              let title             = title,
+              let content           = content,
+              let lat               = lat,
+              let lng               = lng,
+              let start_at          = startAt,
+              let finish_at         = finishAt,
+              let receptor_type_id  = receptorTypeID,
+              let author_ref_id     = authorRefID,
+              let receptor_ref_id   = receptorRefID,
+              let postt_type_id     = posttTypeID,
+              let nivel_id          = nivelID,
+              let created_at        = createdAt,
+              let updated_at        = updatedAt,
+              let id_post_type      = idPostType else {
+            return
+        }
+        
+        userpostEntity.id                 = Int64(id)
+        userpostEntity.title              = title
+        userpostEntity.content            = content
+        userpostEntity.lat                = Int64(lat)
+        userpostEntity.lng                = Int64(lng)
+        userpostEntity.start_at           = start_at
+        userpostEntity.finish_at          = finish_at
+        userpostEntity.receptor_type_id   = Int64(receptor_type_id)
+        userpostEntity.author_ref_id      = Int64(author_ref_id)
+        userpostEntity.receptor_ref_id    = Int64(receptor_ref_id)
+        userpostEntity.postt_type_id      = Int64(postt_type_id)
+        userpostEntity.nivel_id           = Int64(nivel_id)
+        userpostEntity.created_at         = created_at
+        userpostEntity.updated_at         = updated_at
+        userpostEntity.id_post_type       = Int64(id_post_type)
+        
+        
+        
+        //Saved
+        UserpostServerModel.database.save()
+ 
+         */
+    }
+}
+
+
+
+// MARK: - PostTypeServerModel
+struct PostTypeServerModel: Codable {
+    let id: Int?
+    let photo, video: String?
+    let createdAt, updatedAt: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, photo, video
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+}
+
+// MARK: - CommentServerModel
+struct CommentServerModel: Codable {
+    let id, typeID, refID: Int?
+    let content: String?
+    let usersID, comentarioID: Int?
+    let createdAt, updatedAt: String?
+    let user: UserServerModel?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case typeID = "type_id"
+        case refID = "ref_id"
+        case content
+        case usersID = "users_id"
+        case comentarioID = "comentario_id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case user
+    }
+}
+
+// MARK: - User UserServerModel
+ struct UserServerModel: Codable {
+    let id: Int?
+    let name: String?
+    let username: String?
+    let email: String?
+    let emailVerifiedAt: String?
+    let idCount: Int?
+    let createdAt, updatedAt: String?
+    //let count: CountServerModel?
+    //let profile: ProfileServerModel?
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, username, email
+        case emailVerifiedAt = "email_verified_at"
+        case idCount = "id_count"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        //case count, profile
+    }
+}
+
+// MARK: - Count
+struct CountServerModel: Codable {
+    let id, followers, following, posts: Int?
+    let createdAt, updatedAt: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, followers, following, posts
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+}
+
+// MARK: - Profile
+struct ProfileServerModel: Codable {
+    let id: Int?
+    let dayOfBirth, gender, image: String?
+    let imageHeader: String?
+    let title, bio, likes, dislikes: String?
+    let address, phone: String?
+    let publicEmail: String?
+    let data, valor: String?
+    let usersID, countryID, nivelID, sentimentalID: Int?
+    let createdAt, updatedAt: String?
+    let storyfeatured: [StoryfeaturedServerModel]?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case dayOfBirth = "day_of_birth"
+        case gender, image
+        case imageHeader = "image_header"
+        case title, bio, likes, dislikes, address, phone
+        case publicEmail = "public_email"
+        case data, valor
+        case usersID = "users_id"
+        case countryID = "country_id"
+        case nivelID = "nivel_id"
+        case sentimentalID = "sentimental_id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case storyfeatured
+    }
+}
+
+// MARK: - Storyfeatured
+struct StoryfeaturedServerModel: Codable {
+    let id: Int?
+    let title: String?
+    let src: String?
+    let userID: Int?
+    let createdAt, updatedAt: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, title, src
+        case userID = "user_id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+}
+
+// MARK: - Like
+struct LikeServerModel: Codable {
+    let id, typeID, refID, usersID: Int?
+    let createdAt, updatedAt: String?
+    let userlike: UserServerModel?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case typeID = "type_id"
+        case refID = "ref_id"
+        case usersID = "users_id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case userlike
+    }
+}
+
+// MARK: - PostImage
+struct PostImageServerModel: Codable {
+    let postID, imageID: Int?
+    let createdAt, updatedAt: String?
+    let image: ImageServerModel?
+
+    enum CodingKeys: String, CodingKey {
+        case postID = "post_id"
+        case imageID = "image_id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case image
+    }
+}
+
+// MARK: - Image
+struct ImageServerModel: Codable {
+    let id: Int?
+    let src: String?
+    let title, content: String?
+    let imageBin: String?
+    let albumID, usersID, nivelID: Int?
+    let createdAt, updatedAt: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, src, title, content
+        case imageBin = "image_bin"
+        case albumID = "album_id"
+        case usersID = "users_id"
+        case nivelID = "nivel_id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+}
+
+
+// MARK: - Tagged
+struct TaggedServerModel: Codable {
+    let id: Int?
+    let name, last, username, bio: String?
+    let profilePicture, dayOfBirth, publicEmail, joinDate: String?
+    let countryID: Int?
+    let image, imageHeader, title, likes: String?
+    let dislikes, address, phone: String?
+    let usersID, nivelID, sentimentalID: Int?
+    let imagenBin, valor: String?
+    let idPost, idGender, idCount: Int?
+    let createdAt, updatedAt: String?
+    let gender: GenderServerModel?
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, last, username, bio
+        case profilePicture = "profile_picture"
+        case dayOfBirth = "day_of_birth"
+        case publicEmail = "public_email"
+        case joinDate = "join_date"
+        case countryID = "country_id"
+        case image
+        case imageHeader = "image_header"
+        case title, likes, dislikes, address, phone
+        case usersID = "users_id"
+        case nivelID = "nivel_id"
+        case sentimentalID = "sentimental_id"
+        case imagenBin = "imagen_bin"
+        case valor
+        case idPost = "id_post"
+        case idGender = "id_gender"
+        case idCount = "id_count"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case gender
+    }
+}
+
+// MARK: - Gender
+struct GenderServerModel: Codable {
+    let id: Int?
+    let gender: String?
+    let createdAt, updatedAt: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, gender
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+}
+
+
+
+// MARK: - Caption
+struct CaptionServerModel: Codable {
+    var content: String?
+
+    enum CodingKeys: String, CodingKey {
+        case content
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*  ///////////////////////////////// [ MODEL ] //////////////////////////////////// */
+
 // MARK: - UserPost
 struct UserPost: Codable {
     let status: Bool?
     let userpost: [Userpost]?
 }
 
-// MARK: - User
-//struct Explore: Codable {
-  //  let status: Bool?
-   // let user: [User]?
-//}
 
 // MARK: - Userpost
 struct Userpost: Codable {
