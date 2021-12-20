@@ -59,65 +59,8 @@ struct UserpostServerModel: Codable {
     }
     
     
-    static let database = DatabaseHandler.shared
-    
-    
-    
-    
-    
-    
-    
-    func store()  {
-        
-        
-        
-        
-        
-        
-        /*
-        guard let userpostEntity = UserpostServerModel.database.add(CD0011_posts.self) else { return }
-        
-        guard let id                = id,
-              let title             = title,
-              let content           = content,
-              let lat               = lat,
-              let lng               = lng,
-              let start_at          = startAt,
-              let finish_at         = finishAt,
-              let receptor_type_id  = receptorTypeID,
-              let author_ref_id     = authorRefID,
-              let receptor_ref_id   = receptorRefID,
-              let postt_type_id     = posttTypeID,
-              let nivel_id          = nivelID,
-              let created_at        = createdAt,
-              let updated_at        = updatedAt,
-              let id_post_type      = idPostType else {
-            return
-        }
-        
-        userpostEntity.id                 = Int64(id)
-        userpostEntity.title              = title
-        userpostEntity.content            = content
-        userpostEntity.lat                = Int64(lat)
-        userpostEntity.lng                = Int64(lng)
-        userpostEntity.start_at           = start_at
-        userpostEntity.finish_at          = finish_at
-        userpostEntity.receptor_type_id   = Int64(receptor_type_id)
-        userpostEntity.author_ref_id      = Int64(author_ref_id)
-        userpostEntity.receptor_ref_id    = Int64(receptor_ref_id)
-        userpostEntity.postt_type_id      = Int64(postt_type_id)
-        userpostEntity.nivel_id           = Int64(nivel_id)
-        userpostEntity.created_at         = created_at
-        userpostEntity.updated_at         = updated_at
-        userpostEntity.id_post_type       = Int64(id_post_type)
-        
-        
-        
-        //Saved
-        UserpostServerModel.database.save()
- 
-         */
-    }
+    //static let database = DatabaseHandler.shared
+    //func store()  {}
 }
 
 
@@ -241,7 +184,7 @@ struct StoryfeaturedServerModel: Codable {
 struct LikeServerModel: Codable {
     let id, typeID, refID, usersID: Int?
     let createdAt, updatedAt: String?
-    let userlike: UserServerModel?
+    //let userlike: UserServerModel?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -250,7 +193,7 @@ struct LikeServerModel: Codable {
         case usersID = "users_id"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
-        case userlike
+        //case userlike
     }
 }
 

@@ -16,13 +16,13 @@ extension CD0013_likes {
         return NSFetchRequest<CD0013_likes>(entityName: "CD0013_likes")
     }
 
-    @NSManaged public var updated_at: String?
-    @NSManaged public var created_at: String?
-    @NSManaged public var users_id: Int64
-    @NSManaged public var ref_id: Int64
-    @NSManaged public var type_id: Int64
-    @NSManaged public var id: Int64
-    @NSManaged public var comments: CD0014_comments?
+    @NSManaged public var cd13_updated_at: String?
+    @NSManaged public var cd13_created_at: String?
+    @NSManaged public var cd13_users_id  : Int64
+    @NSManaged public var cd13_ref_id    : Int64
+    @NSManaged public var cd13_type_id   : Int64
+    @NSManaged public var cd13_id        : Int64
+    //@NSManaged public var comments: CD0014_comments?
 
 }
 

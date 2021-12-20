@@ -32,6 +32,7 @@ extension CD0011_posts {
     @NSManaged public var title: String?
     @NSManaged public var updated_at: String?
     @NSManaged public var comments: CD0014_comments?
+    @NSManaged public var likes: CD0013_likes?
     //@NSManaged public var comments: NSSet?
 
 }
@@ -44,8 +45,14 @@ extension CD0011_posts {
 
     @objc(removeCommentsObject:)
     @NSManaged public func removeFromComments(_ value: CD0014_comments)
+    
+    @objc(addLikesObject:)
+    @NSManaged public func addToLikes(_ value: CD0013_likes)
+
+    @objc(removeLikesObject:)
+    @NSManaged public func removeFromLikes(_ value: CD0013_likes)
 }
 
-extension CD0011_posts : Identifiable {
 
-}
+
+extension CD0011_posts : Identifiable {}

@@ -88,9 +88,6 @@ class HomeViewController: UIViewController {
         print(">_ pruebaApiRest")
         database.deleteAllRecords(object: cd0011_posts ?? [])
         
-        //let comments = [CD0014_comments]()
-        //database.deleteAllRecords(object: comments)
-        
         print(">_ despues del borrado")
         guard let token = getUserToken()?.token else { return }
         viewModel.syncUsersPost(token: token) {
@@ -98,7 +95,7 @@ class HomeViewController: UIViewController {
             for item in results {
                 print("------------------------------  [ USERPOT : \(item.id) ]  ------------------------------ ")
                 print("Post Title => \(item.title ?? "")")
-                print(item.comments!)
+                print(item.likes!)
             }
         }
     }

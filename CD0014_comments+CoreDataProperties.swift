@@ -9,9 +9,7 @@
 import Foundation
 import CoreData
 
-
 extension CD0014_comments {
-
     @nonobjc public class func fetchRequest() -> NSFetchRequest<CD0014_comments> {
         return NSFetchRequest<CD0014_comments>(entityName: "CD0014_comments")
     }
@@ -25,11 +23,11 @@ extension CD0014_comments {
     @NSManaged public var cd14_type_id: Int64
     @NSManaged public var cd14_id: Int64
     @NSManaged public var cd14_user: CD0001_users?
-    //@NSManaged public var post: CD0011_posts?
+    ///@NSManaged public var post: CD0011_posts?
 
 }
 
-// MARK: Generated accessors for cd14_user
+// MARK: Add User.
 extension CD0014_comments {
 
     @objc(addCd14_userObject:)
@@ -46,6 +44,6 @@ extension CD0014_comments {
 
 }
 
-extension CD0014_comments : Identifiable {
 
-}
+
+extension CD0014_comments : Identifiable {}
