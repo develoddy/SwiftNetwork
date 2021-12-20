@@ -23,9 +23,9 @@ class CustomSharedCollectionViewCell: UICollectionViewCell  {
     
     let label: UILabel = {
         let label = UILabel()
-        //label.text = "Setting"
         return label
     }()
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,12 +43,12 @@ class CustomSharedCollectionViewCell: UICollectionViewCell  {
         
         let size = contentView.height-2
         settingImage.frame = CGRect(
-            x: 10,
+            x: contentView.width/2.7, //15,
             y: 10,
             width: contentView.height/2,
             height: contentView.height/2)
         
-        settingImage.layer.cornerRadius = settingImage.height/2
+        settingImage.layer.cornerRadius = settingImage.height/4
         
         let labelHeight = contentView.height/2
         label.frame = CGRect(
@@ -72,7 +72,4 @@ class CustomSharedCollectionViewCell: UICollectionViewCell  {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    
 }

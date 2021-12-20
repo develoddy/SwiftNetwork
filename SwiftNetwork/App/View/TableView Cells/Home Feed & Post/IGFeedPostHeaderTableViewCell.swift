@@ -9,7 +9,7 @@ import UIKit
 import SDWebImage
 
 protocol IGFeedPostHeaderTableViewCellDelegate: AnyObject {
-    func didTapMoreButton()
+    func didTapMoreButton(post: Userpost)
 }
 
 class IGFeedPostHeaderTableViewCell: UITableViewCell {
@@ -17,6 +17,8 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     static let identifier = "IGFeedPostHeaderTableViewCell"
     
     public var delegate: IGFeedPostHeaderTableViewCellDelegate?
+    
+    private var model: Userpost?
     
     private let profilePhotoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -63,7 +65,6 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        contentView.backgroundColor = .systemBackground
         contentView.addSubview(profilePhotoImageView)
         contentView.addSubview(usernameLabel)
         contentView.addSubview(postTimeLabel)
@@ -86,7 +87,6 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
             height: contentView.height/1.5) ///size
         profilePhotoImageView.layer.cornerRadius = profilePhotoImageView.height/2 
         
-        
         let labelHeight = contentView.height/3
         usernameLabel.frame = CGRect(
             x: profilePhotoImageView.right+10,
@@ -94,7 +94,6 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
             width: contentView.width-(size*2)-15,
             height: labelHeight)//contentView.height-4)
         
-        //postTimeLabel.backgroundColor = .yellow
         let postTimeLabelSize = postTimeLabel.sizeThatFits(frame.size)
         postTimeLabel.frame = CGRect(
             x: profilePhotoImageView.right+10,
@@ -116,12 +115,17 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         
     }
     
-    public func configure(with model: User) {
-        usernameLabel.text = model.username
-        profilePhotoImageView.sd_setImage(with: URL(string: model.profile?.imageHeader ?? ""), completed: nil)
+    public func configure(with model: Userpost) {
+        self.model = model
+        usernameLabel.text = model.userAuthor?.username
+        guard let imageHeader = model.userAuthor?.profile?.imageHeader else { return }
+        profilePhotoImageView.sd_setImage(with: URL(string: imageHeader), completed: nil)
     }
     
     @objc private func didTapButton() {
-        delegate?.didTapMoreButton()
+        guard let post = self.model else {
+            return
+        }
+        delegate?.didTapMoreButton(post: post)
     }
 }

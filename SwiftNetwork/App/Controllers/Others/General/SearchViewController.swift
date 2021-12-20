@@ -101,7 +101,7 @@ class SearchViewController: UIViewController {
     ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
     private func setupModel(with model: [Userpost] ) {
         for items in model {
-            let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType, storyfeatured: items.storyfeatured )
+            let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType )
             models.append(userpost)
         }
         ///Carga el spiner y recarga el collectionViewTwo con los datos.
@@ -193,10 +193,10 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     ///We indicate the collections of photo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let model = models[indexPath.row]
+        //let model = models[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
         cell.backgroundColor = .systemBackground
-        cell.configure(with: model)
+        //cell.configure(with: model)
         return cell
     }
     

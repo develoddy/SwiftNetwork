@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CD0001_users" representedClassName="CD0001_users" syncable="YES">
+        <attribute name="cd01_created_at" optional="YES" attributeType="String"/>
+        <attribute name="cd01_email" optional="YES" attributeType="String"/>
+        <attribute name="cd01_email_verified_at" optional="YES" attributeType="String"/>
+        <attribute name="cd01_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd01_id_count" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd01_name" optional="YES" attributeType="String"/>
+        <attribute name="cd01_password" optional="YES" attributeType="String"/>
+        <attribute name="cd01_remember_token" optional="YES" attributeType="String"/>
+        <attribute name="cd01_updated_at" optional="YES" attributeType="String"/>
+        <attribute name="cd01_username" optional="YES" attributeType="String"/>
+        <relationship name="comments" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0014_comments" inverseName="cd14_user" inverseEntity="CD0014_comments"/>
+    </entity>
+    <entity name="CD0011_posts" representedClassName="CD0011_posts" syncable="YES">
+        <attribute name="author_ref_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="content" optional="YES" attributeType="String"/>
+        <attribute name="created_at" optional="YES" attributeType="String"/>
+        <attribute name="finish_at" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id_post_type" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="lat" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="lng" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="nivel_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="postt_type_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="receptor_ref_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="receptor_type_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="start_at" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="updated_at" optional="YES" attributeType="String"/>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CD0014_comments" inverseName="post" inverseEntity="CD0014_comments"/>
+        <relationship name="likes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CD0013_likes" inverseName="post" inverseEntity="CD0013_likes"/>
+    </entity>
+    <entity name="CD0013_likes" representedClassName="CD0013_likes" syncable="YES">
+        <attribute name="cd13_created_at" optional="YES" attributeType="String"/>
+        <attribute name="cd13_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd13_ref_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd13_type_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd13_updated_at" optional="YES" attributeType="String"/>
+        <attribute name="cd13_users_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0011_posts" inverseName="likes" inverseEntity="CD0011_posts"/>
+    </entity>
+    <entity name="CD0014_comments" representedClassName="CD0014_comments" syncable="YES">
+        <attribute name="cd14_comentario_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd14_content" optional="YES" attributeType="String"/>
+        <attribute name="cd14_created_at" optional="YES" attributeType="String"/>
+        <attribute name="cd14_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd14_ref_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd14_type_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd14_updated_at" optional="YES" attributeType="String"/>
+        <attribute name="cd14_users_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="cd14_user" toMany="YES" deletionRule="Nullify" destinationEntity="CD0001_users" inverseName="comments" inverseEntity="CD0001_users"/>
+        <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0011_posts" inverseName="comments" inverseEntity="CD0011_posts"/>
+    </entity>
+    <elements>
+        <element name="CD0001_users" positionX="-1658.621948242188" positionY="-68.33670043945312" width="128" height="194"/>
+        <element name="CD0011_posts" positionX="-1135.710815429688" positionY="-357.3677978515625" width="128" height="298"/>
+        <element name="CD0013_likes" positionX="-831.1319580078125" positionY="-197.2683715820312" width="128" height="148"/>
+        <element name="CD0014_comments" positionX="-1435.472106933594" positionY="-242.5951690673828" width="128" height="193"/>
+    </elements>
+</model>

@@ -1,8 +1,8 @@
 //
-//  WebModel.swift
-//  Blubinn
+//  WSApiRest.swift
+//  SwiftNetwork
 //
-//  Created by Eddy Donald Chinchay Lujan on 6/4/21.
+//  Created by Eddy Donald Chinchay Lujan on 13/12/21.
 //
 
 
@@ -19,6 +19,9 @@ class WSApiRest: NSObject {
     static let _URL_logout      = "api/auth/logout"
     static let _URL_login       = "api/auth/login"
     static let _URL_signup      = "api/auth/signup"
+    static let _URL_like        = "api/auth/likes/insert"
+    static let _URL_liked       = "api/auth/likes/liked"
+    static let _URL_caption     = "api/auth/post/updateCaption"
 
     //MARK: Session Sign out
     ///Llamaremos al backend.
@@ -54,7 +57,7 @@ class WSApiRest: NSObject {
         let dic : [String : Any] = ["email"         : objUser.email!                                ,
                                     "password"      : objUser.password!                             ,
                                     "typedevice"    : 1                                             ,
-                                    "tokendevice"   : "Se debe enviar el token push del dispositivo"	]
+                                    "tokendevice"   : "Se debe enviar el token push del dispositivo"    ]
         return WSender.doPOSTToURL(conURL: self.CDMWebModelURLBase, conPath: _URL_login as NSString, conParametros: dic) { (objRespuesta) in
             let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
             let arrayRespuesta = diccionarioRespuesta!["error"]
@@ -66,7 +69,7 @@ class WSApiRest: NSObject {
                         switch result {
                         case .success(let userPost): completionCorrecto(userPost)
                         case .failure(let error): print(error.localizedDescription)
-                        }		
+                        }
                     }
                 }
             } else if arrayRespuesta as! String == Constants.Error.unauthorized {
@@ -110,6 +113,43 @@ class WSApiRest: NSObject {
             }
         }
     }
+    
+    
+
+    //MARK: Sync UserPost.
+    /// Vamos a llamar al backend para traer los datos de User Post para sicronoziarl con core data.
+    @discardableResult class
+    func startSyncUserPost(_ token                           : String?                        ,
+                          conCompletionCorrecto completionCorrecto: @escaping Closures.userpostServerModel    ,
+                          error procesoIncorrecto                 : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        let dic : [Any]? = nil
+        let result = WSender.doGETTokenToURL(conURL       : WSApiRest.CDMWebModelURLBase ,
+                                             conPath      : _URL_userpost as NSString    ,
+                                             conParametros: dic                          ,
+                                             conToken     : token ?? ""                  ) { (objRespuesta) in
+            let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
+            let arrayRespuesta       = diccionarioRespuesta?["error"]
+            let mensajeError         = WSApiRest.obtenerMensajeDeError(paraData: diccionarioRespuesta)
+            if arrayRespuesta == nil {
+                if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
+                    guard let diccionarioRespuesta = diccionarioRespuesta else { return }
+                    WSTranslator.translateResponseSyncUserPostBE(diccionarioRespuesta) { ( result ) in
+                        switch result {
+                        case .success(let userpostServerModel): completionCorrecto(userpostServerModel)
+                        case .failure(let error): print(error.localizedDescription)
+                        }
+                    }
+                }
+            } else if  arrayRespuesta as! String == Constants.Error.unauthorized {
+                let mensajeErrorFinal = (diccionarioRespuesta != nil && diccionarioRespuesta?.count == 0) ? Constants.LogInError.logInInvalidte: mensajeError
+                procesoIncorrecto(mensajeErrorFinal)
+            }
+        }
+        return result
+    }
+    
+    
+    
 
     //MARK: USERPOST A CALL IS MDADE TO THE BACKEND.
     ///Parametros Token & UserPost
@@ -146,10 +186,15 @@ class WSApiRest: NSObject {
     //MARK: PROFILE A CALL IS MDADE TO THE BACKEND.
     ///Explore
     ///Parametros Token y Object UserSearchBE
-    @discardableResult class func startSearch(_ email                                  : String                         ,
+    @discardableResult class func startProfile(_ email                                  : String                         ,
                                               _ token                                  : String?                        ,
                                               conCompletionCorrecto completionCorrecto : @escaping Closures.userPost    ,
                                               error procesoIncorrecto                  : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        
+//        print("startSearch")
+//        print(email)
+//        print(token)
+        
         let dic : [String : Any] = ["email"       : email                                        ,
                                     "typedevice" : 1                                             ,
                                     "tokendevice": "Se debe enviar el token push del dispositivo"]
@@ -166,6 +211,48 @@ class WSApiRest: NSObject {
                     WSTranslator.translateResponseProfileBE(diccionarioRespuesta) { ( result ) in
                         switch result {
                         case .success(let userPost): completionCorrecto(userPost)
+                        case .failure(let error): print(error.localizedDescription)
+                        }
+                    }
+                }
+            } else if  arrayRespuesta as! String == Constants.Error.unauthorized {
+                let mensajeErrorFinal = (diccionarioRespuesta != nil && diccionarioRespuesta?.count == 0) ? Constants.LogInError.logInInvalidte: mensajeError
+                   procesoIncorrecto(mensajeErrorFinal)
+            }
+        }
+        return resultSearch
+    }
+    
+    
+    //MARK: LIKES A CALL IS MDADE TO THE BACKEND.
+    ///Like
+    ///Parametros Token y Object UserSearchBE
+    @discardableResult class func startLike(_ type_id                                : Int                            ,
+                                            _ ref_id                                 : Int                            ,
+                                            _ users_id                               : Int                            ,
+                                            _ isLiked                                : Bool                           ,
+                                            _ token                                  : String?                        ,
+                                            conCompletionCorrecto completionCorrecto : @escaping Closures.message     ,
+                                            error procesoIncorrecto                  : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        let dic : [String : Any] = ["type_id"    : type_id                                       ,
+                                    "ref_id"     : ref_id                                        ,
+                                    "users_id"   : users_id                                      ,
+                                    "isLiked"    : isLiked                                       ,
+                                    "typedevice" : 1                                             ,
+                                    "tokendevice": "Se debe enviar el token push del dispositivo"]
+        let resultSearch = WSender.doPOSTTokenToURL(conURL       : self.CDMWebModelURLBase  ,
+                                                    conPath      : _URL_like as NSString    ,
+                                                    conParametros: dic                      ,
+                                                    conToken     : token ?? ""              ) { ( objRespuesta ) in
+            let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
+            let arrayRespuesta       = diccionarioRespuesta?["error"]
+            let mensajeError         = WSApiRest.obtenerMensajeDeError(paraData: diccionarioRespuesta)
+            if arrayRespuesta == nil {
+                if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
+                    guard let diccionarioRespuesta = diccionarioRespuesta else { return }
+                    WSTranslator.translateResponseLikeBE(diccionarioRespuesta) { ( result ) in
+                        switch result {
+                        case .success(let message): completionCorrecto(message)
                         case .failure(let error): print(error.localizedDescription)
                         }
                     }
@@ -213,6 +300,87 @@ class WSApiRest: NSObject {
         }
         return resultSearch
     }
+    
+    //MARK: LIKED A CALL IS MDADE TO THE BACKEND.
+    ///Liked
+    ///Parametros ref_id, users_id, token.
+    @discardableResult class func startLiked(_ ref_id                                 : Int                            ,
+                                            _ users_id                               : Int                            ,
+                                            _ token                                  : String?                        ,
+                                            conCompletionCorrecto completionCorrecto : @escaping Closures.message     ,
+                                            error procesoIncorrecto                  : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        let dic : [String : Any] = ["ref_id"     : ref_id                                        ,
+                                    "users_id"   : users_id                                      ,
+                                    "typedevice" : 1                                             ,
+                                    "tokendevice": "Se debe enviar el token push del dispositivo"]
+        let resultSearch = WSender.doPOSTTokenToURL(conURL       : self.CDMWebModelURLBase  ,
+                                                    conPath      : _URL_liked as NSString    ,
+                                                    conParametros: dic                      ,
+                                                    conToken     : token ?? ""              ) { ( objRespuesta ) in
+            let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
+            let arrayRespuesta       = diccionarioRespuesta?["error"]
+            let mensajeError         = WSApiRest.obtenerMensajeDeError(paraData: diccionarioRespuesta)
+            if arrayRespuesta == nil {
+                if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
+                    guard let diccionarioRespuesta = diccionarioRespuesta else { return }
+                    WSTranslator.translateResponseLikedBE(diccionarioRespuesta) { ( result ) in
+                        switch result {
+                        case .success(let message): completionCorrecto(message)
+                        case .failure(let error): print(error.localizedDescription)
+                        }
+                    }
+                }
+            } else if  arrayRespuesta as! String == Constants.Error.unauthorized {
+                let mensajeErrorFinal = (diccionarioRespuesta != nil && diccionarioRespuesta?.count == 0) ? Constants.LogInError.logInInvalidte: mensajeError
+                   procesoIncorrecto(mensajeErrorFinal)
+            }
+        }
+        return resultSearch
+    }
+    
+    
+    
+    
+    
+    
+    //MARK: POST CAPTION UPDATE MDADE TO THE BACKEND.
+    ///Caption update
+    ///Parametros Caption, idpost , token.
+    @discardableResult class func startPostCaptionUpdate(_ caption                                : Caption                        ,
+                                                         _ idpost                                 : Int                            ,
+                                                         _ token                                  : String?                        ,
+                                                         conCompletionCorrecto completionCorrecto : @escaping Closures.message     ,
+                                                         error procesoIncorrecto                  : @escaping Closures.MensajeError) -> URLSessionDataTask? {
+        let dic : [String : Any] = ["content"    : caption.content ?? ""                         ,
+                                    "typedevice" : 1                                             ,
+                                    "tokendevice": "Se debe enviar el token push del dispositivo"]
+        let resultSearch = WSender.doPUTTokenToURL(conURL        : self.CDMWebModelURLBase  ,
+                                                   conPath      : _URL_caption+"/"+"\(idpost)" as NSString    ,
+                                                    conParametros: dic                      ,
+                                                    conToken     : token ?? ""              ) { ( objRespuesta ) in
+            let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
+            let arrayRespuesta       = diccionarioRespuesta?["error"]
+            let mensajeError         = WSApiRest.obtenerMensajeDeError(paraData: diccionarioRespuesta)
+            if arrayRespuesta == nil {
+                if diccionarioRespuesta != nil && diccionarioRespuesta!.count != 0 {
+                    guard let diccionarioRespuesta = diccionarioRespuesta else { return }
+                    WSTranslator.translateResponseCaptionBE(diccionarioRespuesta) { ( result ) in
+                        switch result {
+                        case .success(let message): completionCorrecto(message)
+                        case .failure(let error): print(error.localizedDescription)
+                        }
+                    }
+                }
+            } else if  arrayRespuesta as! String == Constants.Error.unauthorized {
+                let mensajeErrorFinal = (diccionarioRespuesta != nil && diccionarioRespuesta?.count == 0) ? Constants.LogInError.logInInvalidte: mensajeError
+                   procesoIncorrecto(mensajeErrorFinal)
+            }
+        }
+        return resultSearch
+    }
+    
+    
+    
     
     //MARK: Manejo de mensajes de error y status.
     ///Return object mensaje error.
