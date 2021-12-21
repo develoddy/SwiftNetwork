@@ -127,21 +127,30 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
     }
     
     // Setup userpost values
-    public func setCellWithValuesOf(_ model: Userpost) {
-        updateUI(like: model.likes, comment: model.comments, username: model.userAuthor?.username, caption: model.content, image: model.userAuthor?.profile?.imageHeader)
+    //public func setCellWithValuesOf(_ model: Userpost) {
+    public func setCellWithValuesOf(_ model: CD0011_posts) {
+        ///updateUI(like: model.likes, comment: model.comments, username: model.userAuthor?.username, caption: model.content, image: model.userAuthor?.profile?.imageHeader)
+        updateUI(like: model.likes, comment: model.comments, username: "Pepito", caption: model.content, image: "")
     }
     
     // Update the UI Views
-    private func updateUI(like: [Like]?, comment: [Comment]?, username: String?, caption: String?, image: String? ) {
-        let countLike = countLikes(like: like)
+    //private func updateUI(like: [Like]?, comment: [Comment]?, username: String?, caption: String?, image: String? ) {
+    private func updateUI(like: CD0013_likes?, comment: CD0014_comments?, username: String?, caption: String?, image: String? ) {
+        /*let countLike = countLikes(like: like)
         let countComment = countComments(comment: comment)
         likeCount.text = "\(countLike) Me gusta"
+         
         commentCount.setTitle("Ver los \(countComment) comentarios", for: .normal)
         guard let username = username, let caption = caption else { return }
+         
         let authorName = joinTextCaption(username: username, description: caption)
         descriptionLabel.attributedText = authorName
         guard let image = image else { return }
-        imagesLikes(imageName: image)
+        imagesLikes(imageName: image)*/
+        
+        guard let username = username, let caption = caption else { return }
+        let authorName = joinTextCaption(username: username, description: caption)
+        descriptionLabel.attributedText = authorName
     }
     
     // Likes count

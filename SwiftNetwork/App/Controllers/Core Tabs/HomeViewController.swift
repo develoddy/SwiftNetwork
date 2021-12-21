@@ -8,8 +8,9 @@
 import UIKit
 import CoreData
 
+
 struct HomeFeedRenderViewModel {
-    //let collections: PostRenderViewModel
+    ///let collections: PostRenderViewModel
     let header: PostRenderViewModel
     let post: PostRenderViewModel
     let actions: PostRenderViewModel
@@ -40,6 +41,10 @@ class HomeViewController: UIViewController {
         return launcher
     }()
     
+    
+    
+    public var models = [HomeFeedRenderViewModel]()
+    
     var model : HomeFeedRenderViewModel?
     
     private var viewModel = HomeViewModel()
@@ -69,7 +74,7 @@ class HomeViewController: UIViewController {
         headerTableView()
         setupNavigationBarItems()
         configureSpinner()
-        loadUserpostData()
+        ///loadUserpostData()
         
         pruebaApiRest()
     }
@@ -91,18 +96,26 @@ class HomeViewController: UIViewController {
         print(">_ despues del borrado")
         guard let token = getUserToken()?.token else { return }
         viewModel.syncUsersPost(token: token) {
-            let results = self.database.fetch(CD0011_posts.self)
-            for item in results {
-                print("------------------------------  [ USERPOT : \(item.id) ]  ------------------------------ ")
-                print("Post Title => \(item.title ?? "")")
-                print(item.taggeds ?? [])
+            //let userpost = self.database.fetch(CD0011_posts.self)
+            //for items in userpost {
+                ///print("------------------------------  [ USERPOT : \(items.id) ]  ------------------------------ ")
+                ///print("Post Title => \(items.title ?? "")")
+                ///print(items.taggeds ?? [])
+            ///}
+            ///
+            ///
+            self.tableView.dataSource = self
+            self.tableView.delegate = self
+            DispatchQueue.main.async {
+                CustomLoader.instance.hideLoader()
+                self.tableView.reloadData()
             }
         }
     }
 
     ///Load data.
     ///Llamamos al viewModel para traer los datos.
-    private func loadUserpostData() {
+    /*private func loadUserpostData() {
         guard let token = getUserToken()?.token else { return }
         viewModel.fetchUserpostData(token: token) {
             self.tableView.dataSource = self
@@ -112,7 +125,7 @@ class HomeViewController: UIViewController {
                 self.tableView.reloadData()
             }
         }
-    }
+    }*/
         
     ///viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
@@ -371,7 +384,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 switch model.post.renderType {
                 case .primaryContent(let post):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostTableViewCell.identifier,for: indexPath) as! IGFeedPostTableViewCell
-                    cell.configure(with: post)
+                    //cell.configure(with: post)
                     return cell
                 case .comments, .actions, .header, .collections, .descriptions, .footer : return UITableViewCell()
                 }
@@ -399,7 +412,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             case 5:
                 switch model.comments.renderType {
                 case .comments(let comments):
-                    let count = comments.count
+                    //let count = comments.count
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier, for: indexPath) as! IGFeedPostGeneralTableViewCell
                     cell.configure(with: count)
                     return cell
@@ -410,7 +423,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 switch model.footer.renderType {
                 case .footer(let footer):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostFooterTableViewCell.identifier, for: indexPath) as! IGFeedPostFooterTableViewCell
-                    cell.configure(with: footer)
+                    //cell.configure(with: footer)
                     cell.delegate = self
                     self.separator(cell: cell)
                     return cell
@@ -440,14 +453,14 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         ///Sub section header
         case 1:
             switch render {
-            case .primaryContent(let userpost):
-                guard let email = userpost.userAuthor?.email,
-                      let name = userpost.userAuthor?.name else {
-                    return
-                }
-                let vc = UserPostViewController(email: email, token: getUserToken()?.token ?? "")
-                vc.title = name
-                navigationController?.pushViewController(vc, animated: true)
+            //case .primaryContent(let userpost):
+//                guard let email = userpost.userAuthor?.email,
+//                      let name = userpost.userAuthor?.name else {
+//                    return
+//                }
+//                let vc = UserPostViewController(email: email, token: getUserToken()?.token ?? "")
+//                vc.title = name
+//                navigationController?.pushViewController(vc, animated: true)
             default:
                 print("Error...")
             }

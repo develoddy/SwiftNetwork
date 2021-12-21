@@ -258,71 +258,69 @@ class HomeViewModel {
             switch result {
             case .success(let model):
                 ///model.forEach { $0.store() }
-                self.userpost(userpost: model) == true ? print("Post SI insertado en Core data post") : print("Datos NO insertado en core data post")
-               
-                completion()
-            case .failure(let error):
-                print(error.localizedDescription)
-                completion()
-            }
-        }
-    }
-    
-    
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    
-    ///Api Rest.
-    ///En esta función llamamos al Api rest para traes los datos de la DataBase,
-    ///Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
-    func fetchUserpostData(token: String, completion: @escaping () -> ()) {
-        apiService.apiUserPost(token: token) {(result) in
-            switch result {
-            case .success(let model):
-                guard let userpost = model.userpost else { return }
-                for items in userpost {
-                    //guard let user = items.userAuthor else { return }
-                    guard let comments = items.comments else { return }
-                    let viewModel = HomeFeedRenderViewModel(
-                        header      : PostRenderViewModel(renderType: .header(provider: items)),
-                        post        : PostRenderViewModel(renderType: .primaryContent(provider: items)),
-                        actions     : PostRenderViewModel(renderType: .actions(provider: items)),
-                        descriptions: PostRenderViewModel(renderType: .descriptions(post: items)),
-                        comments    : PostRenderViewModel(renderType: .comments(comments: comments)),
-                        footer      : PostRenderViewModel(renderType: .footer(footer: items)))
-                    self.models.append(viewModel)
+                ///self.userpost(userpost: model) == true ? print("Post SI insertado en Core data post") :
+                let insertCore = self.userpost(userpost: model)
+                if insertCore {
+                    self.insertCoreDataToModel()
+                } else {
+                    print("Datos NO insertado en core data post")
                 }
                 completion()
             case .failure(let error):
                 print(error.localizedDescription)
+                completion()
             }
         }
     }
+    
+    
+    
+    
+    func insertCoreDataToModel () {
+        let userpost = HomeViewModel.database.fetch(CD0011_posts.self)
+        for items in userpost {
+            guard let comments = items.comments else { return }
+            let viewModel = HomeFeedRenderViewModel(
+                header: PostRenderViewModel(renderType: .header(provider: items)),
+                post: PostRenderViewModel(renderType: .primaryContent(provider: items)),
+                actions: PostRenderViewModel(renderType: .actions(provider: items)),
+                descriptions: PostRenderViewModel(renderType: .descriptions(post: items)),
+                comments: PostRenderViewModel(renderType: .comments(comments: comments )),
+                footer: PostRenderViewModel(renderType: .footer(footer: items)))
+            self.models.append(viewModel)
+        }
+    }
+        
+        
+        
+        
+        
+        
+    ///Api Rest.
+    ///En esta función llamamos al Api rest para traes los datos de la DataBase,
+    ///Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
+//    func fetchUserpostData(token: String, completion: @escaping () -> ()) {
+//        apiService.apiUserPost(token: token) {(result) in
+//            switch result {
+//            case .success(let model):
+//                guard let userpost = model.userpost else { return }
+//                for items in userpost {
+//                    guard let comments = items.comments else { return }
+//                    let viewModel = HomeFeedRenderViewModel(
+//                        header      : PostRenderViewModel(renderType: .header(provider: items)),
+//                        post        : PostRenderViewModel(renderType: .primaryContent(provider: items)),
+//                        actions     : PostRenderViewModel(renderType: .actions(provider: items)),
+//                        descriptions: PostRenderViewModel(renderType: .descriptions(post: items)),
+//                        comments    : PostRenderViewModel(renderType: .comments(comments: comments)),
+//                        footer      : PostRenderViewModel(renderType: .footer(footer: items)))
+//                    self.models.append(viewModel)
+//                }
+//                completion()
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
     
     
     

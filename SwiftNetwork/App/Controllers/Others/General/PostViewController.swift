@@ -23,22 +23,22 @@ import UIKit
 /// States of render cell
 /*enum PostRenderType {
     case collections(collections: [CollectionTableCellModel], createStory: [CollectionTableCellModel])
-    case header(provider: UserViewModel)
-    case primaryContent(provider: UserpostViewModel)
-    case actions(provider: UserpostViewModel)
-    case descriptions(post: UserpostViewModel)
-    case comments(comments: [CommentViewModel])
-    case footer(footer: UserpostViewModel)
-}*/
-
-enum PostRenderType {
-    case collections(collections: [CollectionTableCellModel], createStory: [CollectionTableCellModel])
     case header(provider: Userpost)
     case primaryContent(provider: Userpost)
     case actions(provider: Userpost)
     case descriptions(post: Userpost)
     case comments(comments: [Comment])
     case footer(footer: Userpost)
+}*/
+
+enum PostRenderType {
+    case collections(collections: [CollectionTableCellModel], createStory: [CollectionTableCellModel])
+    case header(provider: CD0011_posts )
+    case primaryContent(provider: CD0011_posts)
+    case actions(provider: CD0011_posts)
+    case descriptions(post: CD0011_posts)
+    case comments(comments: CD0014_comments)
+    case footer(footer: CD0011_posts)
 }
 
 /// Model of  renderd Post
@@ -160,12 +160,12 @@ class PostViewController: UIViewController {
     private func setupModel(with model: Userpost ) {
         //guard let ownew = model.userAuthor else { return }
         guard let comments = model.comments else { return }
-        renderModels.append(PostRenderViewModel(renderType: .header(provider: model)))
-        renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: model)))
-        renderModels.append(PostRenderViewModel(renderType: .actions(provider: model)))
-        renderModels.append(PostRenderViewModel(renderType: .descriptions(post: model)))
-        renderModels.append(PostRenderViewModel(renderType: .comments(comments: comments)))
-        renderModels.append(PostRenderViewModel(renderType: .footer(footer: model)))
+//        renderModels.append(PostRenderViewModel(renderType: .header(provider: model)))
+//        renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: model)))
+//        renderModels.append(PostRenderViewModel(renderType: .actions(provider: model)))
+//        renderModels.append(PostRenderViewModel(renderType: .descriptions(post: model)))
+//        renderModels.append(PostRenderViewModel(renderType: .comments(comments: comments)))
+//        renderModels.append(PostRenderViewModel(renderType: .footer(footer: model)))
     }
     
     private func setupView() {
@@ -225,26 +225,26 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         case .comments(let comments):
             //let comment = comments[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier, for: indexPath) as! IGFeedPostGeneralTableViewCell
-            let count = comments.count
-            cell.configure(with: count)
+            //let count = comments.count
+            //cell.configure(with: count)
             return cell
         case .primaryContent(let post):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostTableViewCell.identifier, for: indexPath) as! IGFeedPostTableViewCell
-            cell.configure(with: post)
+            //cell.configure(with: post)
             return cell
         case .header(let post):
               let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier,for: indexPath) as! IGFeedPostHeaderTableViewCell
-            cell.configure(with: post)
+            //cell.configure(with: post)
             cell.delegate = self
             return cell
         case .descriptions(let post):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
-            cell.configure(with: post)
+            //cell.configure(with: post)
             cell.delegate = self
             return cell
         case .footer(let footer):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostFooterTableViewCell.identifier, for: indexPath) as! IGFeedPostFooterTableViewCell
-            cell.configure(with: footer)
+            //cell.configure(with: footer)
             //cell.delegate = self
             return cell
         case .collections(_,_):

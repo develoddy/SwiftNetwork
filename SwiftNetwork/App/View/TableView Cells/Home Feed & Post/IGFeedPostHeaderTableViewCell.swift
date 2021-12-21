@@ -18,7 +18,8 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     
     public var delegate: IGFeedPostHeaderTableViewCellDelegate?
     
-    private var model: Userpost?
+    //private var model: Userpost?
+    private var model: CD0011_posts?
     
     private let profilePhotoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -115,17 +116,20 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         
     }
     
-    public func configure(with model: Userpost) {
-        self.model = model
-        usernameLabel.text = model.userAuthor?.username
-        guard let imageHeader = model.userAuthor?.profile?.imageHeader else { return }
-        profilePhotoImageView.sd_setImage(with: URL(string: imageHeader), completed: nil)
+    //public func configure(with model: Userpost) {
+    
+    public func configure(with model: CD0011_posts) {
+        //self.model = model
+        //usernameLabel.text = model.userAuthor?.username
+        //guard let imageHeader = model.userAuthor?.profile?.imageHeader else { return }
+        //profilePhotoImageView.sd_setImage(with: URL(string: imageHeader), completed: nil)
+        
     }
     
     @objc private func didTapButton() {
-        guard let post = self.model else {
-            return
-        }
-        delegate?.didTapMoreButton(post: post)
+        //guard let post = self.model else {
+          //  return
+        //}
+        //delegate?.didTapMoreButton(post: post)
     }
 }
