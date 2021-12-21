@@ -184,7 +184,7 @@ struct StoryfeaturedServerModel: Codable {
 struct LikeServerModel: Codable {
     let id, typeID, refID, usersID: Int?
     let createdAt, updatedAt: String?
-    //let userlike: UserServerModel?
+    let userlike: UserServerModel?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -193,7 +193,7 @@ struct LikeServerModel: Codable {
         case usersID = "users_id"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
-        //case userlike
+        case userlike
     }
 }
 
@@ -245,7 +245,7 @@ struct TaggedServerModel: Codable {
     let imagenBin, valor: String?
     let idPost, idGender, idCount: Int?
     let createdAt, updatedAt: String?
-    let gender: GenderServerModel?
+    //let gender: GenderServerModel?
 
     enum CodingKeys: String, CodingKey {
         case id, name, last, username, bio
@@ -267,7 +267,7 @@ struct TaggedServerModel: Codable {
         case idCount = "id_count"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
-        case gender
+        //case gender
     }
 }
 

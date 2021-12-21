@@ -95,7 +95,7 @@ class HomeViewController: UIViewController {
             for item in results {
                 print("------------------------------  [ USERPOT : \(item.id) ]  ------------------------------ ")
                 print("Post Title => \(item.title ?? "")")
-                print(item.likes!)
+                print(item.taggeds ?? [])
             }
         }
     }
