@@ -277,18 +277,29 @@ class HomeViewModel {
     
     
     func insertCoreDataToModel () {
-        let userpost = HomeViewModel.database.fetch(CD0011_posts.self)
-        for items in userpost {
-            guard let comments = items.comments else { return }
-            let viewModel = HomeFeedRenderViewModel(
-                header: PostRenderViewModel(renderType: .header(provider: items)),
-                post: PostRenderViewModel(renderType: .primaryContent(provider: items)),
-                actions: PostRenderViewModel(renderType: .actions(provider: items)),
-                descriptions: PostRenderViewModel(renderType: .descriptions(post: items)),
-                comments: PostRenderViewModel(renderType: .comments(comments: comments )),
-                footer: PostRenderViewModel(renderType: .footer(footer: items)))
-            self.models.append(viewModel)
+        let entityPost = HomeViewModel.database.fetch(CD0011_posts.self)
+        let entityComment = HomeViewModel.database.fetch(CD0014_comments .self)
+        
+        for comment in entityComment {
+            print(comment.cd14_content ?? "" )
         }
+        
+        
+        
+        //Entity Comment
+        //print( entityComment.map{ $0.cd14_content ?? "" } )
+        
+        
+        /*for items in userpost {
+            let viewModel = HomeFeedRenderViewModel(
+                header      : PostRenderViewModel(renderType: .header(provider          : items)),
+                post        : PostRenderViewModel(renderType: .primaryContent(provider  : items)),
+                actions     : PostRenderViewModel(renderType: .actions(provider         : items)),
+                descriptions: PostRenderViewModel(renderType: .descriptions(post        : items)),
+                comments    : PostRenderViewModel(renderType: .comments(comments        : [items.comments!] )),
+                footer      : PostRenderViewModel(renderType: .footer(footer            : items)))
+            self.models.append(viewModel)
+        }*/
     }
         
         

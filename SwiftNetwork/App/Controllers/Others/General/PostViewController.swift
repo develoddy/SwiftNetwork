@@ -33,12 +33,12 @@ import UIKit
 
 enum PostRenderType {
     case collections(collections: [CollectionTableCellModel], createStory: [CollectionTableCellModel])
-    case header(provider: CD0011_posts )
-    case primaryContent(provider: CD0011_posts)
-    case actions(provider: CD0011_posts)
-    case descriptions(post: CD0011_posts)
-    case comments(comments: CD0014_comments)
-    case footer(footer: CD0011_posts)
+    case header(provider: [CD0011_posts] )
+    case primaryContent(provider: [CD0011_posts])
+    case actions(provider: [CD0011_posts])
+    case descriptions(post: [CD0011_posts])
+    case comments(comments: [CD0014_comments])
+    case footer(footer: [CD0011_posts])
 }
 
 /// Model of  renderd Post

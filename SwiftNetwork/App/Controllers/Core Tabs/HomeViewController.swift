@@ -374,7 +374,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 switch model.header.renderType {
                 case .header(let user):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier, for: indexPath) as! IGFeedPostHeaderTableViewCell
-                    cell.configure(with: user)
+                    //cell.configure(with: user)
                     cell.delegate = self
                     return cell
                 case .comments, .actions, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
@@ -389,7 +389,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 case .comments, .actions, .header, .collections, .descriptions, .footer : return UITableViewCell()
                 }
                 
-            ///Actions
+            // Actions
             case 3:
                 switch model.actions.renderType {
                 case .actions(_/*let provider*/):
@@ -399,22 +399,28 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 case .comments, .header, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
                 }
                 
-            ///Description
+            // Description
             case 4:
                 switch model.descriptions.renderType {
                 case .descriptions(let post):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
-                    cell.setCellWithValuesOf(post)
+                    //cell.setCellWithValuesOf(post)
                     return cell
                 case .comments, .header, .primaryContent, .collections, .actions, .footer: return UITableViewCell()
                 }
-            
+                
+            // Comments
             case 5:
                 switch model.comments.renderType {
                 case .comments(let comments):
                     //let count = comments.count
+                    //let entityComments = HomeViewModel.database.fetch(CD0014_comments.self)
+                    //print( comments.count )
+                    
+                    //let arrayComments = self.database.fetch(CD0014_comments.self)
+        
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier, for: indexPath) as! IGFeedPostGeneralTableViewCell
-                    cell.configure(with: count)
+                    //cell.configure(with: count)
                     return cell
                 case .header, .actions, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
                 }
@@ -726,3 +732,4 @@ extension HomeViewController: IGFeedPostHeaderTableViewCellDelegate {
         print("clispp")
     }
 }
+
