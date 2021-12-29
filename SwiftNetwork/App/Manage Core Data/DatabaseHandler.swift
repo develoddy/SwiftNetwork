@@ -26,7 +26,7 @@ class DatabaseHandler {
         return object
     }
     
-    //MARK: fetch
+    //MARK: Fetch
     func fetch <T: NSManagedObject>(_ type: T.Type) -> [T]  {
         let request = T.fetchRequest()
         do {
@@ -38,7 +38,7 @@ class DatabaseHandler {
         }
     }
     
-    //func deleteAllRecords() {
+    //MARK: Delete All Records
     func deleteAllRecords <T: NSManagedObject>(object: [T]) {
         guard let entityName = T.entity().name else { return }
         let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)

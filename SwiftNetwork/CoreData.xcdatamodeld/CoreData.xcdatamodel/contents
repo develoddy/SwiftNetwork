@@ -11,8 +11,33 @@
         <attribute name="cd01_remember_token" optional="YES" attributeType="String"/>
         <attribute name="cd01_updated_at" optional="YES" attributeType="String"/>
         <attribute name="cd01_username" optional="YES" attributeType="String"/>
+        <relationship name="cd01_profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0008_profiles" inverseName="user" inverseEntity="CD0008_profiles"/>
         <relationship name="comments" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0014_comments" inverseName="cd14_user" inverseEntity="CD0014_comments"/>
         <relationship name="likes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0013_likes" inverseName="cd13_userlike" inverseEntity="CD0013_likes"/>
+        <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0011_posts" inverseName="userAuthor" inverseEntity="CD0011_posts"/>
+    </entity>
+    <entity name="CD0008_profiles" representedClassName="CD0008_profiles" syncable="YES">
+        <attribute name="cd08_address" optional="YES" attributeType="String"/>
+        <attribute name="cd08_bio" optional="YES" attributeType="String"/>
+        <attribute name="cd08_country_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd08_created_at" optional="YES" attributeType="String"/>
+        <attribute name="cd08_data" optional="YES" attributeType="String"/>
+        <attribute name="cd08_day_of_birth" optional="YES" attributeType="String"/>
+        <attribute name="cd08_dislikes" optional="YES" attributeType="String"/>
+        <attribute name="cd08_gender" optional="YES" attributeType="String"/>
+        <attribute name="cd08_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd08_image" optional="YES" attributeType="String"/>
+        <attribute name="cd08_image_header" optional="YES" attributeType="String"/>
+        <attribute name="cd08_likes" optional="YES" attributeType="String"/>
+        <attribute name="cd08_nivel_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd08_phone" optional="YES" attributeType="String"/>
+        <attribute name="cd08_public_email" optional="YES" attributeType="String"/>
+        <attribute name="cd08_sentimental_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd08_title" optional="YES" attributeType="String"/>
+        <attribute name="cd08_updated_at" optional="YES" attributeType="String"/>
+        <attribute name="cd08_users_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd08_valor" optional="YES" attributeType="String"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0001_users" inverseName="cd01_profile" inverseEntity="CD0001_users"/>
     </entity>
     <entity name="CD0011_posts" representedClassName="CD0011_posts" syncable="YES">
         <attribute name="author_ref_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -33,6 +58,7 @@
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CD0014_comments" inverseName="post" inverseEntity="CD0014_comments"/>
         <relationship name="likes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CD0013_likes" inverseName="post" inverseEntity="CD0013_likes"/>
         <relationship name="taggeds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CD0023_taggeds" inverseName="post" inverseEntity="CD0023_taggeds"/>
+        <relationship name="userAuthor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0001_users" inverseName="post" inverseEntity="CD0001_users"/>
     </entity>
     <entity name="CD0013_likes" representedClassName="CD0013_likes" syncable="YES">
         <attribute name="cd13_created_at" optional="YES" attributeType="String"/>
@@ -87,8 +113,9 @@
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0011_posts" inverseName="taggeds" inverseEntity="CD0011_posts"/>
     </entity>
     <elements>
-        <element name="CD0001_users" positionX="-1658.621948242188" positionY="-68.33670043945312" width="128" height="209"/>
-        <element name="CD0011_posts" positionX="-1135.710815429688" positionY="-357.3677978515625" width="128" height="299"/>
+        <element name="CD0001_users" positionX="-1658.621948242188" positionY="-68.33670043945312" width="128" height="239"/>
+        <element name="CD0008_profiles" positionX="-1458" positionY="-207" width="128" height="344"/>
+        <element name="CD0011_posts" positionX="-1135.710815429688" positionY="-357.3677978515625" width="128" height="314"/>
         <element name="CD0013_likes" positionX="-831.1319580078125" positionY="-197.2683715820312" width="128" height="149"/>
         <element name="CD0014_comments" positionX="-1435.472106933594" positionY="-242.5951690673828" width="128" height="193"/>
         <element name="CD0023_taggeds" positionX="-1458" positionY="-207" width="128" height="449"/>

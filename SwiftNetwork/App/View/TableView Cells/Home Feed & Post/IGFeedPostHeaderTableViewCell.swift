@@ -119,10 +119,15 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     //public func configure(with model: Userpost) {
     
     public func configure(with model: CD0011_posts) {
-        //self.model = model
+        self.model = model
         //usernameLabel.text = model.userAuthor?.username
         //guard let imageHeader = model.userAuthor?.profile?.imageHeader else { return }
         //profilePhotoImageView.sd_setImage(with: URL(string: imageHeader), completed: nil)
+        
+        usernameLabel.text = model.userAuthor?.cd01_username
+        guard let imageHeader = model.userAuthor?.cd01_profile?.cd08_image_header else { return }
+        profilePhotoImageView.sd_setImage(with: URL(string: imageHeader), completed: nil)
+     
         
     }
     

@@ -150,16 +150,14 @@ class HomeViewModel {
                 
                 /// Core Data - Entity : User.
                 guard let userEntity = HomeViewModel.database.add(CD0001_users.self) else { return false}
-                guard let uId               = lUser.id,
-                      let uName             = lUser.name,
-                      let uUsername         = lUser.username,
-                      let uEmail            = lUser.email,
-                      let uEmailVerifiedAt  = lUser.emailVerifiedAt,
-                      let uIdCount          = lUser.idCount,
-                      let uCreatedAt        = lUser.createdAt,
-                      let uUpdatedAt        = lUser.updatedAt else {
-                    return false
-                }
+                guard let uId               = lUser.id              ,
+                      let uName             = lUser.name            ,
+                      let uUsername         = lUser.username        ,
+                      let uEmail            = lUser.email           ,
+                      let uEmailVerifiedAt  = lUser.emailVerifiedAt ,
+                      let uIdCount          = lUser.idCount         ,
+                      let uCreatedAt        = lUser.createdAt       ,
+                      let uUpdatedAt        = lUser.updatedAt       else  { return false }
 
                 userEntity.cd01_id                  = Int64(uId)
                 userEntity.cd01_name                = uName
@@ -175,7 +173,7 @@ class HomeViewModel {
             }
             
             
-            //MARK: - Taggeds
+            //MARK: - Taggeds.
             /// - Se irá guardando los datos en las propiedades del Entity del core data.
             /// - Relationships:
             ///     - Gender
@@ -208,7 +206,7 @@ class HomeViewModel {
                       let tIdGender         = tagged.idGender       ,
                       let tIdCount          = tagged.idCount        ,
                       let tCreatedAt        = tagged.createdAt      ,
-                      let tUpdateAt         = tagged.updatedAt else {
+                      let tUpdateAt         = tagged.updatedAt      else {
                       //let gender          = tagged.gender
                     return false
                 }
@@ -241,8 +239,81 @@ class HomeViewModel {
                 taggedsEntity.cd23_created_at       = tCreatedAt
                 taggedsEntity.cd23_updated_at       = tUpdateAt
                 
-                userpostEntity.addToTaggeds(taggedsEntity) /// Taggeds add to userpostEntity.taggeds.
+                userpostEntity.addToTaggeds(taggedsEntity) /// Taggeds add to userpostEntity.taggeds. // To-Many
             }
+            
+            
+            //MARK: - UserAuthor.
+            /// - Se irá guardando los datos en las propiedades del Entity del core data.
+            /// - Relationships:
+            guard let userAuhorEntity = HomeViewModel.database.add(CD0001_users.self) else { return false }
+            guard let uaId              = post.userAuthor?.id               ,
+                  let uaName            = post.userAuthor?.name             ,
+                  let uaUsername        = post.userAuthor?.username         ,
+                  let uaEmail           = post.userAuthor?.email            ,
+                  let uaEmailVerifiedAt = post.userAuthor?.emailVerifiedAt  ,
+                  let uaIdCount         = post.userAuthor?.idCount          ,
+                  let uaCreatedAt       = post.userAuthor?.createdAt        ,
+                  let uaUpdatedAt       = post.userAuthor?.updatedAt        else { return false }
+            
+            userAuhorEntity.cd01_id                  = Int64(uaId)
+            userAuhorEntity.cd01_name                = uaName
+            userAuhorEntity.cd01_username            = uaUsername
+            userAuhorEntity.cd01_email               = uaEmail
+            userAuhorEntity.cd01_email_verified_at   = uaEmailVerifiedAt
+            userAuhorEntity.cd01_id_count            = Int64(uaIdCount)
+            userAuhorEntity.cd01_created_at          = uaCreatedAt
+            userAuhorEntity.cd01_updated_at          = uaUpdatedAt
+            
+            userpostEntity.userAuthor = userAuhorEntity /// To-One
+            
+            guard let profileEntity = HomeViewModel.database.add(CD0008_profiles.self) else { return false }
+            guard let pId = post.userAuthor?.profile?.id                        ,   
+                  let pDayOfBirth = post.userAuthor?.profile?.dayOfBirth        ,
+                  let pGender = post.userAuthor?.profile?.gender                 ,
+                  let pImage = post.userAuthor?.profile?.image                   ,
+                  let pImageHeader = post.userAuthor?.profile?.imageHeader       ,
+                  let pTitle = post.userAuthor?.profile?.title                   ,
+                  let pBio = post.userAuthor?.profile?.bio                       ,
+                  let pLikes = post.userAuthor?.profile?.likes                   ,
+                  let pDislikes = post.userAuthor?.profile?.dislikes             ,
+                  let pAddress = post.userAuthor?.profile?.address               ,
+                  let pPublicEmail = post.userAuthor?.profile?.publicEmail       ,
+                  let pData = post.userAuthor?.profile?.data                     ,
+                  let pValor = post.userAuthor?.profile?.valor                   ,
+                  let pUsersID = post.userAuthor?.profile?.usersID               ,
+                  let pCountryID = post.userAuthor?.profile?.countryID           ,
+                  let pNivelID = post.userAuthor?.profile?.nivelID               ,
+                  let pSentimentalID = post.userAuthor?.profile?.sentimentalID   ,
+                  let pCreatedAt = post.userAuthor?.profile?.createdAt           ,
+                  let pUpdatedAt = post.userAuthor?.profile?.updatedAt
+                  /*let pStoryfeatured = post.userAuthor?.profile?.storyfeatured*/ else {
+                      return false
+                  }
+            
+            profileEntity.cd08_id               = Int64(pId)
+            profileEntity.cd08_day_of_birth     = pDayOfBirth
+            profileEntity.cd08_gender           = pGender
+            profileEntity.cd08_image            = pImage
+            profileEntity.cd08_image_header     = pImageHeader
+            profileEntity.cd08_title            = pTitle
+            profileEntity.cd08_bio              = pBio
+            profileEntity.cd08_likes            = pLikes
+            profileEntity.cd08_dislikes         = pDislikes
+            profileEntity.cd08_address          = pAddress
+            profileEntity.cd08_public_email     = pPublicEmail
+            profileEntity.cd08_data             = pData
+            profileEntity.cd08_valor            = pValor
+            profileEntity.cd08_users_id         = Int64(pUsersID)
+            profileEntity.cd08_country_id       = Int64(pCountryID)
+            profileEntity.cd08_nivel_id         = Int64(pNivelID)
+            profileEntity.cd08_sentimental_id   = Int64(pSentimentalID)
+            profileEntity.cd08_created_at       = pCreatedAt
+            profileEntity.cd08_updated_at       = pUpdatedAt
+            
+            userpostEntity.userAuthor?.cd01_profile = profileEntity
+            
+            
         } // End for Userpost
         
         // Saved
@@ -252,6 +323,12 @@ class HomeViewModel {
             return false
         }
     }
+    
+    
+    
+    
+    
+    
     
     func syncUsersPost(token: String, completion: @escaping () -> ()) {
         apiService.syncUsersPost(token: token) {(result) in
@@ -278,28 +355,20 @@ class HomeViewModel {
     
     func insertCoreDataToModel () {
         let entityPost = HomeViewModel.database.fetch(CD0011_posts.self)
-        let entityComment = HomeViewModel.database.fetch(CD0014_comments .self)
-        
-        for comment in entityComment {
-            print(comment.cd14_content ?? "" )
+        if entityPost.count > 0 {
+            for items in entityPost {
+                let viewModel = HomeFeedRenderViewModel(
+                    header      : PostRenderViewModel(renderType: .header(provider          : items)),
+                    post        : PostRenderViewModel(renderType: .primaryContent(provider  : items)),
+                    actions     : PostRenderViewModel(renderType: .actions(provider         : items)),
+                    descriptions: PostRenderViewModel(renderType: .descriptions(post        : items)),
+                    comments    : PostRenderViewModel(renderType: .comments(comments        : [items.comments!] )),
+                    footer      : PostRenderViewModel(renderType: .footer(footer            : items)))
+                self.models.append(viewModel)
+            }
+        } else {
+            print("Model Userpost => No hay datos...")
         }
-        
-        
-        
-        //Entity Comment
-        //print( entityComment.map{ $0.cd14_content ?? "" } )
-        
-        
-        /*for items in userpost {
-            let viewModel = HomeFeedRenderViewModel(
-                header      : PostRenderViewModel(renderType: .header(provider          : items)),
-                post        : PostRenderViewModel(renderType: .primaryContent(provider  : items)),
-                actions     : PostRenderViewModel(renderType: .actions(provider         : items)),
-                descriptions: PostRenderViewModel(renderType: .descriptions(post        : items)),
-                comments    : PostRenderViewModel(renderType: .comments(comments        : [items.comments!] )),
-                footer      : PostRenderViewModel(renderType: .footer(footer            : items)))
-            self.models.append(viewModel)
-        }*/
     }
         
         

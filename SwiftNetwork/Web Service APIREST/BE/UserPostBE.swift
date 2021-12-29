@@ -109,7 +109,7 @@ struct CommentServerModel: Codable {
     let idCount: Int?
     let createdAt, updatedAt: String?
     //let count: CountServerModel?
-    //let profile: ProfileServerModel?
+    let profile: ProfileServerModel?
 
     enum CodingKeys: String, CodingKey {
         case id, name, username, email
@@ -117,7 +117,8 @@ struct CommentServerModel: Codable {
         case idCount = "id_count"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
-        //case count, profile
+        //case count
+        case profile
     }
 }
 

@@ -90,10 +90,8 @@ class HomeViewController: UIViewController {
     
     
     func pruebaApiRest()  {
-        print(">_ pruebaApiRest")
         database.deleteAllRecords(object: cd0011_posts ?? [])
-        
-        print(">_ despues del borrado")
+        //print(">_ despues del borrado")
         guard let token = getUserToken()?.token else { return }
         viewModel.syncUsersPost(token: token) {
             //let userpost = self.database.fetch(CD0011_posts.self)
@@ -102,8 +100,6 @@ class HomeViewController: UIViewController {
                 ///print("Post Title => \(items.title ?? "")")
                 ///print(items.taggeds ?? [])
             ///}
-            ///
-            ///
             self.tableView.dataSource = self
             self.tableView.delegate = self
             DispatchQueue.main.async {
@@ -374,7 +370,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 switch model.header.renderType {
                 case .header(let user):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier, for: indexPath) as! IGFeedPostHeaderTableViewCell
-                    //cell.configure(with: user)
+                    cell.configure(with: user)
                     cell.delegate = self
                     return cell
                 case .comments, .actions, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
@@ -404,7 +400,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 switch model.descriptions.renderType {
                 case .descriptions(let post):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
-                    //cell.setCellWithValuesOf(post)
+                    cell.setCellWithValuesOf(post)
                     return cell
                 case .comments, .header, .primaryContent, .collections, .actions, .footer: return UITableViewCell()
                 }
@@ -418,6 +414,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                     //print( comments.count )
                     
                     //let arrayComments = self.database.fetch(CD0014_comments.self)
+                    
+                    //let cc = comments[indexPath.row]
+                    //print(cc)
         
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier, for: indexPath) as! IGFeedPostGeneralTableViewCell
                     //cell.configure(with: count)

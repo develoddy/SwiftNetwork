@@ -26,6 +26,8 @@ extension CD0001_users {
     @NSManaged public var cd01_username: String?
     @NSManaged public var cd01_name: String?
     @NSManaged public var cd01_id: Int64
+    
+    @NSManaged public var cd01_profile: CD0008_profiles?
 
 }
 

@@ -34,6 +34,7 @@ extension CD0011_posts {
     @NSManaged public var comments          : CD0014_comments?
     @NSManaged public var likes             : CD0013_likes?
     @NSManaged public var taggeds           : CD0023_taggeds?
+    @NSManaged public var userAuthor        : CD0001_users?
 
 }
 
@@ -57,6 +58,12 @@ extension CD0011_posts {
     @NSManaged public func addToTaggeds(_ value: CD0023_taggeds)
     @objc(removeTaggedsObject:)
     @NSManaged public func removeFromTaggeds(_ value: CD0023_taggeds)
+    
+    /// Add UserAuthor.
+    @objc(addUserAuthorObject:)
+    @NSManaged public func addToUserAuthor(_ value: CD0001_users)
+    @objc(removeUserAuthorObject:)
+    @NSManaged public func removeFromUserAuthor(_ value: CD0001_users)
 }
 
 

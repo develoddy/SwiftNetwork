@@ -8,6 +8,15 @@
 import  UIKit
 struct Constants {
     
+    struct  ApiRoutes {
+        static let login = "http://127.0.0.1:8000"
+        //static let login = "https://develoddy.com"
+    }
+    struct Spinner {
+        static let spinner = "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/spinner.gif"
+        //static let spinner = "https://develoddy.com/storage/app-new-publish/EddyLujan/images/spinner.gif";
+    }
+    
     struct SignUpAlertMessage {
         static let title = "Mensaje"
         static let mensaje = "Se ha detectado que algunos de los campos están vacío. Rellenadlos por favor."
@@ -32,10 +41,6 @@ struct Constants {
         static let titleAlert = "Sign Up"
         static let subTitleAlert = "User successfully registered"
         static let buttonOkAlert = "User successfully registered"
-    }
-    
-    struct  ApiRoutes {
-        static let login = "http://127.0.0.1:8000"
     }
     
     struct Method {
@@ -75,8 +80,6 @@ struct Constants {
         static let collections = "collections"
     }
     
-    struct Spinner {
-        static let spinner = "http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/spinner.gif"
-    }
+    
     
 }
