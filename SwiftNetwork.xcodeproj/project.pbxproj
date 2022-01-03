@@ -115,6 +115,10 @@
 		B3D9E8452698665D00F4A27D /* CustomSharedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D9E8442698665D00F4A27D /* CustomSharedCollectionViewCell.swift */; };
 		B3F432B9277CBCD00032A37D /* CD0008_profiles+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F432B7277CBCD00032A37D /* CD0008_profiles+CoreDataClass.swift */; };
 		B3F432BA277CBCD00032A37D /* CD0008_profiles+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F432B8277CBCD00032A37D /* CD0008_profiles+CoreDataProperties.swift */; };
+		B3F432BF277DA3E80032A37D /* CD0010_images+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F432BB277DA3E70032A37D /* CD0010_images+CoreDataClass.swift */; };
+		B3F432C0277DA3E80032A37D /* CD0010_images+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F432BC277DA3E70032A37D /* CD0010_images+CoreDataProperties.swift */; };
+		B3F432C1277DA3E80032A37D /* CD0012_post_images+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F432BD277DA3E70032A37D /* CD0012_post_images+CoreDataClass.swift */; };
+		B3F432C2277DA3E80032A37D /* CD0012_post_images+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F432BE277DA3E70032A37D /* CD0012_post_images+CoreDataProperties.swift */; };
 		B3F57BCE2668D69F00496B54 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F57BCD2668D69F00496B54 /* MenuViewController.swift */; };
 		B3F57BD32668DD1300496B54 /* TextFieldWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F57BD22668DD1300496B54 /* TextFieldWithPadding.swift */; };
 		B3F57BD82668DDC900496B54 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F57BD72668DDC900496B54 /* PaddingLabel.swift */; };
@@ -258,6 +262,10 @@
 		B3D9E8442698665D00F4A27D /* CustomSharedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSharedCollectionViewCell.swift; sourceTree = "<group>"; };
 		B3F432B7277CBCD00032A37D /* CD0008_profiles+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CD0008_profiles+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		B3F432B8277CBCD00032A37D /* CD0008_profiles+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CD0008_profiles+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		B3F432BB277DA3E70032A37D /* CD0010_images+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CD0010_images+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		B3F432BC277DA3E70032A37D /* CD0010_images+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CD0010_images+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		B3F432BD277DA3E70032A37D /* CD0012_post_images+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CD0012_post_images+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		B3F432BE277DA3E70032A37D /* CD0012_post_images+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CD0012_post_images+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		B3F57BCD2668D69F00496B54 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B3F57BD22668DD1300496B54 /* TextFieldWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithPadding.swift; sourceTree = "<group>"; };
 		B3F57BD72668DDC900496B54 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
@@ -472,6 +480,10 @@
 		B38EE609276477C20054BBA9 /* Core data */ = {
 			isa = PBXGroup;
 			children = (
+				B3F432BB277DA3E70032A37D /* CD0010_images+CoreDataClass.swift */,
+				B3F432BC277DA3E70032A37D /* CD0010_images+CoreDataProperties.swift */,
+				B3F432BD277DA3E70032A37D /* CD0012_post_images+CoreDataClass.swift */,
+				B3F432BE277DA3E70032A37D /* CD0012_post_images+CoreDataProperties.swift */,
 				B3F432B7277CBCD00032A37D /* CD0008_profiles+CoreDataClass.swift */,
 				B3F432B8277CBCD00032A37D /* CD0008_profiles+CoreDataProperties.swift */,
 				B3BAC2572771495100F01DE9 /* CD0023_taggeds+CoreDataClass.swift */,
@@ -1068,6 +1080,7 @@
 				B39A49C82626239900BE80DF /* PostViewController.swift in Sources */,
 				B39A49B82626236E00BE80DF /* ProfileViewController.swift in Sources */,
 				B39A49A72626232500BE80DF /* DatabaseManager.swift in Sources */,
+				B3F432C0277DA3E80032A37D /* CD0010_images+CoreDataProperties.swift in Sources */,
 				B39A4A542628383B00BE80DF /* ProfileTabsCollectionReusableView.swift in Sources */,
 				B3D9E83C2698556A00F4A27D /* SettingsLauncher.swift in Sources */,
 				B39A4A0626263A3A00BE80DF /* Alerts.swift in Sources */,
@@ -1088,11 +1101,13 @@
 				B39A4A4F262837DF00BE80DF /* ProfileInfoHeaderCollectionReusableView.swift in Sources */,
 				B33DE90A2767B5DA006A0C4C /* CD0025_post_types+CoreDataClass.swift in Sources */,
 				B39A49CB2626239900BE80DF /* SettingsViewController.swift in Sources */,
+				B3F432C1277DA3E80032A37D /* CD0012_post_images+CoreDataClass.swift in Sources */,
 				B33DE9412768D1D2006A0C4C /* CD0014_comments+CoreDataProperties.swift in Sources */,
 				B39A49CA2626239900BE80DF /* SearchResultViewController.swift in Sources */,
 				B39A49CE2626239900BE80DF /* PostEditorViewController.swift in Sources */,
 				B3F57BD82668DDC900496B54 /* PaddingLabel.swift in Sources */,
 				B3110EED262600F900354C25 /* SceneDelegate.swift in Sources */,
+				B3F432BF277DA3E80032A37D /* CD0010_images+CoreDataClass.swift in Sources */,
 				B35A1C77270DA41700F7667F /* StoryCollectionViewCell.swift in Sources */,
 				B39A4A6F262989ED00BE80DF /* UserFollowTableViewCell.swift in Sources */,
 				B39A4A2F262763F600BE80DF /* IGFeedPostHeaderTableViewCell.swift in Sources */,
@@ -1125,6 +1140,7 @@
 				B35E004A271D9FCF00F2A7FD /* DataModels.swift in Sources */,
 				B3939B20272AB91700D83C0B /* UserPostViewController.swift in Sources */,
 				B39A49D5262623A400BE80DF /* RegistrationViewController.swift in Sources */,
+				B3F432C2277DA3E80032A37D /* CD0012_post_images+CoreDataProperties.swift in Sources */,
 				B33DE9192767FBAA006A0C4C /* CD0001_users+CoreDataProperties.swift in Sources */,
 				B3BAC25A2771495100F01DE9 /* CD0023_taggeds+CoreDataProperties.swift in Sources */,
 				B3C243A3266655C200C2C866 /* MenuHeaderCollectionReusableView.swift in Sources */,

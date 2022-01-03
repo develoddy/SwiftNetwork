@@ -16,6 +16,120 @@ class HomeViewModel {
     
     static let database = DatabaseHandler.shared
     
+    //MARK: Sync data in Core Data.
+    func syncUsersPost(token: String, completion: @escaping () -> ()) {
+        apiService.syncUsersPost(token: token) {(result) in
+            switch result {
+            case .success(let model):
+                let insertCore = self.userpost(userpost: model)
+                if insertCore {
+                    self.insertCoreDataToModel()
+                } else {
+                    print("Datos NO insertado en core data post")
+                }
+                completion()
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion()
+            }
+        }
+    }
+    
+    //MARK: Insert data from core data in model [HomeFeedRenderViewModel]()
+    func insertCoreDataToModel () {
+        let entityPost = HomeViewModel.database.fetch(CD0011_posts.self)
+        if entityPost.count > 0 {
+            for items in entityPost {
+                let viewModel = HomeFeedRenderViewModel(
+                    header      : PostRenderViewModel(renderType: .header(provider          : items)),
+                    post        : PostRenderViewModel(renderType: .primaryContent(provider  : items)),
+                    actions     : PostRenderViewModel(renderType: .actions(provider         : items)),
+                    descriptions: PostRenderViewModel(renderType: .descriptions(post        : items)),
+                    comments    : PostRenderViewModel(renderType: .comments(comments        : [items.comments!] )),
+                    footer      : PostRenderViewModel(renderType: .footer(footer            : items)))
+                self.models.append(viewModel)
+            }
+        } else {
+            print("Model Userpost => No hay datos...")
+        }
+    }
+        
+    //MARK: Total number of sections.
+    /// - Retun count Int.
+    func numberOfSections() -> Int {
+        return models.count
+    }
+    
+    //MARK: Total rows in sections.
+    /// - Retun modell.count Int.
+    func numberOfRowsInSection(section: Int) -> Int {
+        let count = models.count != 0 ? models.count : 0
+        return count
+    }
+    
+    //MARK: Model [HomeFeedRenderViewModel]()
+    /// - Return model.
+    func cellForRowAt(indexPath: IndexPath) -> HomeFeedRenderViewModel {
+        return models[indexPath.row]
+    }
+    
+    //MARK: Get images from core data.
+    /// - Retun array de objeto.
+    func fetchPrimaryContent(post: CD0011_posts) -> [CD0010_images] {
+        var arrayImage = [CD0010_images]()
+        let entityPostImage = HomeViewModel.database.fetch(CD0012_post_images.self)
+        for itemPostImage in entityPostImage {
+            /// Se compara el id del post del id_post del entity (CD0012_post_images) con el id_post de CD0011_posts
+            /// - CD0012_post_images == CD0011_posts
+            if itemPostImage.cd12_post_id == post.id {
+                let entityImage = HomeViewModel.database.fetch(CD0010_images.self)
+                for itemImage in entityImage {
+                    /// Se compara el id_image del entity (CD0012_post_images) con el id del post de CD0010_images
+                    /// - CD0012_post_images == CD0010_images
+                    if itemPostImage.cd12_image_id == itemImage.cd10_id  {
+                        arrayImage.append(itemImage)
+                    }
+                }
+            }
+        }
+        return arrayImage
+    }
+    
+    //MARK: Get total coun Likes.
+    func countLikes(model: CD0011_posts?, like: CD0013_likes?) -> Int {
+        var countLikes = 0
+        let entityLikes = HomeViewModel.database.fetch(CD0013_likes.self)
+        for itemLikes in entityLikes {
+            if itemLikes.cd13_ref_id == model?.id {
+                countLikes = countLikes + 1
+            }
+        }
+        return countLikes
+    }
+    
+    //MARK: Get Total count Comments.
+    func countComments(model: CD0011_posts?, comment: CD0014_comments?) -> Int {
+        var count = 0
+        let entity = HomeViewModel.database.fetch(CD0014_comments.self)
+        for item in entity {
+            if item.cd14_ref_id == model?.id {
+                count = count + 1
+            }
+        }
+        return count
+    }
+    
+    func getUsername(post: CD0011_posts?) -> String? {
+        let username = post?.userAuthor?.cd01_username
+        return username
+    }
+    
+    
+    
+    
+    
+    
+    //MARK: Core data.
     func userpost(userpost: [UserpostServerModel]) -> Bool  {
         
         //MARK: Userpost
@@ -314,6 +428,61 @@ class HomeViewModel {
             userpostEntity.userAuthor?.cd01_profile = profileEntity
             
             
+            //MARK: - PostImage.
+            /// - Se irá guardando los datos en las propiedades del Entity del core data.
+            /// - Relationships:
+            ///     -   Images
+            
+            guard let postImage = post.postImage else { return false }
+            if postImage.count > 0 {
+                for item in postImage {
+                    guard let piPostId      = item.postID   ,
+                          let piImageId     = item.imageID  ,
+                          let piCreatedAt   = item.createdAt,
+                          let piUpdatedAt   = item.updatedAt,
+                          let piImage       = item.image    else {
+                        return false
+                    }
+                    
+                    guard let postimageEntity = HomeViewModel.database.add(CD0012_post_images.self) else { return false }
+                    postimageEntity.cd12_post_id    = Int64(piPostId)
+                    postimageEntity.cd12_image_id   = Int64(piImageId)
+                    postimageEntity.cd12_created_at = piCreatedAt
+                    postimageEntity.cd12_updated_at = piUpdatedAt
+                    
+                    guard let imageEntity   = HomeViewModel.database.add(CD0010_images.self) else { return false }
+                    guard let iId           = piImage.id        ,
+                          let iSrc          = piImage.src       ,
+                          let iTitle        = piImage.title     ,
+                          let iContent      = piImage.content   ,
+                          let iImageBin     = piImage.imageBin  ,
+                          let iAlbumId      = piImage.albumID   ,
+                          let iUserId       = piImage.usersID   ,
+                          let iNivelId      = piImage.usersID   ,
+                          let iCreatedAt    = piImage.createdAt ,
+                          let iUpdateAt     = piImage.updatedAt
+                    else { return false }
+                    
+                    imageEntity.cd10_id         = Int64(iId)
+                    imageEntity.cd10_src        = iSrc
+                    imageEntity.cd10_title      = iTitle
+                    imageEntity.cd10_content    = iContent
+                    imageEntity.cd10_image_bin  = iImageBin
+                    imageEntity.cd10_album_id   = Int64(iAlbumId)
+                    imageEntity.cd10_users_id   = Int64(iUserId)
+                    imageEntity.cd10_nivel_id   = Int64(iNivelId)
+                    imageEntity.cd10_created_at = iCreatedAt
+                    imageEntity.cd10_updated_at = iUpdateAt
+                    
+                    //postimageEntity.cd12_image = imageEntity /// To-One
+                    postimageEntity.addToCd12_image(imageEntity)
+                    
+                    userpostEntity.addToPostImage(postimageEntity) /// To-Many
+                }
+            } else {
+                print("> El objeto de [ Post Image ] está vacio !!! ")
+            }
+            
         } // End for Userpost
         
         // Saved
@@ -330,55 +499,11 @@ class HomeViewModel {
     
     
     
-    func syncUsersPost(token: String, completion: @escaping () -> ()) {
-        apiService.syncUsersPost(token: token) {(result) in
-            switch result {
-            case .success(let model):
-                ///model.forEach { $0.store() }
-                ///self.userpost(userpost: model) == true ? print("Post SI insertado en Core data post") :
-                let insertCore = self.userpost(userpost: model)
-                if insertCore {
-                    self.insertCoreDataToModel()
-                } else {
-                    print("Datos NO insertado en core data post")
-                }
-                completion()
-            case .failure(let error):
-                print(error.localizedDescription)
-                completion()
-            }
-        }
-    }
     
     
-    
-    
-    func insertCoreDataToModel () {
-        let entityPost = HomeViewModel.database.fetch(CD0011_posts.self)
-        if entityPost.count > 0 {
-            for items in entityPost {
-                let viewModel = HomeFeedRenderViewModel(
-                    header      : PostRenderViewModel(renderType: .header(provider          : items)),
-                    post        : PostRenderViewModel(renderType: .primaryContent(provider  : items)),
-                    actions     : PostRenderViewModel(renderType: .actions(provider         : items)),
-                    descriptions: PostRenderViewModel(renderType: .descriptions(post        : items)),
-                    comments    : PostRenderViewModel(renderType: .comments(comments        : [items.comments!] )),
-                    footer      : PostRenderViewModel(renderType: .footer(footer            : items)))
-                self.models.append(viewModel)
-            }
-        } else {
-            print("Model Userpost => No hay datos...")
-        }
-    }
-        
-        
-        
-        
-        
-        
-    ///Api Rest.
-    ///En esta función llamamos al Api rest para traes los datos de la DataBase,
-    ///Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
+///Api Rest.
+///En esta función llamamos al Api rest para traes los datos de la DataBase,
+///Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
 //    func fetchUserpostData(token: String, completion: @escaping () -> ()) {
 //        apiService.apiUserPost(token: token) {(result) in
 //            switch result {
@@ -401,23 +526,4 @@ class HomeViewModel {
 //            }
 //        }
 //    }
-    
-    
-    
-    func numberOfSections() -> Int {
-        return models.count
-    }
-    
-    func numberOfRowsInSection(section: Int) -> Int {
-        if models.count != 0 {
-            return models.count
-        }
-        return 0
-    }
-    
-    func cellForRowAt(indexPath: IndexPath) -> HomeFeedRenderViewModel {
-        return models[indexPath.row]
-    }
-    
-   
 }

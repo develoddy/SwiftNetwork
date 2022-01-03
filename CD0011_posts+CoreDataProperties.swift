@@ -31,39 +31,46 @@ extension CD0011_posts {
     @NSManaged public var start_at          : String?
     @NSManaged public var title             : String?
     @NSManaged public var updated_at        : String?
-    @NSManaged public var comments          : CD0014_comments?
-    @NSManaged public var likes             : CD0013_likes?
-    @NSManaged public var taggeds           : CD0023_taggeds?
-    @NSManaged public var userAuthor        : CD0001_users?
+    @NSManaged public var comments          : CD0014_comments?      ///To-Many
+    @NSManaged public var likes             : CD0013_likes?         ///To-Many
+    @NSManaged public var taggeds           : CD0023_taggeds?       ///To-Many
+    @NSManaged public var userAuthor        : CD0001_users?         ///To-One
+    @NSManaged public var postImage         : CD0012_post_images?   ///To-Many
 
 }
 
 // MARK: Generated accessors for comments
 extension CD0011_posts {
 
-    /// Add Comments.
+    /// Add Comments. To-Many.
     @objc(addCommentsObject:)
     @NSManaged public func addToComments(_ value: CD0014_comments)
     @objc(removeCommentsObject:)
     @NSManaged public func removeFromComments(_ value: CD0014_comments)
     
-    /// Add Likes.
+    /// Add Likes. To-Many.
     @objc(addLikesObject:)
     @NSManaged public func addToLikes(_ value: CD0013_likes)
     @objc(removeLikesObject:)
     @NSManaged public func removeFromLikes(_ value: CD0013_likes)
     
-    /// Add Taggeds.
+    /// Add Taggeds. To-Many.
     @objc(addTaggedsObject:)
     @NSManaged public func addToTaggeds(_ value: CD0023_taggeds)
     @objc(removeTaggedsObject:)
     @NSManaged public func removeFromTaggeds(_ value: CD0023_taggeds)
     
-    /// Add UserAuthor.
+    /// Add UserAuthor. To-One.
     @objc(addUserAuthorObject:)
     @NSManaged public func addToUserAuthor(_ value: CD0001_users)
     @objc(removeUserAuthorObject:)
     @NSManaged public func removeFromUserAuthor(_ value: CD0001_users)
+    
+    /// Add Post Image. To-Many.
+    @objc(addPostImageObject:)
+    @NSManaged public func addToPostImage(_ value: CD0012_post_images)
+    @objc(removePostImageObject:)
+    @NSManaged public func removeFromPostImage(_ value: CD0012_post_images)
 }
 
 

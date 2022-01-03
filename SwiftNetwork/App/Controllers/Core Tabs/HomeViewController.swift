@@ -367,40 +367,48 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             
             switch subSection {
             case 1:
+                // Header.
                 switch model.header.renderType {
                 case .header(let user):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier, for: indexPath) as! IGFeedPostHeaderTableViewCell
-                    cell.configure(with: user)
+                    cell.setCellWithValuesOf(with: user)
                     cell.delegate = self
                     return cell
                 case .comments, .actions, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
                 }
-                
+            
+            // Post.
             case 2:
                 switch model.post.renderType {
                 case .primaryContent(let post):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostTableViewCell.identifier,for: indexPath) as! IGFeedPostTableViewCell
-                    //cell.configure(with: post)
+                    let modelImage = viewModel.fetchPrimaryContent(post: post)
+                    cell.configure(image: modelImage)
                     return cell
                 case .comments, .actions, .header, .collections, .descriptions, .footer : return UITableViewCell()
                 }
                 
-            // Actions
+            // Actions.
             case 3:
                 switch model.actions.renderType {
                 case .actions(_/*let provider*/):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostActionsTableViewCell.identifier, for: indexPath) as! IGFeedPostActionsTableViewCell
-                    cell.delegate = self
+                    //cell.delegate = self
                     return cell
                 case .comments, .header, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
                 }
                 
-            // Description
+            // Description.
             case 4:
                 switch model.descriptions.renderType {
                 case .descriptions(let post):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
-                    cell.setCellWithValuesOf(post)
+                    
+                    let countLikes = viewModel.countLikes(model: post, like: post.likes)
+                    let countComments = viewModel.countComments(model: post, comment: post.comments)
+                    let username = viewModel.getUsername(post: post)
+                    
+                    cell.setCellWithValuesOf(countLikes: countLikes, countComments: countComments, username: username)
                     return cell
                 case .comments, .header, .primaryContent, .collections, .actions, .footer: return UITableViewCell()
                 }

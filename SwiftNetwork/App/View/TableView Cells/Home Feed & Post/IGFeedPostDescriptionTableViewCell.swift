@@ -128,21 +128,27 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
     
     // Setup userpost values
     //public func setCellWithValuesOf(_ model: Userpost) {
-    public func setCellWithValuesOf(_ model: CD0011_posts) {
+    //public func setCellWithValuesOf(_ model: CD0011_posts) {
+    public func setCellWithValuesOf(countLikes: Int, countComments: Int, username: String?) {
         ///updateUI(like: model.likes, comment: model.comments, username: model.userAuthor?.username, caption: model.content, image: model.userAuthor?.profile?.imageHeader)
-        updateUI(like: model.likes, comment: model.comments, username: "Pepito", caption: model.content, image: "")
+        //updateUI(model: model, like: model.likes, comment: model.comments, username: "Pepito", caption: model.content, image: "")
+        
+        updateUI(countLikes:countLikes, countComments:countComments, username:username, caption: "model.content", image: "")
     }
     
     // Update the UI Views
     //private func updateUI(like: [Like]?, comment: [Comment]?, username: String?, caption: String?, image: String? ) {
-    private func updateUI(like: CD0013_likes?, comment: CD0014_comments?, username: String?, caption: String?, image: String? ) {
-        /*let countLike = countLikes(like: like)
-        let countComment = countComments(comment: comment)
-        likeCount.text = "\(countLike) Me gusta"
-         
-        commentCount.setTitle("Ver los \(countComment) comentarios", for: .normal)
-        guard let username = username, let caption = caption else { return }
-         
+    //private func updateUI(model: CD0011_posts?, like: CD0013_likes?, comment: CD0014_comments?, username: String?, caption: String?, image: String? ) {
+    private func updateUI(countLikes: Int, countComments: Int, username: String?, caption: String?, image: String? ) {
+        
+        //let countLikes = countLikes(model: model, like: like)
+        //let countComments = countComments(model: model, comment: comment)
+        
+        likeCount.text = "\(countLikes) Me gusta"
+        commentCount.setTitle("Ver los \(countComments) comentarios", for: .normal)
+        //guard let username = username, let caption = caption else { return }
+        
+        /*
         let authorName = joinTextCaption(username: username, description: caption)
         descriptionLabel.attributedText = authorName
         guard let image = image else { return }
@@ -153,21 +159,15 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         descriptionLabel.attributedText = authorName
     }
     
-    // Likes count
-    func countLikes(like: [Like]?) -> Int {
-        guard let countLikes = like?.count else {
-            return 0
-        }
-        return countLikes
-    }
+   
     
-    // Comment count
-    func countComments(comment: [Comment]?) -> Int {
-        guard let countComment = comment?.count else {
-            return 0
-        }
-        return countComment
-    }
+    
+    
+    
+    
+    
+    
+    
     
     // Images likes
     func imagesLikes(imageName: String) {

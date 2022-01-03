@@ -37,7 +37,7 @@ class DatabaseHandler {
             return []
         }
     }
-    
+
     //MARK: Delete All Records
     func deleteAllRecords <T: NSManagedObject>(object: [T]) {
         guard let entityName = T.entity().name else { return }

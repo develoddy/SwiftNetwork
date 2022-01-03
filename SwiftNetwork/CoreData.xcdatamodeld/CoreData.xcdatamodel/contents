@@ -39,6 +39,19 @@
         <attribute name="cd08_valor" optional="YES" attributeType="String"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0001_users" inverseName="cd01_profile" inverseEntity="CD0001_users"/>
     </entity>
+    <entity name="CD0010_images" representedClassName="CD0010_images" syncable="YES">
+        <attribute name="cd10_album_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd10_content" optional="YES" attributeType="String"/>
+        <attribute name="cd10_created_at" optional="YES" attributeType="String"/>
+        <attribute name="cd10_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd10_image_bin" optional="YES" attributeType="String"/>
+        <attribute name="cd10_nivel_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd10_src" optional="YES" attributeType="String"/>
+        <attribute name="cd10_title" optional="YES" attributeType="String"/>
+        <attribute name="cd10_updated_at" optional="YES" attributeType="String"/>
+        <attribute name="cd10_users_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="postImages" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0012_post_images" inverseName="cd12_image" inverseEntity="CD0012_post_images"/>
+    </entity>
     <entity name="CD0011_posts" representedClassName="CD0011_posts" syncable="YES">
         <attribute name="author_ref_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="content" optional="YES" attributeType="String"/>
@@ -57,8 +70,17 @@
         <attribute name="updated_at" optional="YES" attributeType="String"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CD0014_comments" inverseName="post" inverseEntity="CD0014_comments"/>
         <relationship name="likes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CD0013_likes" inverseName="post" inverseEntity="CD0013_likes"/>
+        <relationship name="postImage" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CD0012_post_images" inverseName="post" inverseEntity="CD0012_post_images"/>
         <relationship name="taggeds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CD0023_taggeds" inverseName="post" inverseEntity="CD0023_taggeds"/>
         <relationship name="userAuthor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0001_users" inverseName="post" inverseEntity="CD0001_users"/>
+    </entity>
+    <entity name="CD0012_post_images" representedClassName="CD0012_post_images" syncable="YES">
+        <attribute name="cd12_created_at" optional="YES" attributeType="String"/>
+        <attribute name="cd12_image_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd12_post_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="cd12_updated_at" optional="YES" attributeType="String"/>
+        <relationship name="cd12_image" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CD0010_images" inverseName="postImages" inverseEntity="CD0010_images"/>
+        <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CD0011_posts" inverseName="postImage" inverseEntity="CD0011_posts"/>
     </entity>
     <entity name="CD0013_likes" representedClassName="CD0013_likes" syncable="YES">
         <attribute name="cd13_created_at" optional="YES" attributeType="String"/>
@@ -115,9 +137,11 @@
     <elements>
         <element name="CD0001_users" positionX="-1658.621948242188" positionY="-68.33670043945312" width="128" height="239"/>
         <element name="CD0008_profiles" positionX="-1458" positionY="-207" width="128" height="344"/>
-        <element name="CD0011_posts" positionX="-1135.710815429688" positionY="-357.3677978515625" width="128" height="314"/>
+        <element name="CD0011_posts" positionX="-1135.710815429688" positionY="-357.3677978515625" width="128" height="14"/>
         <element name="CD0013_likes" positionX="-831.1319580078125" positionY="-197.2683715820312" width="128" height="149"/>
         <element name="CD0014_comments" positionX="-1435.472106933594" positionY="-242.5951690673828" width="128" height="193"/>
         <element name="CD0023_taggeds" positionX="-1458" positionY="-207" width="128" height="449"/>
+        <element name="CD0012_post_images" positionX="-1458" positionY="-207" width="128" height="119"/>
+        <element name="CD0010_images" positionX="-1449" positionY="-198" width="128" height="194"/>
     </elements>
 </model>
