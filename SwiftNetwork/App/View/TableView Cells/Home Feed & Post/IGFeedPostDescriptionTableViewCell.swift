@@ -125,7 +125,7 @@ class IGFeedPostDescriptionTableViewCell: UITableViewCell {
         super.prepareForReuse()
     }
     
-    //Setup userpost values.
+    // Setup userpost values.
     public func setCellWithValuesOf(countLikes: Int, countComments: Int, username: String?, content: String?, image: String?) {
         updateUI(countLikes: countLikes         ,
                  countComments: countComments   ,

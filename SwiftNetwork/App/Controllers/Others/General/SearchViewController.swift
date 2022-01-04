@@ -203,9 +203,9 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     ///Selected photo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        let model = models[indexPath.row]
-        let vc = PostViewController(model: model)
-        vc.title = "Search"//model.postType.rawValue
-        navigationController?.pushViewController(vc, animated: true)
+        //let model = models[indexPath.row]
+        //let vc = PostViewController(model: model)
+        //vc.title = "Search"//model.postType.rawValue
+        //navigationController?.pushViewController(vc, animated: true)
     }
 }

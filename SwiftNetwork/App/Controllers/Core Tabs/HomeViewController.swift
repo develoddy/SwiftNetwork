@@ -59,13 +59,9 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    
-    
-    
     let database = DatabaseHandler.shared
-    
-    
-    // MARK: - viewDidLoad()
+
+    // MARK: viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -123,7 +119,7 @@ class HomeViewController: UIViewController {
         }
     }*/
         
-    ///viewDidLayoutSubviews
+    // viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = tableView.frame.inset(by: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
@@ -131,16 +127,15 @@ class HomeViewController: UIViewController {
     }
     
 
-    ///Inicio del programa.
-    ///Setupview
+    // Setupview
     private func setupView() {
         view.backgroundColor = .systemBackground
         tableView.backgroundColor = .systemBackground
         view.addSubview(tableView)
     }
 
-    ///Spinner
-    ///Muestra el spiner mientras los datos de van cargando...
+    // Spinner
+    // Muestra el spiner mientras los datos de van cargando...
     private func setupSpinner() -> UIActivityIndicatorView {
         let spinerView = SpinnerView.shared.setupSpinner()
         spinerView.center = view.center
@@ -156,13 +151,13 @@ class HomeViewController: UIViewController {
         showSpinner()
     }
     
-    ///Spinner
-    ///Muestra el spiner mientras los datos de van cargando...
+    // Spinner
+    // Muestra el spiner mientras los datos de van cargando...
     private func showSpinner() {
         CustomLoader.instance.showLoader()
     }
     
-    ///Token
+    // Obtenemos el Token de la App.
     public func getUserToken() -> ResponseTokenBE? {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         guard let token = appDelegate.objUsuarioSesion else {
@@ -171,12 +166,12 @@ class HomeViewController: UIViewController {
         return token
     }
     
-    ///Creamos el Header en el ViewController.
+    // Creamos el Header en el ViewController.
     private func headerTableView() {
         tableView.tableHeaderView = createTableHeaderView()
     }
     
-    ///Configuramos y registramos los TableViews
+    // Configuramos y registramos los TableViews
     private func configureTableView() {
         ///tableView.register(CollectionTableViewCell.self, forCellReuseIdentifier: CollectionTableViewCell.identifier)
         tableView.register(IGFeedPostTableViewCell.self, forCellReuseIdentifier: IGFeedPostTableViewCell.identifier)
@@ -188,16 +183,14 @@ class HomeViewController: UIViewController {
         tableView.separatorStyle = .none
     }
     
-    ///Configuramos los delegates de ambas tables view
-    ///Tableview
-    ///TableMenuView
+    // Configuramos los delegates de ambas tables view
     private func delegateTableMenuView() {
         tableMenuView.delegate = self
         tableMenuView.delegate = self
     }
     
-    ///Creamos StoryCollections
-    ///Boton se crear historia.
+    // Creamos StoryCollections
+    // Boton se crear historia.
     func createStoryCollections() -> [CollectionTableCellModel] {
         var collections = [CollectionTableCellModel]()
         let data = CollectionTableCellModel(title: "eddy", imageName: "eddy")
@@ -205,7 +198,7 @@ class HomeViewController: UIViewController {
         return collections
     }
     
-    ///Resto de collections.
+    // Resto de collections.
     func createArrayCollections() -> [CollectionTableCellModel] {
         var collections = [CollectionTableCellModel]()
         let username = ["eddylujann", "jordann", "paola","rebeca", "jeremy", "lucas"]
@@ -216,15 +209,15 @@ class HomeViewController: UIViewController {
         return collections
     }
     
-    ///Navegacion bar items
-    ///Left & Right.
+    // Navegacion bar items
+    // Left & Right.
     private func setupNavigationBarItems() {
         setupLeftNavItems()
         setupRightNavItems()
         ///setupRemaningNavItems()
     }
     
-    ///Creamos el separador al final de cada post.
+    // Creamos el separador al final de cada post.
     private func separator(cell: IGFeedPostFooterTableViewCell) {
         let separatorView: UIView = {
             let view = UIView()
@@ -241,7 +234,7 @@ class HomeViewController: UIViewController {
             separatorView.bottomAnchor.constraint(equalTo:cell.bottomAnchor)])
     }
     
-    ///Button de  crear un nuevo post.
+    // Button de  crear un nuevo post.
     @objc private func didTapWritePostButton() {
         let vc = PublishPostViewController()
         vc.title = "Create Post"
@@ -316,57 +309,37 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         return headerView
     }
     
-    ///Count models
+    // Count models
     func numberOfSections(in tableView: UITableView) -> Int {
-        //return models.count * 7
         return viewModel.numberOfSections() * 7
     }
     
-    ///Sections
+    // Sections
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = section
         let boxes = 7
-        
-        //if count == 0 { ///Pinta el collection de imagenes
-          //  model = models[count]
-            //return 1
-        //} else { /// Pinta el resto de contenido del post (hader, posts, actions, comments y footer)
-            //let position = count % boxes == 0 ? count / boxes : ((count - (count % boxes)) / boxes)
-            //model = models[position]
-            let subSection = count % boxes
-            switch subSection {
-                case 1:  return 1 /// Header
-                case 2:  return 1 /// Post
-                case 3:  return 1 /// Actions
-                case 4:  return 1 /// Description
-                case 5:  return 1 /// Comments
-                case 6:  return 1 /// Footer
-                default:  return 0
-            }
-        //}
+        let subSection = count % boxes
+        switch subSection {
+            case 1:  return 1 /// Header
+            case 2:  return 1 /// Post
+            case 3:  return 1 /// Actions
+            case 4:  return 1 /// Description
+            case 5:  return 1 /// Comments
+            case 6:  return 1 /// Footer
+            default:  return 0
+        }
     }
     
-    ///TablesView
+    // TableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model: HomeFeedRenderViewModel
         let count = indexPath.section
         let boxes = 7
-        //if count == 0 { /// Collections
-          //  model = models[0]
-            //switch model.collections.renderType {
-            //case .collections(let collections, let createStory):
-              //  let cell = tableView.dequeueReusableCell(withIdentifier: CollectionTableViewCell.identifier, for: indexPath) as! CollectionTableViewCell
-                    //cell.configure(with: collections, with: createStory)
-                    //cell.delegate = self
-                //return cell
-            //case .comments, .actions, .primaryContent, .header, .descriptions, .footer : return UITableViewCell() }
-        //} else {
-            let position = count % boxes == boxes ? count/boxes : ((count - (count % boxes)) / boxes)
-            model = viewModel.models[position]
-            let subSection = count % boxes
+        let position = count % boxes == boxes ? count/boxes : ((count - (count % boxes)) / boxes)
+        model = viewModel.models[position]
+        let subSection = count % boxes
             
-            switch subSection {
-                
+        switch subSection {
             // HEADER
             case 1:
                 switch model.header.renderType {
@@ -414,7 +387,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 case .comments, .header, .primaryContent, .collections, .actions, .footer: return UITableViewCell()
                 }
                 
-            // COMMETS
+            // COMMENTS
             case 5:
                 switch model.comments.renderType {
                 case .comments(_):
@@ -438,13 +411,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 
             default: print("error en subSection")
-            }
-            return UITableViewCell()
-        //}
-        
+        }
+        return UITableViewCell()
     }
     
-    ///Did select
+    // DID SELECT ROW
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let boxes = 7
@@ -452,20 +423,19 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let position = count % boxes == boxes ? count/boxes : ((count - (count % boxes)) / boxes)
         let model = viewModel.models[position]
         let render = model.post.renderType
-        
         let subSection = count % boxes
+        
         switch subSection {
-        ///Sub section header
         case 1:
             switch render {
-            //case .primaryContent(let userpost):
-//                guard let email = userpost.userAuthor?.email,
-//                      let name = userpost.userAuthor?.name else {
-//                    return
-//                }
-//                let vc = UserPostViewController(email: email, token: getUserToken()?.token ?? "")
-//                vc.title = name
-//                navigationController?.pushViewController(vc, animated: true)
+            case .primaryContent(let post):
+                guard let email = post.userAuthor?.cd01_email,
+                      let name = post.userAuthor?.cd01_name else {
+                          return
+                      }
+                let vc = UserPostViewController(author_ref_id: Int(post.author_ref_id), email: email, token: getUserToken()?.token ?? "")
+                vc.title = name
+                navigationController?.pushViewController(vc, animated: true)
             default:
                 print("Error...")
             }

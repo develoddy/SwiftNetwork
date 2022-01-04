@@ -201,15 +201,15 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
 
 extension NotificationsViewController: NotificationLikeEventTableViewCellDelegate {
     func didTapRelatedPostButton(model: UserNotification) {
-        switch model.type {
-        case .like(let post):
-            let vc = PostViewController(model: post)
-            vc.title = "Notificaciones"
-            vc.navigationItem.largeTitleDisplayMode = .never
-            navigationController?.pushViewController(vc, animated: true)
-        case .follow(_):
-            fatalError("Dev Issue: Should never get called")
-        }
+//        switch model.type {
+//        case .like(let post):
+//            let vc = PostViewController(model: post)
+//            vc.title = "Notificaciones"
+//            vc.navigationItem.largeTitleDisplayMode = .never
+//            navigationController?.pushViewController(vc, animated: true)
+//        case .follow(_):
+//            fatalError("Dev Issue: Should never get called")
+//        }
     }
 }
 

@@ -216,7 +216,7 @@ extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,for: indexPath) as! ProfileInfoHeaderCollectionReusableView
                 if self.user != nil {
                     guard let user = self.user else { return UICollectionReusableView() }
-                    header.configureProfile(with: user)
+                    //header.configureProfile(with: user)
                     header.delegate = self
                 }
                 return header
@@ -248,12 +248,12 @@ extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSo
     ///Select o click on photo
     ///Se empuja al PostViewController
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
-        let model = models[indexPath.row]
-        let vc = PostViewController(model: model)
-        vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
-        vc.title = "Posts"
+//        collectionView.deselectItem(at: indexPath, animated: true)
+//        let model = models[indexPath.row]
+//        let vc = PostViewController(model: model)
+//        vc.navigationItem.largeTitleDisplayMode = .never
+//        navigationController?.pushViewController(vc, animated: true)
+//        vc.title = "Posts"
     }
 }
 

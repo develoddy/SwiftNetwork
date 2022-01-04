@@ -139,8 +139,6 @@ class HomeViewModel {
     
     
     
-    
-    
     //MARK: Core data.
     func userpost(userpost: [UserpostServerModel]) -> Bool  {
         

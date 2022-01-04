@@ -10,24 +10,21 @@ import CoreData
 
 class UserPostViewController: UIViewController {
     
-    
-    
-    
     let collectionViewTwo = ProfileCollectionsViews.collectionViewTwo()
     
     var cellHeader : UICollectionReusableView?
     
     private var viewModel = UserPostViewModel()
     
-    //let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
     //Core data
-    var managedObjects = [NSManagedObject]()
+    //var managedObjects = [NSManagedObject]()
     
     //MARK: - Init
-    init(email: String, token: String) {
+    init(author_ref_id:Int, email: String, token: String) {
+        print("UserPost: \(author_ref_id) - \(email)")
         super.init(nibName: nil, bundle: nil)
-        loadUserpostData(email: email, token: token)
+        //loadUserpostData(email: email, token: token)
+        fetchUserPost(author_ref_id: author_ref_id, email: email, token: token)
     }
     
     required init?(coder: NSCoder) {
@@ -40,14 +37,12 @@ class UserPostViewController: UIViewController {
         setupView()
         configureHeader()
         configureCollectionViewTwo()
-        configureSpinner()
+        //configureSpinner()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.collectionViewTwo.frame = view.bounds
-        
-        
     }
     
     private func setupView() {
@@ -55,22 +50,24 @@ class UserPostViewController: UIViewController {
     }
     
     ///Configure spinner
-    private func configureSpinner() {
-        CustomLoader.instance.viewColor = UIColor.systemBackground
-        CustomLoader.instance.setAlpha = 0.8
-        CustomLoader.instance.gifName = Constants.Spinner.spinner
-        showSpinner()
-    }
+//    private func configureSpinner() {
+//        CustomLoader.instance.viewColor = UIColor.systemBackground
+//        CustomLoader.instance.setAlpha = 0.8
+//        CustomLoader.instance.gifName = Constants.Spinner.spinner
+//        showSpinner()
+//    }
     
     ///Spinner
     ///Muestra el spiner mientras los datos de van cargando...
-    private func showSpinner() {
-        CustomLoader.instance.showLoader()
-    }
+//    private func showSpinner() {
+//        CustomLoader.instance.showLoader()
+//    }
     
-    ///Load data.
+    
+    
+    
     ///Llamamos al viewModel para traer los datos.
-    private func loadUserpostData(email:String, token: String) {
+    /*private func loadUserpostData(email:String, token: String) {
         viewModel.fetchUserpostData(email: email, token: token) { ( result ) in
             switch result {
             case .success(_/*let model*/):
@@ -84,8 +81,24 @@ class UserPostViewController: UIViewController {
                 print(error.localizedDescription)
             }
         }
-    }
+    }*/
     
+    
+    func fetchUserPost(author_ref_id: Int, email:String, token: String)  {
+        viewModel.fetchUserPostData(author_ref_id: author_ref_id, email: email) { (result) in
+            switch result {
+            case .success(_):
+                self.collectionViewTwo.delegate = self
+                self.collectionViewTwo.dataSource = self
+                //DispatchQueue.main.async {
+                  //  CustomLoader.instance.hideLoader()
+                    //self.collectionViewTwo.reloadData()
+                //}
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
     
     private func configureHeader() {
         collectionViewTwo.register(StoryFeaturedCollectionTableViewCell.self,forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,withReuseIdentifier: StoryFeaturedCollectionTableViewCell.identifier)
@@ -114,28 +127,25 @@ class UserPostViewController: UIViewController {
 extension UserPostViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        //return viewModel.numberOfSections()
-        return 3
+        return viewModel.numberOfSections()
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return 0 ///Heade
+            return 0 ///Header
         }
         if section == 1 {
-            return 0 ///Heade
+            return 0 ///Header
         }
-        //return viewModel.numberOfRowsInSection(section: section) //models.count ///Collections photos
-        return managedObjects.count
+        return viewModel.numberOfRowsInSection(section: section)
+   
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        //let model = viewModel.cellForRowAt(indexPath: indexPath) //models[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
-        
-        ///let userpost = model.value(forKey: "id") as? Int
-        let model = managedObjects[indexPath.row]
-        cell.configure(with: model)
+        let model = viewModel.cellForRowAt(indexPath: indexPath)
+        let postImages = viewModel.fetchPostImageData(post: model)
+        cell.setCellWithValuesOf(with: postImages)
         return cell
     }
     
@@ -151,17 +161,11 @@ extension UserPostViewController: UICollectionViewDelegate, UICollectionViewData
         guard kind == UICollectionView.elementKindSectionHeader else { return UICollectionReusableView() }
         switch indexPath.section {
             case 0:
-                let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,for: indexPath) as! ProfileInfoHeaderCollectionReusableView
-                if self.viewModel.user != nil {
-                    guard let user = self.viewModel.user else { return UICollectionReusableView() }
-                    if self.viewModel.user?.email == self.getUserToken()?.usertoken?.email {
-                        header.configureProfile(with: user)
-                        header.delegate = self
-                    } else {
-                        header.configureUser(with: user)
-                        header.delegate = self
-                    }
-                }
+                let header = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: kind,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,
+                    for: indexPath) as! ProfileInfoHeaderCollectionReusableView
+                let model = viewModel.cellForRowAt(indexPath: indexPath)
+                header.configureProfile(with: model)
                 return header
             case 1:
                 let storyHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: StoryFeaturedCollectionTableViewCell.identifier,for: indexPath) as! StoryFeaturedCollectionTableViewCell
@@ -179,20 +183,20 @@ extension UserPostViewController: UICollectionViewDelegate, UICollectionViewData
     
    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if section == 0 { ///Header
+        if section == 0 { // Header
             return CGSize(width: collectionView.width, height: collectionView.height/2.5)
         }
-        if section == 1 { ///Story
+        if section == 1 { // Story
             return CGSize(width: collectionView.width, height: 90)
         }
-        return CGSize(width: collectionView.width, height: 50) ///Tabs
+        return CGSize(width: collectionView.width, height: 50) // Tabs
     }
     
     ///Select o click on photo
     ///Se empuja al PostViewController
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        let model = viewModel.cellForRowAt(indexPath: indexPath) //models[indexPath.row]
+        let model = viewModel.cellForRowAt(indexPath: indexPath)
         let vc = PostViewController(model: model)
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)

@@ -75,19 +75,17 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         label.text = nil
     }
     
-    //public func configure(with model: Userpost) {
-    public func configure(with model: NSManagedObject) {
-        /* http://127.0.0.1:8000/storage/app-new-publish/EddyLujan/images/eddy01.jpeg */
-        
-        /*let id = model.value(forKey: "id") as? Int
-        let content = model.value(forKey: "content") as? String
-        print("Photocollectionviewcell:::::: ID ")
-        print(id)
-        print("Photocollectionviewcell:::::: CONTENT ")
-        print(content)*/
-        
-        //guard let url = model.postImage?[0].image?.src else { return }
-        //photoImageView.sd_setImage(with: URL(string: url), completed: nil)
+    // Setup userpost values.
+    public func setCellWithValuesOf(with images:  [CD0010_images]) {
+        updateUI(with: images[0].cd10_src)
+    }
+    
+    //Update the UI Views.
+    private func updateUI(with src: String?) {
+        guard let src = src else {
+            return
+        }
+        photoImageView.sd_setImage(with: URL(string: src), completed: nil)
     }
 }
 

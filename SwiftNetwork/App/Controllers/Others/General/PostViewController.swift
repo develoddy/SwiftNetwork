@@ -48,9 +48,8 @@ struct PostRenderViewModel {
 
 class PostViewController: UIViewController {
     
-    //let itemArray = [Userpost]()
-    
-    private var model: Userpost?
+    //private var model: Userpost?
+    private var model: CD0011_posts?
     
     private var renderModels = [PostRenderViewModel]()
     
@@ -122,7 +121,7 @@ class PostViewController: UIViewController {
     
     
     // MARK: - Init Receive data from the ProfileViewcontroller
-    init(model: Userpost?) {
+    init(model: CD0011_posts?) {
         self.model = model
         super.init(nibName: nil, bundle: nil)
         
@@ -157,15 +156,24 @@ class PostViewController: UIViewController {
     
     ///Models
     ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
-    private func setupModel(with model: Userpost ) {
+    private func setupModel(with model: CD0011_posts ) {
         //guard let ownew = model.userAuthor else { return }
-        guard let comments = model.comments else { return }
+        //guard let comments = model.comments else { return }
 //        renderModels.append(PostRenderViewModel(renderType: .header(provider: model)))
 //        renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: model)))
 //        renderModels.append(PostRenderViewModel(renderType: .actions(provider: model)))
 //        renderModels.append(PostRenderViewModel(renderType: .descriptions(post: model)))
 //        renderModels.append(PostRenderViewModel(renderType: .comments(comments: comments)))
 //        renderModels.append(PostRenderViewModel(renderType: .footer(footer: model)))
+        
+        guard let comments = model.comments else { return }
+        renderModels.append(PostRenderViewModel(renderType: .header(provider: model)))
+        renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: model)))
+        renderModels.append(PostRenderViewModel(renderType: .actions(provider: model)))
+        renderModels.append(PostRenderViewModel(renderType: .descriptions(post: model)))
+        renderModels.append(PostRenderViewModel(renderType: .comments(comments: [comments] )))
+        renderModels.append(PostRenderViewModel(renderType: .footer(footer: model)))
+        
     }
     
     private func setupView() {
@@ -231,6 +239,11 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         case .primaryContent(let post):
             let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostTableViewCell.identifier, for: indexPath) as! IGFeedPostTableViewCell
             //cell.configure(with: post)
+            print("POSTViewController.........")
+            //print(post.postImage)
+            //fetchPostImageData
+            let images = viewModel.fetchPostImageData(post: post)
+            cell.configure(image: images)
             return cell
         case .header(let post):
               let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier,for: indexPath) as! IGFeedPostHeaderTableViewCell
@@ -383,23 +396,20 @@ extension PostViewController {
         //NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification),name: UIResponder.keyboardWillShowNotification, object: nil)
         //NotificationCenter.default.removeObserver(self) // Remove from all notifications being observed
         
-        
-        
-        
-        guard let idpost = model?.id else { return}
-        guard let token = getUserToken()?.token else { return }
-        var caption = Caption()
-        caption.content = self.captionTextField.text
-    
-        APIService.shared.apiPostCaptionUpdate(caption: caption, idpost: idpost, token: token) {( result ) in
-            switch result {
-            case .success(let message):
-                print(message)
-                self.saveData()
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+//        guard let idpost = model?.id else { return}
+//        guard let token = getUserToken()?.token else { return }
+//        var caption = Caption()
+//        caption.content = self.captionTextField.text
+//    
+//        APIService.shared.apiPostCaptionUpdate(caption: caption, idpost: idpost, token: token) {( result ) in
+//            switch result {
+//            case .success(let message):
+//                print(message)
+//                self.saveData()
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
     }
     
     //MARK: Save Context

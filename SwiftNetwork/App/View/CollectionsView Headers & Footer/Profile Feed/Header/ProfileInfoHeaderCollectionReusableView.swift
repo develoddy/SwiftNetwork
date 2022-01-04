@@ -290,10 +290,11 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     }
     
     ///Configure
-    public func configureProfile(with model: User) {
-        guard let image = model.profile?.imageHeader,
-              let username = model.username,
-              let bio = model.profile?.bio else {
+    //public func configureProfile(with model: User) {
+    public func configureProfile(with model: CD0011_posts) {
+        guard let image = model.userAuthor?.cd01_profile?.cd08_image_header,
+              let username = model.userAuthor?.cd01_username,
+              let bio = model.userAuthor?.cd01_profile?.cd08_bio else {
             return
         }
         profilePhotoImageView.sd_setImage(with: URL(string: image), completed: nil)
@@ -301,14 +302,14 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
         biographyLabel.setTitle(bio, for: .normal)
         
         ///Buttons Post - Follower - Following.
-        guard let posts = model.count?.posts,
+        /*guard let posts = model.count?.posts,
               let follower = model.count?.followers,
               let following = model.count?.following else {
             return
         }
         addTextOnPostButton(posts: posts)
         addTextOnFollowersButton(follower: follower)
-        addTextOnFollowingButton(following: following)
+        addTextOnFollowingButton(following: following)*/
         
         layoutsProfile()
     }

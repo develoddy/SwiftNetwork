@@ -60,7 +60,6 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        contentView.backgroundColor = .systemBackground
         contentView.addSubview(profilePhotoImageView)
         contentView.addSubview(boxTextButton)
         contentView.addSubview(postButton)
@@ -76,21 +75,24 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
         super.layoutSubviews()
         
         let size = contentView.height
-        profilePhotoImageView.frame = CGRect(x      : 5 ,
-                                             y      : 5 ,
-                                             width  : 40,
-                                             height : 40)
+        profilePhotoImageView.frame = CGRect(
+            x      : 5 ,
+            y      : 5 ,
+            width  : 40,
+            height : 40)
         profilePhotoImageView.layer.cornerRadius = size/3
         
-        boxTextButton.frame = CGRect(x      : profilePhotoImageView.right+5                         ,
-                                     y      : 0                                                     ,
-                                     width  : contentView.width-size-profilePhotoImageView.width-20 ,
-                                     height : contentView.height                                    )
+        boxTextButton.frame = CGRect(
+            x      : profilePhotoImageView.right+5                         ,
+            y      : 0                                                     ,
+            width  : contentView.width-size-profilePhotoImageView.width-20 ,
+            height : contentView.height                                    )
         
-        postButton.frame = CGRect(x     : contentView.width-5-size  ,
-                                  y     : 0                         ,
-                                  width : size                      ,
-                                  height: size                      )
+        postButton.frame = CGRect(
+            x     : contentView.width-5-size  ,
+            y     : 0                         ,
+            width : size                      ,
+            height: size                      )
     }
     
     override func prepareForReuse() {
