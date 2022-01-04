@@ -7,7 +7,7 @@
 
 import Foundation
 
-//MARK: - UserpostViewModel
+//MARK:  UserpostViewModel
 class HomeViewModel {
     
     private var apiService = APIService()
@@ -119,11 +119,23 @@ class HomeViewModel {
         return count
     }
     
+    //MARK: Get username - userpost.
     func getUsername(post: CD0011_posts?) -> String? {
         let username = post?.userAuthor?.cd01_username
         return username
     }
     
+    //MARK: Get content - userpost.
+    func getContent(post: CD0011_posts?) -> String? {
+        let content = post?.content
+        return content
+    }
+    
+    //MARK: get image header.
+    func getImageHeader(post: CD0011_posts?) -> String? {
+        let imageHeader =  post?.userAuthor?.cd01_profile?.cd08_image_header
+        return imageHeader
+    }
     
     
     

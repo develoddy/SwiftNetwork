@@ -137,11 +137,11 @@
     <elements>
         <element name="CD0001_users" positionX="-1658.621948242188" positionY="-68.33670043945312" width="128" height="239"/>
         <element name="CD0008_profiles" positionX="-1458" positionY="-207" width="128" height="344"/>
+        <element name="CD0010_images" positionX="-1449" positionY="-198" width="128" height="194"/>
         <element name="CD0011_posts" positionX="-1135.710815429688" positionY="-357.3677978515625" width="128" height="14"/>
+        <element name="CD0012_post_images" positionX="-1458" positionY="-207" width="128" height="119"/>
         <element name="CD0013_likes" positionX="-831.1319580078125" positionY="-197.2683715820312" width="128" height="149"/>
         <element name="CD0014_comments" positionX="-1435.472106933594" positionY="-242.5951690673828" width="128" height="193"/>
         <element name="CD0023_taggeds" positionX="-1458" positionY="-207" width="128" height="449"/>
-        <element name="CD0012_post_images" positionX="-1458" positionY="-207" width="128" height="119"/>
-        <element name="CD0010_images" positionX="-1449" positionY="-198" width="128" height="194"/>
     </elements>
 </model>

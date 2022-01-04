@@ -2,7 +2,7 @@
 //  CD0011_posts+CoreDataClass.swift
 //  SwiftNetwork
 //
-//  Created by Eddy Donald Chinchay Lujan on 14/12/21.
+//  Created by Eddy Donald Chinchay Lujan on 4/1/22.
 //
 //
 

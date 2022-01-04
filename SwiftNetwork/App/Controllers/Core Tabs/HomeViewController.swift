@@ -366,8 +366,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             let subSection = count % boxes
             
             switch subSection {
+                
+            // HEADER
             case 1:
-                // Header.
                 switch model.header.renderType {
                 case .header(let user):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier, for: indexPath) as! IGFeedPostHeaderTableViewCell
@@ -377,7 +378,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 case .comments, .actions, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
                 }
             
-            // Post.
+            // POST
             case 2:
                 switch model.post.renderType {
                 case .primaryContent(let post):
@@ -388,55 +389,48 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 case .comments, .actions, .header, .collections, .descriptions, .footer : return UITableViewCell()
                 }
                 
-            // Actions.
+            // ACTION
             case 3:
                 switch model.actions.renderType {
                 case .actions(_/*let provider*/):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostActionsTableViewCell.identifier, for: indexPath) as! IGFeedPostActionsTableViewCell
-                    //cell.delegate = self
+                    cell.delegate = self
                     return cell
                 case .comments, .header, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
                 }
                 
-            // Description.
+            // DESCRIPTION
             case 4:
                 switch model.descriptions.renderType {
                 case .descriptions(let post):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
-                    
-                    let countLikes = viewModel.countLikes(model: post, like: post.likes)
-                    let countComments = viewModel.countComments(model: post, comment: post.comments)
-                    let username = viewModel.getUsername(post: post)
-                    
-                    cell.setCellWithValuesOf(countLikes: countLikes, countComments: countComments, username: username)
+                    let countLikes      = viewModel.countLikes(model: post, like: post.likes)
+                    let countComments   = viewModel.countComments(model: post, comment: post.comments)
+                    let username        = viewModel.getUsername(post: post)
+                    let content         = viewModel.getContent(post: post)
+                    let imageHeader     = viewModel.getImageHeader(post: post)
+                    cell.setCellWithValuesOf(countLikes: countLikes, countComments: countComments, username: username, content: content, image: imageHeader)
                     return cell
                 case .comments, .header, .primaryContent, .collections, .actions, .footer: return UITableViewCell()
                 }
                 
-            // Comments
+            // COMMETS
             case 5:
                 switch model.comments.renderType {
-                case .comments(let comments):
-                    //let count = comments.count
-                    //let entityComments = HomeViewModel.database.fetch(CD0014_comments.self)
-                    //print( comments.count )
-                    
-                    //let arrayComments = self.database.fetch(CD0014_comments.self)
-                    
-                    //let cc = comments[indexPath.row]
-                    //print(cc)
-        
+                case .comments(_):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier, for: indexPath) as! IGFeedPostGeneralTableViewCell
-                    //cell.configure(with: count)
+                    cell.setCellWithValuesOf()
                     return cell
                 case .header, .actions, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
                 }
             
+            // FOOTER
             case 6:
                 switch model.footer.renderType {
                 case .footer(let footer):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostFooterTableViewCell.identifier, for: indexPath) as! IGFeedPostFooterTableViewCell
-                    //cell.configure(with: footer)
+                    let imageHeader = viewModel.getImageHeader(post: footer)
+                    cell.setCellWithValuesOf(image: imageHeader)
                     cell.delegate = self
                     self.separator(cell: cell)
                     return cell
@@ -451,8 +445,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     ///Did select
-    
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let boxes = 7
