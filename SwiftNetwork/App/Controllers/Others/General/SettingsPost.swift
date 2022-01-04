@@ -30,7 +30,8 @@ class SettingsPost: NSObject {
     
     var caption = ""
     
-    var model: Userpost?
+    //var model: Userpost?
+    var model: CD0011_posts?
     
     var postController: PostViewController?
     
@@ -64,7 +65,8 @@ class SettingsPost: NSObject {
     }
     
     /// Settings
-    func showSettings(post: Userpost) {
+    //func showSettings(post: Userpost) {
+    func showSettings(post: CD0011_posts) {
         let windows = UIApplication.shared.connectedScenes
                 .filter({$0.activationState == .foregroundActive})
                 .map({$0 as? UIWindowScene})

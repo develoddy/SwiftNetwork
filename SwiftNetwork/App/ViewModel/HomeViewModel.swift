@@ -7,7 +7,7 @@
 
 import Foundation
 
-//MARK:  UserpostViewModel
+//MARK: UserpostViewModel
 class HomeViewModel {
     
     private var apiService = APIService()
@@ -54,38 +54,34 @@ class HomeViewModel {
         }
     }
         
-    //MARK: Total number of sections.
-    /// - Retun count Int.
+    //MARK: Total number of section.
     func numberOfSections() -> Int {
         return models.count
     }
     
-    //MARK: Total rows in sections.
-    /// - Retun modell.count Int.
+    //MARK: Total rows in section.
     func numberOfRowsInSection(section: Int) -> Int {
         let count = models.count != 0 ? models.count : 0
         return count
     }
     
     //MARK: Model [HomeFeedRenderViewModel]()
-    /// - Return model.
     func cellForRowAt(indexPath: IndexPath) -> HomeFeedRenderViewModel {
         return models[indexPath.row]
     }
     
-    //MARK: Get images from core data.
-    /// - Retun array de objeto.
+    //MARK: Get array images from Core data.
     func fetchPrimaryContent(post: CD0011_posts) -> [CD0010_images] {
         var arrayImage = [CD0010_images]()
         let entityPostImage = HomeViewModel.database.fetch(CD0012_post_images.self)
         for itemPostImage in entityPostImage {
-            /// Se compara el id del post del id_post del entity (CD0012_post_images) con el id_post de CD0011_posts
-            /// - CD0012_post_images == CD0011_posts
+            // Se compara el id del post del id_post del entity (CD0012_post_images) con el id_post de CD0011_posts
+            // - CD0012_post_images == CD0011_posts
             if itemPostImage.cd12_post_id == post.id {
                 let entityImage = HomeViewModel.database.fetch(CD0010_images.self)
                 for itemImage in entityImage {
-                    /// Se compara el id_image del entity (CD0012_post_images) con el id del post de CD0010_images
-                    /// - CD0012_post_images == CD0010_images
+                    // Se compara el id_image del entity (CD0012_post_images) con el id del post de CD0010_images
+                    // - CD0012_post_images == CD0010_images
                     if itemPostImage.cd12_image_id == itemImage.cd10_id  {
                         arrayImage.append(itemImage)
                     }
@@ -131,13 +127,11 @@ class HomeViewModel {
         return content
     }
     
-    //MARK: get image header.
+    //MARK: Get image header.
     func getImageHeader(post: CD0011_posts?) -> String? {
         let imageHeader =  post?.userAuthor?.cd01_profile?.cd08_image_header
         return imageHeader
     }
-    
-    
     
     //MARK: Core data.
     func userpost(userpost: [UserpostServerModel]) -> Bool  {
@@ -502,38 +496,4 @@ class HomeViewModel {
             return false
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-///Api Rest.
-///En esta función llamamos al Api rest para traes los datos de la DataBase,
-///Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
-//    func fetchUserpostData(token: String, completion: @escaping () -> ()) {
-//        apiService.apiUserPost(token: token) {(result) in
-//            switch result {
-//            case .success(let model):
-//                guard let userpost = model.userpost else { return }
-//                for items in userpost {
-//                    guard let comments = items.comments else { return }
-//                    let viewModel = HomeFeedRenderViewModel(
-//                        header      : PostRenderViewModel(renderType: .header(provider: items)),
-//                        post        : PostRenderViewModel(renderType: .primaryContent(provider: items)),
-//                        actions     : PostRenderViewModel(renderType: .actions(provider: items)),
-//                        descriptions: PostRenderViewModel(renderType: .descriptions(post: items)),
-//                        comments    : PostRenderViewModel(renderType: .comments(comments: comments)),
-//                        footer      : PostRenderViewModel(renderType: .footer(footer: items)))
-//                    self.models.append(viewModel)
-//                }
-//                completion()
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
 }

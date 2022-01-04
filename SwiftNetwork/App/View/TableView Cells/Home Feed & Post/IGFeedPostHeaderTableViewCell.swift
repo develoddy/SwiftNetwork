@@ -9,7 +9,7 @@ import UIKit
 import SDWebImage
 
 protocol IGFeedPostHeaderTableViewCellDelegate: AnyObject {
-    func didTapMoreButton(post: Userpost)
+    func didTapMoreButton(post: CD0011_posts)
 }
 
 class IGFeedPostHeaderTableViewCell: UITableViewCell {
@@ -112,6 +112,7 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     
     //MARK: Setup Userpost values.
     public func setCellWithValuesOf(with model: CD0011_posts) {
+        self.model = model
         updateUI(username   : model.userAuthor?.cd01_username                   ,
                  imageHeader: model.userAuthor?.cd01_profile?.cd08_image_header )
     }
@@ -127,9 +128,9 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     }
     
     @objc private func didTapButton() {
-        //guard let post = self.model else {
-          //  return
-        //}
-        //delegate?.didTapMoreButton(post: post)
+        guard let post = self.model else {
+            return
+        }
+        delegate?.didTapMoreButton(post: post)
     }
 }

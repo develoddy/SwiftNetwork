@@ -38,11 +38,9 @@ class DatabaseHandler {
         }
     }
     
-    //func fetchUserPost(email: String) {
+    //MARK: Fetch filter predicate.
     func fetchUserPost <T: NSManagedObject>(_ type: T.Type, author_ref_id: Int, email: String?) -> [T]  {
-        // Fetching
         let fetchRequest = T.fetchRequest()
-        // Create Predicate
         fetchRequest.predicate = NSPredicate(format: "author_ref_id == \(author_ref_id)")
         do {
             let result = try viewContext.fetch(fetchRequest)
@@ -54,24 +52,7 @@ class DatabaseHandler {
         }
     }
     
-    
-//    func fetchPostImages <T: NSManagedObject>(_ type: T.Type, post_id: Int){
-//        // Fetching
-//        let fetchRequest = T.fetchRequest()
-//        // Create Predicate
-//        fetchRequest.predicate = NSPredicate(format: "post_id == \(post_id)")
-//        do {
-//            let result = try viewContext.fetch(fetchRequest)
-//            print(result)
-//            //return result as! [T]
-//        } catch let error as NSError {
-//            print("Error al recuperar: \(error)")
-//            //return []
-//        }
-//    }
-    
-  
-    //MARK: Delete All Records
+    //MARK: Delete All Records.
     func deleteAllRecords <T: NSManagedObject>(object: [T]) {
         guard let entityName = T.entity().name else { return }
         let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
@@ -85,10 +66,23 @@ class DatabaseHandler {
         }
     }
     
-    //MARK: delete
+    //MARK: Delete.
     func delete <T: NSManagedObject>(object: T) {
         viewContext.delete(object)
         save() == true ? print("Delete.") : print("no delete.")
+    }
+    
+    //MARK: Update.
+    func update <T: NSManagedObject>(_ type: T.Type, author_ref_id: Int) -> Bool  {
+        let fetchRequest = T.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "author_ref_id == \(author_ref_id)")
+        do {
+            try viewContext.save()
+            return true
+        } catch let error as NSError {
+            print("Error al modificar: \(error)")
+            return false
+        }
     }
     
     //MARK: save

@@ -343,10 +343,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             // HEADER
             case 1:
                 switch model.header.renderType {
-                case .header(let user):
+                case .header(let post):
                     let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier, for: indexPath) as! IGFeedPostHeaderTableViewCell
-                    cell.setCellWithValuesOf(with: user)
-                    cell.delegate = self
+                    cell.setCellWithValuesOf(with: post)
+                    //cell.delegate = self
                     return cell
                 case .comments, .actions, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
                 }
@@ -696,9 +696,9 @@ extension HomeViewController {
     }
 }
 
-extension HomeViewController: IGFeedPostHeaderTableViewCellDelegate {
+/*extension HomeViewController: IGFeedPostHeaderTableViewCellDelegate {
     func didTapMoreButton(post: Userpost) {
         print("clispp")
     }
-}
+}*/
 
