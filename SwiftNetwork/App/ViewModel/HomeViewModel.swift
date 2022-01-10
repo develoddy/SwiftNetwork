@@ -34,6 +34,7 @@ class HomeViewModel {
                         comments    : PostRenderViewModel(renderType: .comments(comments: comments)),
                         footer      : PostRenderViewModel(renderType: .footer(footer: items)))
                     self.models.append(viewModel)
+                    
                 }
                 completion()
             case .failure(let error):
