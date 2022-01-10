@@ -14,8 +14,9 @@ class UserPostViewController: UIViewController {
     
     var cellHeader : UICollectionReusableView?
     
-    private var viewModel = UserPostViewModel()
+    var models = [Userpost]()
     
+<<<<<<< HEAD
     //Core data
     //var managedObjects = [NSManagedObject]()
     
@@ -25,6 +26,17 @@ class UserPostViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         //loadUserpostData(email: email, token: token)
         fetchUserPost(author_ref_id: author_ref_id, email: email, token: token)
+=======
+    private var user: User?
+    
+    private var story = [Storyfeatured]()
+    
+    //MARK: Init
+    init(email: String, token: String) {
+        super.init(nibName: nil, bundle: nil)
+        fetchUserPost(email: email, token: token)
+        
+>>>>>>> parent of 684acd5... Post update caption
     }
     
     required init?(coder: NSCoder) {
@@ -66,6 +78,7 @@ class UserPostViewController: UIViewController {
     
     
     
+<<<<<<< HEAD
     ///Llamamos al viewModel para traer los datos.
     /*private func loadUserpostData(email:String, token: String) {
         viewModel.fetchUserpostData(email: email, token: token) { ( result ) in
@@ -94,9 +107,39 @@ class UserPostViewController: UIViewController {
                   //  CustomLoader.instance.hideLoader()
                     //self.collectionViewTwo.reloadData()
                 //}
+=======
+    ///Api Rest.
+    ///En esta función llamamos al Api rest para traes los datos de la DataBase,
+    ///Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
+    private func fetchUserPost(email: String, token: String) {
+        APIService.shared.apiProfile(email: email, token: token ) {(result) in
+            switch result {
+            case .success(let model):
+                model.userpost?.count != 0 ? self.setupModel(with: model.userpost ?? []) : print("Array Userpost está vacio...")
+>>>>>>> parent of 684acd5... Post update caption
             case .failure(let error):
                 print(error.localizedDescription)
             }
+        }
+    }
+    
+    ///Models
+    ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
+    ///Recorremos el array del modelo userpost.
+    ///El modelo pintara los datos del user post acorde al email.
+    private func setupModel(with model: [Userpost] ) {
+        for items in model {
+            let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType, storyfeatured: items.storyfeatured )
+            models.append(userpost)
+            
+            guard let user = items.userAuthor, let story = items.storyfeatured else { return }
+            self.user = user
+            self.story.append(contentsOf: story)
+        }
+        
+        DispatchQueue.main.async {
+            CustomLoader.instance.hideLoader()
+            self.collectionViewTwo.reloadData()
         }
     }
     
@@ -110,8 +153,11 @@ class UserPostViewController: UIViewController {
     }
     
     private func configureCollectionViewTwo() {
+        collectionViewTwo.delegate = self
+        collectionViewTwo.dataSource = self
         collectionViewTwo.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
         view.addSubview(collectionViewTwo)
+        collectionViewTwo.reloadData()
     }
     
     public func getUserToken() -> ResponseTokenBE? {
@@ -127,7 +173,7 @@ class UserPostViewController: UIViewController {
 extension UserPostViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return viewModel.numberOfSections()
+        return 3
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -137,11 +183,19 @@ extension UserPostViewController: UICollectionViewDelegate, UICollectionViewData
         if section == 1 {
             return 0 ///Header
         }
+<<<<<<< HEAD
         return viewModel.numberOfRowsInSection(section: section)
    
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+=======
+        return  models.count ///Collections photos
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let model = models[indexPath.row]
+>>>>>>> parent of 684acd5... Post update caption
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
         let model = viewModel.cellForRowAt(indexPath: indexPath)
         let postImages = viewModel.fetchPostImageData(post: model)
@@ -161,16 +215,30 @@ extension UserPostViewController: UICollectionViewDelegate, UICollectionViewData
         guard kind == UICollectionView.elementKindSectionHeader else { return UICollectionReusableView() }
         switch indexPath.section {
             case 0:
+<<<<<<< HEAD
                 let header = collectionView.dequeueReusableSupplementaryView(
                     ofKind: kind,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,
                     for: indexPath) as! ProfileInfoHeaderCollectionReusableView
                 let model = viewModel.cellForRowAt(indexPath: indexPath)
                 header.configureProfile(with: model)
+=======
+                let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,for: indexPath) as! ProfileInfoHeaderCollectionReusableView
+                if self.user != nil {
+                    guard let user = self.user else { return UICollectionReusableView() }
+                    if self.user?.email == self.getUserToken()?.usertoken?.email {
+                        header.configureProfile(with: user)
+                        header.delegate = self
+                    } else {
+                        header.configureUser(with: user)
+                        header.delegate = self
+                    }
+                }
+>>>>>>> parent of 684acd5... Post update caption
                 return header
             case 1:
                 let storyHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: StoryFeaturedCollectionTableViewCell.identifier,for: indexPath) as! StoryFeaturedCollectionTableViewCell
-                if self.viewModel.story.count > 0 {
-                    storyHeader.configure(model: self.viewModel.story)
+                if self.story.count > 0 {
+                    storyHeader.configure(model: self.story)
                 }
                 return storyHeader
             case 2:
@@ -181,7 +249,6 @@ extension UserPostViewController: UICollectionViewDelegate, UICollectionViewData
         }
     }
     
-   
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if section == 0 { // Header
             return CGSize(width: collectionView.width, height: collectionView.height/2.5)
@@ -196,7 +263,11 @@ extension UserPostViewController: UICollectionViewDelegate, UICollectionViewData
     ///Se empuja al PostViewController
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
+<<<<<<< HEAD
         let model = viewModel.cellForRowAt(indexPath: indexPath)
+=======
+        let model = models[indexPath.row]
+>>>>>>> parent of 684acd5... Post update caption
         let vc = PostViewController(model: model)
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)

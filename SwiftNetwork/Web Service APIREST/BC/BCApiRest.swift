@@ -141,7 +141,7 @@ class BCApiRest: NSObject {
             return nil
         }
         
-        let resultSearch = WSApiRest.startProfile(email, token!, conCompletionCorrecto: { (objExplore) in
+        let resultSearch = WSApiRest.startSearch(email, token!, conCompletionCorrecto: { (objExplore) in
             completioCorrecto(objExplore)
         }, error: { (mensajeError) in
             completionIncorrecto(mensajeError)
@@ -202,22 +202,23 @@ class BCApiRest: NSObject {
     //MARK: LIKED.
     /// Vamos a llamar al backend para insertar o eliminar un like..
     /// Esta funcion recibe por parametros idpost, idUser
-    /// Return message.
+    /// Return messager.
     @discardableResult class func liked(_ ref_id: Int,
                                         _ users_id: Int,
                                         _ token: String?,
                                        conCompletionCorrecto completioCorrecto: @escaping Closures.message,
                                        conCompletionIncorrecto completionIncorrecto : @escaping Closures.MensajeError) -> URLSessionDataTask? {
         let resultSearch = WSApiRest.startLiked(ref_id,
-                                                users_id,
-                                                token!,
-                                                conCompletionCorrecto: { ( objLike ) in
+                                               users_id,
+                                               token!,
+                                               conCompletionCorrecto: { ( objLike ) in
             completioCorrecto( objLike )
         }, error: { ( mensajeError ) in
             completionIncorrecto(mensajeError)
         })
         return resultSearch
     }
+<<<<<<< HEAD:SwiftNetwork/Web Service APIREST/BC/BCApiRest.swift
     
     
     //MARK: CAPTION.
@@ -242,4 +243,6 @@ class BCApiRest: NSObject {
         })
         return resultSearch
     }
+=======
+>>>>>>> parent of 684acd5... Post update caption:SwiftNetwork/WebService/BC/BCApiRest.swift
 }

@@ -75,6 +75,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         label.text = nil
     }
     
+<<<<<<< HEAD
     // Setup userpost values.
     public func setCellWithValuesOf(with images:  [CD0010_images]) {
         updateUI(with: images[0].cd10_src)
@@ -86,6 +87,11 @@ class PhotoCollectionViewCell: UICollectionViewCell {
             return
         }
         photoImageView.sd_setImage(with: URL(string: src), completed: nil)
+=======
+    public func configure(with model: Userpost) {
+        guard let url = model.postImage?[0].image?.src else { return }
+        photoImageView.sd_setImage(with: URL(string: url), completed: nil)
+>>>>>>> parent of 684acd5... Post update caption
     }
 }
 

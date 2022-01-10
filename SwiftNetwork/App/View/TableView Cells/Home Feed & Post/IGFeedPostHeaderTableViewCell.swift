@@ -9,7 +9,11 @@ import UIKit
 import SDWebImage
 
 protocol IGFeedPostHeaderTableViewCellDelegate: AnyObject {
+<<<<<<< HEAD
     func didTapMoreButton(post: CD0011_posts)
+=======
+    func didTapMoreButton()
+>>>>>>> parent of 684acd5... Post update caption
 }
 
 class IGFeedPostHeaderTableViewCell: UITableViewCell {
@@ -18,8 +22,11 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     
     public var delegate: IGFeedPostHeaderTableViewCellDelegate?
     
+<<<<<<< HEAD
     private var model: CD0011_posts?
     
+=======
+>>>>>>> parent of 684acd5... Post update caption
     private let profilePhotoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
@@ -65,6 +72,7 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+//        contentView.backgroundColor = .systemBackground
         contentView.addSubview(profilePhotoImageView)
         contentView.addSubview(usernameLabel)
         contentView.addSubview(postTimeLabel)
@@ -86,12 +94,14 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
                                              height : contentView.height/1.5    ).integral
         profilePhotoImageView.layer.cornerRadius = profilePhotoImageView.height/2
         
+        
         let labelHeight = contentView.height/3
         usernameLabel.frame = CGRect(x      : profilePhotoImageView.right+10    ,
                                      y      : 15                                ,
                                      width  : contentView.width-(size*2)-15     ,
                                      height : labelHeight                       ).integral
         
+        //postTimeLabel.backgroundColor = .yellow
         let postTimeLabelSize = postTimeLabel.sizeThatFits(frame.size)
         postTimeLabel.frame = CGRect(x      : profilePhotoImageView.right+10    ,
                                      y      : usernameLabel.bottom-2            ,
@@ -110,6 +120,7 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         profilePhotoImageView.image = nil
     }
     
+<<<<<<< HEAD
     //MARK: Setup Userpost values.
     public func setCellWithValuesOf(with model: CD0011_posts) {
         self.model = model
@@ -125,12 +136,14 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         }
         self.usernameLabel.text = username
         profilePhotoImageView.sd_setImage(with: URL(string: imageHeader), completed: nil)
+=======
+    public func configure(with model: User) {
+        usernameLabel.text = model.username
+        profilePhotoImageView.sd_setImage(with: URL(string: model.profile?.imageHeader ?? ""), completed: nil)
+>>>>>>> parent of 684acd5... Post update caption
     }
     
     @objc private func didTapButton() {
-        guard let post = self.model else {
-            return
-        }
-        delegate?.didTapMoreButton(post: post)
+        delegate?.didTapMoreButton()
     }
 }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -33,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
+<<<<<<< HEAD
     
     func applicationWillTerminate(_ application: UIApplication) {
         self.saveContext()
@@ -81,4 +81,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+=======
+
+
+>>>>>>> parent of 684acd5... Post update caption
 }

@@ -19,7 +19,5 @@ class Closures: NSObject {
     typealias Login              = (_ usuario      : ResponseTokenBE                ) -> Void
     typealias LogOut             = (_ usuario      : ResponseLogOutBE               ) -> Void
     
-    //typealias caption = <#type expression#>
-    
 }
 

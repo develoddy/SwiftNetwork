@@ -333,7 +333,7 @@ struct UserPost: Codable {
 // MARK: - Userpost
 struct Userpost: Codable {
     let id: Int?
-    var title, content: String?
+    let title, content: String?
     let lat, lng: Int?
     let startAt, finishAt: String?
     let receptorTypeID, authorRefID, receptorRefID, posttTypeID: Int?
@@ -341,11 +341,12 @@ struct Userpost: Codable {
     let createdAt, updatedAt: String?
     let idPostType: Int?
     let comments: [Comment]?
-    var likes: [Like]?
+    let likes: [Like]?
     let taggeds: [Tagged]?
     let userAuthor: User?
     let postImage: [PostImage]?
     let postType: PostType?
+    let storyfeatured: [Storyfeatured]?
     
     enum CodingKeys: String, CodingKey {
         case id, title, content, lat, lng
@@ -363,6 +364,7 @@ struct Userpost: Codable {
         case userAuthor = "user_author"
         case postImage = "post_image"
         case postType = "post_type"
+        case storyfeatured
     }
 }
 
@@ -423,16 +425,15 @@ struct Count: Codable {
 
 // MARK: - Profile
 struct Profile: Codable {
-    let id: Int?
-    let dayOfBirth, gender, image: String?
-    let imageHeader: String?
-    let title, bio, likes, dislikes: String?
-    let address, phone: String?
-    let publicEmail: String?
-    let data, valor: String?
-    let usersID, countryID, nivelID, sentimentalID: Int?
-    let createdAt, updatedAt: String?
-    let storyfeatured: [Storyfeatured]?
+    let id: Int
+    let dayOfBirth, gender, image: String
+    let imageHeader: String
+    let title, bio, likes, dislikes: String
+    let address, phone: String
+    let publicEmail: String
+    let data, valor: String
+    let usersID, countryID, nivelID, sentimentalID: Int
+    let createdAt, updatedAt: String
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -446,23 +447,6 @@ struct Profile: Codable {
         case countryID = "country_id"
         case nivelID = "nivel_id"
         case sentimentalID = "sentimental_id"
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
-        case storyfeatured
-    }
-}
-
-// MARK: - Storyfeatured
-struct Storyfeatured: Codable {
-    let id: Int?
-    let title: String?
-    let src: String?
-    let userID: Int?
-    let createdAt, updatedAt: String?
-
-    enum CodingKeys: String, CodingKey {
-        case id, title, src
-        case userID = "user_id"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
     }
@@ -584,16 +568,23 @@ struct Gender: Codable {
     }
 }
 
-
-
-// MARK: - Caption
-struct Caption: Codable {
-    var content: String?
+// MARK: - Storyfeatured
+struct Storyfeatured: Codable {
+    let id: Int?
+    let title: String?
+    let src: String?
+    let userID: Int?
+    let createdAt, updatedAt: String?
 
     enum CodingKeys: String, CodingKey {
-        case content
+        case id, title, src
+        case userID = "user_id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
     }
 }
+
+
 
 
 /* ============================================ */
@@ -737,18 +728,6 @@ class WebResponse: NSObject {
 
 
 
-
-// MARK: - User
-struct PostContent: Codable {
-    let content: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case content = "content"
-    }
-}
-
-
-// Operation
 struct Operation: Codable {
     let store: String
 }

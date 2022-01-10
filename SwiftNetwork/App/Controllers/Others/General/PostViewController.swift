@@ -23,7 +23,21 @@ import UIKit
 /// States of render cell
 /*enum PostRenderType {
     case collections(collections: [CollectionTableCellModel], createStory: [CollectionTableCellModel])
+<<<<<<< HEAD
     case header(provider: Userpost)
+=======
+    case header(provider: UserViewModel)
+    case primaryContent(provider: UserpostViewModel)
+    case actions(provider: UserpostViewModel)
+    case descriptions(post: UserpostViewModel)
+    case comments(comments: [CommentViewModel])
+    case footer(footer: UserpostViewModel)
+}*/
+
+enum PostRenderType {
+    case collections(collections: [CollectionTableCellModel], createStory: [CollectionTableCellModel])
+    case header(provider: User)
+>>>>>>> parent of 684acd5... Post update caption
     case primaryContent(provider: Userpost)
     case actions(provider: Userpost)
     case descriptions(post: Userpost)
@@ -47,12 +61,22 @@ struct PostRenderViewModel {
 }
 
 class PostViewController: UIViewController {
+<<<<<<< HEAD
 
+=======
+    
+    private let model: Userpost?
+    
+    private var renderModels = [PostRenderViewModel]()
+    
+>>>>>>> parent of 684acd5... Post update caption
     private let tableView: UITableView = {  		
         let tableView = UITableView()
+        //let tableView = UITableView(frame: .zero, style: .grouped)
         return tableView
     }()
     
+<<<<<<< HEAD
     lazy var settingsPost: SettingsPost = {
         let launcher = SettingsPost()
         launcher.postController = self
@@ -123,6 +147,10 @@ class PostViewController: UIViewController {
     
     // MARK: - INIT RECEIVE DATA FROM THE PROFILEVIEWCONTROLLER.
     init(model: CD0011_posts?) {
+=======
+    // MARK: Init Receive data from the ProfileViewcontroller
+    init(model: Userpost?) {
+>>>>>>> parent of 684acd5... Post update caption
         self.model = model
         super.init(nibName: nil, bundle: nil)
         guard let model = model else { return }
@@ -144,6 +172,7 @@ class PostViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
+<<<<<<< HEAD
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -152,8 +181,16 @@ class PostViewController: UIViewController {
     
     // MODEL.
     private func setupModel(with model: CD0011_posts ) {
+=======
+    }
+    
+    ///Models
+    ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
+    private func setupModel(with model: Userpost ) {
+        guard let ownew = model.userAuthor else { return }
+>>>>>>> parent of 684acd5... Post update caption
         guard let comments = model.comments else { return }
-        renderModels.append(PostRenderViewModel(renderType: .header(provider: model)))
+        renderModels.append(PostRenderViewModel(renderType: .header(provider: ownew)))
         renderModels.append(PostRenderViewModel(renderType: .primaryContent(provider: model)))
         renderModels.append(PostRenderViewModel(renderType: .actions(provider: model)))
         renderModels.append(PostRenderViewModel(renderType: .descriptions(post: model)))
@@ -208,6 +245,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         let model = renderModels[indexPath.section]
         
         switch model.renderType {
+<<<<<<< HEAD
             //HEADER
             case .header(let post):
                 let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier,for: indexPath) as! IGFeedPostHeaderTableViewCell
@@ -256,6 +294,37 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
             // COLLECTIONS
             case .collections(_,_):
                 return UITableViewCell()
+=======
+        case .actions(_/**let actions**/):
+            let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostActionsTableViewCell.identifier, for: indexPath) as! IGFeedPostActionsTableViewCell
+            return cell
+        case .comments(let comments):
+            //let comment = comments[indexPath.row]
+            let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier, for: indexPath) as! IGFeedPostGeneralTableViewCell
+            let count = comments.count
+            cell.configure(with: count)
+            return cell
+        case .primaryContent(let post):
+            let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostTableViewCell.identifier, for: indexPath) as! IGFeedPostTableViewCell
+            cell.configure(with: post)
+            return cell
+        case .header(let user):
+              let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier,for: indexPath) as! IGFeedPostHeaderTableViewCell
+            cell.configure(with: user)
+            return cell
+        case .descriptions(let post):
+            let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
+            cell.configure(with: post)
+            cell.delegate = self
+            return cell
+        case .footer(let footer):
+            let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostFooterTableViewCell.identifier, for: indexPath) as! IGFeedPostFooterTableViewCell
+            cell.configure(with: footer)
+            //cell.delegate = self
+            return cell
+        case .collections(_,_):
+            return UITableViewCell()
+>>>>>>> parent of 684acd5... Post update caption
         }
     }
     
@@ -300,6 +369,7 @@ extension PostViewController: IGFeedPostDescriptionTableViewCellDelegate {
         print("didTapLikeButton")
     }
 }
+<<<<<<< HEAD
 
 //MARK: - Extension IGFeedPostHeaderTableViewCellDelegate
 extension PostViewController: IGFeedPostHeaderTableViewCellDelegate {
@@ -426,3 +496,5 @@ extension PostViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleKeyboardNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
 }
+=======
+>>>>>>> parent of 684acd5... Post update caption
