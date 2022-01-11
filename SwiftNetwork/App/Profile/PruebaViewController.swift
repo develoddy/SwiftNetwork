@@ -25,7 +25,6 @@ class PruebaViewController: UIViewController {
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     
-    
     // MARK: - Init
     init(with email: String) {
         super.init(nibName: nil, bundle: nil)
