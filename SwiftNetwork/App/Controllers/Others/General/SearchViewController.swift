@@ -87,14 +87,14 @@ class SearchViewController: UIViewController {
     ///Hacemos una llamada al Api rest.
     ///Una vez obtenido los datos que queremos, se lo enviamos a la funcion setuModel.
     private func fetchUserPost() {
-        APIService.shared.apiUserPost(token: handleNotAuthenticated()) {(result) in
+        /*APIService.shared.getUserPost(token: handleNotAuthenticated()) {(result) in
             switch result {
             case .success(let model):
                 model.userpost?.count != 0 ? self.setupModel(with: model.userpost ?? []) : print("Array Userpost está vacio...")
             case .failure(let error):
                 print(error.localizedDescription)
             }
-        }
+        }*/
     }
     
     ///Models
@@ -193,19 +193,19 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     ///We indicate the collections of photo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let model = models[indexPath.row]
+        //let model = models[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
         cell.backgroundColor = .systemBackground
-        cell.configure(with: model)
+        //cell.configure(with: model)
         return cell
     }
     
     ///Selected photo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        let model = models[indexPath.row]
-        let vc = PostViewController(model: model)
-        vc.title = "Search"//model.postType.rawValue
-        navigationController?.pushViewController(vc, animated: true)
+        //let model = models[indexPath.row]
+        //let vc = PostViewController(model: model)
+        //vc.title = "Search"//model.postType.rawValue
+        //navigationController?.pushViewController(vc, animated: true)
     }
 }

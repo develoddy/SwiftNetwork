@@ -9,7 +9,11 @@ import UIKit
 import SDWebImage
 
 protocol IGFeedPostHeaderTableViewCellDelegate: AnyObject {
+<<<<<<< HEAD
+    func didTapMoreButton(post: CD0011_posts)
+=======
     func didTapMoreButton()
+>>>>>>> parent of 684acd5... Post update caption
 }
 
 class IGFeedPostHeaderTableViewCell: UITableViewCell {
@@ -18,6 +22,11 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
     
     public var delegate: IGFeedPostHeaderTableViewCellDelegate?
     
+<<<<<<< HEAD
+    private var model: CD0011_posts?
+    
+=======
+>>>>>>> parent of 684acd5... Post update caption
     private let profilePhotoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
@@ -79,46 +88,59 @@ class IGFeedPostHeaderTableViewCell: UITableViewCell {
         super.layoutSubviews()
         
         let size = contentView.height-4
-        profilePhotoImageView.frame = CGRect(
-            x: 5,
-            y: 15,
-            width: contentView.height/1.5, ///size
-            height: contentView.height/1.5) ///size
-        profilePhotoImageView.layer.cornerRadius = profilePhotoImageView.height/2 
+        profilePhotoImageView.frame = CGRect(x      : 5                         ,
+                                             y      : 15                        ,
+                                             width  : contentView.height/1.5    ,
+                                             height : contentView.height/1.5    ).integral
+        profilePhotoImageView.layer.cornerRadius = profilePhotoImageView.height/2
         
         
         let labelHeight = contentView.height/3
-        usernameLabel.frame = CGRect(
-            x: profilePhotoImageView.right+10,
-            y: 15,
-            width: contentView.width-(size*2)-15,
-            height: labelHeight)//contentView.height-4)
+        usernameLabel.frame = CGRect(x      : profilePhotoImageView.right+10    ,
+                                     y      : 15                                ,
+                                     width  : contentView.width-(size*2)-15     ,
+                                     height : labelHeight                       ).integral
         
         //postTimeLabel.backgroundColor = .yellow
         let postTimeLabelSize = postTimeLabel.sizeThatFits(frame.size)
-        postTimeLabel.frame = CGRect(
-            x: profilePhotoImageView.right+10,
-            y: usernameLabel.bottom-2,
-            width: contentView.width-(size*2)-15,
-            height: postTimeLabelSize.height).integral
+        postTimeLabel.frame = CGRect(x      : profilePhotoImageView.right+10    ,
+                                     y      : usernameLabel.bottom-2            ,
+                                     width  : contentView.width-(size*2)-15     ,
+                                     height : postTimeLabelSize.height          ).integral
         
-        moreButton.frame = CGRect(
-            x: contentView.width-size,
-            y: 2,
-            width: size,
-            height: size)
+        moreButton.frame = CGRect(x     : contentView.width-size    ,
+                                  y     : 2                         ,
+                                  width : size                      ,
+                                  height: size                      ).integral
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        usernameLabel.text = nil
+        usernameLabel.text          = nil
         profilePhotoImageView.image = nil
-        
     }
     
+<<<<<<< HEAD
+    //MARK: Setup Userpost values.
+    public func setCellWithValuesOf(with model: CD0011_posts) {
+        self.model = model
+        updateUI(username   : model.userAuthor?.cd01_username                   ,
+                 imageHeader: model.userAuthor?.cd01_profile?.cd08_image_header )
+    }
+    
+    //MARK: Update the UI Views.
+    private func updateUI(username: String?, imageHeader: String?) {
+        guard let username      = username,
+              let imageHeader   = imageHeader else {
+            return
+        }
+        self.usernameLabel.text = username
+        profilePhotoImageView.sd_setImage(with: URL(string: imageHeader), completed: nil)
+=======
     public func configure(with model: User) {
         usernameLabel.text = model.username
         profilePhotoImageView.sd_setImage(with: URL(string: model.profile?.imageHeader ?? ""), completed: nil)
+>>>>>>> parent of 684acd5... Post update caption
     }
     
     @objc private func didTapButton() {

@@ -70,14 +70,14 @@ final class NotificationsViewController: UIViewController {
     ///Hacemos una llamada al Api rest.
     ///Una vez obtenido los datos que queremos, se lo enviamos a la funcion setuModel.
     private func fetchUserPost() {
-        APIService.shared.apiUserPost(token: getUserToken()?.token ?? "" ) {(result) in
+        /*APIService.shared.getUserPost(token: getUserToken()?.token ?? "" ) {(result) in
             switch result {
             case .success(let model):
                 model.userpost?.count != 0 ? self.setupModel(with: model.userpost ?? []) : print("Array Userpost está vacio...")
             case .failure(let error):
                 print(error.localizedDescription)
             }
-        }
+        }*/
     }
     
     ///Models
@@ -201,15 +201,15 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
 
 extension NotificationsViewController: NotificationLikeEventTableViewCellDelegate {
     func didTapRelatedPostButton(model: UserNotification) {
-        switch model.type {
-        case .like(let post):
-            let vc = PostViewController(model: post)
-            vc.title = "Notificaciones"
-            vc.navigationItem.largeTitleDisplayMode = .never
-            navigationController?.pushViewController(vc, animated: true)
-        case .follow(_):
-            fatalError("Dev Issue: Should never get called")
-        }
+//        switch model.type {
+//        case .like(let post):
+//            let vc = PostViewController(model: post)
+//            vc.title = "Notificaciones"
+//            vc.navigationItem.largeTitleDisplayMode = .never
+//            navigationController?.pushViewController(vc, animated: true)
+//        case .follow(_):
+//            fatalError("Dev Issue: Should never get called")
+//        }
     }
 }
 

@@ -41,7 +41,8 @@ class IGFeedPostGeneralTableViewCell: UITableViewCell {
     }
     
     //public func configure(with model: Comment)  {
-    public func configure(with count: Int) {
+    //public func configure(with count: Int) {
+    public func setCellWithValuesOf() {
         hourLabel.text = "HACE 12 HORAS"
     }
     

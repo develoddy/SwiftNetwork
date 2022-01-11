@@ -9,7 +9,11 @@
 import Foundation
 import UIKit
 
-protocol SegmentedProgressBarDelegate: class {
+<<<<<<< HEAD
+protocol SegmentedProgressBarDelegate: AnyObject {
+=======
+protocol SegmentedProgressBarDelegate : AnyObject {
+>>>>>>> recover-branch
     func segmentedProgressBarChangedIndex(index: Int)
     func segmentedProgressBarFinished()
 }

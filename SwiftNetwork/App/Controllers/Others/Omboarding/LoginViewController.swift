@@ -56,14 +56,12 @@ class LoginViewController: UIViewController {
         configureCreateAccountButton()
         delegatesFields()
         ///Es para entrar directamente al perfil, lueglo se tiene que quitar esta funcion del viewLoad
-        ///didTapLoginButton()
+        
         
         configureEmailLabel()
         configureEmailText()
-        
         configurePasswordLabel()
         configurePasswordText()
-       
     }
     
     ///Spinner
@@ -79,6 +77,7 @@ class LoginViewController: UIViewController {
 
     //MARK: viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
+        didTapLoginButton()
         super.viewDidLayoutSubviews()
         gradient.frame = view.bounds
         
@@ -140,7 +139,6 @@ class LoginViewController: UIViewController {
             height: passwordTextlSize.height).integral
         
         ///Button Login
-        
         loginButton.frame = CGRect(
             x: 25,
             y: passwordText.bottom + 20,
@@ -398,5 +396,4 @@ extension LoginViewController: UITextFieldDelegate {
             print("Esta lleno....")
         }
     }
-    
 }
