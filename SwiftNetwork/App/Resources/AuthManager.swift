@@ -43,18 +43,19 @@ class AuthManager {
     }
     
  
+    //MARK: Login
     public func login(email: String?, password: String?, completion: @escaping (Bool) -> Void) {
-        if let email = email {
-            let objUser = UserBE()
+        //if let email = email {
+            /*let objUser = UserBE()
             objUser.email = email
-            objUser.password = password
+            objUser.password = password*/
             
             ///Call to API
-            BCApiRest.logIn(objUser) { (objUsuario) in
+            BCApiRest.logIn( email:email, password:password ) { (objUsuario) in
                 completion(true)
             } conCompletionIncorrecto: { (mensajeError) in
                 completion(false)
             }
-        }
+        //}
     }
 }

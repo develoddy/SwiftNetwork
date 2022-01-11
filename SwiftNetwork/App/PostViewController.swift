@@ -459,6 +459,7 @@ extension PostViewController {
         }
     }
     
+<<<<<<< HEAD:SwiftNetwork/App/Controllers/Others/General/PostViewController.swift
     //MARK: Did tap Save button or update core..
     @objc func didTapSaveCaption() {
         guard let idPost = self.model?.id, let newCaption = captionTextField.text else { return }
@@ -470,6 +471,31 @@ extension PostViewController {
         } else {
             print("No se pude actualizar el dato del caption....")
         }
+=======
+    @objc func didTapSaveCaption(){
+        print(".... hay echo click en save caption......")
+        
+        //NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification),name: UIResponder.keyboardWillShowNotification, object: nil)
+        //NotificationCenter.default.removeObserver(self) // Remove from all notifications being observed
+        
+        
+        
+        
+        guard let idpost = model?.id else { return}
+        guard let token = getUserToken()?.token else { return }
+        var caption = Caption()
+        caption.content = self.captionTextField.text
+    
+        /*APIService.shared.apiPostCaptionUpdate(caption: caption, idpost: idpost, token: token) {( result ) in
+            switch result {
+            case .success(let message):
+                print(message)
+                self.saveData()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }*/
+>>>>>>> recover-branch:SwiftNetwork/App/PostViewController.swift
     }
     
     //MARK: Save context.

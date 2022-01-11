@@ -14,9 +14,15 @@
             filePath = "SwiftNetwork/App/Controllers/Core Tabs/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
+<<<<<<< HEAD
             startingLineNumber = "606"
             endingLineNumber = "606"
             landmarkName = "didTapLikeButton(_:model:)"
+=======
+            startingLineNumber = "580"
+            endingLineNumber = "580"
+            landmarkName = "showControllerForSetting(index:setting:)"
+>>>>>>> recover-branch
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -46,9 +52,15 @@
             filePath = "SwiftNetwork/App/Controllers/Core Tabs/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
+<<<<<<< HEAD
             startingLineNumber = "414"
             endingLineNumber = "414"
             landmarkName = "tableView(_:cellForRowAt:)"
+=======
+            startingLineNumber = "329"
+            endingLineNumber = "329"
+            landmarkName = "tableView(_:didSelectRowAt:)"
+>>>>>>> recover-branch
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -62,9 +74,15 @@
             filePath = "SwiftNetwork/App/Controllers/Core Tabs/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
+<<<<<<< HEAD
             startingLineNumber = "639"
             endingLineNumber = "639"
             landmarkName = "liked(type_id:ref_id:users_id:isLiked:token:)"
+=======
+            startingLineNumber = "613"
+            endingLineNumber = "613"
+            landmarkName = "setupRemaningNavItems()"
+>>>>>>> recover-branch
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

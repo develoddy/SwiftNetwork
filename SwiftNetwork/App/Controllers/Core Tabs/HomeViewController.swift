@@ -91,7 +91,12 @@ class HomeViewController: UIViewController {
     
     //private var models = [HomeFeedRenderViewModel]()
     
+<<<<<<< HEAD
     //private var userpost = [Userpost]()
+=======
+    private var token = Token()
+    
+>>>>>>> recover-branch
     
 <<<<<<< HEAD
     let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -125,6 +130,7 @@ class HomeViewController: UIViewController {
         pruebaApiRest()
     }
     
+<<<<<<< HEAD
   
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -147,6 +153,12 @@ class HomeViewController: UIViewController {
                 ///print("Post Title => \(items.title ?? "")")
                 ///print(items.taggeds ?? [])
             ///}
+=======
+    //MARK: Load User Post data
+    private func loadUserpostData() {
+        guard let token = token.getUserToken().token else { return }
+        viewModel.fetchUserpostData(token: token) {
+>>>>>>> recover-branch
             self.tableView.dataSource = self
             self.tableView.delegate = self
             DispatchQueue.main.async {
@@ -182,8 +194,12 @@ class HomeViewController: UIViewController {
 =======
     }
     
+<<<<<<< HEAD
     
 >>>>>>> parent of 684acd5... Post update caption
+=======
+    // ViewDidLayoutSubviews
+>>>>>>> recover-branch
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = tableView.frame.inset(by: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
@@ -191,17 +207,25 @@ class HomeViewController: UIViewController {
     }
     
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     // Setupview
 =======
+=======
+    // ViewWillAppear
+>>>>>>> recover-branch
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = false
     }
     
+<<<<<<< HEAD
     ///Inicio del programa.
     ///Setupview
 >>>>>>> parent of 684acd5... Post update caption
+=======
+    // setupView
+>>>>>>> recover-branch
     private func setupView() {
         view.backgroundColor = .systemBackground
         tableView.backgroundColor = .systemBackground
@@ -209,7 +233,10 @@ class HomeViewController: UIViewController {
     }
 
     // Spinner
+<<<<<<< HEAD
     // Muestra el spiner mientras los datos de van cargando...
+=======
+>>>>>>> recover-branch
     private func setupSpinner() -> UIActivityIndicatorView {
         let spinerView = SpinnerView.shared.setupSpinner()
         spinerView.center = view.center
@@ -231,6 +258,7 @@ class HomeViewController: UIViewController {
         CustomLoader.instance.showLoader()
     }
     
+<<<<<<< HEAD
     // Obtenemos el Token de la App.
     public func getUserToken() -> ResponseTokenBE? {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -240,6 +268,9 @@ class HomeViewController: UIViewController {
         return token
     }
 
+=======
+    
+>>>>>>> recover-branch
     
     
     // Creamos el Header en el ViewController.
@@ -321,10 +352,204 @@ class HomeViewController: UIViewController {
     }
 }
 
-//MARK:- TableView Delgates
+//MARK:  - TABLEVIEW
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
-    ///Creamos el header en el TableView
+    // COUNT
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.numberOfSections() * 7
+    }
+    
+    // SECTION
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let count = section
+        let boxes = 7
+        let subSection = count % boxes
+        switch subSection {
+            case 1:  return 1 /// Header
+            case 2:  return 1 /// Post
+            case 3:  return 1 /// Actions
+            case 4:  return 1 /// Description
+            case 5:  return 1 /// Comments
+            case 6:  return 1 /// Footer
+            default:  return 0
+        }
+    }
+    
+    // TABLEVIEW
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let model: HomeFeedRenderViewModel
+        let count = indexPath.section
+        let boxes = 7
+        let position = count % boxes == boxes ? count/boxes : ((count - (count % boxes)) / boxes)
+        model = viewModel.models[position]
+        let subSection = count % boxes
+            
+        switch subSection {
+            
+            // HEADER
+            case 1:
+                switch model.header.renderType {
+                case .header(let user):
+                    let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostHeaderTableViewCell.identifier, for: indexPath) as! IGFeedPostHeaderTableViewCell
+                    cell.configure(with: user)
+                    cell.delegate = self
+                    return cell
+                case .comments, .actions, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
+                }
+            
+            // POST
+            case 2:
+                switch model.post.renderType {
+                case .primaryContent(let post):
+                    let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostTableViewCell.identifier,for: indexPath) as! IGFeedPostTableViewCell
+                    cell.configure(with: post)
+                    return cell
+                case .comments, .actions, .header, .collections, .descriptions, .footer : return UITableViewCell()
+                }
+                
+            // ACTION
+            case 3:
+                switch model.actions.renderType {
+                case .actions(_):
+                    let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostActionsTableViewCell.identifier, for: indexPath) as! IGFeedPostActionsTableViewCell
+                    cell.delegate = self
+                    return cell
+                case .comments, .header, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
+                }
+                
+            // DESCRIPTION
+            case 4:
+                switch model.descriptions.renderType {
+                case .descriptions(let post):
+                    let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostDescriptionTableViewCell.identifier, for: indexPath) as! IGFeedPostDescriptionTableViewCell
+                    cell.setCellWithValuesOf(post)
+                    return cell
+                case .comments, .header, .primaryContent, .collections, .actions, .footer: return UITableViewCell()
+                }
+            
+            // COMMENT
+            case 5:
+                switch model.comments.renderType {
+                case .comments(let comments):
+                    let count = comments.count
+                    let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostGeneralTableViewCell.identifier, for: indexPath) as! IGFeedPostGeneralTableViewCell
+                    cell.configure(with: count)
+                    return cell
+                case .header, .actions, .primaryContent, .collections, .descriptions, .footer : return UITableViewCell()
+                }
+            
+            // FOOTER
+            case 6:
+                switch model.footer.renderType {
+                case .footer(let footer):
+                    let cell = tableView.dequeueReusableCell(withIdentifier: IGFeedPostFooterTableViewCell.identifier, for: indexPath) as! IGFeedPostFooterTableViewCell
+                    cell.configure(with: footer)
+                    cell.delegate = self
+                    self.separator(cell: cell)
+                    return cell
+                case .comments, .header, .primaryContent, .collections, .actions, .descriptions: return UITableViewCell()
+                }
+            
+            // DEFAULT
+            default: print("error en subSection")
+        }
+        return UITableViewCell()
+    }
+    
+    // DID SELECT
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let boxes = 7
+        let count = indexPath.section
+        let position = count % boxes == boxes ? count/boxes : ((count - (count % boxes)) / boxes)
+        let model = viewModel.models[position]
+        let render = model.post.renderType
+        
+        let subSection = count % boxes
+        switch subSection {
+        ///Sub section header
+        case 1:
+            switch render {
+            case .primaryContent(let userpost):
+                guard let email = userpost.userAuthor?.email,
+                      let name = userpost.userAuthor?.name else {
+                    return
+                }
+                guard let token = token.getUserToken().token else {
+                    return
+                }
+                let vc = UserPostViewController(email: email, token: token )
+                vc.title = name
+                navigationController?.pushViewController(vc, animated: true)
+            default:
+                print("Error...")
+            }
+        ///Sub section post image.
+        case 2:
+            print("image")
+            
+        ///Sub section actions.
+        case 3:
+            print("actions")
+            //guard let btn = (tableView.cellForItem(at: indexPath) as! yourCellName).button else {
+              //  return
+            //}
+        
+            ///let btn = (tableView.cellForRow(at: indexPath) as! IGFeedPostActionsTableViewCell).likeButton
+            ///btn.setImage(UIImage(named: "yourSelectedImage name"), for: .normal)
+            ///btn.tintColor = .systemGreen
+            
+        ///Sub section post description.
+        case 4:
+            print("description")
+            
+        ///Sub section general.
+        case 5:
+            print("general")
+            
+        ///Sub section footer.
+        case 6:
+            print("footer")
+            
+        default:
+            print("error...")
+        }
+    }
+    
+    // HEIGHT TABLE
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = 7
+            let subSection = indexPath.section % section
+            switch subSection {
+                case 1:  return  70              // Header
+                case 2:  return  tableView.width // Post
+                case 3:  return  50              // Actions
+                case 4:  return  85              // Description
+                case 5:  return  25              // Comment
+                case 6:  return  60              // Footer
+                default:  return 0
+            }
+    }
+    
+    // FOOTER TABLEVIEW
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
+    // FOOTER TABLEVIEW
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        let section = 7
+        let subSection = section % section
+        return subSection == 6 ? 20 : 0
+    }
+    
+    // SPACING HEADER
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return cellSpacingHeight
+    }
+    
+    // HEADER
     private func createTableHeaderView() -> UIView {
         let imageView: UIImageView = {
             let imageView = UIImageView(image: UIImage(systemName: "person.circle"))
@@ -385,6 +610,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         headerView.addSubview(uploadImageButton)
         return headerView
     }
+<<<<<<< HEAD
     
     // Count models
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -615,10 +841,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return cellSpacingHeight
     }
+=======
+>>>>>>> recover-branch
 }
 
 
-//MARK: - Keyborad
+//MARK: - KEYBOARD
 extension HomeViewController: IGFeedPostFooterTableViewCellDelegate {
     
     func didTapComment(model: Userpost) {
@@ -631,7 +859,7 @@ extension HomeViewController: IGFeedPostFooterTableViewCellDelegate {
 
 extension HomeViewController: CollectionTableViewCellDelegate {
  
-    ///Show all story in list or collections
+    // Show all story in list or collections
     func didPushUpStoryButton() {
         let vc = SettingStoryViewController()
         let navVC = UINavigationController(rootViewController: vc)
@@ -640,7 +868,7 @@ extension HomeViewController: CollectionTableViewCellDelegate {
         present(navVC, animated: true)
     }
     
-    ///Create story and collections the images
+    // Create story and collections the images
     func didSelectItem(with model: CollectionTableCellModel, type: String ) {
         switch type {
         case Constants.storyCollections.createStory:
@@ -664,7 +892,7 @@ extension HomeViewController: CollectionTableViewCellDelegate {
 }
 
 
-//MARK: - Actions buttons
+//MARK: - ACTIONS BUTTONS
 extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
     
     /**
@@ -707,7 +935,7 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
      - Parameter token: String
      */
     private func liked(type_id:Int, ref_id: Int, users_id:Int, isLiked:Bool, token: String) {
-        APIService.shared.apiLike(type_id:type_id, ref_id: ref_id, users_id:users_id, isLiked:isLiked, token: token) {( result ) in
+        /*APIService.shared.apiLike(type_id:type_id, ref_id: ref_id, users_id:users_id, isLiked:isLiked, token: token) {( result ) in
             switch result {
             case .success(let message):
                 print(message)
@@ -724,7 +952,7 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
             case .failure(let error):
                 print(error.localizedDescription)
             }
-        }
+        }*/
     }
     
     /**
