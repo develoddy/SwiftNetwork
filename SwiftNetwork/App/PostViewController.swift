@@ -391,7 +391,7 @@ extension PostViewController {
         var caption = Caption()
         caption.content = self.captionTextField.text
     
-        APIService.shared.apiPostCaptionUpdate(caption: caption, idpost: idpost, token: token) {( result ) in
+        /*APIService.shared.apiPostCaptionUpdate(caption: caption, idpost: idpost, token: token) {( result ) in
             switch result {
             case .success(let message):
                 print(message)
@@ -399,7 +399,7 @@ extension PostViewController {
             case .failure(let error):
                 print(error.localizedDescription)
             }
-        }
+        }*/
     }
     
     //MARK: Save Context

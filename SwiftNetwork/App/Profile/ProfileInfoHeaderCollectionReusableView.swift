@@ -7,6 +7,7 @@
 
 import UIKit
 
+/*
 protocol ProfileInfoHeaderCollectionReusableViewDelegate {
     func profileHeaderDidTapPostButton( _header:  ProfileInfoHeaderCollectionReusableView)
     func profileHeaderDidTapFollowersButton( _header:  ProfileInfoHeaderCollectionReusableView)
@@ -14,14 +15,14 @@ protocol ProfileInfoHeaderCollectionReusableViewDelegate {
     func profileHeaderDidTapEditProfileButton( _header:  ProfileInfoHeaderCollectionReusableView)
     func profileWritePostDidTapEditProfileButton( _post:  ProfileInfoHeaderCollectionReusableView)
 }
-
+*/
 final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     
     var stackView = UIStackView()
     
     static let identifier = "ProfileInfoHeaderCollectionReusableView"
     
-    public var delegate: ProfileInfoHeaderCollectionReusableViewDelegate?
+    public var delegate: ProfileReusableViewProtocol?
     
     let gradient = CAGradientLayer()
     
@@ -341,19 +342,19 @@ final class ProfileInfoHeaderCollectionReusableView: UICollectionReusableView {
     
     // MARK: - Actions
     @objc private func didTapFollowerButton() {
-        delegate?.profileHeaderDidTapFollowersButton(_header: self)
+        delegate?.didTapFollowersButton(_header: self)
     }
     @objc private func didTapFollowingButton() {
-        delegate?.profileHeaderDidTapFollowingButton(_header: self)
+        delegate?.didTapFollowingButton(_header: self)
     }
     @objc private func didTapPostsButton() {
-        delegate?.profileHeaderDidTapPostButton(_header: self)
+        delegate?.didTapPostButton(_header: self)
     }
     @objc private func didTapEditProfileButton() {
-        delegate?.profileHeaderDidTapEditProfileButton(_header: self)
+        delegate?.didTapEditProfileButton(_header: self)
     }
     @objc private func didTapWritePostButton() {
-        delegate?.profileWritePostDidTapEditProfileButton(_post: self)
+        delegate?.didTapEditProfileButton(_post: self)
     }
 }
 

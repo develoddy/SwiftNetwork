@@ -185,12 +185,13 @@ extension UserPostViewController: UICollectionViewDelegate, UICollectionViewData
 
 
 // MARK: - ProfileInfoHeaderCollectionReusableViewDelegate
-extension UserPostViewController: ProfileInfoHeaderCollectionReusableViewDelegate {
-    func profileHeaderDidTapPostButton(_header: ProfileInfoHeaderCollectionReusableView) {
+extension UserPostViewController: ProfileReusableViewProtocol {
+    
+    func didTapPostButton(_header: ProfileInfoHeaderCollectionReusableView) {
         self.collectionViewTwo.scrollToItem(at: IndexPath(row: 0, section: 1), at: .top, animated: true) ///Scroll to the posts
     }
     
-    func profileHeaderDidTapFollowersButton(_header: ProfileInfoHeaderCollectionReusableView) {
+    func didTapFollowersButton(_header: ProfileInfoHeaderCollectionReusableView) {
         var mockData = [UserRelationship]()
         for x in 0..<10 {
             mockData.append(UserRelationship(username: "@joer", namm: "Joe Smith", type: x % 2 == 0 ? .following: .not_following))
@@ -201,7 +202,7 @@ extension UserPostViewController: ProfileInfoHeaderCollectionReusableViewDelegat
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func profileHeaderDidTapFollowingButton(_header: ProfileInfoHeaderCollectionReusableView) {
+    func didTapFollowingButton(_header: ProfileInfoHeaderCollectionReusableView) {
         var mockData = [UserRelationship]()
         for x in 0..<10 {
             mockData.append(UserRelationship(username: "@joer", namm: "Joe Smith", type: x % 2 == 0 ? .following: .not_following))
@@ -212,13 +213,13 @@ extension UserPostViewController: ProfileInfoHeaderCollectionReusableViewDelegat
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func profileHeaderDidTapEditProfileButton(_header: ProfileInfoHeaderCollectionReusableView) {
+    func didTapEditProfileButton(_header: ProfileInfoHeaderCollectionReusableView) {
         let vc = EditProfileViewController()
         vc.title = "Edit Profile"
         present(UINavigationController(rootViewController: vc), animated: true)
     }
     
-    func profileWritePostDidTapEditProfileButton(_post: ProfileInfoHeaderCollectionReusableView) {
+    func didTapEditProfileButton(_post: ProfileInfoHeaderCollectionReusableView) {
         let vc = PublishPostViewController()
         vc.modalPresentationStyle = .fullScreen
         vc.navigationItem.largeTitleDisplayMode = .never

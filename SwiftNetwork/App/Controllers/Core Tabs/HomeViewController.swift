@@ -544,14 +544,14 @@ extension HomeViewController: IGFeedPostActionsTableViewCellDelegate {
      - Parameter token: String
      */
     private func liked(type_id:Int, ref_id: Int, users_id:Int, isLiked:Bool, token: String) {
-        APIService.shared.apiLike(type_id:type_id, ref_id: ref_id, users_id:users_id, isLiked:isLiked, token: token) {( result ) in
+        /*APIService.shared.apiLike(type_id:type_id, ref_id: ref_id, users_id:users_id, isLiked:isLiked, token: token) {( result ) in
             switch result {
             case .success(let message):
                 print(message)
             case .failure(let error):
                 print(error.localizedDescription)
             }
-        }
+        }*/
     }
     
     /**

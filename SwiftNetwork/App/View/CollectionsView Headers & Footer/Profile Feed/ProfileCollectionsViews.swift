@@ -40,3 +40,4 @@ class ProfileCollectionsViews: NSObject {
         return collectionViewTwo
     }
 }
+

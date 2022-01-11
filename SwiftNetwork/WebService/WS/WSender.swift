@@ -18,7 +18,7 @@ class WSender: NSObject {
     // MARK: -               CONSUMPTION OF SERVICE WITH COOKIE.
     /* ============================================================================== */
      
-    ///POST
+    // POST
     @discardableResult class func doPOSTCookieToURL(conURL url                  : NSString                              ,
                                                     conPath path                : NSString                              ,
                                                     conParametros parametros    : Any?                                  ,
