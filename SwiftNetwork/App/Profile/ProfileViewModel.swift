@@ -4,7 +4,6 @@
 //
 //  Created by Eddy Donald Chinchay Lujan on 10/1/22.
 //
-
 import Foundation
 
 //MARK: VIEWMODEL -> API SERVICE
