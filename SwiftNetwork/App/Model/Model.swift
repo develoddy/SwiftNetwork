@@ -8,21 +8,11 @@
 import Foundation
 
 
-/* ============================================ */
-/* ==          [ U S E R  -  P O S T ]       == */
-/* ============================================ */
-
-// MARK: - UserPost
-struct UserPost: Codable {
+// MARK: - UserPostData
+struct UserPostData: Codable {
     let status: Bool?
     let userpost: [Userpost]?
 }
-
-// MARK: - User
-//struct Explore: Codable {
-  //  let status: Bool?
-   // let user: [User]?
-//}
 
 // MARK: - Userpost
 struct Userpost: Codable {
@@ -446,3 +436,4 @@ struct PostContent: Codable {
 struct Operation: Codable {
     let store: String
 }
+

@@ -12,13 +12,13 @@ class WSTranslator: NSObject {
     //MARK: USERPOST TRANSLATOR RESPONSE.
     ///Convert Object dicctionary a Json Codable UserPost
     ///Return Object Codable
-    class func translateResponseUserPostBE(_ objDic: NSDictionary, completion: @escaping ((Result<UserPost, Error>)) -> Void) {
-        var userPost: UserPost?
+    class func translateResponseUserPostBE(_ objDic: NSDictionary, completion: @escaping ((Result<UserPostData, Error>)) -> Void) {
+        var userPost: UserPostData?
         do {
             let jsonData:NSData = try JSONSerialization.data(withJSONObject: objDic, options: JSONSerialization.WritingOptions.prettyPrinted) as NSData
             guard let jsonString = String(data: jsonData as Data, encoding: String.Encoding.utf8) else { return }
             guard let json = jsonString.data(using: .utf8) else { return }
-            userPost = try JSONDecoder().decode(UserPost.self, from: json)
+            userPost = try JSONDecoder().decode(UserPostData.self, from: json)
             if let userPost = userPost {
                 completion(.success(userPost))
             } else {
@@ -33,14 +33,14 @@ class WSTranslator: NSObject {
     //MARK: PROFILE TRANSLATOR RESPONSE.
     ///Convert Object dicctionary a Json Codable Explore
     ///Return Object Codable
-    class func translateResponseProfileBE(_ objDic: NSDictionary, completion: @escaping ((Result<UserPost, Error>)) -> Void) {
-        var userPost: UserPost?
+    class func translateResponseProfileBE(_ objDic: NSDictionary, completion: @escaping ((Result<UserPostData, Error>)) -> Void) {
+        var userPost: UserPostData?
         do {
             let jsonData:NSData = try JSONSerialization.data(withJSONObject: objDic, options: JSONSerialization.WritingOptions.prettyPrinted) as NSData
             guard let jsonString = String(data: jsonData as Data, encoding: String.Encoding.utf8) else { return }
             guard let json = jsonString.data(using: .utf8) else { return }
             
-            userPost = try JSONDecoder().decode(UserPost.self, from: json)
+            userPost = try JSONDecoder().decode(UserPostData.self, from: json)
             if let userPost = userPost {
                 completion(.success(userPost))
             } else {
@@ -77,13 +77,13 @@ class WSTranslator: NSObject {
     //MARK: EXPLORE TRANSLATOR RESPONSE.
     ///Convert Object dicctionary a Json Codable Explore
     ///Return Object Codable
-    class func translateResponseExploreBE(_ objDic: NSDictionary, completion: @escaping ((Result<UserPost, Error>)) -> Void) {
-        var userPost: UserPost?
+    class func translateResponseExploreBE(_ objDic: NSDictionary, completion: @escaping ((Result<UserPostData, Error>)) -> Void) {
+        var userPost: UserPostData?
         do {
             let jsonData:NSData = try JSONSerialization.data(withJSONObject: objDic, options: JSONSerialization.WritingOptions.prettyPrinted) as NSData
             guard let jsonString = String(data: jsonData as Data, encoding: String.Encoding.utf8) else { return }
             guard let json = jsonString.data(using: .utf8) else { return }
-            userPost = try JSONDecoder().decode(UserPost.self, from: json)
+            userPost = try JSONDecoder().decode(UserPostData.self, from: json)
             
             if let userPost = userPost {
                 completion(.success(userPost))

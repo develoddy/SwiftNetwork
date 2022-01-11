@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol SegmentedProgressBarDelegate: class {
+protocol SegmentedProgressBarDelegate : AnyObject {
     func segmentedProgressBarChangedIndex(index: Int)
     func segmentedProgressBarFinished()
 }

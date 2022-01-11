@@ -14,16 +14,14 @@ class PruebaViewController: UIViewController {
     
     var email: String = ""
     
-    private var models = [Userpost]()
-    
-    private var user: User?
-    
-    private var story = [Storyfeatured]()
-    
     private let grid = "grid"
+    
     private let tagged = "tagged"
     
-    ///var spinner = UIActivityIndicatorView()var VW_overlay: UIView = UIView()
+    private var viewModel = ProfileViewModel()
+    
+    private var token = Token()
+    
     //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,8 +30,8 @@ class PruebaViewController: UIViewController {
         configureHeader()
         configureCollectionViewTwo()
         configureNavigationBar()
-        fetchUserPost()
         configureSpinner()
+        loadProfileData()
     }
     
     // MARK: Init
@@ -75,50 +73,23 @@ class PruebaViewController: UIViewController {
         showSpinner()
     }
     
-    ///Spinner
-    ///Muestra el spiner mientras los datos de van cargando...
+    //MARK: Spinner
+    //MARK: Muestra el spiner mientras los datos de van cargando...
     private func showSpinner() {
         CustomLoader.instance.showLoader()
     }
     
-    /**
-     Api Rest.
-     En esta función llamamos al Api rest para traes los datos de la DataBase,
-     Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
-     - Parameter
-     */
-    private func fetchUserPost() {
-        APIService.shared.apiProfile(email: self.email, token: getUserToken()?.token ?? "" ) {(result) in
-            switch result {
-            case .success(let model):
-                model.userpost?.count != 0 ? self.setupModel(with: model.userpost ?? []) : print("Array Userpost está vacio...")
-            case .failure(let error):
-                print(error.localizedDescription)
+    // MARK: Carga los datos del ViewModel
+    private func loadProfileData() {
+        print(token.getUserToken())
+        guard let token = token.getUserToken().token else { return }
+        viewModel.fetchProfileData(email: self.email, token: token) { [weak self] in
+            self?.collectionViewTwo.dataSource = self
+            self?.collectionViewTwo.delegate = self
+            DispatchQueue.main.async {
+                CustomLoader.instance.hideLoader()
+                //self?.collectionViewTwo.reloadData()
             }
-        }
-    }
-
-    /**
-     Models
-     Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
-     Recorremos el array del modelo userpost.
-     El modelo pintara los datos del user post acorde al email.
-     - Parameter model: Recibe el ojeto userpost
-     */
-    private func setupModel(with model: [Userpost]) {
-        for items in model {
-            let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType)
-            models.append(userpost)
-            
-            ///User & Story Featured
-            guard let user = items.userAuthor, let story = items.userAuthor?.profile?.storyfeatured else { return }
-            self.user = user
-            self.story.append(contentsOf: story)
-        }
-        
-        DispatchQueue.main.async {
-            CustomLoader.instance.hideLoader()
-            self.collectionViewTwo.reloadData()
         }
     }
     
@@ -142,29 +113,37 @@ class PruebaViewController: UIViewController {
     }
     
     private func configureNavigationBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "LogOut",style: .done,target: self,action: #selector(didTapSettingsButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "LogOut",
+            style: .done,
+            target: self,
+            action: #selector(didTapSettingsButton))
     }
     
     private func configureHeader() {
-        collectionViewTwo.register(StoryFeaturedCollectionTableViewCell.self,forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,withReuseIdentifier: StoryFeaturedCollectionTableViewCell.identifier)
-        collectionViewTwo.register(ProfileInfoHeaderCollectionReusableView.self,forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier)
-        collectionViewTwo.register(ProfileTabsCollectionReusableView.self,forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,withReuseIdentifier: ProfileTabsCollectionReusableView.identifier)
+        collectionViewTwo.register(
+            StoryFeaturedCollectionTableViewCell.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: StoryFeaturedCollectionTableViewCell.identifier)
+        
+        collectionViewTwo.register(
+            ProfileInfoHeaderCollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier)
+        
+        collectionViewTwo.register(
+            ProfileTabsCollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: ProfileTabsCollectionReusableView.identifier)
     }
     
     private func configureCollectionViewTwo() {
-        collectionViewTwo.delegate = self
-        collectionViewTwo.dataSource = self
-        collectionViewTwo.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
+        collectionViewTwo.register(
+            PhotoCollectionViewCell.self,
+            forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
         view.addSubview(collectionViewTwo)
     }
     
-    public func getUserToken() -> ResponseTokenBE? {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        guard let token = appDelegate.objUsuarioSesion else {
-            return getUserToken()
-        }
-        return token
-    }
     
     ///LogOut
     @objc func didTapSettingsButton() {
@@ -179,77 +158,99 @@ class PruebaViewController: UIViewController {
 //MARK: Extensión.
 extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    //MARK: Count post
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 3
     }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 {
-            return 0 ///Heade
-        }
-        if section == 1 {
-            return 0 ///Heade
-        }
-        return  models.count ///Collections photos
+    
+    //MARK: Count header & story & photos
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
+        if section == 0 { return 0 }
+        if section == 1 { return 0 }
+        return viewModel.numberOfRowsInSection(section: section) 
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let model = models[indexPath.row]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
+    //MARK: PhotosCollectionsViewCell
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: PhotoCollectionViewCell.identifier,
+            for: indexPath) as! PhotoCollectionViewCell
+        
+        let model = viewModel.cellForRowAt(indexPath: indexPath)
         cell.configure(with: model)
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (view.frame.width/3)-1, height: 150)
+    //MARK: Height PhotosCollectionsViewCell
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize( width: ( view.frame.width / 3 )-1 , height: 150 )
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+    //MARK: UIEdgeInsets PhotosCollectionsViewCell
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets( top: 10, left: 0, bottom: 10, right: 0 )
     }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard kind == UICollectionView.elementKindSectionHeader else { return UICollectionReusableView() }
+    //MARK: SupplementaryElementOfKind
+    //MARK: Header & Story & Tabs
+    func collectionView(_ collectionView: UICollectionView,
+                        viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
         
+        guard kind == UICollectionView.elementKindSectionHeader else { return UICollectionReusableView() }
         switch indexPath.section {
-            case 0:
-                let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,for: indexPath) as! ProfileInfoHeaderCollectionReusableView
-                if self.user != nil {
-                    guard let user = self.user else { return UICollectionReusableView() }
-                    header.configureProfile(with: user)
-                    header.delegate = self
-                }
-                return header
-            case 1:
-                let storyHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: StoryFeaturedCollectionTableViewCell.identifier,for: indexPath) as! StoryFeaturedCollectionTableViewCell
-                if self.story.count > 0 {
-                    storyHeader.configure(model: self.story)
-                }
-                return storyHeader
-            case 2:
-                
-                let tabsHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileTabsCollectionReusableView.identifier,for: indexPath) as! ProfileTabsCollectionReusableView
-                    tabsHeader.delegate = self
+        case 0:
+            let header = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,
+                for: indexPath) as! ProfileInfoHeaderCollectionReusableView
+            
+            guard let user = viewModel.fetchUsername(indexPath: indexPath) else { return UICollectionReusableView() }
+            header.configureProfile(with: user)
+            header.delegate = self
+            return header
+        
+        case 1:
+            let storyHeader = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: StoryFeaturedCollectionTableViewCell.identifier,
+                for: indexPath) as! StoryFeaturedCollectionTableViewCell
+            return storyHeader
+            
+        case 2:
+            let tabsHeader = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: ProfileTabsCollectionReusableView.identifier,
+                for: indexPath) as! ProfileTabsCollectionReusableView
+            tabsHeader.delegate = self
                 return tabsHeader
-            default: fatalError()
+            
+        default: fatalError()
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if section == 0 { ///Header
-            return CGSize(width: collectionView.width, height: collectionView.height/2.5)
-        }
-        if section == 1 { ///Story
-            return CGSize(width: collectionView.width, height: 90)
-        }
-        return CGSize(width: collectionView.width, height: 50) ///Tabs
+    //MARK: Collection Header
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> CGSize {
+        // Header & Story & Tabs
+        if section == 0 { return CGSize(width: collectionView.width, height: collectionView.height/2.5) }
+        if section == 1 { return CGSize(width: collectionView.width, height: 90) }
+        return CGSize(width: collectionView.width, height: 50)
     }
     
-    ///Select o click on photo
-    ///Se empuja al PostViewController
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    //MARK: Select or click on photo
+    //MARK: Push PostViewController
+    func collectionView(_ collectionView: UICollectionView,
+                        didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        let model = models[indexPath.row]
+        let model = viewModel.cellForRowAt(indexPath: indexPath)
         let vc = PostViewController(model: model)
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)

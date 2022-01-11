@@ -7,24 +7,23 @@
 
 import Foundation
 
-//MARK: - UserpostViewModel
-//class UserpostViewModel {
+//MARK: VIEWMODEL -> API SERVICE
 class HomeViewModel {
     
     private var apiService = APIService()
     
-    public var models = [HomeFeedRenderViewModel]()
+    public var models = [ HomeFeedRenderViewModel ]()
     
-    ///Api Rest.
-    ///En esta función llamamos al Api rest para traes los datos de la DataBase,
-    ///Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
-    func fetchUserpostData(token: String, completion: @escaping () -> ()) {
-        apiService.apiUserPost(token: token) {(result) in
+    // MARK: Fetch User Post.
+    func fetchUserpostData( token: String,
+                            completion: @escaping () -> ()) {
+        
+        apiService.getUserPost( token: token ) { [ weak self ] ( result ) in
             switch result {
-            case .success(let model):
-                guard let userpost = model.userpost else { return }
-                for items in userpost {
-                    //guard let user = items.userAuthor else { return }
+            // SUCCESS
+            case .success( let listOf ):
+                guard let userposts = listOf.userpost else { return }
+                for items in userposts {
                     guard let comments = items.comments else { return }
                     let viewModel = HomeFeedRenderViewModel(
                         header      : PostRenderViewModel(renderType: .header(provider: items)),
@@ -33,20 +32,24 @@ class HomeViewModel {
                         descriptions: PostRenderViewModel(renderType: .descriptions(post: items)),
                         comments    : PostRenderViewModel(renderType: .comments(comments: comments)),
                         footer      : PostRenderViewModel(renderType: .footer(footer: items)))
-                    self.models.append(viewModel)
-                    
+                    self?.models.append( viewModel )
                 }
                 completion()
+            
+            // FAIULURE
             case .failure(let error):
-                print(error.localizedDescription)
+            print(error.localizedDescription)
+            print("Error processing json data: \(error)")
             }
         }
     }
     
+    // Number of sections.
     func numberOfSections() -> Int {
         return models.count
     }
     
+    // Number of row in section.
     func numberOfRowsInSection(section: Int) -> Int {
         if models.count != 0 {
             return models.count
@@ -54,7 +57,8 @@ class HomeViewModel {
         return 0
     }
     
+    // Model IndexPath row.
     func cellForRowAt(indexPath: IndexPath) -> HomeFeedRenderViewModel {
-        return models[indexPath.row]
+        return models[ indexPath.row ]
     }
 }

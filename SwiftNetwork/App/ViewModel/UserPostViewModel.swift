@@ -23,7 +23,7 @@ class UserPostViewModel {
     ///En esta función llamamos al Api rest para traes los datos de la DataBase,
     ///Desde handleNotAuthenticated ontenemos tanto el token como el email del usario que está conectado a la App.
     func fetchUserpostData(email: String,token: String, completion: @escaping () -> ()) {
-        APIService.shared.apiProfile(email: email, token: token ) {(result) in
+        APIService.shared.getProfile(email: email, token: token ) {(result) in
             switch result {
             case .success(let model):
                 for items in model.userpost ?? [] {

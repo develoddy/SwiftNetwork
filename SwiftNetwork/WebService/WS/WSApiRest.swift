@@ -8,6 +8,7 @@
 
 import UIKit
 
+// MARK: WSApiRest -> WSender
 class WSApiRest: NSObject {
     
     static let CDMWebModelURLBase : NSString = Constants.ApiRoutes.login as NSString
@@ -51,12 +52,17 @@ class WSApiRest: NSObject {
     ///Llamaremos al backend.
     ///Recibe por parametros el tokekn de la App.
     @discardableResult
-    class func iniciarSesion(_ objUser                                : UserBE                         ,
+    class func iniciarSesion(email                                       : String?,
+                             password                                    : String?,
                              conCompletionCorrecto completionCorrecto : @escaping Closures.Login       ,
                              error procesoIncorrecto                  : @escaping Closures.MensajeError) -> URLSessionDataTask? {
-        let dic : [String : Any] = ["email"         : objUser.email!                                ,
-                                    "password"      : objUser.password!                             ,
-                                    "typedevice"    : 1                                             ,
+        
+        guard let email = email,
+              let password = password else { return  nil }
+        
+        let dic : [String : Any] = ["email"         : email                                             ,
+                                    "password"      : password                                          ,
+                                    "typedevice"    : 1                                                 ,
                                     "tokendevice"   : "Se debe enviar el token push del dispositivo"	]
         return WSender.doPOSTToURL(conURL: self.CDMWebModelURLBase, conPath: _URL_login as NSString, conParametros: dic) { (objRespuesta) in
             let diccionarioRespuesta = objRespuesta.respuestaJSON as? NSDictionary
