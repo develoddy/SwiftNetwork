@@ -87,21 +87,21 @@ class SearchViewController: UIViewController {
     ///Hacemos una llamada al Api rest.
     ///Una vez obtenido los datos que queremos, se lo enviamos a la funcion setuModel.
     private func fetchUserPost() {
-        APIService.shared.apiUserPost(token: handleNotAuthenticated()) {(result) in
+        /*APIService.shared.getUserPost(token: handleNotAuthenticated()) {(result) in
             switch result {
             case .success(let model):
                 model.userpost?.count != 0 ? self.setupModel(with: model.userpost ?? []) : print("Array Userpost está vacio...")
             case .failure(let error):
                 print(error.localizedDescription)
             }
-        }
+        }*/
     }
     
     ///Models
     ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
     private func setupModel(with model: [Userpost] ) {
         for items in model {
-            let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType )
+            let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType, storyfeatured: items.storyfeatured )
             models.append(userpost)
         }
         ///Carga el spiner y recarga el collectionViewTwo con los datos.
@@ -203,9 +203,9 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     ///Selected photo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        let model = models[indexPath.row]
-        let vc = PostViewController(model: model)
-        vc.title = "Search"//model.postType.rawValue
-        navigationController?.pushViewController(vc, animated: true)
+        //let model = models[indexPath.row]
+        //let vc = PostViewController(model: model)
+        //vc.title = "Search"//model.postType.rawValue
+        //navigationController?.pushViewController(vc, animated: true)
     }
 }

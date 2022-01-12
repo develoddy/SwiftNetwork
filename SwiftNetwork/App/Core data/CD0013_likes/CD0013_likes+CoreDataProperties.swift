@@ -22,10 +22,26 @@ extension CD0013_likes {
     @NSManaged public var cd13_ref_id    : Int64
     @NSManaged public var cd13_type_id   : Int64
     @NSManaged public var cd13_id        : Int64
-    //@NSManaged public var comments: CD0014_comments?
+    @NSManaged public var cd13_userlike  : CD0001_users?
 
 }
 
-extension CD0013_likes : Identifiable {
+// MARK: Add Userlike.
+extension CD0013_likes {
+
+    @objc(addCd13_userlikeObject:)
+    @NSManaged public func addToCd13_userlike(_ value: CD0001_users)
+
+    @objc(removeCd13_userObject:)
+    @NSManaged public func removeFromCd13_userlike(_ value: CD0001_users)
+
+//    @objc(addCd13_user:)
+//    @NSManaged public func addToCd13_user(_ values: NSSet)
+//
+//    @objc(removeCd13_user:)
+//    @NSManaged public func removeFromCd13_user(_ values: NSSet)
 
 }
+
+
+extension CD0013_likes : Identifiable {}

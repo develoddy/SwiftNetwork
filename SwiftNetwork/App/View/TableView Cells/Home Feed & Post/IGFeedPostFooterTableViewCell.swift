@@ -60,7 +60,6 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        contentView.backgroundColor = .systemBackground
         contentView.addSubview(profilePhotoImageView)
         contentView.addSubview(boxTextButton)
         contentView.addSubview(postButton)
@@ -77,33 +76,43 @@ class IGFeedPostFooterTableViewCell: UITableViewCell {
         
         let size = contentView.height
         profilePhotoImageView.frame = CGRect(
-            x: 5,
-            y: 5,
-            width: 40,
-            height: 40)
+            x      : 5 ,
+            y      : 5 ,
+            width  : 40,
+            height : 40)
         profilePhotoImageView.layer.cornerRadius = size/3
         
         boxTextButton.frame = CGRect(
-            x: profilePhotoImageView.right+5,
-            y: 0,
-            width: contentView.width-size-profilePhotoImageView.width-20,
-            height: contentView.height)
+            x      : profilePhotoImageView.right+5                         ,
+            y      : 0                                                     ,
+            width  : contentView.width-size-profilePhotoImageView.width-20 ,
+            height : contentView.height                                    )
         
         postButton.frame = CGRect(
-            x: contentView.width-5-size,
-            y: 0,
-            width: size,
-            height: size)
-    }
-    
-    public func configure(with post: Userpost) {
-        profilePhotoImageView.sd_setImage(with: URL(string: post.userAuthor?.profile?.imageHeader ?? ""), completed: nil)
-        model = post
+            x     : contentView.width-5-size  ,
+            y     : 0                         ,
+            width : size                      ,
+            height: size                      )
     }
     
     override func prepareForReuse() {
+        //
     }
     
+    //Setup userpost values.
+    public func setCellWithValuesOf(image: String?) {
+        self.updateUI(image: image)
+    }
+    
+    //Update the UI Views.
+    private func updateUI(image: String?) {
+        guard let image = image else {
+            return
+        }
+        profilePhotoImageView.sd_setImage(with: URL(string: image), completed: nil)
+    }
+    
+    //Did tap.
     @objc private func didTapCommentButton() {
         guard let model = model else {
             return

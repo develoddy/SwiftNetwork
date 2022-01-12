@@ -100,9 +100,9 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
               let name = model.userAuthor?.name else {
             return
         }
-        let vc = UserPostViewController(email: email, token: getUserToken()?.token ?? "")
-        vc.title = name
-        presentingViewController?.navigationController?.pushViewController(vc, animated: true)
+        //let vc = UserPostViewController(email: email, token: getUserToken()?.token ?? "")
+        //vc.title = name
+        //presentingViewController?.navigationController?.pushViewController(vc, animated: true)
         
     }
 }

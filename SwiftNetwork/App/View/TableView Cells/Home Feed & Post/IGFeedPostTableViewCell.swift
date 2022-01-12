@@ -46,8 +46,18 @@ final class IGFeedPostTableViewCell: UITableViewCell {
     }
     
     ///Obtenemos la primera foto del array postImage[0]
-    public func configure(with post: Userpost) {
-        postImageView.sd_setImage(with: URL(string: post.postImage![0].image?.src ?? ""), completed: nil)
+    //public func configure(with model: CD0011_posts, image: String?) {
+    public func configure(image: [CD0010_images]?) {
+        //postImageView.sd_setImage(with: URL(string: post.postImage![0].image?.src ?? ""), completed: nil)
+        
+        guard let image = image?[0].cd10_src else {
+            return
+        }
+        postImageView.sd_setImage(with: URL(string: image), completed: nil)
+        
+      
+        //postImageView.sd_setImage(with: URL(string: image![0].cd10_src ?? ""), completed: nil)
+      
     
         /**switch post.postType {
         case .photo:
@@ -62,6 +72,10 @@ final class IGFeedPostTableViewCell: UITableViewCell {
             playerLayer.player?.volume = 0
             playerLayer.player?.play()
         }*/
+        
+        //for item in image {
+          //  print(item.cd12_image_id)
+        //}
     }
     
     override func prepareForReuse() {

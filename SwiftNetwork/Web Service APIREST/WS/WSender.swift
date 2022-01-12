@@ -18,7 +18,7 @@ class WSender: NSObject {
     // MARK: -               CONSUMPTION OF SERVICE WITH COOKIE.
     /* ============================================================================== */
      
-    ///POST
+    // POST
     @discardableResult class func doPOSTCookieToURL(conURL url                  : NSString                              ,
                                                     conPath path                : NSString                              ,
                                                     conParametros parametros    : Any?                                  ,
@@ -335,9 +335,9 @@ class WSender: NSObject {
             respuesta = self.detResponseInJSONWithData(data!)
         }
         
-//        print("======== Respuesta DB ========")
-//        print(respuesta)
-//        print("======== / END Respuesta DB ========")
+        //print("======== Respuesta DB ========")
+        //print(respuesta)
+        //print("======== / END Respuesta DB ========")
         let urlResponse = response as? HTTPURLResponse
         let headerFields : NSDictionary? = urlResponse?.allHeaderFields as NSDictionary?
         let objResponse = WebResponse()

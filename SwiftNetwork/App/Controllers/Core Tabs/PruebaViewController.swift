@@ -107,11 +107,11 @@ class PruebaViewController: UIViewController {
      */
     private func setupModel(with model: [Userpost]) {
         for items in model {
-            let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType)
+            let userpost = Userpost(id: items.id, title: items.title, content: items.content, lat: items.lat, lng: items.lng, startAt: items.startAt, finishAt: items.finishAt, receptorTypeID: items.receptorRefID, authorRefID: items.authorRefID, receptorRefID: items.receptorRefID, posttTypeID: items.posttTypeID, nivelID: items.nivelID, createdAt: items.createdAt, updatedAt: items.updatedAt, idPostType: items.idPostType, comments: items.comments, likes: items.likes, taggeds: items.taggeds, userAuthor: items.userAuthor, postImage: items.postImage, postType: items.postType, storyfeatured: items.storyfeatured )
             models.append(userpost)
             
             ///User & Story Featured
-            guard let user = items.userAuthor, let story = items.userAuthor?.profile?.storyfeatured else { return }
+            guard let user = items.userAuthor, let story = items.storyfeatured else { return }
             self.user = user
             self.story.append(contentsOf: story)
         }
@@ -216,7 +216,7 @@ extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,withReuseIdentifier: ProfileInfoHeaderCollectionReusableView.identifier,for: indexPath) as! ProfileInfoHeaderCollectionReusableView
                 if self.user != nil {
                     guard let user = self.user else { return UICollectionReusableView() }
-                    header.configureProfile(with: user)
+                    //header.configureProfile(with: user)
                     header.delegate = self
                 }
                 return header
@@ -248,12 +248,12 @@ extension PruebaViewController: UICollectionViewDelegate, UICollectionViewDataSo
     ///Select o click on photo
     ///Se empuja al PostViewController
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
-        let model = models[indexPath.row]
-        let vc = PostViewController(model: model)
-        vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
-        vc.title = "Posts"
+//        collectionView.deselectItem(at: indexPath, animated: true)
+//        let model = models[indexPath.row]
+//        let vc = PostViewController(model: model)
+//        vc.navigationItem.largeTitleDisplayMode = .never
+//        navigationController?.pushViewController(vc, animated: true)
+//        vc.title = "Posts"
     }
 }
 

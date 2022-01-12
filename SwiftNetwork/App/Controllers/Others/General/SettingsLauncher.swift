@@ -23,6 +23,7 @@ class SettingsLauncher: NSObject {
     var homeController: HomeViewController?
     
     let tranparentView = UIView()
+    //let heigth: CGFloat = 250
     private var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -61,8 +62,7 @@ class SettingsLauncher: NSObject {
         collectionView.register(CustomSharedCollectionViewCell.self, forCellWithReuseIdentifier: CustomSharedCollectionViewCell.identifier)
         collectionView.register(CustomSharedFooterCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: CustomSharedFooterCollectionViewCell.identifier)
     }
-    
-    /// Settings
+
     func showSettings() {
         let windows = UIApplication.shared.connectedScenes
                 .filter({$0.activationState == .foregroundActive})
@@ -150,9 +150,10 @@ extension SettingsLauncher: UICollectionViewDataSource, UICollectionViewDelegate
     ///CollectionsViewCell Options
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let model = settings[indexPath.row]
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomSharedCollectionViewCell.identifier,
-                                                                for: indexPath) as? CustomSharedCollectionViewCell else {
-                fatalError("Unable to deque cell")
+            guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: CustomSharedCollectionViewCell.identifier,
+                    for: indexPath) as? CustomSharedCollectionViewCell else {
+                    fatalError("Unable to deque cell")
             }
             cell.configure(model: model)
             return cell
@@ -171,24 +172,26 @@ extension SettingsLauncher: UICollectionViewDataSource, UICollectionViewDelegate
     ///Add Header & Footer
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionFooter {
-            guard let cellFooter = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter,
-                                                                                   withReuseIdentifier: CustomSharedFooterCollectionViewCell.identifier,
-                                                                                   for: indexPath) as? CustomSharedFooterCollectionViewCell else {
+            guard let cellFooter = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: UICollectionView.elementKindSectionFooter,
+                    withReuseIdentifier: CustomSharedFooterCollectionViewCell.identifier,
+                    for: indexPath) as? CustomSharedFooterCollectionViewCell else {
                fatalError("Unable to deque cell")
             }
             cellFooter.delegate = self
             return cellFooter
         }
         
-        guard let cellHeader = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
-                                                                               withReuseIdentifier: CustomSharedHeaderCollectionViewCell.identifier,
-                                                                               for: indexPath) as? CustomSharedHeaderCollectionViewCell else {
+        guard let cellHeader = collectionView.dequeueReusableSupplementaryView(
+                ofKind: UICollectionView.elementKindSectionHeader,
+                withReuseIdentifier: CustomSharedHeaderCollectionViewCell.identifier,
+                for: indexPath) as? CustomSharedHeaderCollectionViewCell else {
             fatalError("Unable to deque cell")
-        }
+         }
         let border = UIView(frame: CGRect(x: 0, y: collectionView.height/2.7, width: collectionView.bounds.width, height: 1))
         border.backgroundColor = .systemGray4
         cellHeader.addSubview(border)
-        return cellHeader
+         return cellHeader
     }
     
     ///Header height
