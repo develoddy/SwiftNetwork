@@ -64,7 +64,6 @@ class PruebaViewController: UIViewController {
         adapter = ProfileAdapter(delegate: self, delegateHeader: self)
     }
     
-    
     // MARK: Carga los datos del ViewModel
     private func initViewModel() {
         
