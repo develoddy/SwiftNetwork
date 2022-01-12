@@ -155,8 +155,8 @@ class PostViewController: UIViewController {
         
     }
     
-    ///Models
-    ///Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
+    // Models
+    // Está función revcibe los datos para tratarlos y guardalos en el array Modelo.
     private func setupModel(with model: Userpost ) {
         //guard let ownew = model.userAuthor else { return }
         guard let comments = model.comments else { return }
@@ -382,9 +382,6 @@ extension PostViewController {
         
         //NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification),name: UIResponder.keyboardWillShowNotification, object: nil)
         //NotificationCenter.default.removeObserver(self) // Remove from all notifications being observed
-        
-        
-        
         
         guard let idpost = model?.id else { return}
         guard let token = getUserToken()?.token else { return }
